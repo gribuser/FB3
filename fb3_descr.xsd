@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by TeaM DJiNN (TeaM DJiNN) -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by GribUser (Shukovsky) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" targetNamespace="http://www.fictionbook.org/FictionBook3/description" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- See license.txt for licensing information -->
+	<include schemaLocation="fb3_descr_subjects.xsd"/>
+	<include schemaLocation="fb3_descr_classes.xsd"/>
+	<include schemaLocation="fb3_relations.xsd"/>
+	<include schemaLocation="fb3_general.xsd"/>
+	<element name="fb3-description">
+		<annotation>
+			<documentation xml:lang="ru">Корневой элемент для мета-данных в fb3. id и version несут однозначно идентифицируют данный файл в ряду других (потенциально одноименнызх и даже эквивалентных)</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element name="periodical" type="fb3d:PeriodicalType" minOccurs="0">
+					<annotation>
+						<documentation xml:lang="ru">Элемент, хранящий специфические для периодических изданий сведения. Для каждого периодического издания вводится ID, позволяющий опознавать вышедшие в его рамках номера</documentation>
+					</annotation>
+				</element>
+				<element name="title" type="fb3d:TitleType">
+					<annotation>
+						<documentation xml:lang="ru">Название произведения. Как обычно - из трех этажей</documentation>
+					</annotation>
+				</element>
+				<element name="sequence" type="fb3d:SequenceType" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation xml:lang="ru">Серия, в которой выпущено произведение. Например "Детство, Отрочество, Юность" для книги Толстого "Детство"
+Не путать серию с названием периодического издания. Вроженность серий обозначает "многоуровневые" серии.</documentation>
+					</annotation>
+				</element>
+				<element ref="fb3d:fb3-relations">
+					<annotation>
+						<documentation xml:lang="ru">Связанные с данным произведением субьекты и объекты</documentation>
+					</annotation>
+				</element>
+				<element ref="fb3d:fb3-classification">
+					<annotation>
+						<documentation xml:lang="ru">Опишем, как каталогизировать данное произведение - на какие полки ставить и рядом с чем</documentation>
+					</annotation>
+				</element>
+				<element name="lang" type="language"/>
+				<element name="written" minOccurs="0">
+					<annotation>
+						<documentation xml:lang="ru">Информация о том, где и когда было написано произведение</documentation>
+					</annotation>
+					<complexType mixed="false">
+						<sequence>
+							<element name="lang" type="language"/>
+							<element name="date" minOccurs="0">
+								<complexType>
+									<simpleContent>
+										<extension base="string">
+											<attribute name="value" type="date" use="optional"/>
+										</extension>
+									</simpleContent>
+								</complexType>
+							</element>
+							<element name="country" minOccurs="0">
+								<simpleType>
+									<restriction base="token">
+										<minLength value="2"/>
+									</restriction>
+								</simpleType>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="document-info">
+					<annotation>
+						<documentation xml:lang="ru">Информация о данном документе - когда и кем сделан, когда обновлен</documentation>
+					</annotation>
+					<complexType mixed="false">
+						<attribute name="created" type="dateTime" use="required"/>
+						<attribute name="updated" type="dateTime" use="required"/>
+						<attribute name="program-used" type="normalizedString" use="optional"/>
+						<attribute name="src-url" type="anyURI" use="optional"/>
+						<attribute name="ocr" type="normalizedString" use="optional"/>
+						<attribute name="editor" type="token" use="optional"/>
+						<attribute name="fb3-lvl" type="integer" use="optional"/>
+					</complexType>
+				</element>
+				<element name="history" type="fb3d:AnnotationType" minOccurs="0"/>
+				<element name="keywords" type="string" minOccurs="0">
+					<annotation>
+						<documentation xml:lang="ru">Ключевые слова для не-полнотекстового поиска по библиотеке</documentation>
+					</annotation>
+				</element>
+				<element name="publish-info" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation xml:lang="ru">Информация о бумажной публикации, соответствующей этому документа</documentation>
+					</annotation>
+					<complexType mixed="false">
+						<attribute name="title" type="token" use="required">
+							<annotation>
+								<documentation xml:lang="ru">Название бумажной книги</documentation>
+							</annotation>
+						</attribute>
+						<attribute name="publisher" type="token" use="optional"/>
+						<attribute name="city" type="token" use="optional"/>
+						<attribute name="year" type="gYear" use="optional"/>
+						<attribute name="isbn" type="fb3d:ISBNType" use="optional"/>
+					</complexType>
+				</element>
+				<element name="custom-info" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation xml:lang="ru">Произвольная пользовательская информация.</documentation>
+					</annotation>
+					<complexType>
+						<simpleContent>
+							<extension base="string">
+								<attribute name="info-type" use="required">
+									<simpleType>
+										<restriction base="token">
+											<minLength value="1"/>
+										</restriction>
+									</simpleType>
+								</attribute>
+							</extension>
+						</simpleContent>
+					</complexType>
+				</element>
+				<element name="anotation" type="fb3d:AnnotationType" minOccurs="0">
+					<annotation>
+						<documentation xml:lang="ru">Аннотация, будет использоваться в локальном каталоге, электронных библиотеках, etc.</documentation>
+					</annotation>
+				</element>
+			</sequence>
+			<attribute name="id" type="fb3d:UUIDType" use="required">
+				<annotation>
+					<documentation xml:lang="ru">ID, позволяющий глобально различать разные книги, даже одноименные и имеющие одинаковых авторов (дополненные издания, к примеру)
+Если ID и версия у двух файлов одинаковые, ожидается, что документы эквивалентны.</documentation>
+				</annotation>
+			</attribute>
+			<attribute name="version" type="float" use="required">
+				<annotation>
+					<documentation xml:lang="ru">Номер версии, позволяющий определить более новый файл при встрече с несколькими книгами с одинаковыми ID</documentation>
+				</annotation>
+			</attribute>
+		</complexType>
+		<unique name="RelationUUID">
+			<selector xpath="relations/subject|relations/object"/>
+			<field xpath="@id"/>
+		</unique>
+	</element>
+	<element name="fb3-relations" type="fb3d:RelationsType">
+		<annotation>
+			<documentation>Элемент, описывающий связи данного произведения. Описан отдельно, и потому может быть импортирован во внешнюю схеме</documentation>
+		</annotation>
+	</element>
+	<element name="fb3-classification" type="fb3d:ClassificationType">
+		<annotation>
+			<documentation>Элемент, описывающий положение в каталоге для данного произведения. Описан отдельно, и потому может быть импортирован во внешнюю схеме</documentation>
+		</annotation>
+	</element>
+	<complexType name="PeriodicalType" mixed="false">
+		<annotation>
+			<documentation xml:lang="ru">Описание периодического издания, в рамках которого был выпущен данный документ</documentation>
+		</annotation>
+		<sequence>
+			<element name="title" type="fb3d:TitleType" minOccurs="0">
+				<annotation>
+					<documentation xml:lang="ru">Заголовок периодического издания.
+Для "Компьютерры" тут будет mail "Компьютерра", постоянная часть названия. При этом основной тайтл fb3 может с этим тайтлом не совпадать, а быть тематическим заголовком единичного номера.
+Если у издания нет индивидуальных заголовков, данный узел указывать не следует оставить пустым - оно должно ДОБАВЛЯТЬСЯ к обычному заголовку, если необходимо, но не должно его дублировать или подменять</documentation>
+				</annotation>
+			</element>
+			<element name="issn" type="fb3d:ISSNType" minOccurs="0">
+				<annotation>
+					<documentation xml:lang="ru">Что-то типа ISBN для непериодических книг, каждое периодическое издания имеет свой ISSN, как я понимаю. А уже номера получают ISBN</documentation>
+				</annotation>
+			</element>
+			<element name="issue">
+				<annotation>
+					<documentation xml:lang="ru">Описание места данного документа в ряду периодических изданий. Минимум сводится к год+номер, но можно указать дату выхода издания и в свободной форме описать номер, например
+"Номер 5 за 1998г."</documentation>
+				</annotation>
+				<complexType>
+					<simpleContent>
+						<extension base="string">
+							<attribute name="number" type="positiveInteger" use="required">
+								<annotation>
+									<documentation xml:lang="ru">Номер издания, к примеру для "Техника молодежи, номер 5 за 1998г." здесь должно быть 5</documentation>
+								</annotation>
+							</attribute>
+							<attribute name="year" type="gYear" use="required">
+								<annotation>
+									<documentation xml:lang="ru">Номер издания, к примеру для "Техника молодежи, номер 5 за 1998г." здесь должно быть 1998</documentation>
+								</annotation>
+							</attribute>
+							<attribute name="date" type="date" use="optional">
+								<annotation>
+									<documentation xml:lang="ru">Номер издания, к примеру для "Техника молодежи, номер 5 за 1998г." здесь должно быть что-то типа 1998-05-10</documentation>
+								</annotation>
+							</attribute>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+		</sequence>
+		<attribute name="id" type="fb3d:UUIDType" use="required"/>
+	</complexType>
+	<complexType name="ClassificationType" mixed="false">
+		<annotation>
+			<documentation xml:lang="ru">Классифицирует произведение со всевозможных углов зрения </documentation>
+		</annotation>
+		<sequence>
+			<element name="class">
+				<annotation>
+					<documentation xml:lang="ru">Литературная форма - роман/рассказ/стихи и т.п.</documentation>
+				</annotation>
+				<complexType>
+					<simpleContent>
+						<extension base="fb3d:BookClassType">
+							<attribute name="contents" use="required">
+								<simpleType>
+									<restriction base="token">
+										<enumeration value="standalone"/>
+										<enumeration value="part"/>
+										<enumeration value="collection"/>
+									</restriction>
+								</simpleType>
+							</attribute>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="subject" type="fb3d:SubjectType" maxOccurs="unbounded">
+				<annotation>
+					<documentation xml:lang="ru">Жанр, описывает смысловое содержание произведения - фантастика, публицистика, детектив и т.п.</documentation>
+				</annotation>
+			</element>
+			<element name="custom-subject" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation xml:lang="ru">Можно добавить произвольный жанр произведению. Всякие бездари очень любят создавать новые жанры, а иногда даже и для приличных книг требуется</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="token">
+						<minLength value="1"/>
+						<whiteSpace value="collapse"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="target-audience" minOccurs="0">
+				<annotation>
+					<documentation xml:lang="ru">Целевая аудитория книги - возраст, образование</documentation>
+				</annotation>
+				<complexType mixed="true">
+					<attribute name="age-min" use="optional">
+						<simpleType>
+							<restriction base="positiveInteger">
+								<minInclusive value="2"/>
+								<maxInclusive value="50"/>
+							</restriction>
+						</simpleType>
+					</attribute>
+					<attribute name="age-max" use="optional">
+						<simpleType>
+							<restriction base="positiveInteger">
+								<minInclusive value="2"/>
+								<maxInclusive value="150"/>
+							</restriction>
+						</simpleType>
+					</attribute>
+					<attribute name="education" use="optional">
+						<simpleType>
+							<restriction base="token">
+								<enumeration value="none"/>
+								<enumeration value="primary"/>
+								<enumeration value="high"/>
+								<enumeration value="specialized_secondary"/>
+								<enumeration value="higher"/>
+								<enumeration value="specialized_higher"/>
+							</restriction>
+						</simpleType>
+					</attribute>
+				</complexType>
+			</element>
+			<element name="coverage" minOccurs="0">
+				<annotation>
+					<documentation xml:lang="ru">Для книг с сюжетом, внятно привязываемым к месту и/или времени, можно описать  временные рамки, в которые укладывается повествование, а равно и географические</documentation>
+				</annotation>
+				<complexType mixed="true">
+					<attribute name="country" type="token" use="optional"/>
+					<attribute name="place" type="token" use="optional"/>
+					<attribute name="date" type="date" use="optional"/>
+					<attribute name="date-from" type="date" use="optional"/>
+					<attribute name="date-to" type="date" use="optional"/>
+					<attribute name="age" type="token" use="optional"/>
+				</complexType>
+			</element>
+			<element name="udc" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation xml:lang="ru">Поле для указания кода УДК</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="token">
+						<pattern value="\d+(\.\d+)+(:\d+)?"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="bbk" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation xml:lang="ru">Поле для указания кода ББК</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="token">
+						<pattern value="\d+([\.а-я]\d+)+"/>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="TitleType" mixed="false">
+		<annotation>
+			<documentation xml:lang="ru">Стандартный формат заголовка, включает обязательный главный заголовок, опциональный подзаголовок и альтернативное название</documentation>
+		</annotation>
+		<sequence>
+			<element name="main">
+				<annotation>
+					<documentation xml:lang="ru">Название - его основная часть, в ниаболее употребимой версии.</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<minLength value="1"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="sub" minOccurs="0">
+				<annotation>
+					<documentation xml:lang="ru">Подзаголовок. Используется в случае, когда часть названия является явно второстепенной и ее можно опустить при кратком упоминании произведения. К примеру, в списке произведений подзаголовок может быть опущен или напечатан мелко и т.д.</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<minLength value="1"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="alt" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation xml:lang="ru">Альтернативное название. Указывается в случае, если таковое имеется.</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<minLength value="1"/>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="SequenceType" mixed="false">
+		<annotation>
+			<documentation xml:lang="ru">Описание серийности, в т.ч. и сложной - поддерживается вложенность</documentation>
+		</annotation>
+		<sequence>
+			<element name="title" type="fb3d:TitleType"/>
+			<element name="sequence" type="fb3d:SequenceType" minOccurs="0"/>
+		</sequence>
+		<attribute name="number" type="positiveInteger" use="optional"/>
+		<attribute name="id" type="fb3d:UUIDType" use="required"/>
+	</complexType>
+	<complexType name="AnnotationType">
+		<annotation>
+			<documentation xml:lang="ru">Простой формат для оформления аннотации книги</documentation>
+		</annotation>
+		<sequence>
+			<element name="p" type="fb3d:BasicTextType">
+				<annotation>
+					<documentation xml:lang="ru">АБзац</documentation>
+				</annotation>
+			</element>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element name="p" type="fb3d:BasicTextType">
+					<annotation>
+						<documentation xml:lang="ru">АБзац</documentation>
+					</annotation>
+				</element>
+				<element name="br">
+					<annotation>
+						<documentation xml:lang="ru">Пустая строка между абзацами</documentation>
+					</annotation>
+				</element>
+			</choice>
+		</sequence>
+	</complexType>
+	<complexType name="BasicTextType" mixed="true">
+		<annotation>
+			<documentation xml:lang="ru">Формат абзаца для аннотации - болд, италик, ссылки</documentation>
+		</annotation>
+		<choice minOccurs="0" maxOccurs="unbounded">
+			<element name="strong" type="fb3d:BasicTextType">
+				<annotation>
+					<documentation xml:lang="ru">Жирный</documentation>
+				</annotation>
+			</element>
+			<element name="em" type="fb3d:BasicTextType">
+				<annotation>
+					<documentation xml:lang="ru">Наклонный</documentation>
+				</annotation>
+			</element>
+			<element name="a">
+				<annotation>
+					<documentation xml:lang="ru">Ссылка</documentation>
+				</annotation>
+				<complexType mixed="true">
+					<complexContent mixed="true">
+						<extension base="fb3d:BasicTextType">
+							<attribute name="href" type="anyURI" use="required"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+		</choice>
+	</complexType>
+	<complexType name="RelationsType">
+		<annotation>
+			<documentation>Все связанные с данным документом персоны и объекты</documentation>
+		</annotation>
+		<sequence>
+			<element name="subject" type="fb3d:SubjectRelationType" maxOccurs="unbounded">
+				<annotation>
+					<documentation xml:lang="ru">Авторы, правообладатели и другие имеющие отношение к произведению субьекты.</documentation>
+				</annotation>
+			</element>
+			<element name="object" type="fb3d:ObjectRelationType" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<complexType name="SubjectRelationType" mixed="false">
+		<annotation>
+			<documentation xml:lang="ru">Связанный с данным документом субьект (автор, издатель и т.п.)</documentation>
+		</annotation>
+		<sequence>
+			<element name="title" type="fb3d:TitleType">
+				<annotation>
+					<documentation xml:lang="ru">Общепринятое наименование связанного объекта. В случае с автором - его ФИО в общепринятом написании, если это организация - ее название или торговая марка (ООО "РиК", к примеру) и т.п.</documentation>
+				</annotation>
+			</element>
+			<element name="first-name" minOccurs="0">
+				<annotation>
+					<documentation xml:lang="ru">Первое имя (имя для Русских писателей). Для субьектов, не имеющих имени (например, для псевдонимов или организаций) поле можно опустить</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<minLength value="1"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="middle-name" minOccurs="0">
+				<annotation>
+					<documentation xml:lang="ru">Второе имя (отчество для Русских писателей). Для субьектов, не имеющих второго имени (например, для псевдонимов или организаций) поле можно опустить</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<minLength value="1"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="last-name">
+				<annotation>
+					<documentation xml:lang="ru">Фамилия, оно же "последнее имя". Для субьектов, не имеющих фамилии (ООО "РиК) тут должно быть наименование, позволяющее их опознать (РиК). К примеру, last-name должен позволять найти субьекта по первой букве названия.</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<minLength value="1"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="description" minOccurs="0">
+				<annotation>
+					<documentation xml:lang="ru">Текстовое описание связанного субьекта и/или его отношений с данным произведением. К примеру, комментарий, используемый когда стандартных средств описания связи недостаточно для экспрессии нужного объема информации.</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<minLength value="1"/>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+		<attribute name="id" type="fb3d:UUIDType" use="required">
+			<annotation>
+				<documentation xml:lang="ru">ID связанного с данным произведением субьекта</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="link" type="fb3d:SubjectRelationEnumType" use="required">
+			<annotation>
+				<documentation xml:lang="ru">Тип связи - имеем мы дело с автором, переводчиком, иллюстратором или там еще с кем</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<complexType name="ObjectRelationType" mixed="false">
+		<annotation>
+			<documentation xml:lang="ru">Связанный с данным произведением объект (перевод, аудио-версия и т.п.)</documentation>
+		</annotation>
+		<sequence>
+			<element name="title" type="fb3d:TitleType">
+				<annotation>
+					<documentation xml:lang="ru">Общепринятое наименование связанного объекта. В случае с автором - его ФИО в общепринятом написании, если это организация - ее название или торговая марка (ООО "РиК", к примеру) и т.п.</documentation>
+				</annotation>
+			</element>
+			<element name="description" minOccurs="0">
+				<annotation>
+					<documentation xml:lang="ru">Текстовое описание связанного субьекта и/или его отношений с данным произведением. К примеру, комментарий, используемый когда стандартных средств описания связи недостаточно для экспрессии нужного объема информации.</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<minLength value="1"/>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+		<attribute name="id" type="fb3d:UUIDType" use="required">
+			<annotation>
+				<documentation xml:lang="ru">ID связанного с данным произведением объекта</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="link" type="fb3d:ObjectRelationEnumType" use="required">
+			<annotation>
+				<documentation xml:lang="ru">Тип связи данной книги с указанным объектом object. Указываем ли мы ссылку на перевод, продолжение или другой тип связанных документов.</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<simpleType name="ISSNType">
+		<annotation>
+			<documentation xml:lang="ru">Serial publications - формат</documentation>
+		</annotation>
+		<restriction base="string">
+			<pattern value="\d{4}-\d{3}(\d|X)"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="ISBNType">
+		<annotation>
+			<documentation xml:lang="ru">ISBN format constraint</documentation>
+		</annotation>
+		<restriction base="string">
+			<pattern value="([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]"/>
+		</restriction>
+	</simpleType>
+</schema>

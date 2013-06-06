@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.fictionbook.org/FictionBook3/description" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description">
+	<!-- See license.txt for licensing information -->
+	<simpleType name="SubjectType">
+		<annotation>
+			<documentation>Text subject. В fb2 было genre</documentation>
+		</annotation>
+		<restriction base="token">
+			<enumeration value="accounting">
+				<annotation>
+					<documentation xml:lang="ru">Бухучет, налогообложение, аудит</documentation>
+					<documentation xml:lang="en">Accounting</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="adv_animal">
+				<annotation>
+					<documentation xml:lang="ru">Природа и Животные</documentation>
+					<documentation xml:lang="en">Nature &amp; Animals</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="adv_geo">
+				<annotation>
+					<documentation xml:lang="ru">Путешествия и География</documentation>
+					<documentation xml:lang="en">Travel &amp; Geography</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="adv_history">
+				<annotation>
+					<documentation xml:lang="ru">Исторические приключения</documentation>
+					<documentation xml:lang="en">History</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="adv_indian">
+				<annotation>
+					<documentation xml:lang="ru">Приключения: Индейцы</documentation>
+					<documentation xml:lang="en">Indians</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="adv_maritime">
+				<annotation>
+					<documentation xml:lang="ru">Морские приключения</documentation>
+					<documentation xml:lang="en">Maritime Fiction</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="adv_western">
+				<annotation>
+					<documentation xml:lang="ru">Вестерны</documentation>
+					<documentation xml:lang="en">Western</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="adventure">
+				<annotation>
+					<documentation xml:lang="ru">Приключения: Прочее</documentation>
+					<documentation xml:lang="en">Misk Adventures</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="antique">
+				<annotation>
+					<documentation xml:lang="ru">Старинная литература: Прочее</documentation>
+					<documentation xml:lang="en">Other Antique</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="antique_ant">
+				<annotation>
+					<documentation xml:lang="ru">Античная литература</documentation>
+					<documentation xml:lang="en">Antique Literature</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="antique_east">
+				<annotation>
+					<documentation xml:lang="ru">Древневосточная литература</documentation>
+					<documentation xml:lang="en">Antique East Literature</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="antique_european">
+				<annotation>
+					<documentation xml:lang="ru">Европейская старинная литература</documentation>
+					<documentation xml:lang="en">European Literature</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="antique_myths">
+				<annotation>
+					<documentation xml:lang="ru">Мифы. Легенды. Эпос</documentation>
+					<documentation xml:lang="en">Myths. Legends. Epos</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="antique_russian">
+				<annotation>
+					<documentation xml:lang="ru">Древнерусская литература</documentation>
+					<documentation xml:lang="en">Antique Russian Literature</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="banking">
+				<annotation>
+					<documentation xml:lang="ru">Банковское дело</documentation>
+					<documentation xml:lang="en">Banking</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="child_adv">
+				<annotation>
+					<documentation xml:lang="ru">Детские приключения</documentation>
+					<documentation xml:lang="en">Adventures for Kids</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="child_det">
+				<annotation>
+					<documentation xml:lang="ru">Детские детективы</documentation>
+					<documentation xml:lang="en">Detectives &amp; Thrillers</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="child_education">
+				<annotation>
+					<documentation xml:lang="ru">Детская образовательная</documentation>
+					<documentation xml:lang="en">Education for Kids</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="child_prose">
+				<annotation>
+					<documentation xml:lang="ru">Детская проза</documentation>
+					<documentation xml:lang="en">Prose for Kids</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="child_sf">
+				<annotation>
+					<documentation xml:lang="ru">Детская фантастика</documentation>
+					<documentation xml:lang="en">Science Fiction for Kids</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="child_tale">
+				<annotation>
+					<documentation xml:lang="ru">Сказки</documentation>
+					<documentation xml:lang="en">Fairy Tales</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="child_verse">
+				<annotation>
+					<documentation xml:lang="ru">Детские стихи</documentation>
+					<documentation xml:lang="en">Verses</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="children">
+				<annotation>
+					<documentation xml:lang="ru">Детские: Прочее</documentation>
+					<documentation xml:lang="en">For Kids: Misk</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="comp_db">
+				<annotation>
+					<documentation xml:lang="ru">Базы данных</documentation>
+					<documentation xml:lang="en">Databases</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="comp_hard">
+				<annotation>
+					<documentation xml:lang="ru">Компьютерное Железо</documentation>
+					<documentation xml:lang="en">Hardware</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="comp_osnet">
+				<annotation>
+					<documentation xml:lang="ru">ОС и Сети</documentation>
+					<documentation xml:lang="en">OS &amp; Networking</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="comp_programming">
+				<annotation>
+					<documentation xml:lang="ru">Программирование</documentation>
+					<documentation xml:lang="en">Programming</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="comp_soft">
+				<annotation>
+					<documentation xml:lang="ru">Программы</documentation>
+					<documentation xml:lang="en">Software</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="comp_www">
+				<annotation>
+					<documentation xml:lang="ru">Интернет</documentation>
+					<documentation xml:lang="en">Internet</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="computers">
+				<annotation>
+					<documentation xml:lang="ru">Компьютеры и Интернет: Прочее</documentation>
+					<documentation xml:lang="en">Computers: Misk</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="design">
+				<annotation>
+					<documentation xml:lang="ru">Искусство</documentation>
+					<documentation xml:lang="en">Art, Design</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_action">
+				<annotation>
+					<documentation xml:lang="ru">Боевики</documentation>
+					<documentation xml:lang="en">Action</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_classic">
+				<annotation>
+					<documentation xml:lang="ru">Классические детективы</documentation>
+					<documentation xml:lang="en">Classical Detective</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_crime">
+				<annotation>
+					<documentation xml:lang="ru">Криминальные детективы</documentation>
+					<documentation xml:lang="en">Crime Detective</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_espionage">
+				<annotation>
+					<documentation xml:lang="ru">Шпионские детективы</documentation>
+					<documentation xml:lang="en">Espionage Detective</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_hard">
+				<annotation>
+					<documentation xml:lang="ru">Крутой детектив</documentation>
+					<documentation xml:lang="en">Hard-boiled Detective</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_history">
+				<annotation>
+					<documentation xml:lang="ru">Исторические детективы</documentation>
+					<documentation xml:lang="en">Historical Detective</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_irony">
+				<annotation>
+					<documentation xml:lang="ru">Иронические детективы</documentation>
+					<documentation xml:lang="en">Ironical Detective</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_maniac">
+				<annotation>
+					<documentation xml:lang="ru">Маньяки</documentation>
+					<documentation xml:lang="en">Maniacs</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_police">
+				<annotation>
+					<documentation xml:lang="ru">Полицейские детективы</documentation>
+					<documentation xml:lang="en">Police Stories</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="det_political">
+				<annotation>
+					<documentation xml:lang="ru">Политические детективы</documentation>
+					<documentation xml:lang="en">Political Detective</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="dramaturgy">
+				<annotation>
+					<documentation xml:lang="ru">Драматургия</documentation>
+					<documentation xml:lang="en">Dramaturgy</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="economics">
+				<annotation>
+					<documentation xml:lang="ru">Экономика</documentation>
+					<documentation xml:lang="en">Economics</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="economics_ref">
+				<annotation>
+					<documentation xml:lang="ru">Справочники по экономике</documentation>
+					<documentation xml:lang="en">Economics Reference Book</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="global_economy">
+				<annotation>
+					<documentation xml:lang="ru">Внешнеэкономическая деятельность</documentation>
+					<documentation xml:lang="en">Global Economy</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="home_cooking">
+				<annotation>
+					<documentation xml:lang="ru">Кулинария</documentation>
+					<documentation xml:lang="en">Cooking</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="home_crafts">
+				<annotation>
+					<documentation xml:lang="ru">Хобби и Ремесла</documentation>
+					<documentation xml:lang="en">Hobbies &amp; Crafts</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="home_diy">
+				<annotation>
+					<documentation xml:lang="ru">Самоделки</documentation>
+					<documentation xml:lang="en">Do it yourself</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="home_entertain">
+				<annotation>
+					<documentation xml:lang="ru">Развлечения</documentation>
+					<documentation xml:lang="en">Entertaining</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="home_garden">
+				<annotation>
+					<documentation xml:lang="ru">Сад и Огород</documentation>
+					<documentation xml:lang="en">Garden</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="home_health">
+				<annotation>
+					<documentation xml:lang="ru">Здоровье</documentation>
+					<documentation xml:lang="en">Health</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="home_pets">
+				<annotation>
+					<documentation xml:lang="ru">Домашние животные</documentation>
+					<documentation xml:lang="en">Pets</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="home_sex">
+				<annotation>
+					<documentation xml:lang="ru">Эротика и Секс</documentation>
+					<documentation xml:lang="en">Erotica, Sex</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="home_sport">
+				<annotation>
+					<documentation xml:lang="ru">Спорт</documentation>
+					<documentation xml:lang="en">Sports</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="humor_anecdote">
+				<annotation>
+					<documentation xml:lang="ru">Анекдоты</documentation>
+					<documentation xml:lang="en">Anecdote</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="humor_prose">
+				<annotation>
+					<documentation xml:lang="ru">Юмористическая проза</documentation>
+					<documentation xml:lang="en">Humor Prose</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="humor_verse">
+				<annotation>
+					<documentation xml:lang="ru">Юмористические стихи</documentation>
+					<documentation xml:lang="en">Humor Verses</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="industries">
+				<annotation>
+					<documentation xml:lang="ru">Отраслевые издания</documentation>
+					<documentation xml:lang="en">Industries</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="job_hunting">
+				<annotation>
+					<documentation xml:lang="ru">Поиск работы, карьера</documentation>
+					<documentation xml:lang="en">Job Hunting</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="love_contemporary">
+				<annotation>
+					<documentation xml:lang="ru">Современные любовные романы</documentation>
+					<documentation xml:lang="en">Contemporary Romance</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="love_detective">
+				<annotation>
+					<documentation xml:lang="ru">Остросюжетные любовные романы</documentation>
+					<documentation xml:lang="en">Detective Romance</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="love_erotica">
+				<annotation>
+					<documentation xml:lang="ru">Эротика</documentation>
+					<documentation xml:lang="en">Erotica</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="love_history">
+				<annotation>
+					<documentation xml:lang="ru">Исторические любовные романы</documentation>
+					<documentation xml:lang="en">Historical Romance</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="love_sf">
+				<annotation>
+					<documentation xml:lang="ru">Любовная фантастика</documentation>
+					<documentation xml:lang="en">Love</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="love_short">
+				<annotation>
+					<documentation xml:lang="ru">Короткие любовные романы</documentation>
+					<documentation xml:lang="en">Short Romance</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="management">
+				<annotation>
+					<documentation xml:lang="ru">Управление, подбор персонала</documentation>
+					<documentation xml:lang="en">Management</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="marketing">
+				<annotation>
+					<documentation xml:lang="ru">Маркетинг, PR, реклама</documentation>
+					<documentation xml:lang="en">Marketing</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="nonf_biography">
+				<annotation>
+					<documentation xml:lang="ru">Биографии и Мемуары</documentation>
+					<documentation xml:lang="en">Biography &amp; Memoirs</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="nonf_criticism">
+				<annotation>
+					<documentation xml:lang="ru">Критика</documentation>
+					<documentation xml:lang="en">Criticism</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="nonf_publicism">
+				<annotation>
+					<documentation xml:lang="ru">Публицистика</documentation>
+					<documentation xml:lang="en">Publicism</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="nonfiction">
+				<annotation>
+					<documentation xml:lang="ru">Документальное: Прочее</documentation>
+					<documentation xml:lang="en">Misk Nonfiction</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="org_behavior">
+				<annotation>
+					<documentation xml:lang="ru">Корпоративная культура</documentation>
+					<documentation xml:lang="en">Corporate Culture</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="paper_work">
+				<annotation>
+					<documentation xml:lang="ru">Paper Делопроизводство</documentation>
+					<documentation xml:lang="en">Work</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="personal_finance">
+				<annotation>
+					<documentation xml:lang="ru">Личные финансы</documentation>
+					<documentation xml:lang="en">Personal Finance</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="poetry">
+				<annotation>
+					<documentation xml:lang="ru">Поэзия</documentation>
+					<documentation xml:lang="en">Poetry</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="popular_business">
+				<annotation>
+					<documentation xml:lang="ru">О бизнесе популярно</documentation>
+					<documentation xml:lang="en">Popular Business</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="prose_classic">
+				<annotation>
+					<documentation xml:lang="ru">Классическая проза</documentation>
+					<documentation xml:lang="en">Classics Prose</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="prose_contemporary">
+				<annotation>
+					<documentation xml:lang="ru">Современная проза</documentation>
+					<documentation xml:lang="en">Contemporary Prose</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="prose_counter">
+				<annotation>
+					<documentation xml:lang="ru">Контркультура</documentation>
+					<documentation xml:lang="en">Counterculture</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="prose_history">
+				<annotation>
+					<documentation xml:lang="ru">Историческая проза</documentation>
+					<documentation xml:lang="en">Historical Prose</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="prose_military">
+				<annotation>
+					<documentation xml:lang="ru">Военная проза</documentation>
+					<documentation xml:lang="en">Prose Military</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="prose_rus_classic">
+				<annotation>
+					<documentation xml:lang="ru">Русская классика</documentation>
+					<documentation xml:lang="en">Russian Classics</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="prose_su_classics">
+				<annotation>
+					<documentation xml:lang="ru">Советская классика</documentation>
+					<documentation xml:lang="en">Soviet Classics</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="real_estate">
+				<annotation>
+					<documentation xml:lang="ru">Real Недвижимость</documentation>
+					<documentation xml:lang="en">Estate</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="ref_dict">
+				<annotation>
+					<documentation xml:lang="ru">Словари</documentation>
+					<documentation xml:lang="en">Dictionaries</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="ref_encyc">
+				<annotation>
+					<documentation xml:lang="ru">Энциклопедии</documentation>
+					<documentation xml:lang="en">Encyclopedias</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="ref_guide">
+				<annotation>
+					<documentation xml:lang="ru">Путеводители</documentation>
+					<documentation xml:lang="en">Guidebooks</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="ref_ref">
+				<annotation>
+					<documentation xml:lang="ru">Справочники</documentation>
+					<documentation xml:lang="en">Reference</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="reference">
+				<annotation>
+					<documentation xml:lang="ru">Справочная литература: Прочее</documentation>
+					<documentation xml:lang="en">Misk References</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="religion">
+				<annotation>
+					<documentation xml:lang="ru">Религия и духовность: Прочее</documentation>
+					<documentation xml:lang="en">Religion: Other</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="religion_esoterics">
+				<annotation>
+					<documentation xml:lang="ru">Эзотерика</documentation>
+					<documentation xml:lang="en">Esoterics</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="religion_rel">
+				<annotation>
+					<documentation xml:lang="ru">Религия</documentation>
+					<documentation xml:lang="en">Religion</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="religion_self">
+				<annotation>
+					<documentation xml:lang="ru">Самосовершенствование</documentation>
+					<documentation xml:lang="en">Self-perfection</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_biology">
+				<annotation>
+					<documentation xml:lang="ru">Биология</documentation>
+					<documentation xml:lang="en">Biology</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_chem">
+				<annotation>
+					<documentation xml:lang="ru">Химия</documentation>
+					<documentation xml:lang="en">Chemistry</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_culture">
+				<annotation>
+					<documentation xml:lang="ru">Культурология</documentation>
+					<documentation xml:lang="en">Cultural Science</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_history">
+				<annotation>
+					<documentation xml:lang="ru">История</documentation>
+					<documentation xml:lang="en">History</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_juris">
+				<annotation>
+					<documentation xml:lang="ru">Юриспруденция</documentation>
+					<documentation xml:lang="en">Jurisprudence</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_linguistic">
+				<annotation>
+					<documentation xml:lang="ru">Языкознание</documentation>
+					<documentation xml:lang="en">Linguistics</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_math">
+				<annotation>
+					<documentation xml:lang="ru">Математика</documentation>
+					<documentation xml:lang="en">Mathematics</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_medicine">
+				<annotation>
+					<documentation xml:lang="ru">Медицина</documentation>
+					<documentation xml:lang="en">Medicine</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_philosophy">
+				<annotation>
+					<documentation xml:lang="ru">Философия</documentation>
+					<documentation xml:lang="en">Philosophy</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_phys">
+				<annotation>
+					<documentation xml:lang="ru">Физика</documentation>
+					<documentation xml:lang="en">Physics</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_politics">
+				<annotation>
+					<documentation xml:lang="ru">Политика</documentation>
+					<documentation xml:lang="en">Politics</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_psychology">
+				<annotation>
+					<documentation xml:lang="ru">Психология</documentation>
+					<documentation xml:lang="en">Psychology</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_religion">
+				<annotation>
+					<documentation xml:lang="ru">Религиоведение</documentation>
+					<documentation xml:lang="en">Religious Studies</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sci_tech">
+				<annotation>
+					<documentation xml:lang="ru">Технические</documentation>
+					<documentation xml:lang="en">Technical</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="science">
+				<annotation>
+					<documentation xml:lang="ru">Научно-образовательная: Прочее</documentation>
+					<documentation xml:lang="en">Misk Science, Education</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_action">
+				<annotation>
+					<documentation xml:lang="ru">Боевая фантастика</documentation>
+					<documentation xml:lang="en">Action SF</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_cyberpunk">
+				<annotation>
+					<documentation xml:lang="ru">Киберпанк</documentation>
+					<documentation xml:lang="en">Cyberpunk</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_detective">
+				<annotation>
+					<documentation xml:lang="ru">Детективная фантастика</documentation>
+					<documentation xml:lang="en">Detective SF</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_epic">
+				<annotation>
+					<documentation xml:lang="ru">Эпическая фантастика</documentation>
+					<documentation xml:lang="en">Epic SF</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_fantasy">
+				<annotation>
+					<documentation xml:lang="ru">Фэнтези</documentation>
+					<documentation xml:lang="en">Fantasy</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_heroic">
+				<annotation>
+					<documentation xml:lang="ru">Героическая фантастика</documentation>
+					<documentation xml:lang="en">Heroic SF</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_history">
+				<annotation>
+					<documentation xml:lang="ru">Альтернативная история</documentation>
+					<documentation xml:lang="en">Alternative history</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_horror">
+				<annotation>
+					<documentation xml:lang="ru">Ужасы и Мистика</documentation>
+					<documentation xml:lang="en">Horror &amp; Mystic</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_humor">
+				<annotation>
+					<documentation xml:lang="ru">Юмористическая фантастика</documentation>
+					<documentation xml:lang="en">Humor SF</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_social">
+				<annotation>
+					<documentation xml:lang="ru">Социально-философская фантастика</documentation>
+					<documentation xml:lang="en">Social SF</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sf_space">
+				<annotation>
+					<documentation xml:lang="ru">Космическая фантастика</documentation>
+					<documentation xml:lang="en">Space SF</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="small_business">
+				<annotation>
+					<documentation xml:lang="ru">Малый бизнес</documentation>
+					<documentation xml:lang="en">Small Business</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="stock">
+				<annotation>
+					<documentation xml:lang="ru">Ценные бумаги, инвестиции</documentation>
+					<documentation xml:lang="en">Stock</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="thriller">
+				<annotation>
+					<documentation xml:lang="ru">Триллеры</documentation>
+					<documentation xml:lang="en">Thrillers</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+</schema>

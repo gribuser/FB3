@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.fictionbook.org/FictionBook3/description" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<!-- See license.txt for licensing information -->
+	<simpleType name="BookClassType">
+		<annotation>
+			<documentation xml:lang="ru">Novel/Poem/Manual/etc</documentation>
+		</annotation>
+		<restriction base="token">
+			<enumeration value="novel">
+				<annotation>
+					<documentation xml:lang="ru">Роман</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="story">
+				<annotation>
+					<documentation xml:lang="ru">Повесть</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="short_story">
+				<annotation>
+					<documentation xml:lang="ru">Рассказ</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="poem">
+				<annotation>
+					<documentation xml:lang="ru">Стихотворение</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="essay">
+				<annotation>
+					<documentation xml:lang="ru">Эссе</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sketch">
+				<annotation>
+					<documentation xml:lang="ru">Очерк</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="article">
+				<annotation>
+					<documentation xml:lang="ru">Статья</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="song">
+				<annotation>
+					<documentation xml:lang="ru">Песня</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="play">
+				<annotation>
+					<documentation xml:lang="ru">Пьеса</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="interview">
+				<annotation>
+					<documentation xml:lang="ru">Интервью</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="monograph">
+				<annotation>
+					<documentation xml:lang="ru">Монография</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="letters">
+				<annotation>
+					<documentation xml:lang="ru">Переписка</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="diary">
+				<annotation>
+					<documentation xml:lang="ru">Дневник</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="speech">
+				<annotation>
+					<documentation xml:lang="ru">Речь</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="manual">
+				<annotation>
+					<documentation xml:lang="ru">Учебник</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="reference">
+				<annotation>
+					<documentation xml:lang="ru">Справочник</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="thesis">
+				<annotation>
+					<documentation xml:lang="ru">Диссертация </documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+</schema>

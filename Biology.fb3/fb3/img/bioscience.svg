@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 12.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 51448)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd" [
+	<!ENTITY ns_svg "http://www.w3.org/2000/svg">
+	<!ENTITY ns_xlink "http://www.w3.org/1999/xlink">
+]>
+<svg version="1.1" baseProfile="basic" xmlns="&ns_svg;" xmlns:xlink="&ns_xlink;" width="520.5" height="364" viewBox="0 0 520.5 364" overflow="visible" xml:space="preserve">
+	<g id="Layer_1">
+		<g>
+			<g>
+				<line fill="none" stroke="#000000" stroke-width="1.2801" x1="205.831" y1="80.916" x2="205.831" y2="291.104"/>
+				<polygon points="202.157,288.568 205.875,302.445 209.595,288.568 			"/>
+				<polygon points="209.503,83.452 205.785,69.575 202.066,83.452 			"/>
+			</g>
+			<g>
+				<line fill="none" stroke="#000000" stroke-width="1.2801" x1="153.283" y1="94.996" x2="258.378" y2="277.025"/>
+				<polygon points="253.929,276.665 264.087,286.824 260.369,272.947 			"/>
+				<polygon points="157.731,95.356 147.573,85.197 151.292,99.075 			"/>
+			</g>
+			<g>
+				<line fill="none" stroke="#000000" stroke-width="1.2801" x1="114.816" y1="133.463" x2="296.845" y2="238.558"/>
+				<polygon points="292.812,240.47 306.688,244.19 296.53,234.03 			"/>
+				<polygon points="118.849,131.551 104.972,127.832 115.13,137.991 			"/>
+			</g>
+			<g>
+				<line fill="none" stroke="#000000" stroke-width="1.2801" x1="100.736" y1="186.011" x2="310.924" y2="186.011"/>
+				<polygon points="308.388,189.684 322.265,185.966 308.388,182.247 			"/>
+				<polygon points="103.272,182.338 89.395,186.056 103.272,189.775 			"/>
+			</g>
+			<g>
+				<line fill="none" stroke="#000000" stroke-width="1.2801" x1="114.816" y1="238.558" x2="296.845" y2="133.463"/>
+				<polygon points="296.484,137.912 306.644,127.753 292.767,131.472 			"/>
+				<polygon points="115.176,234.109 105.017,244.267 118.895,240.549 			"/>
+			</g>
+			<g>
+				<line fill="none" stroke="#000000" stroke-width="1.2801" x1="153.283" y1="277.025" x2="258.378" y2="94.996"/>
+				<polygon points="260.291,99.029 264.009,85.152 253.85,95.311 			"/>
+				<polygon points="151.37,272.992 147.651,286.869 157.811,276.711 			"/>
+			</g>
+		</g>
+		<g>
+			<rect x="151.906" y="168.035" fill="#FFFFFF" stroke="#000000" stroke-width="1.456" width="107.849" height="35.952"/>
+			<text transform="matrix(1 0 0 1 160.5088 193.0039)" font-family="'Arial'" font-size="20.7671">Биология</text>
+		</g>
+		<text transform="matrix(1 0 0 1 162.3477 30.1538)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">цитология (строение</tspan>
+			<tspan x="0" y="14.946" font-family="'Arial'" font-size="12.45">и жизнедеятельность</tspan>
+			<tspan x="0" y="29.891" font-family="'Arial'" font-size="12.45">клеток)</tspan>
+		</text>
+		<text transform="matrix(1 0 0 1 315.7314 239.0645)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">эмбриология</tspan>
+			<tspan x="0" y="14.945" font-family="'Arial'" font-size="12.45">(индивитуальное</tspan>
+			<tspan x="0" y="29.892" font-family="'Arial'" font-size="12.45">развитие организмов)</tspan>
+		</text>
+		<text transform="matrix(1 0 0 1 178.8672 317.6895)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">анатомия</tspan>
+			<tspan x="0" y="14.945" font-family="'Arial'" font-size="12.45">(строение</tspan>
+			<tspan x="0" y="29.892" font-family="'Arial'" font-size="12.45">органов)</tspan>
+		</text>
+		<text transform="matrix(1 0 0 1 103.6401 305.0703)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">зоология</tspan>
+			<tspan x="0" y="14.945" font-family="'Arial'" font-size="12.45">(животные)</tspan>
+		</text>
+		<text transform="matrix(1 0 0 1 44.915 257.0215)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">ботаника</tspan>
+			<tspan x="0" y="14.945" font-family="'Arial'" font-size="12.45">(растения)</tspan>
+		</text>
+		<text transform="matrix(1 0 0 1 20.6484 182.2808)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">микология</tspan>
+			<tspan x="0" y="14.946" font-family="'Arial'" font-size="12.45">(растения)</tspan>
+		</text>
+		<text transform="matrix(1 0 0 1 29.3848 116.2749)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">бактериология</tspan>
+			<tspan x="0" y="14.946" font-family="'Arial'" font-size="12.45">(бактерии)</tspan>
+		</text>
+		<text transform="matrix(1 0 0 1 75.0063 65.3149)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">вирусология</tspan>
+			<tspan x="0" y="14.946" font-family="'Arial'" font-size="12.45">(вирусы)</tspan>
+		</text>
+		<text transform="matrix(1 0 0 1 266.3174 306.8672)">
+			<tspan x="0" y="0" font-family="'Arial" font-weight="bold" font-size="12.45">Экология</tspan>
+			<tspan x="58.333" y="0" font-family="'Arial'" font-size="12.45"> – отношения</tspan>
+			<tspan x="0" y="14.945" font-family="'Arial'" font-size="12.45">организмов между собой</tspan>
+			<tspan x="0" y="29.892" font-family="'Arial'" font-size="12.45">и окружающей средой</tspan>
+		</text>
+		<rect x="0.5" y="0.5" fill="none" stroke="#000000" width="514" height="363"/>
+	</g>
+	<g id="Layer_2">
+		<rect x="275.5" y="59.5" fill="none" width="138" height="35"/>
+		<text transform="matrix(1 0 0 1 275.5 68.4175)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">физиология</tspan>
+			<tspan x="0" y="14.946" font-family="'Arial'" font-size="12.45">(функции организмов)</tspan>
+		</text>
+		<rect x="313.5" y="107.5" fill="none" width="197" height="39"/>
+		<text transform="matrix(1 0 0 1 313.5 116.4175)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">биохимия и молекулярная</tspan>
+			<tspan x="0" y="14.946" font-family="'Arial'" font-size="12.45">биология (клеточные функции)</tspan>
+		</text>
+		<rect x="331.5" y="161.5" fill="none" width="189" height="48"/>
+		<text transform="matrix(1 0 0 1 331.5 170.4175)">
+			<tspan x="0" y="0" font-family="'Arial'" font-size="12.45">генетика</tspan>
+			<tspan x="0" y="14.946" font-family="'Arial'" font-size="12.45">(наследственность</tspan>
+			<tspan x="0" y="29.891" font-family="'Arial'" font-size="12.45">и изменчивость организмов)</tspan>
+		</text>
+	</g>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+	<Relationship Id="eye.svg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/eye.svg"/>
+	<Relationship Id="exclam.svg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/exclam.svg"/>
+	<Relationship Id="quest.svg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/quest.svg"/>
+	<Relationship Id="book.svg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/book.svg"/>
+	<Relationship Id="square.svg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/square.svg"/>
+	<Relationship Id="circle.svg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/circle.svg"/>
+	<Relationship Id="biopicture.png" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/biopicture.png"/>
+	<Relationship Id="bioscience.svg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/bioscience.svg"/>
+	<Relationship Id="biosfera.png" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/biosfera.png"/>
+	<Relationship Id="cells.jpg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/cells.jpg"/>
+	<Relationship Id="loopa.jpg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/loopa.jpg"/>
+	<Relationship Id="mikroskop.jpg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/mikroskop.jpg"/>
+</Relationships>

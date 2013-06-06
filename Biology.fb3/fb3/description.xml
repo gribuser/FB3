@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fb3-description xmlns="http://www.fictionbook.org/FictionBook3/description" id="29f8c76a-141c-102c-a3bc-9f4786c95f7d" version="1.0">
+	<!--	<periodical id="18ea4ccf-daa9-102b-9003-10751c2f945c">
+		<title>
+			<main>Альманах Большой Прозы</main>
+			<sub>перепечатаем всех!</sub>
+			<alt>Альманах-шалманах</alt>
+		</title>
+		<issn>1748-7188</issn>
+		<number number="5" year="1998">Номер 5 за 1998г.</number>
+	</periodical>-->
+	<title>
+		<main>Биология. 6 класс. Бактерии, грибы, растения.</main>
+		<sub>Учебник для общеобразовательных учреждений. 6 класс.</sub>
+		<!--		<alt>Война и мiр</alt>-->
+	</title>
+	<!--	<sequence number="2" id="f5425391-da0f-102b-ad52-84a7b9a81fa0">
+		<title>
+			<main>Детство, Отрочество, Юность</main>
+		</title>
+	</sequence>-->
+	<fb3-relations>
+		<!-- Уникальное ID субьекта, позволяющее одноименных и пересекающихся по любым другим признакам
+		авторов отличать друг от друга. Надо будет и какой-то открытый каталог завести глобальный, в ближайшей
+		перспективе. -->
+		<subject id="0dad1004-1430-102c-96f3-af3a14b75ca4" link="author">
+			<!-- Тип связи субьекта (автора, организации) с произведением. Основа - RUSMARC
+			
+			author, translator, editor, illustrator, compiler, publisher, maker-up, adapter, dialogue, conceptor, reviewer, introduction,
+			afterword, accompanying, quotations, annotator, associated, copyright_holder, commentator, consultant,
+			corrector, scientific_advisor, dubious_author, designer, recipient_of_letters, sponsor, photographer, undef
+			-->
+			<title>
+				<main>Пасечник В.В.</main>
+			</title>
+			<!-- ФИО - для реальных людей. Для организаций и псевдонимов можно опустить -->
+			<first-name>Владимир</first-name>
+			<middle-name>Васильевич</middle-name>
+			<last-name>Пасечник</last-name>
+		</subject>
+		<subject id="7be9fc2f-1430-102c-a33d-9c7b957aa4c4" link="editor">
+			<title>
+				<main>Крюкова Т. П.</main>
+			</title>
+			<first-name>Т.</first-name>
+			<middle-name>П.</middle-name>
+			<last-name>Крюкова</last-name>
+		</subject>
+		<subject id="9418f95c-1430-102c-a33d-9c7b957aa4c4" link="editor">
+			<title>
+				<main>Пальдяева Г. М.</main>
+			</title>
+			<first-name>Г.</first-name>
+			<middle-name>М.</middle-name>
+			<last-name>Пальдяева</last-name>
+		</subject>
+		<subject id="bee6035b-1430-102c-a33d-9c7b957aa4c4" link="illustrator">
+			<title>
+				<main>Сергеева М. Н.</main>
+			</title>
+			<first-name>М.</first-name>
+			<middle-name>Н.</middle-name>
+			<last-name>Сергеева</last-name>
+		</subject>
+		<subject id="ebf5a84a-1430-102c-a33d-9c7b957aa4c4" link="illustrator">
+			<title>
+				<main>Лаврова А. Б.</main>
+			</title>
+			<first-name>А.</first-name>
+			<middle-name>Б.</middle-name>
+			<last-name>Лаврова</last-name>
+		</subject>
+		<subject id="f2f1fece-1430-102c-a33d-9c7b957aa4c4" link="illustrator">
+			<title>
+				<main>Замятина Н. Г.</main>
+			</title>
+			<first-name>Н.</first-name>
+			<middle-name>Г.</middle-name>
+			<last-name>Замятина</last-name>
+		</subject>
+		<subject id="0a51e1a7-1431-102c-a33d-9c7b957aa4c4" link="illustrator">
+			<title>
+				<main>Афанасьева С. В.</main>
+			</title>
+			<first-name>С.</first-name>
+			<middle-name>В.</middle-name>
+			<last-name>Афанасьева</last-name>
+		</subject>
+		<subject id="3c215a6a-1431-102c-a33d-9c7b957aa4c4" link="illustrator">
+			<title>
+				<main>Северина С. В.</main>
+			</title>
+			<first-name>Н.</first-name>
+			<middle-name>Б.</middle-name>
+			<last-name>Северина</last-name>
+		</subject>
+		<subject id="7d3b83c8-1432-102c-a33d-9c7b957aa4c4" link="other">
+			<title>
+				<main>Мицкевич М. Г.</main>
+			</title>
+			<first-name>М.</first-name>
+			<middle-name>Г.</middle-name>
+			<last-name>Мицкевич</last-name>
+			<description>Художественный редактор</description>
+		</subject>
+		<subject id="7da0d3cd-1432-102c-a33d-9c7b957aa4c4" link="other">
+			<title>
+				<main>Герасимова Н. И.</main>
+			</title>
+			<first-name>Н.</first-name>
+			<middle-name>И.</middle-name>
+			<last-name>Герасимова</last-name>
+			<description>Технический редактор</description>
+		</subject>
+		<subject id="7df8b8cb-1432-102c-a33d-9c7b957aa4c4" link="other">
+			<title>
+				<main>Биденко М. В.</main>
+			</title>
+			<first-name>М.</first-name>
+			<middle-name>В.</middle-name>
+			<last-name>Биденко</last-name>
+			<description>Технический редактор</description>
+		</subject>
+		<subject id="bb05616c-1432-102c-a33d-9c7b957aa4c4" link="maker-up">
+			<title>
+				<main>Ивлиева В. В.</main>
+			</title>
+			<first-name>В.</first-name>
+			<middle-name>В.</middle-name>
+			<last-name>Ивлиева</last-name>
+			<description>Компьютерная верстка</description>
+		</subject>
+		<subject id="197f2d58-1433-102c-a33d-9c7b957aa4c4" link="corrector">
+			<title>
+				<main>Никулина Е. Е.</main>
+			</title>
+			<first-name>Е.</first-name>
+			<middle-name>Е.</middle-name>
+			<last-name>Никулина</last-name>
+		</subject>
+		<subject id="01f19b5b-1438-102c-a33d-9c7b957aa4c4" link="copyright_holder">
+			<title>
+				<main>ООО «Дрофа»</main>
+			</title>
+			<last-name>Дрофа</last-name>
+		</subject>
+	</fb3-relations>
+	<fb3-classification>
+		<class contents="part">manual</class>
+		<subject>sci_biology</subject>
+		<subject>child_education</subject>
+		<custom-subject>Учебник</custom-subject>
+		<target-audience age-min="10" age-max="99" education="none">
+			Для общеобразовательных учреждений
+		</target-audience>
+<!--		<coverage country="Россия" place="Бородино" date="1802-01-01" date-from="1802-01-01" date-to="1824-01-01" age="XIX">
+			Россия начала 19-го века
+		</coverage>-->
+		<udk>373.167.1:58</udk>
+		<bbk>28.5я72</bbk>
+	</fb3-classification>
+	<lang>ru</lang>
+	<written>
+		<lang>ru</lang>
+		<date value="2007-04-27">2007</date>
+		<country>Россия</country>
+	</written>
+	<!-- Немного информации о создании файла. -->
+	<document-info created="2008-12-05T15:10:00" updated="2008-12-05T19:56:00" program-used="XMLSpy" editor="GribUser"/>
+	<history>
+		<p>Верстка фрагмента (начало книги) отсканированного учебника, сканирование Palek, форматирование XML - GribUser</p>
+	</history>
+<!--	<keywords>1912, война, роман, отечественная, наполеон, кутузов,
+	император, политика, нравственность, изыскания, великий, большой,
+	французский, родина, патриотизм, личность, роль личности в истории,
+	дворянство, свет, власть, безухов, болконский, должное,
+	крепостное право, крепостничество, подвиг, народ</keywords>-->
+	<publish-info title="В. В. Пасечник. БИОЛОГИЯ. БАКТЕРИИ ГРИБЫ РАСТЕНИЯ." publisher="Дрофа" city="Москва" year="1996" isbn="978-5-358-02523-3"/>
+	<custom-info info-type="Санитарно-эпидемиологическое заключение">
+		№ 77.99.24.953.Д.006499.07.06 от 26.07.2006.
+	</custom-info>
+	<custom-info info-type="general">
+		Подписано к печати с диапозитивов 27.04.07. Формат бОхЭО'/ш-
+		Бумага офсетная. Гарнитура «Школьная». Печать офсетная.
+		Усл. печ. л. 17,0. Уч.-изд. л. 19,55. Тираж 80 000 экз. Заказ М> 7632.
+		ООО «Дрофа». 127018, Москва, Сущевский вал, 49.
+		Предложения и замечания  по  содержанию  и  оформлению книги
+		просим  направлять  в  редакцию  общего   образования  издательства   «Дрофа»:
+		127018,   Москва,   а/я   79.   Тел.:  (495)  795-05-41.   E-mail:   chief@drofa.ru
+		По вопросам приобретения продукции издательства «Дрофа»
+		обращаться по адресу: 127018, Москва, Сущевский вал, 49.
+		Тел.: (495) 795-05-50,  795-05-51. Факс: (495) 795-05-52.
+		Торговый дом «Школьник». 109172, Москва, ул. Малые Каменщики, д. 6, стр. 1А.
+		Тел.:  (495)  911-70-24,   912-15-16,  912-45-76.
+		Сеть магазинов  «Переплетные птицы». Тел.: (495) 912-45-76.
+		Интернет-магазин: http://www.drofa.ru
+		Отпечатано в полном соответствии с качеством предоставленных диапозитивов
+		в ОАО «Можайский полиграфический комбинат». 143200, г. Можайск, ул. Мира, 93.
+	</custom-info>
+	<anotation>
+		<p>Предлагаемый учебник входит в учебно-методический комплект по биологическому образованию для основной школы (5–9 классы), разработанный под руководством В. В. Пасечника.</p>
+		<p>Большое количество красочных иллюстраций, разнообразные вопросы и задания, лабораторные работы, а также дополнительные сведения и любопытные факты способствуют эффективному усвоению учебного материала.</p>
+	</anotation>
+</fb3-description>

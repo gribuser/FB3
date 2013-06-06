@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties
+	xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:dcterms="http://purl.org/dc/terms/"
+	xmlns:dcmitype="http://purl.org/dc/dcmitype/">
+
+	<dc:title>Биология. 6 класс. Бактерии, грибы, растения</dc:title>
+	<dc:subject>Учебник для общеобразовательных учреждений</dc:subject>
+	<dc:creator>В. В. Пасечник</dc:creator>
+	
+	<dc:description>Предлагаемый учебник входит в учебно-методический комплект по биологическому образованию
+		для основной школы (5—9 классы), разработанный под руководством В. В. Пасечника.
+		Большое количество красочных иллюстраций, разнообразные вопросы
+		и задания, лабораторные работы, а также дополнительные сведения и
+		любопытные факты способствуют эффективному усвоению учебного материала.</dc:description>
+
+	<cp:revision>2.00</cp:revision>
+	<cp:contentStatus>Часть документа, рабочая версия</cp:contentStatus>
+	<cp:category>Учебник</cp:category>
+
+	<dcterms:modified>2009-09-09</dcterms:modified>
+	<dcterms:created>2007-04-27</dcterms:created>
+</cp:coreProperties>
