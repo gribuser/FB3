@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by TeaM DJiNN (TeaM DJiNN) -->
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by user222 (user222) -->
 <!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by GribUser (Shukovsky) -->
 <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" targetNamespace="http://www.fictionbook.org/FictionBook3/description" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- See license.txt for licensing information -->
@@ -243,10 +243,13 @@
 			</element>
 			<element name="target-audience" minOccurs="0">
 				<annotation>
-					<documentation xml:lang="ru">Целевая аудитория книги - возраст, образование</documentation>
+					<documentation xml:lang="ru">Целевая аудитория книги: возраст, уровень образование, а также дополнительное описание в свободной форме (в опциональном теге), например: «Учебник предназначен для учащихся старших классов с углубленными знаниями французского языка»</documentation>
 				</annotation>
 				<complexType mixed="true">
 					<attribute name="age-min" use="optional">
+						<annotation>
+							<documentation>Рекомендуемый минимальный возраст</documentation>
+						</annotation>
 						<simpleType>
 							<restriction base="positiveInteger">
 								<minInclusive value="2"/>
@@ -255,6 +258,9 @@
 						</simpleType>
 					</attribute>
 					<attribute name="age-max" use="optional">
+						<annotation>
+							<documentation>Рекомендуемый максимальный возраст</documentation>
+						</annotation>
 						<simpleType>
 							<restriction base="positiveInteger">
 								<minInclusive value="2"/>
@@ -263,14 +269,35 @@
 						</simpleType>
 					</attribute>
 					<attribute name="education" use="optional">
+						<annotation>
+							<documentation>Рекомендуемый уровень образования (http://goo.gl/zKnkIo). 
+
+Доступные значения:
+• none — без образования
+• preschool_education — дошкольное образование
+• primary_education — начальное общее образование
+• basic_education — основное общее
+• secondary_education — среднее (полное) общее
+• technical_school_first_cycle — начальное профессиональное
+• technical_school_second_cycle — среднее профессиональное
+• higher_education — высшее профессиональное
+• university_postgraduate — послевузовское профессиональное
+• vocational_training — профессиональная подготовка
+• additional_education — дополнительное образование</documentation>
+						</annotation>
 						<simpleType>
 							<restriction base="token">
 								<enumeration value="none"/>
-								<enumeration value="primary"/>
-								<enumeration value="high"/>
-								<enumeration value="specialized_secondary"/>
-								<enumeration value="higher"/>
-								<enumeration value="specialized_higher"/>
+								<enumeration value="preschool_education"/>
+								<enumeration value="primary_education"/>
+								<enumeration value="basic_education"/>
+								<enumeration value="secondary_education"/>
+								<enumeration value="technical_school_first_cycle"/>
+								<enumeration value="technical_school_second_cycle"/>
+								<enumeration value="higher_education"/>
+								<enumeration value="university_postgraduate"/>
+								<enumeration value="vocational_training"/>
+								<enumeration value="additional_education"/>
 							</restriction>
 						</simpleType>
 					</attribute>
