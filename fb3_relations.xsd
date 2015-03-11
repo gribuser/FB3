@@ -11,6 +11,11 @@
 					<documentation xml:lang="ru">Автор</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="agent">
+				<annotation>
+					<documentation xml:lang="ru">Агент</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="translator">
 				<annotation>
 					<documentation xml:lang="ru">Переводчик</documentation>

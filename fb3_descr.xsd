@@ -91,6 +91,9 @@
 						<documentation xml:lang="ru">Информация о бумажной публикации, соответствующей этому документа</documentation>
 					</annotation>
 					<complexType mixed="false">
+						<sequence>
+							<element name="isbn" type="fb3d:ISBNType" minOccurs="0" maxOccurs="unbounded"/>
+						</sequence>
 						<attribute name="title" type="token" use="required">
 							<annotation>
 								<documentation xml:lang="ru">Название бумажной книги</documentation>
@@ -99,7 +102,7 @@
 						<attribute name="publisher" type="token" use="optional"/>
 						<attribute name="city" type="token" use="optional"/>
 						<attribute name="year" type="gYear" use="optional"/>
-						<attribute name="isbn" type="fb3d:ISBNType" use="optional"/>
+						<!--attribute name="isbn" type="fb3d:ISBNType" use="optional"/-->
 					</complexType>
 				</element>
 				<element name="custom-info" minOccurs="0" maxOccurs="unbounded">
