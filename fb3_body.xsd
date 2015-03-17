@@ -27,6 +27,7 @@
 							</complexType>
 						</element>
 					</sequence>
+					<!-- OB: тип изменен с ID на  fb3b:UUIDType -->
 					<attribute name="id" type="fb3b:UUIDType" use="required"/>
 				</extension>
 			</complexContent>
@@ -168,7 +169,7 @@
 						</sequence>
 					</choice>
 				</sequence>
-				<attribute name="id" type="ID" use="required"/>
+				<attribute name="id" type="fb3d:UUIDType" use="required"/>
 				<attribute name="article" type="boolean" use="optional"/>
 			</extension>
 		</complexContent>
@@ -241,43 +242,15 @@
 			</annotation>
 			<choice>
 				<element name="p" type="fb3b:StyleType"/>
-				<element name="ol">
-					<complexType>
-						<complexContent>
-							<extension base="fb3b:LiHolderType"/>
-						</complexContent>
-					</complexType>
-				</element>
-				<element name="ul">
-					<complexType>
-						<complexContent>
-							<extension base="fb3b:LiHolderType"/>
-						</complexContent>
-					</complexType>
-				</element>
+				<element name="ol" type="fb3b:LiHolderType"/>
+				<element name="ul" type="fb3b:LiHolderType"/>
 				<element name="code" type="fb3b:PHolderType"/>
 				<element name="blockquote" type="fb3b:PHolderType"/>
 			</choice>
 			<choice minOccurs="0" maxOccurs="unbounded">
 				<element name="p" type="fb3b:StyleType"/>
-				<element name="ol">
-					<complexType>
-						<complexContent>
-							<extension base="fb3b:LiHolderType">
-								<attribute name="id" type="ID" use="optional"/>
-							</extension>
-						</complexContent>
-					</complexType>
-				</element>
-				<element name="ul">
-					<complexType>
-						<complexContent>
-							<extension base="fb3b:LiHolderType">
-								<attribute name="id" type="ID" use="optional"/>
-							</extension>
-						</complexContent>
-					</complexType>
-				</element>
+				<element name="ol" type="fb3b:LiHolderType"/>
+				<element name="ul" type="fb3b:LiHolderType"/>
 				<element name="code" type="fb3b:PHolderType"/>
 				<element name="blockquote" type="fb3b:PHolderType"/>
 				<element name="br" type="fb3b:BRType"/>
@@ -455,6 +428,8 @@
 			<extension base="fb3b:TitledType">
 				<sequence maxOccurs="unbounded">
 					<element name="p" type="fb3b:StyleType"/>
+					<!--OB подписи в цитаты и прочее-->
+					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>
 				</sequence>
 			</extension>
 		</complexContent>

@@ -7,10 +7,11 @@
 		</xs:annotation>
 		<xs:simpleType>
 			<xs:restriction base="xs:token">
+				<!-- OB: исправлены описки в значениях -->
 				<xs:enumeration value="auto"/>
 				<xs:enumeration value="footnote"/>
-				<xs:enumeration value="endnone"/>
-				<xs:enumeration value="coment"/>
+				<xs:enumeration value="endnote"/>
+				<xs:enumeration value="comment"/>
 				<xs:enumeration value="other"/>
 			</xs:restriction>
 		</xs:simpleType>
