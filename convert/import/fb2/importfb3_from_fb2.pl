@@ -50,10 +50,10 @@ sub usage {
 ##################################################################
 
 my @TransformConfig = (
-  {stylesheet => "/fb2/body.xsl", output => "/fb3/body.xml"},
-  {stylesheet => "/fb2/description.xsl", output => "/fb3/description.xml"},
-  {stylesheet => "/fb2/body_rels.xsl", output => "/fb3/_rels/body.xml.rels"},
-  {stylesheet => "/fb2/core.xsl", output => "/fb3/meta/core.xml"}
+  {stylesheet => "/body.xsl", output => "/fb3/body.xml"},
+  {stylesheet => "/description.xsl", output => "/fb3/description.xml"},
+  {stylesheet => "/body_rels.xsl", output => "/fb3/_rels/body.xml.rels"},
+  {stylesheet => "/core.xsl", output => "/fb3/meta/core.xml"}
 );
 
 my $Parser = XML::LibXML->new;
