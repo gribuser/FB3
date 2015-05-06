@@ -4,10 +4,10 @@ use Getopt::Long;
 use File::Temp;
 use File::Copy;
 use File::Basename;
-use Archive::Zip qw( :ERROR_CODES :CONSTANTS );
 use XML::LibXML;
 use XML::LibXSLT;
 use MIME::Base64;
+use Cwd qw(cwd abs_path getcwd);
 
 #
 #   command line parser code
@@ -148,20 +148,17 @@ print "Reference files successfully created.\n" if $verbose;
 
 
 #zip
-my $Zip = Archive::Zip->new;
-$Zip->addTree( "$TmpDir/", '' );
-unless ( $Zip->writeToFileHandle( $TmpFB3 ) == AZ_OK ) {
-  die 'Write error';
-}
+my $TmpZipFN = $TmpFB3->filename . ".zip";
+ZipFolder ("$TmpDir/", $TmpZipFN);
 
 #validation
-unless (ValidateFB3( $TmpFB3->filename )){
+unless (ValidateFB3( $TmpZipFN )){
   die 'FB3 validate error';
 }
 print "FB3 file validated successfully.\n" if $verbose;
 
 #publish fb3
-move($TmpFB3->filename, $ARGV[1]) or die "The move operation failed: $!";
+move($TmpZipFN, $ARGV[1]) or die "The move operation failed: $!";
 print "FB3 file created successfully.\n" if $verbose;
 
 ##################################################################
@@ -169,5 +166,32 @@ print "FB3 file created successfully.\n" if $verbose;
 #FB3 validator
 sub ValidateFB3{
   my $FileName = shift;
-  return 1;
+
+	#validate zip
+  my $fn_abs = abs_path ("$FileName");
+	my $cmd="zip -T $fn_abs";
+	my $CmdResult=`$cmd`;
+	print $CmdResult if $verbose;
+	return 0 unless ($CmdResult =~ /OK/);
+
+  #validate OK
+	return 1;
+}
+
+sub ZipFolder{
+  my $SourceFileName=shift;
+	my $TargetFileName=shift;
+  my @first = @_;
+
+  open FH,">$TargetFileName";
+  close FH;
+  my $fn_abs = abs_path ("$TargetFileName");
+	unlink "$TargetFileName";
+
+  my $old_dir = cwd();
+  chdir "$SourceFileName";
+	my $cmd="zip -Xr9Dq $fn_abs ".join(' ',@first)." *";
+	my $CmdResult=`$cmd`;
+	warn $CmdResult if $CmdResult;
+  chdir $old_dir if $old_dir;
 }
