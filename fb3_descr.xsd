@@ -122,7 +122,7 @@
 						</simpleContent>
 					</complexType>
 				</element>
-				<element name="anotation" type="fb3d:AnnotationType" minOccurs="0">
+				<element name="annotation" type="fb3d:AnnotationType" minOccurs="0">
 					<annotation>
 						<documentation xml:lang="ru">Аннотация, будет использоваться в локальном каталоге, электронных библиотеках, etc.</documentation>
 					</annotation>
