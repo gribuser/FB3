@@ -71,6 +71,9 @@
 						<documentation xml:lang="ru">Информация о данном документе - когда и кем сделан, когда обновлен</documentation>
 					</annotation>
 					<complexType mixed="false">
+						<sequence>
+							<element name="isbn" type="fb3d:ISBNType" minOccurs="0" maxOccurs="unbounded"/>
+						</sequence>
 						<attribute name="created" type="dateTime" use="required"/>
 						<attribute name="updated" type="dateTime" use="required"/>
 						<attribute name="program-used" type="normalizedString" use="optional"/>
