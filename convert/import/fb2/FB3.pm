@@ -233,25 +233,25 @@ sub Validate {
 
   # Если такая часть есть - проверка XML валидности, соответствия схеме и content type
   
-  #if( @CorePropRelations ) {
-  #  my $CorePropPartName = FullNameFromRelative(
-  #    $CorePropRelations[0]->getAttribute('Target'), '/' );
-  #  my $CorePropMember = $MemberByNormalizedName{ $CorePropPartName };
-  #  my $CorePropSchema = XML::LibXML::Schema->new( location =>
-  #    "$XSD_DIR/opc-coreProperties.xsd" );
-  #  eval {
-  #    my $CorePropDoc = XML::LibXML->new()->parse_string( $CorePropMember->contents );
-  #    $CorePropSchema->validate( $CorePropDoc );
-  #  };
-  #  if( $@ ) {
-  #    return $CorePropPartName." is not a valid XML or is not valid against ".
-  #      "opc-coreProperties.xsd:\n$@";
-  #  }
-  #
-  #  unless( $CtByNormalizedName{ $CorePropPartName } eq CORE_PROPERTIES_CT ) {
-  #    return "Wrong content type for $CorePropPartName"
-  #  }
-  #}
+  if( @CorePropRelations ) {
+    my $CorePropPartName = FullNameFromRelative(
+      $CorePropRelations[0]->getAttribute('Target'), '/' );
+    my $CorePropMember = $MemberByNormalizedName{ $CorePropPartName };
+    my $CorePropSchema = XML::LibXML::Schema->new( location =>
+      "$XSD_DIR/opc-coreProperties.xsd" );
+    eval {
+      my $CorePropDoc = XML::LibXML->new()->parse_string( $CorePropMember->contents );
+      $CorePropSchema->validate( $CorePropDoc );
+    };
+    if( $@ ) {
+      return $CorePropPartName." is not a valid XML or is not valid against ".
+        "opc-coreProperties.xsd:\n$@";
+    }
+  
+    unless( $CtByNormalizedName{ $CorePropPartName } eq CORE_PROPERTIES_CT ) {
+      return "Wrong content type for $CorePropPartName"
+    }
+  }
 
   # В пакете должна быть как минимум одна часть, описывающая заголовок книги
 
@@ -263,60 +263,60 @@ sub Validate {
     return "FB3 description not found";
   }
 
-  #for my $DescrRelationNode ( @DescrRelationNodes ) {
-  #  
-  #  # Каждую часть с описанием проверяем на валидность и соответствие схеме
-  #
-  #  my $DescrPartName = FullNameFromRelative( $DescrRelationNode->getAttribute('Target'),
-  #    '/' );
-  #  my $DescrMember = $MemberByNormalizedName{ $DescrPartName };
-  #  my $DescrSchema = XML::LibXML::Schema->new( location =>
-  #    "$XSD_DIR/fb3_descr.xsd" );
-  #  my $DescrDoc;
-  #  eval {
-  #    $DescrDoc = XML::LibXML->new()->parse_string( $DescrMember->contents );
-  #    $DescrSchema->validate( $DescrDoc );
-  #  };
-  #  if( $@ ) {
-  #    return $DescrPartName." is not a valid XML or is not valid against ".
-  #      "fb3_descr.xsd:\n$@";
-  #  }
-  #
-  #  # Часть с описанием обязательно должна содержать в себе ссылку на тело книги
-  #
-  #  $DescrPartName =~ /^(.*)\/([^\/]*)$/;
-  #  my( $DescrDir, $DescrFileName ) = ( $1, $2 );
-  #  my $DescrRelsPartName = "$DescrDir/_rels/$DescrFileName.rels";
-  #  my $DescrRelsMember = $MemberByNormalizedName{ $DescrRelsPartName };
-  #  unless( $DescrRelsMember ) {
-  #    return "Can't find relationships for book description $DescrPartName ".
-  #      "(no $DescrRelsPartName)";
-  #  }
-  #  my $DescrRelsDoc = XML::LibXML->new()->parse_string( $DescrRelsMember->contents );
-  #  my $BodyRelation = $XPC->findvalue(
-  #    '/opcr:Relationships/opcr:Relationship[@Type="'.RELATION_TYPE_FB3_BODY.'"]/@Target',
-  #    $DescrRelsDoc,
-  #  ); 
-  #  unless( $BodyRelation ) {
-  #    return "Can't find body relationship for $DescrPartName";
-  #  }
-  #  my $BodyPartName = FullNameFromRelative( $BodyRelation, $DescrDir );
-  #
-  #  # Найденную часть с телом книги также проверяем на валидность и соответствие схеме
-  #
-  #  my $BodyMember = $MemberByNormalizedName{ $BodyPartName };
-  #  my $BodySchema = XML::LibXML::Schema->new( location =>
-  #    "$XSD_DIR/fb3_body.xsd" );
-  #  my $BodyDoc;
-  #  eval {
-  #    $BodyDoc = XML::LibXML->new()->parse_string( $BodyMember->contents );
-  #    $BodySchema->validate( $BodyDoc );
-  #  };
-  #  if( $@ ) {
-  #    return $BodyPartName." is not a valid XML or is not valid against ".
-  #      "fb3_body.xsd:\n$@";
-  #  }
-  #}
+  for my $DescrRelationNode ( @DescrRelationNodes ) {
+    
+    # Каждую часть с описанием проверяем на валидность и соответствие схеме
+  
+    my $DescrPartName = FullNameFromRelative( $DescrRelationNode->getAttribute('Target'),
+      '/' );
+    my $DescrMember = $MemberByNormalizedName{ $DescrPartName };
+    my $DescrSchema = XML::LibXML::Schema->new( location =>
+      "$XSD_DIR/fb3_descr.xsd" );
+    my $DescrDoc;
+    eval {
+      $DescrDoc = XML::LibXML->new()->parse_string( $DescrMember->contents );
+      $DescrSchema->validate( $DescrDoc );
+    };
+    if( $@ ) {
+      return $DescrPartName." is not a valid XML or is not valid against ".
+        "fb3_descr.xsd:\n$@";
+    }
+  
+    # Часть с описанием обязательно должна содержать в себе ссылку на тело книги
+  
+    $DescrPartName =~ /^(.*)\/([^\/]*)$/;
+    my( $DescrDir, $DescrFileName ) = ( $1, $2 );
+    my $DescrRelsPartName = "$DescrDir/_rels/$DescrFileName.rels";
+    my $DescrRelsMember = $MemberByNormalizedName{ $DescrRelsPartName };
+    unless( $DescrRelsMember ) {
+      return "Can't find relationships for book description $DescrPartName ".
+        "(no $DescrRelsPartName)";
+    }
+    my $DescrRelsDoc = XML::LibXML->new()->parse_string( $DescrRelsMember->contents );
+    my $BodyRelation = $XPC->findvalue(
+      '/opcr:Relationships/opcr:Relationship[@Type="'.RELATION_TYPE_FB3_BODY.'"]/@Target',
+      $DescrRelsDoc,
+    ); 
+    unless( $BodyRelation ) {
+      return "Can't find body relationship for $DescrPartName";
+    }
+    my $BodyPartName = FullNameFromRelative( $BodyRelation, $DescrDir );
+  
+    # Найденную часть с телом книги также проверяем на валидность и соответствие схеме
+  
+    my $BodyMember = $MemberByNormalizedName{ $BodyPartName };
+    my $BodySchema = XML::LibXML::Schema->new( location =>
+      "$XSD_DIR/fb3_body.xsd" );
+    my $BodyDoc;
+    eval {
+      $BodyDoc = XML::LibXML->new()->parse_string( $BodyMember->contents );
+      $BodySchema->validate( $BodyDoc );
+    };
+    if( $@ ) {
+      return $BodyPartName." is not a valid XML or is not valid against ".
+        "fb3_body.xsd:\n$@";
+    }
+  }
 
   # TODO куча требований к именованию частей:
   # A part IRI shall not be empty. [M1.1]
