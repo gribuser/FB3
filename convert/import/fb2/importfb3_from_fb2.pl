@@ -9,6 +9,15 @@ use XML::LibXSLT;
 use MIME::Base64;
 use Cwd qw(cwd abs_path getcwd);
 
+BEGIN{
+  my $ScriptPath=$0;
+  $ScriptPath=~s/[\/\\][^\/\\]+$//;
+	push(@INC, $ScriptPath);
+};
+
+use FB3;
+$XPortal::FB3::XSD_DIR = dirname(__FILE__) . '/xsd';
+
 #
 #   command line parser code
 #
@@ -30,13 +39,13 @@ sub usage {
   if (defined $message && length $message) {
     $message .= "\n" unless $message =~ /\n$/;
   }
-  
+
   my $command = $0;
   $command =~ s#^.*/##;
-   
+
   print STDERR (
     $message,
-    qq{usage: $command [options] <input.fb2> <output.fb3> 
+    qq{usage: $command [options] <input.fb2> <output.fb3>
        --help -h       => this help
        --verbose -v    => debug messages}
   );
@@ -167,12 +176,17 @@ print "FB3 file created successfully.\n" if $verbose;
 sub ValidateFB3{
   my $FileName = shift;
 
-	#validate zip
+	#validate just zip
   my $fn_abs = abs_path ("$FileName");
 	my $cmd="zip -T $fn_abs";
 	my $CmdResult=`$cmd`;
 	print $CmdResult if $verbose;
 	return 0 unless ($CmdResult =~ /OK/);
+
+	#check all
+	my $Error = XPortal::FB3::Validate( $FileName );
+	print $Error if $Error && $verbose;
+	return 0 if $Error;
 
   #validate OK
 	return 1;
