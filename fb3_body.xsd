@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by TeaM DJiNN (TeaM DJiNN) -->
 <!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by GribUser (Shukovsky) -->
-<schema targetNamespace="http://www.fictionbook.org/FictionBook3/body" xmlns:fb3b="http://www.fictionbook.org/FictionBook3/body" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<schema xmlns:fb3b="http://www.fictionbook.org/FictionBook3/body" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" targetNamespace="http://www.fictionbook.org/FictionBook3/body" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- See license.txt for licensing information -->
 	<include schemaLocation="fb3_general.xsd"/>
 	<import namespace="http://www.w3.org/1999/xlink" schemaLocation="fb3_links.xsd"/>
@@ -27,9 +28,9 @@
 							</complexType>
 						</element>
 					</sequence>
-					<!-- OB: тип изменен с ID на  fb3b:UUIDType -->
 					<attribute name="id" type="fb3b:UUIDType" use="required"/>
 				</extension>
+				<!-- OB: тип изменен с ID на  fb3b:UUIDType -->
 			</complexContent>
 		</complexType>
 		<unique name="SectionID">
@@ -123,18 +124,14 @@
 								<element name="ol">
 									<complexType>
 										<complexContent>
-											<extension base="fb3b:LiHolderType">
-												<attribute name="id" type="ID" use="optional"/>
-											</extension>
+											<extension base="fb3b:LiHolderType"/>
 										</complexContent>
 									</complexType>
 								</element>
 								<element name="ul">
 									<complexType>
 										<complexContent>
-											<extension base="fb3b:LiHolderType">
-												<attribute name="id" type="ID" use="optional"/>
-											</extension>
+											<extension base="fb3b:LiHolderType"/>
 										</complexContent>
 									</complexType>
 								</element>
@@ -356,7 +353,6 @@
 				</complexType>
 			</element>
 			<element name="a" type="fb3b:LinkType"/>
-			<element name="note" type="fb3b:NoteType"/>
 			<element name="img" type="fb3b:ImgType"/>
 			<element name="paper-page-break" type="fb3b:PaperPageBreakType"/>
 		</choice>
@@ -451,7 +447,7 @@
 						<element name="ul" type="fb3b:LiHolderType"/>
 					</choice>
 				</sequence>
-				<attribute name="id" type="ID" use="prohibited"/>
+				<attribute name="id" type="ID" use="optional"/>
 			</extension>
 		</complexContent>
 	</complexType>
@@ -479,18 +475,14 @@
 				<element name="ol">
 					<complexType>
 						<complexContent>
-							<extension base="fb3b:LiHolderType">
-								<attribute name="id" type="ID" use="optional"/>
-							</extension>
+							<extension base="fb3b:LiHolderType"/>
 						</complexContent>
 					</complexType>
 				</element>
 				<element name="ul">
 					<complexType>
 						<complexContent>
-							<extension base="fb3b:LiHolderType">
-								<attribute name="id" type="ID" use="optional"/>
-							</extension>
+							<extension base="fb3b:LiHolderType"/>
 						</complexContent>
 					</complexType>
 				</element>
