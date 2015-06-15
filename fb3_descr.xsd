@@ -518,6 +518,17 @@
 				<documentation xml:lang="ru">Тип связи - имеем мы дело с автором, переводчиком, иллюстратором или там еще с кем</documentation>
 			</annotation>
 		</attribute>
+		<attribute name="percent" use="optional">
+			<annotation>
+				<documentation xml:lang="ru">Процент владения, задаётся для субъектов, которые являются копирайтерами</documentation>
+			</annotation>
+      <simpleType>
+        <restriction base="float">
+          <minInclusive value="0"/>
+          <maxInclusive value="100"/>
+        </restriction>
+      </simpleType>
+		</attribute>
 	</complexType>
 	<complexType name="ObjectRelationType" mixed="false">
 		<annotation>
