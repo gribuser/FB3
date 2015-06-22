@@ -328,7 +328,7 @@
 					<documentation>Подстрочный текст</documentation>
 				</annotation>
 			</element>
-			<element name="code" type="fb3b:StyleType">
+			<element name="pre" type="fb3b:StyleType">
 				<annotation>
 					<documentation>Моноширный шрифт, возможно выделение цветом и/или подложкой</documentation>
 				</annotation>
