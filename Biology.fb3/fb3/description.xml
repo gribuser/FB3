@@ -153,9 +153,9 @@
 		<target-audience age-min="10" age-max="99" education="none">
 			Для общеобразовательных учреждений
 		</target-audience>
-<!--		<coverage country="Россия" place="Бородино" date="1802-01-01" date-from="1802-01-01" date-to="1824-01-01" age="XIX">
+<!--		<setting country="Россия" place="Бородино" date="1802-01-01" date-from="1802-01-01" date-to="1824-01-01" age="XIX">
 			Россия начала 19-го века
-		</coverage>-->
+		</setting>-->
 		<udk>373.167.1:58</udk>
 		<bbk>28.5я72</bbk>
 	</fb3-classification>

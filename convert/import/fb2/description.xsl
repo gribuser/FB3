@@ -90,7 +90,7 @@
             <target-audience age-min="9" age-max="99" education="high">
                 Для широкого круга читателей
             </target-audience>
-            <coverage country="" place="" date="" date-from="" date-to="" age=""/>
+            <setting country="" place="" date="" date-from="" date-to="" age=""/>
             <udk/>
             <bbk/>
         </classification>

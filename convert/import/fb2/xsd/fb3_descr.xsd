@@ -308,7 +308,7 @@
 					</attribute>
 				</complexType>
 			</element>
-			<element name="coverage" minOccurs="0">
+			<element name="setting" minOccurs="0">
 				<annotation>
 					<documentation xml:lang="ru">Для книг с сюжетом, внятно привязываемым к месту и/или времени, можно описать  временные рамки, в которые укладывается повествование, а равно и географические</documentation>
 				</annotation>
