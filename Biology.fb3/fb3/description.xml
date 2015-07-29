@@ -147,9 +147,8 @@
 	</fb3-relations>
 	<fb3-classification>
 		<class contents="part">manual</class>
-		<subject>sci_biology</subject>
-		<subject>child_education</subject>
-		<custom-subject>Учебник</custom-subject>
+		<subject>Учебная литература</subject>
+		<subject>Биология</subject>
 		<target-audience age-min="10" age-max="99" education="none">
 			Для общеобразовательных учреждений
 		</target-audience>
