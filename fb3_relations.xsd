@@ -273,6 +273,11 @@
 					<documentation xml:lang="ru">Приквел</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="reissue">
+				<annotation>
+					<documentation xml:lang="ru">Переиздание</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="undef">
 				<annotation>
 					<documentation xml:lang="ru">Не определено</documentation>
