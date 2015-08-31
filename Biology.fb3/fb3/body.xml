@@ -35,16 +35,6 @@
 			<p>Введение.</p>
 			<p>Биология – наука о живой природе.</p>
 		</title>
-		<fb3d:fb3-relations>
-			<fb3d:subject id="9418f95c-1430-102c-a33d-9c7b957aa4c4" link="editor">
-				<fb3d:title>
-					<fb3d:main>Пупкин В.В</fb3d:main>
-				</fb3d:title>
-				<fb3d:first-name>Василий</fb3d:first-name>
-				<fb3d:middle-name>Василиевич</fb3d:middle-name>
-				<fb3d:last-name>Пупкин</fb3d:last-name>
-			</fb3d:subject>
-		</fb3d:fb3-relations>
 		<p><strong>Что изучает биология.</strong> Вы приступаете к изучению
 		<em>биологии</em> (от греческих слов «биос» – жизнь и «логос» – учение).</p>
 		<p>Биология - наука о жизни, о живых организмах, обитающих на Земле <a l:href="#bioscience.svg">[рис. 1]</a>. Живые
