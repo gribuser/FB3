@@ -45,7 +45,7 @@
 					</annotation>
 					<complexType mixed="false">
 						<sequence>
-							<element name="lang" type="language"/>
+							<element name="lang" type="language" minOccurs="0"/>
 							<element name="date" minOccurs="0">
 								<complexType>
 									<simpleContent>
@@ -204,7 +204,7 @@
 			<documentation xml:lang="ru">Классифицирует произведение со всевозможных углов зрения </documentation>
 		</annotation>
 		<sequence>
-			<element name="class">
+			<element name="class" minOccurs="0">
 				<annotation>
 					<documentation xml:lang="ru">Литературная форма - роман/рассказ/стихи и т.п.</documentation>
 				</annotation>
@@ -316,7 +316,7 @@
 				</annotation>
 				<simpleType>
 					<restriction base="token">
-						<pattern value="\d+(\.\d+)+(:\d+)?"/>
+						<pattern value="[\d\. \*\(\)\[\]\+:«»'/A-Яа-я]+"/>
 					</restriction>
 				</simpleType>
 			</element>
@@ -326,7 +326,7 @@
 				</annotation>
 				<simpleType>
 					<restriction base="token">
-						<pattern value="\d+([\.а-я]\d+)+"/>
+						<pattern value="[\(\)\d\.\-A-Яа-я/\+ ]+"/>
 					</restriction>
 				</simpleType>
 			</element>
