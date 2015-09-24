@@ -12,27 +12,31 @@ use Cwd qw(cwd abs_path getcwd);
 BEGIN{
   my $ScriptPath=$0;
   $ScriptPath=~s/[\/\\][^\/\\]+$//;
-	push(@INC, $ScriptPath);
+  push(@INC, $ScriptPath);
 };
 
-use FB3;
-$XPortal::FB3::XSD_DIR = dirname(__FILE__) . '/xsd';
+use FB3::Validator;
 
 #
 #   command line parser code
 #
 
-my ($help, $verbose, $script_dir);
+my ($help, $verbose, $script_dir, $force_create_fb3, $print_validation_errors, $xsd_dir);
 $script_dir = dirname(__FILE__);
 
 GetOptions(
-  'help|h'        =>  \$help,
-  'verbose|v'     =>  \$verbose
+	'help|h'											=>	\$help,
+	'verbose|v'										=>	\$verbose,
+	'force|f'											=>	\$force_create_fb3,
+	'print-validation-errors|p'		=>	\$print_validation_errors,
+	'xsd=s'												=>	\$xsd_dir
 ) or usage ("Incorrect usage!");
 
 usage() if (defined $help);
 usage() if (@ARGV < 2);
 usage(qq{File "$ARGV[0]" doesn't exist or empty!}) unless ( -e $ARGV[0] );
+
+$xsd_dir = dirname(__FILE__) . '/xsd' unless $xsd_dir;
 
 sub usage {
   my $message = $_[0];
@@ -46,8 +50,11 @@ sub usage {
   print STDERR (
     $message,
     qq{usage: $command [options] <input.fb2> <output.fb3>
-       --help -h       => this help
-       --verbose -v    => debug messages}
+       --help -h                    => this help
+       --verbose -v                 => debug messages
+       --force -f                   => force create fb3 file (ignore validation result)
+       --print-validation-error -p  => print validation errors
+       --xsd="path"                 => path to directory with xsd files}
   );
 
   die("\n")
@@ -73,7 +80,7 @@ $XPC->registerNs('fb', 'http://www.gribuser.ru/xml/fictionbook/2.0');
 #prepare
 my $TmpDir = File::Temp->newdir;
 my $TmpFB3 = File::Temp->new;
-foreach ("/fb3", "/fb3/img", "/fb3/img", "/fb3/meta", "/fb3/_rels", "/_rels"){
+foreach ("/fb3", "/fb3/img", "/fb3/meta", "/fb3/_rels", "/_rels"){
   mkdir "$TmpDir$_";
 }
 print "Directory structure is created successfully.\n" if $verbose;
@@ -161,10 +168,12 @@ my $TmpZipFN = $TmpFB3->filename . ".zip";
 ZipFolder ("$TmpDir/", $TmpZipFN);
 
 #validation
-unless (ValidateFB3( $TmpZipFN )){
-  die 'FB3 validate error';
+unless ( ValidateFB3( $TmpZipFN ) ){
+	die 'FB3 validate error' unless $force_create_fb3;
+	print "FB3 file validated with errors.\n" if $verbose;
+} else {
+	print "FB3 file validated successfully.\n" if $verbose;
 }
-print "FB3 file validated successfully.\n" if $verbose;
 
 #publish fb3
 move($TmpZipFN, $ARGV[1]) or die "The move operation failed: $!";
@@ -174,21 +183,22 @@ print "FB3 file created successfully.\n" if $verbose;
 
 #FB3 validator
 sub ValidateFB3{
-  my $FileName = shift;
+	my $FileName = shift;
 
 	#validate just zip
-  my $fn_abs = abs_path ("$FileName");
+	my $fn_abs = abs_path ("$FileName");
 	my $cmd="zip -T $fn_abs";
 	my $CmdResult=`$cmd`;
 	print $CmdResult if $verbose;
 	return 0 unless ($CmdResult =~ /OK/);
 
 	#check all
-	my $Error = XPortal::FB3::Validate( $FileName );
-	print $Error if $Error && $verbose;
-	return 0 if $Error;
-
-  #validate OK
+	my $Validator = FB3::Validator->new( $xsd_dir );
+	my $ValidationError = $Validator->Validate( $FileName );
+	print "$ARGV[0] to FB3 conversion is not valid: $ValidationError" if $ValidationError && $print_validation_errors;
+	return 0 if $ValidationError;
+	
+	#validate OK
 	return 1;
 }
 

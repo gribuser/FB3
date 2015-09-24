@@ -3,7 +3,6 @@
 <!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by GribUser (Shukovsky) -->
 <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" targetNamespace="http://www.fictionbook.org/FictionBook3/description" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- See license.txt for licensing information -->
-	<include schemaLocation="fb3_descr_subjects.xsd"/>
 	<include schemaLocation="fb3_descr_classes.xsd"/>
 	<include schemaLocation="fb3_relations.xsd"/>
 	<include schemaLocation="fb3_general.xsd"/>
@@ -83,11 +82,6 @@
 					</complexType>
 				</element>
 				<element name="history" type="fb3d:AnnotationType" minOccurs="0"/>
-				<element name="keywords" type="string" minOccurs="0">
-					<annotation>
-						<documentation xml:lang="ru">Ключевые слова для не-полнотекстового поиска по библиотеке</documentation>
-					</annotation>
-				</element>
 				<element name="publish-info" minOccurs="0" maxOccurs="unbounded">
 					<annotation>
 						<documentation xml:lang="ru">Информация о бумажной публикации, соответствующей этому документа</documentation>
@@ -230,14 +224,9 @@
 					</simpleContent>
 				</complexType>
 			</element>
-			<element name="subject" type="fb3d:SubjectType" maxOccurs="unbounded">
+			<element name="subject" maxOccurs="unbounded">
 				<annotation>
 					<documentation xml:lang="ru">Жанр, описывает смысловое содержание произведения - фантастика, публицистика, детектив и т.п.</documentation>
-				</annotation>
-			</element>
-			<element name="custom-subject" minOccurs="0" maxOccurs="unbounded">
-				<annotation>
-					<documentation xml:lang="ru">Можно добавить произвольный жанр произведению. Всякие бездари очень любят создавать новые жанры, а иногда даже и для приличных книг требуется</documentation>
 				</annotation>
 				<simpleType>
 					<restriction base="token">
@@ -517,6 +506,17 @@
 			<annotation>
 				<documentation xml:lang="ru">Тип связи - имеем мы дело с автором, переводчиком, иллюстратором или там еще с кем</documentation>
 			</annotation>
+		</attribute>
+		<attribute name="percent" use="optional">
+			<annotation>
+				<documentation xml:lang="ru">Процент владения, задаётся для субъектов, которые являются копирайтерами</documentation>
+			</annotation>
+      <simpleType>
+        <restriction base="float">
+          <minInclusive value="0"/>
+          <maxInclusive value="100"/>
+        </restriction>
+      </simpleType>
 		</attribute>
 	</complexType>
 	<complexType name="ObjectRelationType" mixed="false">

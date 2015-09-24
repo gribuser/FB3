@@ -11,11 +11,6 @@
 					<documentation xml:lang="ru">Автор</documentation>
 				</annotation>
 			</enumeration>
-			<enumeration value="agent">
-				<annotation>
-					<documentation xml:lang="ru">Агент</documentation>
-				</annotation>
-			</enumeration>
 			<enumeration value="translator">
 				<annotation>
 					<documentation xml:lang="ru">Переводчик</documentation>
@@ -156,6 +151,46 @@
 					<documentation xml:lang="ru">Пересказ</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="performer">
+				<annotation>
+					<documentation xml:lang="ru">Исполнитель</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="maker">
+				<annotation>
+					<documentation xml:lang="ru">Производитель</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="actor">
+				<annotation>
+					<documentation xml:lang="ru">Актер</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="director">
+				<annotation>
+					<documentation xml:lang="ru">Режиссер</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="producer">
+				<annotation>
+					<documentation xml:lang="ru">Продюсер</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="composer">
+				<annotation>
+					<documentation xml:lang="ru">Композитор</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="sound_engineer">
+				<annotation>
+					<documentation xml:lang="ru">Звукорежиссер</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="screenwriter">
+				<annotation>
+					<documentation xml:lang="ru">Сценарист</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="other">
 				<annotation>
 					<documentation xml:lang="ru">Прочее</documentation>
@@ -236,6 +271,11 @@
 			<enumeration value="prequel">
 				<annotation>
 					<documentation xml:lang="ru">Приквел</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="reissue">
+				<annotation>
+					<documentation xml:lang="ru">Переиздание</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="undef">
