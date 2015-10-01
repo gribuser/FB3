@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by TeaM DJiNN (TeaM DJiNN) -->
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by user222 (user222) -->
 <!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by GribUser (Shukovsky) -->
 <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" targetNamespace="http://www.fictionbook.org/FictionBook3/description" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- See license.txt for licensing information -->
@@ -84,7 +84,7 @@
 				<element name="history" type="fb3d:AnnotationType" minOccurs="0"/>
 				<element name="publish-info" minOccurs="0" maxOccurs="unbounded">
 					<annotation>
-						<documentation xml:lang="ru">Информация о бумажной публикации, соответствующей этому документа</documentation>
+						<documentation xml:lang="ru">Информация о бумажной публикации, соответствующей этому документу</documentation>
 					</annotation>
 					<complexType mixed="false">
 						<sequence>
@@ -98,6 +98,11 @@
 						<attribute name="publisher" type="token" use="optional"/>
 						<attribute name="city" type="token" use="optional"/>
 						<attribute name="year" type="gYear" use="optional"/>
+						<attribute name="biblio-description" type="token" use="optional">
+							<annotation>
+								<documentation>Библиографическое описание книги</documentation>
+							</annotation>
+						</attribute>
 						<!--attribute name="isbn" type="fb3d:ISBNType" use="optional"/-->
 					</complexType>
 				</element>
@@ -511,12 +516,12 @@
 			<annotation>
 				<documentation xml:lang="ru">Процент владения, задаётся для субъектов, которые являются копирайтерами</documentation>
 			</annotation>
-      <simpleType>
-        <restriction base="float">
-          <minInclusive value="0"/>
-          <maxInclusive value="100"/>
-        </restriction>
-      </simpleType>
+			<simpleType>
+				<restriction base="float">
+					<minInclusive value="0"/>
+					<maxInclusive value="100"/>
+				</restriction>
+			</simpleType>
 		</attribute>
 	</complexType>
 	<complexType name="ObjectRelationType" mixed="false">
