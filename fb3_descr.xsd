@@ -62,6 +62,8 @@
 									</restriction>
 								</simpleType>
 							</element>
+							<element name="date-translation" type="date" minOccurs="0"/>
+							<element name="date-public" type="date" minOccurs="0"/>
 						</sequence>
 					</complexType>
 				</element>
