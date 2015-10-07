@@ -131,6 +131,11 @@
 						<documentation xml:lang="ru">Аннотация, будет использоваться в локальном каталоге, электронных библиотеках, etc.</documentation>
 					</annotation>
 				</element>
+				<element name="preamble" type="fb3d:AnnotationType" minOccurs="0">
+					<annotation>
+						<documentation xml:lang="ru">Преамбула, для всякой информации типа “данная книга издана с высочайшего благословения пня и рощи, копирование запрещено”.</documentation>
+					</annotation>
+				</element>
 			</sequence>
 			<attribute name="id" type="fb3d:UUIDType" use="required">
 				<annotation>
