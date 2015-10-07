@@ -67,6 +67,18 @@
 						</sequence>
 					</complexType>
 				</element>
+				<element name="translated" minOccurs="0">
+					<annotation>
+						<documentation xml:lang="ru">Информация о том, когда произведение было переведено</documentation>
+					</annotation>
+					<complexType>
+						<simpleContent>
+							<extension base="string">
+								<attribute name="value" type="date" use="optional"/>
+							</extension>
+						</simpleContent>
+					</complexType>
+				</element>
 				<element name="document-info">
 					<annotation>
 						<documentation xml:lang="ru">Информация о данном документе - когда и кем сделан, когда обновлен</documentation>
@@ -328,7 +340,7 @@
 				</annotation>
 				<simpleType>
 					<restriction base="token">
-						<pattern value="[\d\. \*\(\)\[\]\+:«»'/A-Яа-я]+"/>
+						<pattern value="[\d\. \-\*\(\)\[\]\+:«»'/A-Яа-я]+"/>
 					</restriction>
 				</simpleType>
 			</element>
@@ -338,7 +350,7 @@
 				</annotation>
 				<simpleType>
 					<restriction base="token">
-						<pattern value="[\(\)\d\.\-A-Яа-я/\+ ]+"/>
+						<pattern value="[\(\)=\d\.\-A-Яа-я/\+ ]+"/>
 					</restriction>
 				</simpleType>
 			</element>
