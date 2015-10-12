@@ -102,6 +102,16 @@
 					<complexType mixed="false">
 						<sequence>
 							<element name="isbn" type="fb3d:ISBNType" minOccurs="0" maxOccurs="unbounded"/>
+							<element name="sequence" minOccurs="0" maxOccurs="unbounded">
+								<annotation>
+									<documentation xml:lang="ru">Серия.</documentation>
+								</annotation>
+								<simpleType>
+									<restriction base="string">
+										<minLength value="1"/>
+									</restriction>
+								</simpleType>
+							</element>
 						</sequence>
 						<attribute name="title" type="token" use="required">
 							<annotation>
