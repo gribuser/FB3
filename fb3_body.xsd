@@ -66,9 +66,18 @@
 					<documentation>Эпиграф, у которого, в свою очередь, может быть подпись - дата, имя автора  эпиграфа и прочее</documentation>
 				</annotation>
 				<complexType>
-					<complexContent>
-						<extension base="fb3b:SimpleTextType"/>
-					</complexContent>
+          <sequence>
+            <choice>
+              <element name="poem" type="fb3b:PoemType"/>
+              <element name="p" type="fb3b:StyleType"/>
+            </choice>
+            <choice minOccurs="0" maxOccurs="unbounded">
+              <element name="poem" type="fb3b:PoemType"/>
+              <element name="p" type="fb3b:StyleType"/>
+              <element name="br" type="fb3b:BRType"/>
+            </choice>
+            <element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>
+          </sequence>
 				</complexType>
 			</element>
 		</sequence>
@@ -173,7 +182,7 @@
 	</complexType>
 	<complexType name="DivBlockType">
 		<annotation>
-			<documentation>Выделенный блок текста. Весь блок можно нестандартно разместить и/или выделенить</documentation>
+			<documentation>Выделенный блок текста. Весь блок можно нестандартно разместить и/или выделить</documentation>
 		</annotation>
 		<sequence>
 			<element name="title" type="fb3b:SimpleTextType" minOccurs="0"/>
