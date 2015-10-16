@@ -468,6 +468,7 @@
 			<extension base="fb3b:TitledType">
 				<sequence>
 					<element name="stanza" type="fb3b:PHolderType" maxOccurs="unbounded"/>
+					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>
 				</sequence>
 				<attribute name="id" type="ID" use="optional"/>
 			</extension>
