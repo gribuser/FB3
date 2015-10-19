@@ -66,18 +66,18 @@
 					<documentation>Эпиграф, у которого, в свою очередь, может быть подпись - дата, имя автора  эпиграфа и прочее</documentation>
 				</annotation>
 				<complexType>
-          <sequence>
-            <choice>
-              <element name="poem" type="fb3b:PoemType"/>
-              <element name="p" type="fb3b:StyleType"/>
-            </choice>
-            <choice minOccurs="0" maxOccurs="unbounded">
-              <element name="poem" type="fb3b:PoemType"/>
-              <element name="p" type="fb3b:StyleType"/>
-              <element name="br" type="fb3b:BRType"/>
-            </choice>
-            <element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>
-          </sequence>
+					<sequence>
+						<choice>
+							<element name="poem" type="fb3b:PoemType"/>
+							<element name="p" type="fb3b:StyleType"/>
+						</choice>
+						<choice minOccurs="0" maxOccurs="unbounded">
+							<element name="poem" type="fb3b:PoemType"/>
+							<element name="p" type="fb3b:StyleType"/>
+							<element name="br" type="fb3b:BRType"/>
+						</choice>
+						<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>
+					</sequence>
 				</complexType>
 			</element>
 		</sequence>
@@ -361,6 +361,7 @@
 					</complexContent>
 				</complexType>
 			</element>
+			<element name="note" type="fb3b:NoteType"/>
 			<element name="a" type="fb3b:LinkType"/>
 			<element name="img" type="fb3b:ImgType"/>
 			<element name="paper-page-break" type="fb3b:PaperPageBreakType"/>
