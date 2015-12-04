@@ -25,21 +25,21 @@
         <cp:coreProperties>
             <dc:title><xsl:variable name="title" select="$description/fb:title-info/fb:book-title/text()"/></dc:title>
             <dc:subject><xsl:apply-templates select="$description/fb:title-info/fb:annotation/*"/></dc:subject>
-            <dc:created>
-                <xsl:call-template name="date-format">
-                    <xsl:with-param name="date">
-                        <xsl:value-of select="$docinfo/fb:date/@value"/>
-                    </xsl:with-param>
-                </xsl:call-template>
-            </dc:created>
             <dc:creator>
                 <xsl:value-of select="normalize-space(concat($docinfo/fb:author/fb:first-name/text(), ' ', $docinfo/fb:author/fb:last-name/text()))"/>
             </dc:creator>
             <dc:description><xsl:apply-templates select="$description/fb:title-info/fb:annotation/*"/></dc:description>
             <cp:keywords>XML, FictionBook, eBook, OPC</cp:keywords>
             <cp:revision>1.00</cp:revision>
-            <dcterms:created xsi:type="dcterms:W3CDTF">2007-01-15T23:24:00Z</dcterms:created>
-            <dcterms:modified xsi:type="dcterms:W3CDTF">2007-01-25T09:03:00Z</dcterms:modified>
+            <xsl:if test="$docinfo/fb:date/@value">
+                <dcterms:created xsi:type="dcterms:W3CDTF">
+                    <xsl:call-template name="date-format">
+                        <xsl:with-param name="date">
+                            <xsl:value-of select="$docinfo/fb:date/@value"/>
+                        </xsl:with-param>
+                    </xsl:call-template>
+                </dcterms:created>
+            </xsl:if>
             <cp:contentStatus>Draft</cp:contentStatus>
             <cp:category>
                 <xsl:for-each select="$description/fb:title-info/fb:genre">
