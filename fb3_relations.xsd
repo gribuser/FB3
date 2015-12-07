@@ -33,7 +33,7 @@
 			</enumeration>
 			<enumeration value="publisher">
 				<annotation>
-					<documentation xml:lang="ru">Публикатор</documentation>
+					<documentation xml:lang="ru">Издатель</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="maker-up">
