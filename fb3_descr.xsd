@@ -86,6 +86,33 @@
 						</simpleContent>
 					</complexType>
 				</element>
+				<element name="copyrights" minOccurs="0">
+					<complexType>
+						<sequence>
+							<element name="copyright-owner" maxOccurs="unbounded">
+								<complexType mixed="false">
+									<attribute name="title" use="required">
+										<simpleType>
+											<restriction base="normalizedString">
+												<minLength value="1"/>
+											</restriction>
+										</simpleType>
+									</attribute>
+									<attribute name="uuid" type="fb3d:UUIDType"/>
+									<attribute name="url" type="anyURI"/>
+									<attribute name="percent">
+										<simpleType>
+											<restriction base="float">
+												<minInclusive value="0"/>
+												<maxInclusive value="100"/>
+											</restriction>
+										</simpleType>
+									</attribute>
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
 				<element name="document-info">
 					<annotation>
 						<documentation xml:lang="ru">Информация о данном документе - когда и кем сделан, когда обновлен</documentation>
