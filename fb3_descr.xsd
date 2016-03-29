@@ -130,7 +130,7 @@
 					</complexType>
 				</element>
 				<element name="history" type="fb3d:AnnotationType" minOccurs="0"/>
-				<element name="publish-info" minOccurs="0" maxOccurs="unbounded">
+				<element name="paper-publish-info" minOccurs="0" maxOccurs="unbounded">
 					<annotation>
 						<documentation xml:lang="ru">Информация о бумажной публикации, соответствующей этому документу</documentation>
 					</annotation>
@@ -147,6 +147,11 @@
 									</restriction>
 								</simpleType>
 							</element>
+							<element name="biblio-description" type="fb3d:AnnotationType" minOccurs="0">
+								<annotation>
+									<documentation xml:lang="ru">Библиографическое описание</documentation>
+								</annotation>
+							</element>
 						</sequence>
 						<attribute name="title" type="token" use="required">
 							<annotation>
@@ -156,11 +161,6 @@
 						<attribute name="publisher" type="token" use="optional"/>
 						<attribute name="city" type="token" use="optional"/>
 						<attribute name="year" type="gYear" use="optional"/>
-						<attribute name="biblio-description" type="token" use="optional">
-							<annotation>
-								<documentation>Библиографическое описание книги</documentation>
-							</annotation>
-						</attribute>
 						<!--attribute name="isbn" type="fb3d:ISBNType" use="optional"/-->
 					</complexType>
 				</element>
