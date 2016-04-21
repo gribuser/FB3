@@ -24,7 +24,9 @@ use FB3::Validator;
 #   command line parser code
 #
 
-my ($help, $verbose, $script_dir, $force_create_fb3, $print_validation_errors, $xsd_dir);
+my ($help, $verbose, $script_dir, $force_create_fb3, $print_validation_errors, $xsd_dir,
+	$CustomMetaPath);
+
 $script_dir = dirname(__FILE__);
 
 GetOptions(
@@ -32,7 +34,8 @@ GetOptions(
 	'verbose|v'										=>	\$verbose,
 	'force|f'											=>	\$force_create_fb3,
 	'print-validation-errors|p'		=>	\$print_validation_errors,
-	'xsd=s'												=>	\$xsd_dir
+	'xsd=s'												=>	\$xsd_dir,
+	'meta=s'											=>	\$CustomMetaPath,
 ) or usage ("Incorrect usage!");
 
 usage() if (defined $help);
@@ -56,7 +59,8 @@ sub usage {
        --verbose -v                 => debug messages
        --force -f                   => force create fb3 file (ignore validation result)
        --print-validation-error -p  => print validation errors
-       --xsd="path"                 => path to directory with FB3 xsd files (see https://github.com/gribuser/FB3)}
+       --xsd="path"                 => path to directory with FB3 xsd files (see https://github.com/gribuser/FB3)
+       --meta="path"                => path to custom FB3 meta file (otherwise it would be generated from FB2)}
   );
 
   die("\n")
@@ -69,10 +73,15 @@ sub usage {
 
 my @TransformConfig = (
   {stylesheet => "/body.xsl", output => "/fb3/body.xml"},
-  {stylesheet => "/description.xsl", output => "/fb3/description.xml"},
   {stylesheet => "/body_rels.xsl", output => "/fb3/_rels/body.xml.rels"},
   {stylesheet => "/core.xsl", output => "/fb3/meta/core.xml"}
 );
+
+unless( $CustomMetaPath ) {
+	# no meta file was given, so need to generate meta from FB2
+	push @TransformConfig,
+		{stylesheet => "/description.xsl", output => "/fb3/description.xml"};
+}
 
 my $FB2Doc = XML::LibXML->load_xml( location => $ARGV[0] );
 my $XPC = XML::LibXML::XPathContext->new;
@@ -149,7 +158,14 @@ for (@TransformConfig) {
   my $Results = $Stylesheet->transform_file( $TmpFB2File );
   $Stylesheet->output_file($Results, $TmpDir.$_->{output});
 }
+unlink $TmpFB2File; # удаляем за ненадобностью
 print "XML transformation has been successful.\n" if $verbose;
+
+#place custom fb3 meta if it was given
+if( $CustomMetaPath ) {
+	File::Copy::copy $CustomMetaPath, "$TmpDir/fb3/description.xml"
+		or die "can't copy custom meta '$CustomMetaPath' to fb3: $!";
+}
 
 #extract images
 my ($CoverNode)=$XPC->findnodes('/fb:FictionBook/fb:description/fb:title-info/fb:coverpage/fb:image[1]',$FB2Doc);

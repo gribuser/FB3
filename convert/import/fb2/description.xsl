@@ -35,7 +35,7 @@
       <xsl:call-template name="lang"/>
       <xsl:call-template name="written"/>
       <xsl:call-template name="document-info"/>
-      <xsl:call-template name="publish-info"/>
+      <xsl:call-template name="paper-publish-info"/>
       <xsl:call-template name="annotation"/>
     </fb3-description>
   </xsl:template>
@@ -389,10 +389,10 @@
     </document-info>
   </xsl:template>
   
-  <xsl:template name="publish-info">
+  <xsl:template name="paper-publish-info">
     <xsl:variable name="pubinfo" select="$description/fb:publish-info"/>
     <xsl:if test="$pubinfo/fb:book-name">
-      <publish-info>
+      <paper-publish-info>
         <xsl:if test="$pubinfo/fb:book-name">
           <xsl:attribute name="title">
             <xsl:value-of select="$pubinfo/fb:book-name"/>
@@ -421,7 +421,7 @@
         <xsl:for-each select="$pubinfo//fb:sequence">
           <sequence><xsl:value-of select="@name"/></sequence>
         </xsl:for-each>
-      </publish-info>
+      </paper-publish-info>
     </xsl:if>
   </xsl:template>
   
