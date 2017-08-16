@@ -191,6 +191,21 @@
 					<documentation xml:lang="ru">Сценарист</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="contributing_editor">
+				<annotation>
+					<documentation xml:lang="ru">Главный редактор</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="editorial_board_member">
+				<annotation>
+					<documentation xml:lang="ru">Член редколлегии</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="managing_editor">
+				<annotation>
+					<documentation xml:lang="ru">Ответственный редактор</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="other">
 				<annotation>
 					<documentation xml:lang="ru">Прочее</documentation>
