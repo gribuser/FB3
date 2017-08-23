@@ -127,6 +127,7 @@
 						<attribute name="src-url" type="anyURI" use="optional"/>
 						<attribute name="ocr" type="normalizedString" use="optional"/>
 						<attribute name="editor" type="token" use="optional"/>
+						<attribute name="doi" type="fb3d:DOIType" use="optional"/>
 					</complexType>
 				</element>
 				<element name="history" type="fb3d:AnnotationType" minOccurs="0"/>
@@ -633,6 +634,14 @@
 		</annotation>
 		<restriction base="string">
 			<pattern value="([0-9]+[\-\s]){3,6}[0-9]*[xX0-9]"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="DOIType">
+		<annotation>
+			<documentation>Digital Object Index</documentation>
+		</annotation>
+		<restriction base="string">
+			<pattern value='(10[.][0-9]{3,})(\.[0-9]+)*/[^"]([^"&amp;&lt;&gt;&apos;])+'/>
 		</restriction>
 	</simpleType>
 </schema>

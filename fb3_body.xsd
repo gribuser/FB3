@@ -177,6 +177,7 @@
 				</sequence>
 				<attribute name="id" type="fb3d:UUIDType" use="required"/>
 				<attribute name="article" type="boolean" use="optional"/>
+				<attribute name="doi" type="fb3d:DOIType" use="optional"/>
 			</extension>
 		</complexContent>
 	</complexType>
