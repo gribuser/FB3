@@ -107,6 +107,11 @@
 		<annotation>
 			<documentation>Секция. Целостный фрагмент текста, обычно представляет часть книги - главу и т.п.</documentation>
 		</annotation>
+		<attribute name="clipped" type="boolean">
+			<annotation>
+				<documentation>Признак секции, которую очистили от содержимого при формирования фрагмента произведения</documentation>
+			</annotation>
+		</attribute>
 		<complexContent>
 			<extension base="fb3b:TitledType">
 				<sequence>
