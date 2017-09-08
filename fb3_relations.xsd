@@ -206,6 +206,26 @@
 					<documentation xml:lang="ru">Ответственный редактор</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="co_author">
+				<annotation>
+					<documentation xml:lang="ru">Соавтор</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="painter">
+				<annotation>
+					<documentation xml:lang="ru">Художник</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="cover_designer">
+				<annotation>
+					<documentation xml:lang="ru">Дизайнер обложки</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="lecturer">
+				<annotation>
+					<documentation xml:lang="ru">Лектор</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="other">
 				<annotation>
 					<documentation xml:lang="ru">Прочее</documentation>

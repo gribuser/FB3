@@ -193,6 +193,23 @@
 						<documentation xml:lang="ru">Преамбула, для всякой информации типа “данная книга издана с высочайшего благословения пня и рощи, копирование запрещено”.</documentation>
 					</annotation>
 				</element>
+				<element name="fb3-fragment" minOccurs="0">
+					<annotation>
+						<documentation>Элемент нужен если настоящий текст - фрагмент</documentation>
+					</annotation>
+					<complexType>
+						<attribute name="full_length" type="positiveInteger" use="required">
+							<annotation>
+								<documentation>Длина полного текста в символах</documentation>
+							</annotation>
+						</attribute>
+						<attribute name="fragment_length" type="positiveInteger" use="required">
+							<annotation>
+								<documentation>Длина настоящего фрагмента в символах</documentation>
+							</annotation>
+						</attribute>
+					</complexType>
+				</element>
 			</sequence>
 			<attribute name="id" type="fb3d:UUIDType" use="required">
 				<annotation>
