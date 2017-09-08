@@ -107,9 +107,9 @@
 		<annotation>
 			<documentation>Секция. Целостный фрагмент текста, обычно представляет часть книги - главу и т.п.</documentation>
 		</annotation>
-		<attribute name="clipped" type="boolean">
+		<attribute name="clipped" type="positiveInteger">
 			<annotation>
-				<documentation>Признак секции, которую очистили от содержимого при формирования фрагмента произведения</documentation>
+				<documentation>Признак секции, которую очистили от содержимого при формирования фрагмента произведения. Значение равно номеру позиции с которой она должна начинаться в полной версии произведения.</documentation>
 			</annotation>
 		</attribute>
 		<complexContent>
