@@ -107,11 +107,6 @@
 		<annotation>
 			<documentation>Секция. Целостный фрагмент текста, обычно представляет часть книги - главу и т.п.</documentation>
 		</annotation>
-		<attribute name="clipped" type="positiveInteger">
-			<annotation>
-				<documentation>Признак секции, которую очистили от содержимого при формирования фрагмента произведения. Значение равно номеру позиции с которой она должна начинаться в полной версии произведения.</documentation>
-			</annotation>
-		</attribute>
 		<complexContent>
 			<extension base="fb3b:TitledType">
 				<sequence>
@@ -183,6 +178,11 @@
 				<attribute name="id" type="fb3d:UUIDType" use="required"/>
 				<attribute name="article" type="boolean" use="optional"/>
 				<attribute name="doi" type="fb3d:DOIType" use="optional"/>
+				<attribute name="clipped" type="positiveInteger">
+					<annotation>
+						<documentation>Признак секции, которую очистили от содержимого при формирования фрагмента произведения. Значение равно номеру позиции с которой она должна начинаться в полной версии произведения (см. fb3-fragment/@full_length в мета-файле)</documentation>
+					</annotation>
+				</attribute>
 			</extension>
 		</complexContent>
 	</complexType>
