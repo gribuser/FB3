@@ -313,6 +313,11 @@
 					<documentation xml:lang="ru">Переиздание</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="translation_to_other_lang">
+				<annotation>
+					<documentation xml:lang="ru">Перевод на другой язык</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="undef">
 				<annotation>
 					<documentation xml:lang="ru">Не определено</documentation>
