@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <Relationship Id="img1" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="cover/thumb.svg"/>
+  <Relationship Id="really_it_is_svg" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/j.o.p.a.jPeG"/>
+  <Relationship Id="img3" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="Pictures/MyPictures/imge91e"/>
+  <Relationship Id="img4" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_600400.jpg"/>
+  <Relationship Id="img5" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/alt_table_trans.png"/>
+  <Relationship Id="img6" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/table.png"/>
+  <Relationship Id="img7" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/t11.png"/>
+  <Relationship Id="img8" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/t12.png"/>
+  <Relationship Id="img9" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/t13.png"/>
+  <Relationship Id="img10" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_1001000.jpg"/>
+  <Relationship Id="img11" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_1000100.jpg"/>
+  <Relationship Id="img12" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_10001000.jpg"/>
+  <Relationship Id="img13" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_600400.jpg"/>
+  <Relationship Id="img14" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_600400.jpg"/>
+  <Relationship Id="img15" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_600400.jpg"/>
+  <Relationship Id="img16" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_600400.jpg"/>
+  <Relationship Id="img17" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_600400.jpg"/>
+  <Relationship Id="img18" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/_123.png"/>
+  <Relationship Id="img19" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/audio_file24.png"/>
+  <Relationship Id="img20" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/clock24.png"/>
+  <Relationship Id="img21" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/calculator24.png"/>
+  <Relationship Id="img22" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/home24.png"/>
+  <Relationship Id="img23" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/delete24.png"/>
+  <Relationship Id="img24" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/clock24.png"/>
+  <Relationship Id="img25" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="Pictures/MyPictures/imgc904.jpg"/>
+  <Relationship Id="img26" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="Pictures/MyPictures/img2392.jpg"/>
+  <Relationship Id="img27" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="Pictures/MyPictures/imga29.jpg"/>
+  <Relationship Id="img28" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="Pictures/MyPictures/imgf0ee.jpg"/>
+  <Relationship Id="img29" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="Pictures/MyPictures/imgc904.jpg"/>
+  <Relationship Id="img30" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="Pictures/MyPictures/img2392.jpg"/>
+  <Relationship Id="img31" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="Pictures/MyPictures/imga29.jpg"/>
+  <Relationship Id="img32" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="Pictures/MyPictures/imgf0ee.jpg"/>
+  <Relationship Id="img33" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="./Pictures/logo_litres.png"/>
+</Relationships>

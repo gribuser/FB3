@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-	<Relationship Id="img01" Type="http://www.fictionbook.org/FictionBook3/relationships/image" Target="img/tolstoy_port.png"/>
+	<Relationship Id="rId0"
+    Target="../../%D0%BA%D0%BD%D0%B8%D0%B3%D0%B0"
+		Type="http://www.fictionbook.org/FictionBook3/relationships/body" />
 </Relationships>
