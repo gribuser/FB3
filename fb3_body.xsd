@@ -167,7 +167,7 @@
 									</annotation>
 								</element>
 							</choice>
-							<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0">
+							<element name="subscription" type="fb3b:BasicAnnotationType">
 								<annotation>
 									<documentation>Подпись в конце секции - обычно тут че-нить типа "Москва, весна 2008" или "Конец" или "Продолжение следует"</documentation>
 								</annotation>
