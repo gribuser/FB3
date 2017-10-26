@@ -167,23 +167,31 @@
 									</annotation>
 								</element>
 							</choice>
-							<element name="subscription" type="fb3b:BasicAnnotationType">
+							<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0">
 								<annotation>
 									<documentation>Подпись в конце секции - обычно тут че-нить типа "Москва, весна 2008" или "Конец" или "Продолжение следует"</documentation>
 								</annotation>
 							</element>
 						</sequence>
+						<element name="clipped">
+							<annotation>
+								<documentation>Либо метка, что секция опустошена в целях изготовления триального фрагмента</documentation>
+							</annotation>
+							<complexType/>
+						</element>
 					</choice>
-					<element name="clipped">
-						<complexType/>
-					</element>
 				</sequence>
 				<attribute name="id" type="fb3d:UUIDType" use="required"/>
 				<attribute name="article" type="boolean" use="optional"/>
 				<attribute name="doi" type="fb3d:DOIType" use="optional"/>
-				<attribute name="clipped" type="positiveInteger">
+				<attribute name="clipped" type="boolean">
 					<annotation>
-						<documentation>Признак секции, которую очистили от содержимого при формирования фрагмента произведения. Значение равно номеру позиции с которой она должна начинаться в полной версии произведения (см. fb3-fragment/@full_length в мета-файле)</documentation>
+						<documentation>Признак секции, которую модифицировали (например, очистили от содержимого) при формирования фрагмента произведения</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="first-char-pos" type="positiveInteger">
+					<annotation>
+						<documentation>Значение равно номеру позиции с которой она должна начинаться в полной версии произведения (см. fb3-fragment/@full_length в мета-файле). Полезно при навигации по фрагменту</documentation>
 					</annotation>
 				</attribute>
 			</extension>
