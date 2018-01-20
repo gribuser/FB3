@@ -123,6 +123,7 @@
             <xsl:when test=".='auto_regulations'">Автомобили и ПДД</xsl:when>
             <xsl:when test=".='banking'">Банковское дело</xsl:when>
             <xsl:when test=".='beginning_authors'">Начинающие авторы</xsl:when>
+            <xsl:when test=".='samizdat'">Самиздат</xsl:when>
             <xsl:when test=".='children'">Книги для детей</xsl:when>
             <xsl:when test=".='child_adv'">Детские приключения</xsl:when>
             <xsl:when test=".='child_det'">Детские детективы</xsl:when>

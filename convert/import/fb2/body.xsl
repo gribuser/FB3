@@ -39,14 +39,15 @@
   <xsl:template match="/fb:FictionBook/fb:description"/>
   
   <xsl:template match="fb:body[not(@name='notes')]">
-    <section id="{$globalID}">
       <xsl:apply-templates select="fb:title"/>
       <xsl:apply-templates select="fb:epigraph"/>
       <xsl:apply-templates select="fb:section"/>
-    </section>
   </xsl:template>
-  
-  <xsl:template match="fb:section">
+
+<!--      пропускаем секции, состоящие из одних пустых строк-->
+	<xsl:template match="fb:section[count(fb:empty-line)=count(fb:*)]"/>
+
+  <xsl:template match="fb:section[not(count(fb:empty-line)=count(fb:*))]">
     <xsl:choose>
 <!--      основная секция сносок - без id-->
       <xsl:when test="ancestor::fb:body[1]/@name='notes' and not(@id)">
@@ -72,7 +73,7 @@
           <xsl:apply-templates select="fb:annotation"/>
           <xsl:apply-templates select="fb:section"/>
           <xsl:apply-templates select="fb:p | fb:poem | fb:subtitle |
-            fb:cite | fb:empty-line | fb:table |
+            fb:cite | fb:empty-line | fb:table | fb:div |
             fb:image[not(following-sibling::fb:section)]"/>
         </section>
       </xsl:otherwise>
@@ -83,6 +84,11 @@
     <!-- title in FB3 must start with p-element -->
     <xsl:if test="fb:p[1]">
       <title>
+				<xsl:if test="parent::fb:body[not(@name='notes')] and preceding-sibling::*[1][local-name()='image']">
+					<p>
+						<xsl:call-template name="title-image"/>
+					</p>
+				</xsl:if>
         <xsl:apply-templates select="fb:p[1] | fb:p[1]/following-sibling::*"/>
       </title>
     </xsl:if>
@@ -96,7 +102,27 @@
         <subtitle><xsl:apply-templates/></subtitle>
       </xsl:when>
       <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="not(preceding-sibling::*)">
+            <title>
+              <p><xsl:apply-templates/></p>
+            </title>
+          </xsl:when>
+          <xsl:otherwise>
+              <xsl:call-template name='AddStrong'/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="AddStrong">
+    <xsl:choose>
+      <xsl:when test="fb:strong">
         <p><xsl:apply-templates/></p>
+      </xsl:when>
+      <xsl:otherwise>
+        <p><strong><xsl:apply-templates/></strong></p>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -181,6 +207,9 @@
     * we have to convert cites with more complex content to divs
     -->
     <xsl:choose>
+			<xsl:when test="parent::fb:section[ancestor::fb:body[@name='notes']]">
+				<xsl:apply-templates/>
+			</xsl:when>
       <xsl:when test="fb:poem | fb:table">
         <div width="80%"><xsl:apply-templates/></div>
       </xsl:when>
@@ -200,10 +229,11 @@
     <xsl:variable name="first-p" select="fb:*[local-name()=$paragraph-name][1]"/>
     <xsl:if test="$first-p">
       <xsl:element name="{$holder-name}">
+        <xsl:apply-templates select="fb:subtitle"/>
         <xsl:call-template name="TitledType"/>
         <xsl:apply-templates select="$first-p | $first-p/following-sibling::*
-          [ local-name()=$paragraph-name or local-name='empty-line' ]"/>
-        <xsl:apply-templates select="text-author"/>
+          [ local-name()=$paragraph-name or local-name()='empty-line' ]"/>
+				<xsl:apply-templates select="fb:text-author"/>
       </xsl:element>
     </xsl:if>
   </xsl:template>
@@ -224,7 +254,7 @@
   1) select each first text-author element in group of these elements with template+match
   2) find all following text-author elements and place them as in example above
   -->
-  <xsl:template match="fb:text-author[ not(preceding-sibling::*) or preceding-sibling::*[1][not(local-name()='text-author')] ]">
+  <xsl:template match="fb:text-author[ not(parent::fb:cite[parent::fb:section[ancestor::fb:body[@name='notes']]]) and (not(preceding-sibling::*) or preceding-sibling::*[1][not(local-name()='text-author')]) ]">
 
     <xsl:variable name="first_non_text_author"
       select="following-sibling::*[local-name()!='text-author'][1]"/>
@@ -253,6 +283,10 @@
   <xsl:template match="fb:text-author" mode="grouped">
     <p><xsl:apply-templates/></p>
   </xsl:template>
+
+	<xsl:template match="fb:text-author[parent::fb:cite[parent::fb:section[ancestor::fb:body[@name='notes']]]]">
+		<p><xsl:apply-templates/></p>
+	</xsl:template>
 
   <xsl:template match="fb:text-author"/>
   
@@ -348,20 +382,20 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
+	<xsl:template match="fb:div">
+		<div>
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates/>
+		</div>
+  </xsl:template>
+
   <xsl:template match="fb:image">
     <xsl:choose>
       <xsl:when test="parent::fb:section[ancestor::fb:body[@name='notes']]">
         <p>
           <xsl:call-template name="image"/>
         </p>
-      </xsl:when>
-      <xsl:when test="parent::fb:section">
-        <div float="center">
-          <p>
-            <xsl:call-template name="image"/>
-          </p>
-        </div>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="image"/>
@@ -379,9 +413,28 @@
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="@alt">
+      <xsl:variable name="alt-text" select="@alt | @title"/>
+      <xsl:if test="$alt-text">
         <xsl:attribute name="alt">
-          <xsl:value-of select="@alt"/>
+          <xsl:value-of select="$alt-text"/>
+        </xsl:attribute>
+      </xsl:if>
+    </img>
+  </xsl:template>
+	
+	<xsl:template name="title-image">
+    <xsl:variable name="href"
+      select="concat('img', string(count(preceding::fb:image)))"/>
+    <img src="{$href}">
+      <xsl:if test="@id">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+			<xsl:variable name="alt-text" select="@alt | @title"/>
+      <xsl:if test="$alt-text">
+        <xsl:attribute name="alt">
+          <xsl:value-of select="$alt-text"/>
         </xsl:attribute>
       </xsl:if>
     </img>
@@ -392,6 +445,7 @@
     <xsl:variable name="footnotes" select="fb:section[@id] | fb:section[1]/fb:section"/>
     <xsl:if test="$footnotes">
       <notes show="0">
+				<xsl:apply-templates select="$footnotes/../fb:title"/>
         <xsl:apply-templates select="$footnotes"/>
       </notes>
     </xsl:if>
@@ -401,6 +455,7 @@
       select="fb:section[preceding-sibling::fb:section]/fb:section"/>
     <xsl:if test="$endnotes">
       <notes show="1">
+				<xsl:apply-templates select="$endnotes/../fb:title"/>
         <xsl:apply-templates select="$endnotes"/>
       </notes>
     </xsl:if>
@@ -472,19 +527,6 @@
   <xsl:template name="note">
     <xsl:param name="item"/>
     <xsl:variable name="href" select="substring-after($item/@xlink:href, '#')"/>
-    <xsl:variable name="text">
-      <xsl:choose>
-        <xsl:when test="starts-with($item/text(), '[')">
-          <xsl:value-of select="substring-before(substring-after($item/text(), '['), ']')"/>
-        </xsl:when>
-        <xsl:when test="starts-with($item/text(), '{')">
-          <xsl:value-of select="substring-before(substring-after($item/text(), '{'), '}')"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="text()"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
     <xsl:variable name="target"
       select="/fb:FictionBook/fb:body[@name='notes']//fb:section[@id=$href][1]"/>
     <xsl:variable name="role">
@@ -498,7 +540,23 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <note href="{$href}" xlink:role="{$role}"><xsl:value-of select="$text"/></note>
+    <note href="{$href}" xlink:role="{$role}">
+			<xsl:apply-templates/>
+		</note>
+  </xsl:template>
+
+	<xsl:template match="fb:a[@type='note']//text()">
+    <xsl:choose>
+      <xsl:when test="starts-with(., '[')">
+        <xsl:value-of select="substring-before(substring-after(., '['), ']')"/>
+      </xsl:when>
+      <xsl:when test="starts-with(., '{')">
+        <xsl:value-of select="substring-before(substring-after(., '{'), '}')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="."/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template match="fb:section" mode="subsectionID">
