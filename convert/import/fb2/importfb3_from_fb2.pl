@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/local/bin/perl
 use strict;
 use utf8;
 use open qw(:std :utf8);
@@ -139,6 +139,96 @@ if( $PublishInfoNode ) {
 		}
 	}
 }
+
+# Особо сложные эпиграфы порубим на куски тут. TODO полностью перенести работу с эпиграфами сюда.
+for my $Cite ( $XPC->findnodes('//fb:epigraph/fb:cite[1]', $FB2Doc )) {
+	my @SetInEpigraph;
+	for my $Sibling ( $XPC->findnodes('following-sibling::*', $Cite)) { # всё что после первого cite выделяем в отдельный эпиграф
+		push @SetInEpigraph, $Sibling;
+		if ($Sibling->nodeName eq 'cite') {
+			CreateEpigraph($Cite->parentNode, @SetInEpigraph);
+			@SetInEpigraph = ();
+		}
+	}
+	CreateEpigraph($Cite->parentNode, @SetInEpigraph); # сбросим хвост
+}
+
+sub CreateEpigraph {
+	my $Epigraph = shift;
+	my @SetInEpigraph = @_;
+	return unless scalar @SetInEpigraph;
+
+	my $NewEpigraph = $FB2Doc->createElement('epigraph');
+	$Epigraph->parentNode->insertAfter($NewEpigraph, $Epigraph);
+	foreach (@SetInEpigraph) {
+		$Epigraph->removeChild($_);
+		$NewEpigraph->appendChild($_);
+	}
+
+	return $NewEpigraph;
+}
+
+# Работаем с картинками, которые нужно выделить в div или section
+for my $ImgNode ( $XPC->findnodes('//fb:section[ancestor::fb:body[not(@name="notes")]]/fb:image', $FB2Doc )) {
+	# Ищем подпись. Все <p> до <empty-line/>, но не более 300 символов.
+	my @SubscrNodes;
+	my $ImgSubscrLength;
+	# удалим пустые строки до картинки. Этот кусок можно в будущем использовать для нахождения подписи до картинки
+	my @NodesForDelete;
+	my $PrevSibling = $ImgNode;
+	while ($PrevSibling = $PrevSibling->previousSibling()) {
+		if ($PrevSibling->nodeName eq 'empty-line') {
+			push @NodesForDelete, $PrevSibling;
+		} else {
+			last;
+		}
+	}
+	foreach (@NodesForDelete) {
+		$_->unbindNode();
+	}
+	# найдем подпись и удалим пустые строки после картинки
+	my $EmptyLineFound = 0;
+	for my $Sibling ( $XPC->findnodes('following-sibling::*', $ImgNode )) {
+		if ($ImgSubscrLength <= 300) {
+			my $SiblingName = $Sibling->nodeName;
+			if ($SiblingName eq 'p' && !$EmptyLineFound) {
+				$ImgSubscrLength += length($Sibling->textContent);
+				push @SubscrNodes, $Sibling;
+			} elsif ($SiblingName eq 'empty-line') {
+				$Sibling->unbindNode();
+				$EmptyLineFound = 1;
+			} else {
+				@SubscrNodes = () unless $EmptyLineFound;
+				last;
+			}
+		} else {
+			@SubscrNodes = ();
+			last;
+		}
+	}
+
+	# Перенесем подпись и картинку куда положено
+	# Переносим картинку
+	my $ParentNode = $ImgNode->parentNode;
+	my $PNode = $FB2Doc->createElement('p');
+	my $NextSibling = $ImgNode->nextNonBlankSibling();
+	my $NewParentNode;
+	if ($XPC->exists('following-sibling::fb:section', $ImgNode)) {
+		$NewParentNode = $FB2Doc->createElement('section');
+	} else {
+		$NewParentNode = $FB2Doc->createElement('div');
+		$NewParentNode->setAttribute('float', 'center');
+		$NewParentNode->setAttribute('on-one-page', '1');
+	}
+	$ParentNode->insertBefore($NewParentNode, $ImgNode);
+	$NewParentNode->appendChild($PNode);
+	$PNode->appendChild($ImgNode);
+	#Переносим подпись
+	foreach (@SubscrNodes) {
+		$NewParentNode->appendChild($_);
+	}
+}
+
 my $TmpFB2File = "$TmpDir/book.fb2";
 open my $fh, '>', $TmpFB2File
 	or die "Could not open $TmpFB2File for writing";
