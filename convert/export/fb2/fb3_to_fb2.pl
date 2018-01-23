@@ -3,7 +3,7 @@
 use strict;
 use FindBin;
 use Getopt::Long;
-use FB3::OPCNavigator;
+use OPC;
 use XML::LibXML;
 use XML::LibXSLT;
 use MIME::Base64;
@@ -80,7 +80,7 @@ my $Parser = new XML::LibXML;
 my $Doc = new XML::LibXML::Document;
 
 my (@FB2XML, @FB2ImgXML, $NS, %NS);
-my $FB3Package = FB3::OPCNavigator->new( $OPT{'fb3'} );
+my $FB3Package = OPC->new( $OPT{'fb3'} );
 
 #Находим Description?
 my %DescrRelation = $FB3Package->RelationByType( '/_rels/.rels', RELATION_TYPE_FB3_BOOK );
