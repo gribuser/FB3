@@ -14,7 +14,7 @@ use XML::LibXML;
 use OPC::Root;
 use OPC::Part;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =pod
 my $Package = eval{ OPC->new( '/path/to/opc/package' ) };
