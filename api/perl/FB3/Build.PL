@@ -20,12 +20,6 @@ my $builder = Module::Build->new(
         'perl' => 5.014, 
         'OPC' => 0,
         'XML::LibXML' => 0,
-        'XML::LibXSLT' => 0,
-        'Archive::Zip' => 0,
-        'Hash::Merge' => 0,
-        'UUID::Tiny' => 0,
-        'HTML::Entities' => 0,
-        'Clone' => 0,
     },
     add_to_cleanup     => [ 'FB3-*' ],
 );
