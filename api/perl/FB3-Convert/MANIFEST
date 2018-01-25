@@ -1,0 +1,21 @@
+bin/convert2fb3.pl
+bin/cutfb3.pl
+bin/fb3_2_json.pl
+bin/fb3_to_fb2.pl
+bin/importfb3_from_fb2.pl
+Build.PL
+lib/FB3/Convert.pm
+lib/FB3/Convert/Epub.pm
+MANIFEST			This list of files
+META.json
+META.yml
+README
+share/body.xsl
+share/body_rels.xsl
+share/core.xsl
+share/description.xsl
+share/fb3_2_fb2_body.xsl
+share/fb3_2_fb2_descr.xsl
+share/fb3_to_fb2_genre.json
+share/general.xsl
+t/00-load.t
