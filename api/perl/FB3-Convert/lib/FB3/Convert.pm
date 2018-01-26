@@ -20,6 +20,12 @@ use HTML::Entities;
 
 our $VERSION = 0.01;
 
+=head1 NAME
+
+FB3::Convert - scripts and API for converting FB3 from and to different formats
+
+=cut
+
 my %MODULES;
 # каким плагином работать - определяется тупо по расширению файла (см. ключ в хэше)
 %MODULES = (
@@ -756,65 +762,63 @@ sub InNode {
   join "",map {$_->toString} $Node->childNodes;
 }
 
-=pod
-function Obj2DOM()
-
-example:
-my $Doc = Obj2DOM($X,
- obj => {
-        attributes => {attr1 => 1, attr2 => 2},
-        title0 => 'TITLE0',
-            title1 => {
-                attributes => {attr3 => 3, attr4 => 4},
-                value => 'TITLE1',
-            },
-            title2 => {
-                attributes => {attr5 => 5, attr6 => 6},
-                value => [7,8,{item9=>[10,12,{item12=>12}]}],
-            },
-            title3 => [
-                {'item13' => 13},
-                {'item14' => 14},
-                15,16,
-      '_17','_18',
-            ],
-  'title4' => {
-                attributes => {CP_compact => 1},
-                value => [123,{span=>'spanvalue'}]
-            }
-        }
-);
-print $Doc->toString(
-    1 #pretty
-);
-
-(hashes sorted by keys) =>
-<?xml version="1.0" encoding="utf-8"?>
-<root attr1="1" attr2="2">
-  <title0>TITLE0</title0>
-  <title1 attr4="4" attr3="3">TITLE1</title1>
-  <title2 attr6="6" attr5="5">
-    <item>7</item>
-    <item>8</item>
-    <item>
-      <item>10</item>
-      <item>12</item>
-      <item12>12</item12>
-    </item9>
-  </title2>
-  <title3>
-    <item13>13</item13>
-    <item14>14</item14>
-    <item>15</item>
-    <item>16</item>
-    <item>_17</item>
-    <item>_18</item>
-  </title3>
-  <title4>
-    123<span>spanvalue</span>
-  </title4>
-</root>
-=cut
+# function Obj2DOM()
+# 
+# example:
+# my $Doc = Obj2DOM($X,
+#  obj => {
+#         attributes => {attr1 => 1, attr2 => 2},
+#         title0 => 'TITLE0',
+#             title1 => {
+#                 attributes => {attr3 => 3, attr4 => 4},
+#                 value => 'TITLE1',
+#             },
+#             title2 => {
+#                 attributes => {attr5 => 5, attr6 => 6},
+#                 value => [7,8,{item9=>[10,12,{item12=>12}]}],
+#             },
+#             title3 => [
+#                 {'item13' => 13},
+#                 {'item14' => 14},
+#                 15,16,
+#       '_17','_18',
+#             ],
+#   'title4' => {
+#                 attributes => {CP_compact => 1},
+#                 value => [123,{span=>'spanvalue'}]
+#             }
+#         }
+# );
+# print $Doc->toString(
+#     1 #pretty
+# );
+# 
+# (hashes sorted by keys) =>
+# <?xml version="1.0" encoding="utf-8"?>
+# <root attr1="1" attr2="2">
+#   <title0>TITLE0</title0>
+#   <title1 attr4="4" attr3="3">TITLE1</title1>
+#   <title2 attr6="6" attr5="5">
+#     <item>7</item>
+#     <item>8</item>
+#     <item>
+#       <item>10</item>
+#       <item>12</item>
+#       <item12>12</item12>
+#     </item9>
+#   </title2>
+#   <title3>
+#     <item13>13</item13>
+#     <item14>14</item14>
+#     <item>15</item>
+#     <item>16</item>
+#     <item>_17</item>
+#     <item>_18</item>
+#   </title3>
+#   <title4>
+#     123<span>spanvalue</span>
+#   </title4>
+# </root>
 
 my $Doc;
 sub Obj2DOM {
@@ -1338,6 +1342,23 @@ sub ParseMetaFile {
   }
 
 }
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright (C) 2018 Litres.ru
+
+The GNU Lesser General Public License version 3.0
+
+FB3::Convert is free software: you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3.0 of the License.
+
+FB3::Convert is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+License for more details.
+
+Full text of License L<http://www.gnu.org/licenses/lgpl-3.0.en.html>.
 
   
 1;

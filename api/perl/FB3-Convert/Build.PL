@@ -5,7 +5,7 @@ use Module::Build;
 
 my $builder = Module::Build->new(
     module_name         => 'FB3::Convert',
-    license             => 'perl',
+    license             => 'lgpl',
     dist_author         => q{www.litres.ru <gu@litres.ru>},
     dist_version_from   => 'lib/FB3/Convert.pm',
     dist_abstract       => 'scripts and API for converting FB3 from and to different formats',

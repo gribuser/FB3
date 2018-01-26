@@ -8,6 +8,34 @@ use Carp;
 
 our $VERSION = '0.03';
 
+=head1 NAME
+
+FB3 - API for manipulating FB3 files
+
+=head1 SYNOPSIS
+
+  use FB3;
+
+  # load FB3 from file
+  my $FB3 = FB3->new( from_zip => 'path/to/file.fb3');
+
+  # or load FB3 from directory where it had been unpacked
+  my $FB3 = FB3->new( from_zip => 'path/to/unpacked_fb3_dir');
+
+  # navigate through FB3 and read XML content of it's main parts
+  $Meta = $FB3->Meta;
+  $MetaXML = $Meta->Content;
+  $BodyXML = $FB3->Body->Content;
+
+  # get path to cover
+  $PathToCover = $FB3->Cover->PhysicalName;
+
+=head1 AUTHOR
+
+www.LitRes.ru Team
+
+=cut
+
 use constant {
 	RELATION_TYPE_CORE_PROP =>
 		'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties'
@@ -78,5 +106,24 @@ sub DirPath {
     return $self->{opc}->{_physical};
   }
 }
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright (C) 2018 Litres.ru
+
+The GNU Lesser General Public License version 3.0
+
+FB3 is free software: you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3.0 of the License.
+
+FB3 is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+License for more details.
+
+Full text of License L<http://www.gnu.org/licenses/lgpl-3.0.en.html>.
+
+=cut
 
 1;

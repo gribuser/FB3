@@ -5,7 +5,7 @@ use Module::Build;
 
 my $builder = Module::Build->new(
     module_name         => 'OPC',
-    license             => 'perl',
+    license             => 'lgpl',
     dist_author         => q{www.litres.ru <gu@litres.ru>},
     dist_version_from   => 'lib/OPC.pm',
     dist_abstract       => 'API for low-level manipulations with packages in OPC format (ECMA-376 Part 2)',

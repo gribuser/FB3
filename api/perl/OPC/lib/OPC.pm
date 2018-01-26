@@ -546,4 +546,23 @@ sub Part {
 	return OPC::Part->new( package => $self, name => $PartName )
 }
 
+=head1 LICENSE AND COPYRIGHT
+
+Copyright (C) 2018 Litres.ru
+
+The GNU Lesser General Public License version 3.0
+
+OPC is free software: you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3.0 of the License.
+
+OPC is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+License for more details.
+
+Full text of License L<http://www.gnu.org/licenses/lgpl-3.0.en.html>.
+
+=cut
+
 1;
