@@ -1,10 +1,16 @@
 package FB3::Validator;
 
-=pod
-my $Validator = FB3::Validator->new( "path/to/xsd/schemas/directory" );
-if( my $ValidationError = $Validator->Validate( "path/to/book.fb3" )) {
-  die "path/to/book.fb3 is not a valid FB3: $ValidationError";
-}
+=head1 NAME
+
+FB3::Validator - check file to be a valid FB3 book
+
+=head1 SYNOPSIS
+
+  my $Validator = FB3::Validator->new( "path/to/xsd/schemas/directory" );
+  if( my $ValidationError = $Validator->Validate( "path/to/book.fb3" )) {
+    die "path/to/book.fb3 is not a valid FB3: $ValidationError";
+  }
+
 =cut
 
 use strict;
