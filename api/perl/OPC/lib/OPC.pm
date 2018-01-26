@@ -16,16 +16,36 @@ use OPC::Part;
 
 our $VERSION = '0.02';
 
-=pod
-my $Package = eval{ OPC->new( '/path/to/opc/package' ) };
-if( $@ ) {
-  die "/path/to/opc/package is not a valid OPC package: $@";
-}
+=head1 NAME
 
-my $PartContents = $Package->PartContents( '/part/name' );
-my @AllPartNames = $Package->PartNames;
-my %Relation = $Package->RelationByType( '/_rels/.rels', 'http://my.own/custom/type' );
-my $PartName = $Relation{TargetFullName};
+OPC - API for low-level manipulations with packages in OPC format (ECMA-376 Part 2)
+
+=head1 SYNOPSIS
+
+  my $Package = eval{ OPC->new( '/path/to/opc/package' ) };
+  if( $@ ) {
+    die "/path/to/opc/package is not a valid OPC package: $@";
+  }
+
+  # Get part by name
+  my $Part1 = $Package->Part(name => '/part/name');
+
+  # Get root node
+  my $Root = $Package->Root;
+
+  # Get package related part with C<Type> 'http://my.own/custom/type'
+  my $Part2 = $Root->RelatedPart(type => 'http://my.own/custom/type');
+
+  # Get list of parts related to some other part
+  my @PictureParts = $Part2>RelatedParts(type => 'http://my.own/type/for/pictures');
+
+=head1 DESCRIPTION
+
+See http://www.ecma-international.org/publications/standards/Ecma-376.htm
+
+=head1 AUTHOR
+
+www.LitRes.ru Team
 =cut
 
 my $XC = XML::LibXML::XPathContext->new();
@@ -45,7 +65,7 @@ sub new {
 		# Got path to file. Probably that means it's zipped OPC
 		return $Class->FromZip( $PackagePath );
 	} else {
-		Carp::confess 'Must specify path to zip package or directory path=[$PackagePath]';
+		Carp::confess "Must specify path to zip package or directory. Path=[$PackagePath]";
 	}
 }
 
