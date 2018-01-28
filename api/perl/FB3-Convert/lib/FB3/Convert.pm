@@ -1360,5 +1360,7 @@ License for more details.
 
 Full text of License L<http://www.gnu.org/licenses/lgpl-3.0.en.html>.
 
+=cut
+
   
 1;

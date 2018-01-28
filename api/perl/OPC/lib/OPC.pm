@@ -45,7 +45,7 @@ See http://www.ecma-international.org/publications/standards/Ecma-376.htm
 
 =head1 AUTHOR
 
-www.LitRes.ru Team
+Litres.ru Team
 =cut
 
 my $XC = XML::LibXML::XPathContext->new();

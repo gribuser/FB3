@@ -20,7 +20,7 @@ FB3 - API for manipulating FB3 files
   my $FB3 = FB3->new( from_zip => 'path/to/file.fb3');
 
   # or load FB3 from directory where it had been unpacked
-  my $FB3 = FB3->new( from_zip => 'path/to/unpacked_fb3_dir');
+  my $FB3 = FB3->new( from_dir => 'path/to/unpacked_fb3_dir');
 
   # navigate through FB3 and read XML content of it's main parts
   $Meta = $FB3->Meta;
@@ -32,7 +32,7 @@ FB3 - API for manipulating FB3 files
 
 =head1 AUTHOR
 
-www.LitRes.ru Team
+Litres.ru Team
 
 =cut
 
