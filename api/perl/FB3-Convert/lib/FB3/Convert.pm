@@ -600,7 +600,7 @@ sub FB3Create {
             );  
   
   #финальное приведение section к валидному виду
-  foreach my $Section ($XC->findnodes( "/fb3-body/section/section/section", $Body)) {
+  foreach my $Section ($XC->findnodes( "/fb3-body/section/section/section", $Body), $XC->findnodes( "/fb3-body/section/section", $Body)) {
     $Section = $X->Transform2Valid(node=>$Section);
   }
   
