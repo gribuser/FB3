@@ -47,6 +47,7 @@ sub Reaper {
     processor_params => ['underline']
   };
   $AllowElements->{'div'} = {
+    'exclude_if_inside' => ['p','ul','ol','h1','h2','h3','h4','h5','h6','li','pre','table'], #Если div содежрит block-level элементы, мы его чикаем 
     'allow_attributes' => [],
     processor => \&TransformTo,
     processor_params => ['p'],
@@ -201,7 +202,7 @@ sub Reaper {
 
           
 ];
-  my $AC1= [ 
+  my $AC= [ 
           {
             'file' => 'fpart1.xhtml',
             'content' => '
@@ -212,6 +213,23 @@ sub Reaper {
 <h1>FOUNDATION STONES OF CONFIDENCE</h1>
 '
           }];
+
+
+my $AC = [ 
+{
+  'file' => 'xhtml/chapter12.xhtml',
+  'content' => "
+<div>HELLO DIV</div>
+<div class=\"body1\">
+<H2>HELLO</H2>
+</div>
+<H3>HELLO2</H3>
+<div class=\"body\">
+<p class=\"CN\" id=\"ch12\"><span id=\"pg_197\" title=\"197\" type=\"pagebreak\"/><a href=\"contents.xhtml#c_ch12\"><span class=\"ePub-B\">TWELVE</span></a></p>
+<p class=\"CT\"><a href=\"contents.xhtml#c_ch12\"><span class=\"ePub-BI\">The Lessons of Jonas</span></a></p>
+</div>
+"}];
+
 =cut
 
 #print Data::Dumper::Dumper($AC);
@@ -222,16 +240,20 @@ sub Reaper {
     $X->Msg("Processing in structure: ".$_->{'file'}."\n",'i');
     push @Pages, $X->Content2Tree($_);
   }
-  
+
   # [#01]
   my @PagesComplete;
-  
+
   #Клеим смежные title
   foreach my $Page (@Pages) {
 
     #<title/> иногда попадаются - режем
     foreach my $Item (@{$Page->{'content'}}) {
-      if (ref $Item eq 'HASH' && exists $Item->{'title'} && !scalar @{$Item->{'title'}->{'value'}}) {
+      if (
+          ref $Item eq 'HASH'
+          && exists $Item->{'title'}
+          && !scalar @{$Item->{'title'}->{'value'}}
+        ) {
         $Item = undef;
       }
     }
@@ -576,9 +598,9 @@ sub TransformH2Title {
 
   foreach my $Child ($Node->getChildnodes) {
     next if $Child->nodeName =~ /^p$/i;
-      my $NewNode = XML::LibXML::Element->new("p");
-      $NewNode->addChild($Child->cloneNode(1));
-      $Child->replaceNode($NewNode);
+    my $NewNode = XML::LibXML::Element->new("p");
+    $NewNode->addChild($Child->cloneNode(1));
+    $Child->replaceNode($NewNode);
   }
   
   return $Node;

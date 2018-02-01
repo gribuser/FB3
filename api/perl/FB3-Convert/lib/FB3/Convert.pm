@@ -962,7 +962,7 @@ sub ProcNode {
   my $X = shift;
   my $Node = shift;
   my $RelPath = shift; #для честных  уникальных  id и пр.
-  my $LastGoodParent = shift;
+  my $LastGoodParent = lc(shift);
   my @Dist;
  
   my %AllowElements = %{$X->{'allow_elements'}};
@@ -971,29 +971,39 @@ sub ProcNode {
  
   foreach my $Child ( $Node->getChildnodes ) {
 
-    my $Allow =
-      ($Child->nodeName !~ /#text/i
-      && exists $AllowElements{$LastGoodParent}
-      && (
-         # !$AllowElements{$LastGoodParent}->{'allow_elements_inside'} ||
-          exists $AllowElements{$LastGoodParent}->{'allow_elements_inside'}->{$Child->nodeName}) )
-      ? 1 : 0;
+    my $ChildNodeName = lc($Child->nodeName);
+  
+    my $Allow = 1;
+    
+    if ($AllowElements{$ChildNodeName}->{'exclude_if_inside'}) { #проверка на вшивость 1
+      $Allow = 0 if $X->NodeHaveInside($Child, $AllowElements{$ChildNodeName}->{'exclude_if_inside'});
+    }
+
+    if ($Allow) { #проверка на вшивость 2
+      $Allow =
+        ($Child->nodeName !~ /#text/i
+        && exists $AllowElements{$LastGoodParent}
+        && (
+           # !$AllowElements{$LastGoodParent}->{'allow_elements_inside'} ||
+            exists $AllowElements{$LastGoodParent}->{'allow_elements_inside'}->{$ChildNodeName}) )
+        ? 1 : 0;
+    }
     
     #print "LOCALPARENT ".$LastGoodParent." || ".$Child->nodeName." ALLOW".$Allow."\n";
     
     #если ноду прибиваем, нужно чтобы дочерние работали по правилам пэрент-ноды (она ведь теперь и есть пэрент для последующих вложенных)      
-    my $GoodParent = $Allow ? $Child->nodeName : $LastGoodParent; #если нода прошла разрешение, то теперь она становится последней parent в ветке и далее равняемся на ее правила 
+    my $GoodParent = $Allow ? $ChildNodeName : $LastGoodParent; #если нода прошла разрешение, то теперь она становится последней parent в ветке и далее равняемся на ее правила 
       
     #разрешенные атрибуты текущей ноды
     my $AllowAttributes =
       $Allow
-      && exists $AllowElements{$Child->nodeName}->{'allow_attributes'}
-      && $AllowElements{$Child->nodeName}->{'allow_attributes'}
+      && exists $AllowElements{$ChildNodeName}->{'allow_attributes'}
+      && $AllowElements{$ChildNodeName}->{'allow_attributes'}
       ? $X->NodeGetAllowAttributes($Child)
       : 0;
         
-    if ($Allow && $AllowElements{$Child->nodeName}->{'processor'}) {
-      $Child =  $AllowElements{$Child->nodeName}->{'processor'}->($X,'node'=>$Child, 'relpath'=>$RelPath, params=>$AllowElements{$Child->nodeName}->{'processor_params'});
+    if ($Allow && $AllowElements{$ChildNodeName}->{'processor'}) {
+      $Child =  $AllowElements{$ChildNodeName}->{'processor'}->($X,'node'=>$Child, 'relpath'=>$RelPath, params=>$AllowElements{$ChildNodeName}->{'processor_params'});
     }
     
     my $NodeName = $Child->nodeName; #имя могло измениться процессором
@@ -1013,6 +1023,24 @@ sub ProcNode {
   }
 
   return \@Dist;
+}
+
+sub NodeHaveInside {
+  my $X = shift;
+  my $Node = shift;
+  my $Elements = shift;
+  
+  my %H = map {lc($_)=>1} @$Elements;
+  
+  foreach my $Child ( $Node->getChildnodes ) {
+    if (exists $H{lc($Child->nodeName())}) {
+      undef %H;
+      return 1;
+    }
+  }
+  
+  undef %H;
+  return 0;
 }
 
 sub ConvertIds {
