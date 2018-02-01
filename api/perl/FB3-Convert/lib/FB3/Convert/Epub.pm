@@ -214,7 +214,6 @@ sub Reaper {
 '
           }];
 
-
 my $AC = [ 
 {
   'file' => 'xhtml/chapter12.xhtml',
@@ -367,7 +366,14 @@ my $AC = [
 
     }
 
-    push @PagesComplete, {ID=>$Page->{'ID'},'content'=>\@P};
+    my $Content;
+    if (scalar @P > 1) {
+      $Content = \@P;
+    } else {
+      $Content = $P[0]->{'section'}->{'value'};  #если section один, то берем только его внутренности, контейнер section лишний 
+    }
+
+    push @PagesComplete, {ID=>$Page->{'ID'},'content'=>$Content};
   }
   @Pages = ();
 
