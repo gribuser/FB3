@@ -16,7 +16,6 @@ use File::Temp qw/ tempfile tempdir /;
 use FB3::Validator;
 use utf8;
 use HTML::Entities;
-#use open qw(:std :utf8);
 
 our $VERSION = 0.01;
 
