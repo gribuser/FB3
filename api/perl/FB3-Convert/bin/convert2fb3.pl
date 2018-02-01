@@ -3,7 +3,6 @@
 use strict;
 use Getopt::Long;
 use FB3::Convert;
-use File::Basename;
 use utf8;
 
 my %OPT;
@@ -42,7 +41,6 @@ my $Obj = new FB3::Convert(
   'destination_dir' => $OPT{'dd'},
   'destination_file' => $OPT{'df'},
   'verbose' => $OPT{'verbose'},
-  'tmpl_path' => dirname(__FILE__),
   'metadata' => $OPT{'md'},
 
   'meta' => {

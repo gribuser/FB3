@@ -350,6 +350,7 @@ my $AC = [
 
       if (
        scalar @{$Sec->{'section'}->{'value'}} == 1
+        && ref $Sec->{'section'}->{'value'}->[0] eq 'HASH'
         && exists $Sec->{'section'}->{'value'}->[0]->{'title'}
       ) {
 

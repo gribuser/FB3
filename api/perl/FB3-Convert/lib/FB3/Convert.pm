@@ -373,7 +373,6 @@ sub new {
   $X->{'DestinationFile'} = $DestinationFile;
   $X->{'Module'} = $Module;
   $X->{'verbose'} = $Args{'verbose'} ? $Args{'verbose'} : 0;
-  $X->{'tmpl_path'} = $Args{'tmpl_path'} || dirname(__FILE__);
   $X->{'allow_elements'} = \%AllowElementsMain;
   
   #Наша внутренняя структура данных конвертора. шаг влево  - расстрел
