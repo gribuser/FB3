@@ -11,6 +11,7 @@ use utf8;
 use Encode;
 use XML::LibXML;
 use Test::More;
+use File::Temp qw/tempdir/;
 
 plan tests => 1;
 
@@ -30,11 +31,13 @@ foreach my $EpubFile (@Epubs) {
   $EpubFile =~ m/^(\d+)\.epub$/;
   my $FNum = $1;
 
-  diag("Testing ".$DIR.'/'.$EpubFile);
-  
+  my $OldXml = $DIR.'/body'.$FNum.'.xml';
+  diag("Testing ".$DIR.'/'.$EpubFile.' and compare with '.$OldXml);
+  die("file $OldXml not found") unless -f $OldXml;
+ 
   my $Obj = new FB3::Convert(
     'source' => $DIR.'/'.$EpubFile,
-    'destination_dir' => '/tmp/ddd',
+    'destination_dir' => tempdir(CLEANUP=>1),
     'verbose' => 0,
   );
 
@@ -44,18 +47,16 @@ foreach my $EpubFile (@Epubs) {
   if ($ValidErr) {
     diag($ValidErr);
     $Obj->Cleanup();
-    _Clean($Obj);
+    #_Clean($Obj);
     exit;
   }
 
-  my $OldXml = $DIR.'/body'.$FNum.'.xml';
-  die("file $OldXml not found") unless -f $OldXml;
   my $NewXml = $FB3Path.'/fb3/body.xml';
 
   _Diff($Obj,$OldXml,$NewXml);
 
   $Obj->Cleanup();
-  _Clean($Obj);
+  #_Clean($Obj);
 
   ok(1,'Test ok');
   exit;
@@ -143,7 +144,7 @@ sub _Diff {
   if ($Err) {
     diag($Err);
     $X->Cleanup();
-    _Clean($X);
+    #_Clean($X);
     exit;
   }
 
@@ -156,11 +157,8 @@ sub xtrim {
   return $str;
 }
 
-sub _Clean {
-  my $X = shift;
-  
-  diag("Clean src ".$X->{'DestinationDir'});
-  $X->ForceRmDir($X->{'DestinationDir'});
-  
-}
-
+#sub _Clean {
+#  my $X = shift;
+#  diag("Clean src ".$X->{'DestinationDir'});
+#  $X->ForceRmDir($X->{'DestinationDir'});
+#}
