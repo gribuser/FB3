@@ -19,3 +19,5 @@ share/fb3_2_fb2_descr.xsl
 share/fb3_to_fb2_genre.json
 share/general.xsl
 t/00-load.t
+t/test1.t
+
