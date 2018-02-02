@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body" id="27b85434-2c58-41ee-b9f9-dab39ceb2b18">
+  <section id="27b85434-2c58-41ee-b9f9-dab39ceb2b18">
+    <section id="162dbc13-fe8a-5f11-85b6-5b014006c82e">
+      <title>
+        <p>ВСТУПЛЕНИЕ</p>
+        <p>Глава 1</p>
+      </title>
+      <p>
+Иностранная речь
+</p>
+      <p>
+        <span>“Get me a gin!”</span>
+      </p>
+      <p>“Do you know what you want to do when you get old?”</p>
+    </section>
+    <section id="2ac696b9-9d2c-5a77-a401-46a52b6a8b2c">
+      <section id="7e36a161-20d7-4345-9a9b-aee374f58804">
+        <p id="link_e3846b3e-4aab-56e2-b8d3-c933edc65307">
+          <span id="link_222d9ebb-b0e3-597d-a226-f591484b064b"/>
+          <a xlink:href="#162dbc13-fe8a-5f11-85b6-5b014006c82e">Page 1</a>
+        </p>
+      </section>
+      <section id="7e36a161-20d7-4345-9a9b-aee374f58804">
+        <title>
+          <p>«Пучина страстей»</p>
+        </title>
+        <p>Виснет ветвь с орехом грецким, Камень падает на дно. В светлом платьице немецком Вылетает жук в окно.</p>
+        <p>Позабыв свою тревогу И сомнений целый ряд, Выбегает на дорогу Барабанщиков отряд. <span id="link_f1aa9754-aece-5328-a894-15b01f8a85eb"/></p>
+      </section>
+    </section>
+  </section>
+</fb3-body>
