@@ -30,6 +30,8 @@ foreach my $EpubFile (@Epubs) {
   $EpubFile =~ m/^(\d+)\.epub$/;
   my $FNum = $1;
 
+  diag("Testing ".$DIR.'/'.$EpubFile);
+  
   my $Obj = new FB3::Convert(
     'source' => $DIR.'/'.$EpubFile,
     'destination_dir' => '/tmp/ddd',
