@@ -12,7 +12,7 @@ use Cwd qw(cwd abs_path);
 use Getopt::Long;
 use utf8;
 
-my ($Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath);
+my ($Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath, $ImageFileName);
 GetOptions(
 	'force|f'	  =>	\$Force,
 	'in|i=s'		=>	\$In,
