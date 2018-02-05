@@ -12,14 +12,20 @@ use Cwd qw(cwd abs_path);
 use Getopt::Long;
 use utf8;
 
-my ($Force, $In, $Out, $CutChars, $XsdPath);
+my ($Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath);
 GetOptions(
 	'force|f'	  =>	\$Force,
 	'in|i=s'		=>	\$In,
 	'out|o=s'		=>	\$Out,
 	'chars|c=i'	=>	\$CutChars,
 	'xsd|x=s'   =>  \$XsdPath,
-) or usage ("CutPartFB3: makes trial fragment from fb3\n\nUsage:\n\nCutPartFB3.pl in=<inputfile.fb3> out=<outputfile.fb3> chars=<chars_in_result> xsd=<xsd_path>\n");
+  'imagespath|p=s'  =>  \$ImagesPath,
+) or usage ("CutPartFB3: makes trial fragment from fb3\n\nUsage:\n\nCutPartFB3.pl in=<inputfile.fb3> out=<outputfile.fb3> chars=<chars_in_result> xsd=<xsd_path> imagespath=/path/to/fb3/images\n");
+
+if($ImagesPath){
+  die "Path $ImagesPath not found\n" unless -d $ImagesPath;
+  $ImagesPath = $ImagesPath.'/' if $ImagesPath !~ /\/$/;
+}
 
 use constant {
 	NS_XLINK => 'http://www.w3.org/1999/xlink',
@@ -134,6 +140,18 @@ sub ProceedNode {
 		}
 	}
 
+	if($NodeName eq 'image'){
+      $ImageFileName = $Node->getAttribute('href');
+      $ImageFileName =~ s/^#//;
+      # Если нет, то игнорируем, потому что мы уже получили триал и теперь уже работаем с ним
+      if(-f $ImagesPath.$ImageFileName){
+        my ($x, $y) = imgsize($ImagesPath.$ImageFileName);
+        if($x && $y && $x >= 100 && $y >= 100){
+          $CharsProcessed += 200;
+        }
+      }
+  }
+
 	if ($NodeName eq 'notes') {
 		my @NotesChildren = $Node->nonBlankChildNodes;
 		if (scalar @NotesChildren == 0 || (scalar @NotesChildren == 1 && $NotesChildren[0]->nodeName eq 'title')
@@ -175,7 +193,7 @@ sub CleanImages {
 		unlink $_ unless $TrialImageFiles{$_};
 	}
 
-	return 1;	
+	return 1;
 }
 
 sub ZipFolder{
