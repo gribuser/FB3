@@ -20,17 +20,17 @@ diag( "Testing result of body.xml, Perl $], $^X" );
 my $Diff = XML::Diff->new();
 
 my $DIR = dirname(__FILE__).'/examples';
-
 opendir(my $DH, $DIR) || die "Can't opendir $DIR: $!";
-my @Epubs = grep { $_ =~ /\d+\.epub$/ && -f $DIR."/".$_ } readdir($DH);
+my @Epubs = grep { $_ =~ /.+\.epub$/ && -f $DIR."/".$_ } readdir($DH);
 closedir $DH;
 
-foreach my $EpubFile (@Epubs) {
+foreach my $EpubFile (sort{Num($a)<=>Num($b)} @Epubs ) {
 
-  $EpubFile =~ m/^(\d+)\.epub$/;
-  my $FNum = $1;
+  $EpubFile =~ m/^(.+)\.epub$/;
+  my $FName = $1;
 
-  my $OldXml = $DIR.'/body'.$FNum.'.xml';
+  my $OldXml = $DIR.'/'.$FName.'.xml';
+
   diag("Testing ".$DIR.'/'.$EpubFile.' and compare with '.$OldXml);
   die("file $OldXml not found") unless -f $OldXml;
  
@@ -55,8 +55,16 @@ foreach my $EpubFile (@Epubs) {
 
   $Obj->Cleanup();
 
-  ok(1,'Test ok');
-  exit;
+}
+
+ok(1,'Test ok');
+exit;
+
+sub Num {
+  my $Fname=shift;
+  $Fname =~ /(\d+)\.epub/;
+  $Fname=$1;
+  return $Fname;
 }
 
 sub _Diff {
