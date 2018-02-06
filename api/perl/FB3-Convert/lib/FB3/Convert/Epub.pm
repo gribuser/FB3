@@ -122,17 +122,17 @@ sub Reaper {
 
   unless (defined $Description->{'TITLE-INFO'}->{'BOOK-TITLE'}) {
     my $Title = $XC->findnodes('/root:package/root:metadata/dc:title',$RootDoc)->[0];
-    $Description->{'TITLE-INFO'}->{'BOOK-TITLE'} = $self->html_trim($Title->to_literal) if $Title;
+    $Description->{'TITLE-INFO'}->{'BOOK-TITLE'} = $self->EncodeUtf8($self->html_trim($Title->to_literal)) if $Title;
   }
 
   unless (defined $Description->{'TITLE-INFO'}->{'ANNOTATION'}) {
     my $Annotation = $XC->findnodes('/root:package/root:metadata/dc:description',$RootDoc)->[0];
-    $Description->{'TITLE-INFO'}->{'ANNOTATION'} = $self->EraseTags($self->html_trim($Annotation->to_literal)) if $Annotation;
+    $Description->{'TITLE-INFO'}->{'ANNOTATION'} = $self->EncodeUtf8($self->EraseTags($self->html_trim($Annotation->to_literal))) if $Annotation;
   }
 
   unless (defined $Description->{'TITLE-INFO'}->{'PUBLISHER'}) {
     my $Publisher = $XC->findnodes('/root:package/root:metadata/dc:publisher',$RootDoc)->[0];
-    $Description->{'TITLE-INFO'}->{'PUBLISHER'} = $self->html_trim($Publisher->to_literal) if $Publisher;
+    $Description->{'TITLE-INFO'}->{'PUBLISHER'} = $self->EncodeUtf8($self->html_trim($Publisher->to_literal)) if $Publisher;
   }
   
   unless (defined $Description->{'TITLE-INFO'}->{'GENRES'}) { 

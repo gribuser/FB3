@@ -15,6 +15,7 @@ use File::Copy qw(copy);
 use File::Temp qw/ tempfile tempdir /;
 use FB3::Validator;
 use utf8;
+use Encode;
 use HTML::Entities;
 
 our $VERSION = 0.01;
@@ -1299,6 +1300,13 @@ sub BuildAuthorName  {
     'middle-name' => $MiddleName,
     'last-name' => $LastName,
   };
+}
+
+sub EncodeUtf8 {
+  my $X = shift;
+  my $Out = shift;
+  $Out = Encode::encode_utf8($Out);
+  return $Out;
 }
 
 sub ParseMetaFile {

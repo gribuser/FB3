@@ -91,11 +91,18 @@ sub _Diff {
   my $XMLDoc = XML::LibXML->new();
   my $NodeDoc = $XMLDoc->parse_string($Diffgram) || die "Can't parse! ".$!;
   my $Root = $NodeDoc->getDocumentElement;
-
+  
   my $Err;
   foreach my $Event ( $Root->getChildnodes ) {
     my $EventName = $Event->nodeName();
-    my $EventNodeName = $Event->getAttribute('first-child-of') || $Event->getAttribute('follows');
+
+    my $EventNodeName;
+    my $ContainerName;
+    if ($EventNodeName = $Event->getAttribute('first-child-of')) {
+      $ContainerName = 'first-child-of';
+    } elsif ($EventNodeName = $Event->getAttribute('follows')){
+      $ContainerName = 'follows';
+    }
 
     my $DiffError;
     foreach my $NodeDiff ($Event->getChildnodes) {
@@ -105,9 +112,7 @@ sub _Diff {
 
         if ($DiffName eq 'xvcs:attr-update') {
 
-          if ($NodeDiff->getAttribute('name') =~ /^(id|xlink:href)$/i) { #it's OK event
-            next;
-          }
+          next if ($NodeDiff->getAttribute('name') =~ /^(src|id|xlink:href)$/i); #it's OK event
 
           $DiffError .= $DiffName."\n";
           $DiffError .= "  name: ".$NodeDiff->getAttribute('name')."\n";
@@ -135,7 +140,7 @@ sub _Diff {
     if ($DiffError) {
       $Err .= "Critical diff!\n";
       $Err .= " event: ".xtrim($EventName)."\n";
-      $Err .= " node: ".$EventNodeName."\n";
+      $Err .= " ".$ContainerName.": ".$EventNodeName."\n";
       $Err .= " content: ".$DiffError."\n\n";
     }
 
