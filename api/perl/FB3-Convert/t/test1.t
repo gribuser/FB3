@@ -33,7 +33,7 @@ foreach my $EpubFile (sort{Num($a)<=>Num($b)} @Epubs ) {
 
   diag("Testing ".$DIR.'/'.$EpubFile.' and compare with '.$OldXml);
   die("file $OldXml not found") unless -f $OldXml;
- 
+
   my $Obj = new FB3::Convert(
     'source' => $DIR.'/'.$EpubFile,
     'destination_dir' => tempdir(CLEANUP=>1),

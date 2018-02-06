@@ -181,10 +181,60 @@ sub Reaper {
   my @PagesComplete;
 
   #Клеим смежные title
+  #Отрезаем ненужное
+
   foreach my $Page (@Pages) {
 
-    #<title/> иногда попадаются - режем
+    #^<p/> и emptyline режем в начале
     foreach my $Item (@{$Page->{'content'}}) {
+
+      if (
+          ref $Item eq 'HASH'
+          && exists $Item->{'p'}
+          && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}) )
+        ) {
+        $Item = undef;
+      } else {
+        last;
+      }
+    }
+
+    #^<p/> и emptyline режем в конце
+    foreach my $Item (reverse @{$Page->{'content'}}) {
+      if (
+          ref $Item eq 'HASH'
+          && exists $Item->{'p'}
+          && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}) )
+        ) {
+        $Item = undef;
+      } else {
+        last;
+      }
+    }
+    
+    my $c=-1;
+    my $EmptyLineDetect=undef;
+    foreach my $Item (@{$Page->{'content'}}) {
+      $c++;
+      next unless defined $Item;
+      
+      #клеим смежные emptyline
+      if (ref $Item eq 'HASH'
+          && exists $Item->{'p'}
+          && $X->IsEmptyLineValue($Item->{'p'}->{'value'})
+        ) {
+       
+        if (defined $EmptyLineDetect) {
+          push @{$Page->{'content'}->[$EmptyLineDetect]->{p}->{'value'}}, $Item->{'p'}->{'value'};
+          $Item = undef;
+          next;
+        }
+        $EmptyLineDetect = $c;
+      } else {
+        $EmptyLineDetect = undef;
+      }
+    
+      #<title/> иногда попадаются - режем
       if (
           ref $Item eq 'HASH'
           && exists $Item->{'title'}
@@ -192,6 +242,7 @@ sub Reaper {
         ) {
         $Item = undef;
       }
+      
     }
 
     for (my $c = scalar @{$Page->{'content'}}; $c>=0; $c--) {
@@ -262,7 +313,7 @@ sub Reaper {
         next;
       }
 
-      push @{$Sec->{'section'}->{'value'}}, $Item;
+      push @{$Sec->{'section'}->{'value'}}, $Item if $Item;
 
       if ( #страница закрывается, пушим section что там в нем осталось
         $c >= scalar @{$Page->{'content'}}
@@ -407,6 +458,8 @@ sub AssembleContent {
       }
 
       my $Content = $X->InNode($Body);
+      $Content =~ s/^\s*//;
+      $Content =~ s/\s*$//;
       push @Pages, {
         content=>$Content,
         file=>$Item->{'href'}

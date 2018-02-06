@@ -921,6 +921,7 @@ sub Content2Tree {
 sub NormalizeTree {
   my $X = shift;
   my $Data = shift;
+  
   return unless ref $Data eq 'ARRAY';
 
   my @Ar;
@@ -940,8 +941,13 @@ sub NormalizeTree {
     }
 
     if (!ref $Item) {
-      my $Str = $X->trim($Item);
-      $Str =~ s/[\s\t]//g;
+      my $Str;
+      unless ($Item =~ /^\s+$/) {
+        $Str = $X->trim($Item);
+      } else {
+        $Str = $Item;
+      }
+      $Str =~ s/[\n\r]//g;
       next if $Str eq '';
     }
 
@@ -1307,6 +1313,15 @@ sub EncodeUtf8 {
   my $Out = shift;
   $Out = Encode::encode_utf8($Out);
   return $Out;
+}
+
+sub IsEmptyLineValue {
+  my $X = shift;
+  my $Item = shift;
+  return 0 unless ref $Item eq 'ARRAY';
+  
+  return 1 if (!scalar @$Item || (scalar @$Item == 1 && $Item->[0] =~ /^[\s\t\n\r]+$/) );
+  return 0;
 }
 
 sub ParseMetaFile {
