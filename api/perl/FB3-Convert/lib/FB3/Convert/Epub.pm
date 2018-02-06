@@ -83,7 +83,6 @@ sub Reaper {
 
   $X->Msg("Parse rootfile ".$RootFile."\n");
   my $RootDoc = XML::LibXML->new()->parse_file($RootFile) || die "Can't parse file ".$RootFile;
-  #  my $RootFile = $XC->findnodes('/root:package/root:rootfiles/container:rootfile',$CtDoc)->[0]->getAttribute('full-path');
 
   # список файлов с контентом
   my @Manifest;
@@ -97,7 +96,6 @@ sub Reaper {
   my @Spine;
   for my $MItem ($XC->findnodes('/root:package/root:spine/root:itemref',$RootDoc)) {
     my $IdRef = $MItem->getAttribute('idref');
-   ## next if grep{$_ eq $IdRef} ("cover","title","annotation"); #очень не уверен, что это зарезервированные idref. Но в epub-мете нигде о них больше не сказано
     push @Spine, $IdRef;
   }
 
@@ -173,67 +171,6 @@ sub Reaper {
 
   #КОНТЕНТ
 
-=pod
-  my $AC= [
-    
-          {
-            'file' => 'c02.xhtml',
-            'content' => "
-            
-            <p>TEXT FROM 2________</p>  
-<h1>UNDERSTANDING CONFIDENCE</h1>
-<h1>UNDERSTANDING CONFIDENCE2</h1>
-<p>ddddd</p>
-<h1>UNDERSTANDING CONFIDENCE3</h1>
-<p>END</p>
-"},
- {
-           'file' => 'ftitlepage.xhtml',
-            'content' => '
-<header>
- <h1 class="bookTitle"><span class="center">CONFIDENCE <des>DESSS</des> POCKETBOOK</span></h1>
-</header>
-<section>
-  <h2 class="bookSubTitle"><span class="center">LITTLE EXERCISES FOR A SELF-ASSURED LIFE</span></h2>
-  <p><b>Gill Hasson</b></p>
-</section>
-'
-          },
-
-          
-];
-  my $AC= [ 
-          {
-            'file' => 'fpart1.xhtml',
-            'content' => '
-            <p>fdfd</p>
-<h1>ddddd</h1>
-<h1/>
-            <p>fdfd</p>
-<h1>FOUNDATION STONES OF CONFIDENCE</h1>
-'
-          }];
-
-my $AC = [ 
-{
-  'file' => 'xhtml/chapter12.xhtml',
-  'content' => "
-<div>HELLO DIV</div>
-<div class=\"body1\">
-<H2>HELLO</H2>
-</div>
-<H3>HELLO2</H3>
-<div class=\"body\">
-<p class=\"CN\" id=\"ch12\"><span id=\"pg_197\" title=\"197\" type=\"pagebreak\"/><a href=\"contents.xhtml#c_ch12\"><span class=\"ePub-B\">TWELVE</span></a></p>
-<p class=\"CT\"><a href=\"contents.xhtml#c_ch12\"><span class=\"ePub-BI\">The Lessons of Jonas</span></a></p>
-</div>
-"}];
-
-=cut
-
-#print Data::Dumper::Dumper($AC);
-#exit;
-
   my @Pages;
   foreach (@$AC) {
     $X->Msg("Processing in structure: ".$_->{'file'}."\n",'i');
@@ -271,7 +208,6 @@ my $AC = [
 
           if (ref $Last eq 'HASH' && exists $Last->{'title'}) { #перед нами title, будем клеить текущий title с ним
             $LastTitleOK = $i;
-            #print "FIND TITLE".Data::Dumper::Dumper($Last->{'title'}->{'value'});
             last;
           } else {
             last; #наткнулись на НЕ-title, хватит перебирать
@@ -323,10 +259,7 @@ my $AC = [
         push @P, clone($Sec) if @{$Sec->{'section'}->{'value'}};
         $Sec->{'section'}->{'value'} = []; #надо закрыть section
         push @{$Sec->{'section'}->{'value'}}, $Item; #и продолжить пушить в новый
-       # push @P, clone($Sec);
-       # $Sec->{'section'}->{'value'} = [];
         next;
-
       }
 
       push @{$Sec->{'section'}->{'value'}}, $Item;
@@ -378,9 +311,6 @@ my $AC = [
   }
   @Pages = ();
 
-#print Data::Dumper::Dumper(\@PagesComplete);
-#exit;
-  
   my @Body;
   foreach my $PC (@PagesComplete) {
     push @Body,  {
@@ -434,24 +364,6 @@ sub AssembleContent {
     #  };
     #}
 
-#    if ($Item->{'id'} =~ /^cover$/) { # ты точно cover?!
-#      my $CoverFile = $SelfData{'ContentDir'}.'/'.$Item->{'href'};
-#      my $CoverDoc = $XMLDoc->parse_file($CoverFile) || die "Can't parse file ".$CoverFile;
-#      my $Cover = $XC->findnodes('//xhtml:img',$CoverDoc)->[0];  #или может все-таки xhtml:img[@class="coverpage"] ? не слишком узко?
-#        if ($Cover) {
-#          my $CoverSrcPath = $Cover->getAttribute('src');
-
-#          my $CoverId = "cover_".$Item->{'id'};
-#          my $H = {
-#            'src_path' => $Cover->{'src'},
-#            'new_path' => undef,
-#            'id' => $CoverId,
-#          };
-#          my $Cover = $X->ProcessImg(src=>$Cover->{'src'}); #грязный хак
-#          $X->{'STRUCTURE'}->{'DESCRIPTION'}->{'TITLE-INFO'}->{'COVER'} = $Cover->{'new_path'};
-#        }
-#    }
-
   }
 
   #бежим по списку, составляем скелет контекстной части
@@ -481,7 +393,6 @@ sub AssembleContent {
 
             my $AttrName = $1;
             my $AttrValue =   $NodeAttr->getAttribute($Attr->nodeName);
-            #print $Attr->nodeName." || ".$AttrName." || ".$AttrValue."\n";
 
             $NodeAttr->setAttribute($AttrName => $AttrValue) unless $NodeAttr->getAttribute($AttrName); #переименуем ns-Образный в обычный, если такового нет
             $NodeAttr->removeAttribute( $Attr->nodeName ); #удалим ns-образный
@@ -512,11 +423,6 @@ sub AssembleContent {
   );
 
 }
-
-#sub _Unpacker {
-#    my $self = shift;
-#    print "UNPACK from plugin\n";
-#}
 
 #Процессоры обработки нод
 
@@ -573,7 +479,6 @@ sub ProcessHref {
 
   my $NewHref =
   $Href ?
-        #$Href =~ /^[a-z]+\:\/\// || $Href =~ /^mailto:.+/
         $Href =~ /^[a-zA-Z]+\:/
           ? $Href
           : '#'.($Anchor ? 'link_' : '').$X->Path2ID( ($Link

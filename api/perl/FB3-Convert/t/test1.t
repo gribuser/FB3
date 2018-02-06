@@ -15,7 +15,6 @@ use File::Temp qw/tempdir/;
 
 plan tests => 1;
 
-
 diag( "Testing result of body.xml, Perl $], $^X" );
 
 my $Diff = XML::Diff->new();
@@ -47,7 +46,6 @@ foreach my $EpubFile (@Epubs) {
   if ($ValidErr) {
     diag($ValidErr);
     $Obj->Cleanup();
-    #_Clean($Obj);
     exit;
   }
 
@@ -56,7 +54,6 @@ foreach my $EpubFile (@Epubs) {
   _Diff($Obj,$OldXml,$NewXml);
 
   $Obj->Cleanup();
-  #_Clean($Obj);
 
   ok(1,'Test ok');
   exit;
@@ -73,7 +70,6 @@ sub _Diff {
   close $fho;
   $OldXml = Encode::decode_utf8(Encode::encode_utf8($OldXml));
   $OldXml =~ s#xmlns="http://www.fictionbook.org/FictionBook3/body"##g;
-#  print $OldXml;
 
   open my $fhn, '<', $NewFile or die $!;
   my $NewXml;
@@ -81,17 +77,13 @@ sub _Diff {
   $NewXml = Encode::decode_utf8(Encode::encode_utf8($NewXml));
   close $fhn;
   $NewXml =~ s#xmlns="http://www.fictionbook.org/FictionBook3/body"##g;
-#  print $NewXml;
 
   my $Diffgram = $Diff->compare(-old => $OldXml, -new => $NewXml);
-
-#print $Diffgram;
 
   my $XMLDoc = XML::LibXML->new();
   my $NodeDoc = $XMLDoc->parse_string($Diffgram) || die "Can't parse! ".$!;
   my $Root = $NodeDoc->getDocumentElement;
 
- # print $Root->nodeName();
   my $Err;
   foreach my $Event ( $Root->getChildnodes ) {
     my $EventName = $Event->nodeName();
@@ -144,7 +136,6 @@ sub _Diff {
   if ($Err) {
     diag($Err);
     $X->Cleanup();
-    #_Clean($X);
     exit;
   }
 
@@ -157,8 +148,3 @@ sub xtrim {
   return $str;
 }
 
-#sub _Clean {
-#  my $X = shift;
-#  diag("Clean src ".$X->{'DestinationDir'});
-#  $X->ForceRmDir($X->{'DestinationDir'});
-#}

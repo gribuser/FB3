@@ -419,7 +419,7 @@ sub new {
     #   'new_path' => 'img/794__1000516292.jpg'
     # }
   ],
-  'CSS_LIST' => [ # так же состилями
+  'CSS_LIST' => [ # так же со стилями
     #{
     #  'id' => 'mainCSS',
     #  'new_path' => undef,
@@ -490,7 +490,6 @@ sub _Unpacker {
   my $X = shift;
   my $Source = shift;
 
-  #my $TMPPath = '/tmp/epub';
   my $TMPPath = tempdir();
 
   $X->{'SourceDir'} = $TMPPath;
@@ -835,14 +834,12 @@ sub Obj2DOM {
   undef $Doc unless $Sub; #первый заход парсинга. $Doc fresh and virginity
 
   unless ($Doc) {
-    #$X->Msg("CREATE DOC\n");
     $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
   }
 
   my $First=0;
   if (!$Parent) {
     $First=1;
-    #$X->Msg("CREATE ROOT\n");
     $Parent = $Doc->createElement($Root->{'name'});
     if ($Root->{'attributes'}) {
       foreach my $RAttr ( keys %{$Root->{'attributes'}}) {
@@ -855,11 +852,9 @@ sub Obj2DOM {
 
     foreach my $Key (sort keys %$Obj) {
       my $Value = $Obj->{$Key};
-      #$X->Msg("KEY ".$Key."\n","w");
 
       if ($Key eq 'attributes') {
         foreach (sort keys %{$Obj->{'attributes'}}) {
-          #$X->Msg("CREATE ATTR $_\n");
           $Compact = 1 if $_ eq 'CP_compact' && $Obj->{'attributes'}->{$_}; #все следующие вложенные ноды - в формате compact
           $Parent->addChild($Doc->createAttribute( $_ => $Obj->{'attributes'}->{$_} )) unless $First;
         }
@@ -887,7 +882,6 @@ sub Obj2DOM {
       }
     }
   } elsif (ref $Obj eq '') {
-    #$X->Msg("PLAIN NODE $Obj\n");
     $Parent->appendTextNode($Obj);
   }
 
@@ -960,13 +954,11 @@ sub NormalizeTree {
 sub ProcNode {
   my $X = shift;
   my $Node = shift;
-  my $RelPath = shift; #для честных  уникальных  id и пр.
+  my $RelPath = shift;
   my $LastGoodParent = lc(shift);
   my @Dist;
  
   my %AllowElements = %{$X->{'allow_elements'}};
-
-#  print "PARENT".$LastGoodParent."\n";
  
   foreach my $Child ( $Node->getChildnodes ) {
 
@@ -987,9 +979,7 @@ sub ProcNode {
             exists $AllowElements{$LastGoodParent}->{'allow_elements_inside'}->{$ChildNodeName}) )
         ? 1 : 0;
     }
-    
-    #print "LOCALPARENT ".$LastGoodParent." || ".$Child->nodeName." ALLOW".$Allow."\n";
-    
+
     #если ноду прибиваем, нужно чтобы дочерние работали по правилам пэрент-ноды (она ведь теперь и есть пэрент для последующих вложенных)      
     my $GoodParent = $Allow ? $ChildNodeName : $LastGoodParent; #если нода прошла разрешение, то теперь она становится последней parent в ветке и далее равняемся на ее правила 
       
@@ -1018,7 +1008,6 @@ sub ProcNode {
           }
         :   &ProcNode($X,$Child,$RelPath,$GoodParent) # не выводим тэг, шагаем дальше строить дерево
         ;
-  #  $GoodParent = $LastGoodParent;
   }
 
   return \@Dist;
