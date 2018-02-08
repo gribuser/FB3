@@ -1194,6 +1194,7 @@ sub Error {
   my $X = shift;
   my $ErrStr = shift;
   Msg($X,$ErrStr."\n",'e');
+  ForceRmDir($X,$X->{'DestinationDir'});
   exit;
 }
 
