@@ -77,6 +77,8 @@ unless( $CustomMetaPath ) {
 }
 
 my $FB2Doc = XML::LibXML->load_xml( location => $ARGV[0] );
+$FB2Doc->setEncoding('utf-8');
+
 my $XPC = XML::LibXML::XPathContext->new;
 my $XSLT = XML::LibXSLT->new;
 $XPC->registerNs('fb', 'http://www.gribuser.ru/xml/fictionbook/2.0');
@@ -225,7 +227,7 @@ for my $ImgNode ( $XPC->findnodes('//fb:section[ancestor::fb:body[not(@name="not
 my $TmpFB2File = "$TmpDir/book.fb2";
 open my $fh, '>', $TmpFB2File
 	or die "Could not open $TmpFB2File for writing";
-print $fh decode_utf8( $FB2Doc->toString );
+print $fh decode_utf8($FB2Doc->toString);
 close $fh;
 
 #prepare directory structure for FB3
