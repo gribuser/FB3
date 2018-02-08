@@ -437,6 +437,8 @@ sub AssembleContent {
       $ContentDoc->setEncoding('utf-8');
       
       my $Body = $XC->findnodes('/xhtml:html/xhtml:body',$ContentDoc)->[0];
+      
+      $X->Error("Can't find /html/body node in file $ContentFile. This is true XML?") unless $Body;
 
       #перерисуем все ns-подобные атрибуты. мешают при дальнейшем парсинге
       foreach my $NodeAttr ( $XC->findnodes('//*[@*]', $Body) ) {
