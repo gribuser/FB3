@@ -494,7 +494,7 @@ sub _Unpacker {
   my $X = shift;
   my $Source = shift;
 
-  my $TMPPath = tempdir();
+  my $TMPPath = tempdir(CLEANUP=>1);
 
   $X->{'SourceDir'} = $TMPPath;
   $X->{'unzipped'} = 1;
@@ -683,7 +683,7 @@ sub FB3Create {
   
   print FHdesc qq{<fb3-relations>
     };
-  
+
   foreach (@{$TitleInfo->{'AUTHORS'}}) {
 
     my $First = $_->{'first-name'};
