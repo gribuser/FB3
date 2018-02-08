@@ -6,6 +6,9 @@ use FB3::Convert;
 use utf8;
 
 my %OPT;
+
+
+
 GetOptions(
   'verbose|v:1' => \$OPT{'verbose'},           
   'help|h' => \$OPT{'help'},
@@ -24,6 +27,9 @@ GetOptions(
   'meta_authors=s' => \$OPT{'meta_authors'},
   'meta_date=s' => \$OPT{'meta_date'},
 ) || help();
+
+$OPT{'source'} = $ARGV[0] unless $OPT{'source'};
+$OPT{'df'} = $ARGV[1] unless $OPT{'ds'};
 
 if ($OPT{'vl'}) {
   my $Obj = new FB3::Convert(empty=>1);
@@ -69,7 +75,7 @@ $Obj->Cleanup();
 sub help {
   print <<_END
   
-  USAGE: convert2fb3.pl --source|s= [--verbose|v] [--help|h] [(--destination_dir|dd) | (--destination_file|df)] | (--name|n)
+  USAGE: convert2fb3.pl --source|s= <input.file> [--verbose|v] [--help|h] [(--destination_dir|dd <dest.fb3>) | (--destination_file|df)]  [(--name|n)]
   
   --help : print this text
   --verbose : print processing status. Show parsing warnings if Verbose > 1
