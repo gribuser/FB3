@@ -1315,7 +1315,7 @@ sub BuildAuthorName  {
 sub EncodeUtf8 {
   my $X = shift;
   my $Out = shift;
-  
+  return $Out;
   $Out = Encode::encode_utf8($Out);
   return $Out;
 }

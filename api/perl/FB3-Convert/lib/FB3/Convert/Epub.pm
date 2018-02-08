@@ -390,14 +390,6 @@ sub AssembleContent {
   my $XC = XML::LibXML::XPathContext->new();
   $XC->registerNs('xhtml', $NS{'xhtml'});
 
-  my $XMLDoc = XML::LibXML->new(
-    expand_entities => 0, # не считать & за entity
-    no_network => 1, # не будем тянуть внешние вложения
-    recover => 2, # не падать при кривой структуре. например, не закрыт тег. entity и пр | => 1 - вопить, 2 - совсем молчать
-    load_ext_dtd => 0 # полный молчок про dtd
-  );
-  $XMLDoc->expand_entities(0); #или так?
-
   $X->Error('Spin list is empty or not defined!') unless scalar @$Spine;
 
   my %ReverseManifest; #так проще грепать
@@ -432,8 +424,15 @@ sub AssembleContent {
 
       $X->Msg("Parse content file ".$ContentFile."\n");
 
-      my $ContentDoc = $XMLDoc->parse_file($ContentFile) || die "Can't parse file ".$ContentFile;
-
+      my $ContentDoc = XML::LibXML->load_xml(
+        location => $ContentFile,
+        expand_entities => 0, # не считать & за entity
+        no_network => 1, # не будем тянуть внешние вложения
+        recover => 2, # не падать при кривой структуре. например, не закрыт тег. entity и пр | => 1 - вопить, 2 - совсем молчать
+        load_ext_dtd => 0 # полный молчок про dtd
+      );
+      $ContentDoc->setEncoding('utf-8');
+      
       my $Body = $XC->findnodes('/xhtml:html/xhtml:body',$ContentDoc)->[0];
 
       #перерисуем все ns-подобные атрибуты. мешают при дальнейшем парсинге
