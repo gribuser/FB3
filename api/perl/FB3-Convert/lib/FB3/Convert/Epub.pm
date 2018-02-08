@@ -165,7 +165,7 @@ sub Reaper {
   unless (defined $Description->{'TITLE-INFO'}->{'AUTHORS'}) { 
     my @Authors;
     for my $Author ($XC->findnodes('/root:package/root:metadata/dc:creator',$RootDoc)) {
-      my $Author = $self->BuildAuthorName($self->html_trim($Author->to_literal));
+      my $Author = $self->BuildAuthorName($self->EncodeUtf8($self->html_trim($Author->to_literal)));
       push @Authors, $Author;
     }
     $Description->{'TITLE-INFO'}->{'AUTHORS'} = \@Authors;

@@ -15,7 +15,7 @@ use File::Copy qw(copy);
 use File::Temp qw/ tempfile tempdir /;
 use FB3::Validator;
 use utf8;
-use Encode;
+use Encode qw(encode_utf8 decode_utf8);
 use HTML::Entities;
 
 our $VERSION = 0.01;
@@ -1315,7 +1315,6 @@ sub BuildAuthorName  {
 sub EncodeUtf8 {
   my $X = shift;
   my $Out = shift;
-  return $Out;
   $Out = Encode::encode_utf8($Out);
   return $Out;
 }
