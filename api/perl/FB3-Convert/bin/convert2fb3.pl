@@ -6,9 +6,6 @@ use FB3::Convert;
 use utf8;
 
 my %OPT;
-
-
-
 GetOptions(
   'verbose|v:1' => \$OPT{'verbose'},           
   'help|h' => \$OPT{'help'},
