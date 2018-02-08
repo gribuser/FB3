@@ -374,6 +374,7 @@ sub new {
   $X->{'DestinationFile'} = $DestinationFile;
   $X->{'Module'} = $Module;
   $X->{'verbose'} = $Args{'verbose'} ? $Args{'verbose'} : 0;
+  $X->{'showname'} = $Args{'showname'} ? 1 : 0;
   $X->{'allow_elements'} = \%AllowElementsMain;
   
   #Наша внутренняя структура данных конвертора. шаг влево  - расстрел
@@ -477,6 +478,8 @@ sub Reap {
   my $X = shift;
   my $Processor = $MODULES{$X->{'ClassName'}};
   my $File = $X->{'Source'};
+  
+  $X->Msg("working with file ".$File."\n",'w',1) if $X->{'showname'} || $X->{'verbose'};
   $File = $Processor->{class}->_Unpacker($X,$File) if $Processor->{'unpack'};
   
   my $ProcStrcture = $Processor->{'class'}->Reaper($X, source => ($File || $X->{'Source'}));
@@ -1171,8 +1174,9 @@ sub Msg {
   my $X = shift;
   my $Str = shift;
   my $Type = shift || 'i';
+  my $Force = shift;
 
-  return if !$X->{'verbose'} && $Type ne 'e';
+  return if !$X->{'verbose'} && $Type ne 'e' && !$Force;
 
   my $Color;
   if ($Type eq 'w') {
@@ -1311,6 +1315,7 @@ sub BuildAuthorName  {
 sub EncodeUtf8 {
   my $X = shift;
   my $Out = shift;
+  
   $Out = Encode::encode_utf8($Out);
   return $Out;
 }

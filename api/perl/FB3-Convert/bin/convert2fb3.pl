@@ -7,13 +7,14 @@ use utf8;
 
 my %OPT;
 GetOptions(
-  'verbose|v=s' => \$OPT{'verbose'},           
+  'verbose|v:1' => \$OPT{'verbose'},           
   'help|h' => \$OPT{'help'},
   'source|s=s' => \$OPT{'source'},
   'destination_dir|dd=s' => \$OPT{'dd'},
   'destination_file|df=s' => \$OPT{'df'},
   'metadata|md=s' => \$OPT{'md'},
   'validate|vl=s' => \$OPT{'vl'},
+  'name|n:1' => \$OPT{'showname'},
   
   'meta_id=s' => \$OPT{'meta_id'},
   'meta_lang|meta_language=s' => \$OPT{'meta_lang'},
@@ -42,6 +43,7 @@ my $Obj = new FB3::Convert(
   'destination_file' => $OPT{'df'},
   'verbose' => $OPT{'verbose'},
   'metadata' => $OPT{'md'},
+  'showname' => $OPT{'showname'},
 
   'meta' => {
     'id' => $OPT{'meta_id'},
@@ -67,7 +69,7 @@ $Obj->Cleanup();
 sub help {
   print <<_END
   
-  USAGE: convert2fb3.pl --source|s= [--verbose|v] [--help|h] [(--destination_dir|dd) | (--destination_file|df)]
+  USAGE: convert2fb3.pl --source|s= [--verbose|v] [--help|h] [(--destination_dir|dd) | (--destination_file|df)] | (--name|n)
   
   --help : print this text
   --verbose : print processing status. Show parsing warnings if Verbose > 1
@@ -75,6 +77,7 @@ sub help {
   --destination_dir : path for non zipped fb3
   --destination_file :  path for zipped fb3
   --metadata : XML meta description file
+  --name : show name of reaped epub file
   
   META:
   --meta_id
