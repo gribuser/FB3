@@ -72,7 +72,7 @@ $Obj->Cleanup();
 sub help {
   print <<_END
   
-  USAGE: convert2fb3.pl --source|s= <input.file> [--verbose|v] [--help|h] [(--destination_dir|dd <dest.fb3>) | (--destination_file|df)]  [(--name|n)]
+  USAGE: convert2fb3.pl --source|s= <input.file> [--verbose|v] [--help|h] [(--destination_dir|dd <dest.fb3>) | (--destination_file|df)]  [(--name|n)] [--validate|vl=]
   
   --help : print this text
   --verbose : print processing status. Show parsing warnings if Verbose > 1
@@ -81,6 +81,7 @@ sub help {
   --destination_file :  path for zipped fb3
   --metadata : XML meta description file
   --name : show name of reaped epub file
+  --validate : don't convert, only validate fb3 file from path
   
   META:
   --meta_id
