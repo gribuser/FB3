@@ -82,7 +82,9 @@ sub Reaper {
   $X->{'ContentDir'} =~ s/\/?[^\/]+$//;
 
   $X->Msg("Parse rootfile ".$RootFile."\n");
-  my $RootDoc = XML::LibXML->new()->parse_file($RootFile) || die "Can't parse file ".$RootFile;
+  
+  my $RootDoc = XML::LibXML->load_xml( location => $RootFile ) || die "Can't parse file ".$RootFile;
+  $RootDoc->setEncoding('utf-8');
 
   # список файлов с контентом
   my @Manifest;
