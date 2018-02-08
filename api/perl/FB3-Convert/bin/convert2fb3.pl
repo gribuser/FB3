@@ -26,7 +26,7 @@ GetOptions(
 ) || help();
 
 $OPT{'source'} = $ARGV[0] unless $OPT{'source'};
-$OPT{'df'} = $ARGV[1] unless $OPT{'ds'};
+$OPT{'df'} = $ARGV[1] unless $OPT{'df'};
 
 if ($OPT{'vl'}) {
   my $Obj = new FB3::Convert(empty=>1);
