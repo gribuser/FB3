@@ -172,6 +172,8 @@ sub Reaper {
     $Description->{'TITLE-INFO'}->{'AUTHORS'} = \@Authors;
   }
 
+  #print Data::Dumper::Dumper($AC);
+  
   #КОНТЕНТ
 
   my @Pages;
@@ -242,9 +244,12 @@ sub Reaper {
       if (
           ref $Item eq 'HASH'
           && exists $Item->{'title'}
-          && !scalar @{$Item->{'title'}->{'value'}}
         ) {
-        $Item = undef;
+        if ( !scalar @{$Item->{'title'}->{'value'}} ) {
+          $Item = undef;
+        } else {
+          $Item->{'title'}->{'value'} = CleanTitle($X,$Item->{'title'}->{'value'});
+        }
       }
       
     }
@@ -480,6 +485,19 @@ sub AssembleContent {
     pages => \@Pages,            
   );
 
+}
+
+sub CleanTitle {
+  my $X = shift;
+  my $Node = shift;
+
+  return $Node unless ref $Node eq 'ARRAY';
+
+  foreach my $Item (@$Node) {
+    $Item = undef if ref $Item eq 'HASH' && exists $Item->{'p'} && !scalar @{$Item->{'p'}->{'value'}};  
+  }
+
+  return $Node;
 }
 
 sub CleanNodeEmptyId {

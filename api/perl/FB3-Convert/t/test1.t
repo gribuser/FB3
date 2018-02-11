@@ -87,11 +87,11 @@ sub _Diff {
   $NewXml =~ s#xmlns="http://www.fictionbook.org/FictionBook3/body"##g;
 
   my $Diffgram = $Diff->compare(-old => $OldXml, -new => $NewXml);
+  $Diffgram =~ s#(<xvcs:diffgram)#$1 xmlns:xlink="http://www.w3.org/1999/xlink"#g;
+  my $XMLDoc = XML::LibXML->load_xml(string=>$Diffgram) || die "Can't parse! ".$!;
+ 
+  my $Root = $XMLDoc->getDocumentElement;
 
-  my $XMLDoc = XML::LibXML->new();
-  my $NodeDoc = $XMLDoc->parse_string($Diffgram) || die "Can't parse! ".$!;
-  my $Root = $NodeDoc->getDocumentElement;
-  
   my $Err;
   foreach my $Event ( $Root->getChildnodes ) {
     my $EventName = $Event->nodeName();
