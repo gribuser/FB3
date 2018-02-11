@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="80d3f7e2-d723-4567-a6e5-fc74811ccee8" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="80d3f7e2-d723-4567-a6e5-fc74811ccee8">
+    <section id="a25936c1-bae0-5ae0-b353-a1b8cf5a1c76">
+      <p>
+        <a xlink:href="#ea5cbb6c-8baa-5118-adcb-a4a0f15a34fb"/>
+      </p>
+      <p>
+        <a xlink:href="#link_1939053b-2aa3-5d00-9da1-6eaffc50c5d4"/>
+      </p>
+      <p>
+        <a xlink:href="#link_9a30514c-ccf4-5433-ac0c-016f21c3c181"/>
+      </p>
+      <p>
+        <a xlink:href="#link_b80ccaca-a48e-5a4e-bf1f-acc42f67e150"/>
+      </p>
+    </section>
+    <section id="ea5cbb6c-8baa-5118-adcb-a4a0f15a34fb">
+      <p>
+        <a id="link_1939053b-2aa3-5d00-9da1-6eaffc50c5d4" xlink:href=""/>
+      </p>
+      <p>
+        <a xlink:href="http://www.litres.ru"/>
+      </p>
+      <p>
+        <a id="link_9a30514c-ccf4-5433-ac0c-016f21c3c181" xlink:href="">text</a>
+      </p>
+      <p>TEXT1 TEXT2</p>
+      <p>
+        <span id="link_b80ccaca-a48e-5a4e-bf1f-acc42f67e150">
+          <strong>text span ok</strong>
+        </span>
+      </p>
+      <p>
+        <strong>text span not ok</strong>
+      </p>
+    </section>
+  </section>
+</fb3-body>
