@@ -185,8 +185,9 @@ sub Reaper {
 
   #Клеим смежные title
   #Отрезаем ненужное
-
   foreach my $Page (@Pages) {
+
+    $Page->{'content'} = CleanNodeEmptyId($X,$Page->{'content'});
 
     #^<p/> и emptyline режем в начале
     foreach my $Item (@{$Page->{'content'}}) {
@@ -481,6 +482,41 @@ sub AssembleContent {
 
 }
 
+sub CleanNodeEmptyId {
+  my $X = shift;
+  my $Node = shift;
+
+  return $Node unless ref $Node eq 'ARRAY';
+
+  my $Ret = [];
+
+  foreach my $Item (@$Node) {
+    push @$Ret, $Item;
+    next unless ref $Item eq 'HASH';
+    foreach my $El (keys %$Item) {
+      $Item->{$El}->{'value'} = CleanNodeEmptyId($X,$Item->{$El}->{'value'});
+      if (exists $Item->{$El}->{'attributes'}->{'id'}) {
+        my $Id = $Item->{$El}->{'attributes'}->{'id'};
+        unless (exists $X->{'href_list'}->{"#".$Id}) { #элементы с несуществующими id
+          $X->Msg("Find non exists ID and delete '$Id' in node '$El' [".$X->{'id_list'}->{$Id}."]\n","w");
+          delete $Item->{$El}->{'attributes'}->{'id'}; #удалим id
+          next unless $El =~ /^(a|span)$/;
+          my $Link = $X->trim($Item->{$El}->{'attributes'}->{'xlink:href'});
+          if ($El eq 'a' && $Link ne '') { #<a> c линками оставим
+            $X->Msg("Find link [$Link]. Skip\n");
+            next;
+          }
+          pop @$Ret;
+          push @$Ret, @{$Item->{$El}->{'value'}} if scalar @{$Item->{$El}->{'value'}}; #переносим на место ноды ее внутренности
+          $X->Msg("Delete node '$El'\n");
+        }
+      }
+    }
+  }
+
+  return $Ret;
+}
+
 #Процессоры обработки нод
 
 # Копируем картинки, перерисовывает атрибуты картинок на новые
@@ -514,7 +550,7 @@ sub ProcessImg {
 
   #Копируем исходник на новое место с новым уникальным именем
   unless (-f $ImgDestFile) {
-    $X->Msg("copy $ImgSrcFile -> $ImgDestFile\n","w");
+    $X->Msg("copy $ImgSrcFile -> $ImgDestFile\n");
     FB3::Convert::copy($ImgSrcFile, $ImgDestFile) or $X->Error($!." [copy $ImgSrcFile -> $ImgDestFile]");        
   }
 
@@ -543,6 +579,9 @@ sub ProcessHref {
                                                        basename($RelPath)."#".$Anchor #текущий section
                                                        ), $RelPath , 'process_href')
         : '';
+        
+        
+  $X->{'href_list'}->{$NewHref} = $Href if $X->trim($NewHref) ne '';     
   $Node->setAttribute('xlink:href' => $NewHref);
 
   return $Node;  

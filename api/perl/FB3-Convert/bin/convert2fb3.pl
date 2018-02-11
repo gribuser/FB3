@@ -59,15 +59,14 @@ my $Obj = new FB3::Convert(
   },
 );
 
-
-
 $Obj->Reap();
 my $FB3Path =  $Obj->FB3Create();
 $Obj->Msg("FB3: ".$FB3Path." created\n","w");
-my $Valid = $Obj->Validate();
-print $Valid;
-$Obj->FB3_2_Zip() if $OPT{'df'};
-$Obj->Cleanup();
+my $ValidErr = $Obj->Validate();
+print $ValidErr;
+$Obj->FB3_2_Zip() if $OPT{'df'} && !$ValidErr;
+$Obj->Cleanup($ValidErr?1:0);
+
 
 sub help {
   print <<_END

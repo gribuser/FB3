@@ -105,10 +105,11 @@ my %AllowElementsMain = (
   },
   'li' => {
     'allow_attributes' => [],
-    'allow_elements_inside' => {'em'=>undef}
+    'allow_elements_inside' => {'em'=>undef,a=>undef}
   },
   'root_fb3_container' => {
     'allow_elements_inside' => {
+      'span'=>undef, 
       'div'=>undef,
       'b'=>undef,
       'h1'=>undef,
@@ -376,6 +377,8 @@ sub new {
   $X->{'verbose'} = $Args{'verbose'} ? $Args{'verbose'} : 0;
   $X->{'showname'} = $Args{'showname'} ? 1 : 0;
   $X->{'allow_elements'} = \%AllowElementsMain;
+  $X->{'href_list'} = {}; #собираем ссылки в документе
+  $X->{'id_list'} = {}; #собираем ссылки в документе
   
   #Наша внутренняя структура данных конвертора. шаг влево  - расстрел
   $X->{'STRUCTURE'} = {
@@ -1052,6 +1055,7 @@ sub ConvertIds {
     #так же должны быть преобразованы <a href !!!
     my $Id = $X->Path2ID($Href,undef,'convert_id');
     $Attributes->{'id'} = 'link_'.$Id;
+    $X->{'id_list'}->{$Attributes->{'id'}} = $Href;
   }
 
   return $Attributes;
@@ -1209,12 +1213,19 @@ sub Validate {
 
 sub Cleanup {
   my $X = shift;
+  my $CleanDest = shift;
+  
   if ($X->{'unzipped'} && $X->{'SourceDir'}) { #если наследили распаковкой в tmp
     ForceRmDir($X,$X->{'SourceDir'});
     $X->Msg("Clean tmp directory ".$X->{'SourceDir'}."\n");
-    return 1;
+
   }
-  return 0;
+  
+  #просят почистить результат
+  if ($CleanDest) {
+    ForceRmDir($X,$X->{'DestinationDir'}) if $X->{'DestinationDir'};
+  }
+  
 }
 
 sub ForceRmDir{
