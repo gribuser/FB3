@@ -223,6 +223,10 @@ sub Reaper {
     foreach my $Item (@{$Page->{'content'}}) {
       $c++;
       next unless defined $Item;
+      if (ref $Item eq '' && $X->trim($Item) eq '') {
+        $Item=undef;
+        next;
+      }
       
       #клеим смежные emptyline
       if (ref $Item eq 'HASH'
@@ -245,11 +249,8 @@ sub Reaper {
           ref $Item eq 'HASH'
           && exists $Item->{'title'}
         ) {
-        if ( !scalar @{$Item->{'title'}->{'value'}} ) {
-          $Item = undef;
-        } else {
           $Item->{'title'}->{'value'} = CleanTitle($X,$Item->{'title'}->{'value'});
-        }
+          $Item = undef unless @{$Item->{'title'}->{'value'}};
       }
       
     }
@@ -336,10 +337,8 @@ sub Reaper {
     #одиночки title нам в section не нужны - не валидно
     #таких разжалуем в subtitle
     foreach my $Sec (@P) {
-
-      delete $Sec->{'section'}->{'value'}->[@{$Sec->{'section'}->{'value'}} - 1]
-        if !ref $Sec->{'section'}->{'value'}->[scalar @{$Sec->{'section'}->{'value'}} - 1]
-        && $Sec->{'section'}->{'value'}->[scalar @{$Sec->{'section'}->{'value'}} - 1] eq '';
+      my $Last = pop @{$Sec->{'section'}->{'value'}};
+      push @{$Sec->{'section'}->{'value'}}, $Last unless (ref $Last eq '' && $X->trim($Last) eq '') ;
 
       if (
        scalar @{$Sec->{'section'}->{'value'}} == 1
@@ -497,7 +496,12 @@ sub CleanTitle {
     $Item = undef if ref $Item eq 'HASH' && exists $Item->{'p'} && !scalar @{$Item->{'p'}->{'value'}};  
   }
 
-  return $Node;
+  my @Ret;
+  foreach (@$Node) {
+    push @Ret, $_ if defined $_;
+  }
+  
+  return \@Ret;
 }
 
 sub CleanNodeEmptyId {
