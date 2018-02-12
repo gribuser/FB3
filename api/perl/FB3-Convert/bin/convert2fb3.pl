@@ -65,7 +65,7 @@ $Obj->Msg("FB3: ".$FB3Path." created\n","w");
 my $ValidErr = $Obj->Validate();
 print $ValidErr;
 $Obj->FB3_2_Zip() if $OPT{'df'} && !$ValidErr;
-#$Obj->Cleanup($ValidErr?1:0);
+$Obj->Cleanup($ValidErr?1:0);
 
 
 sub help {
