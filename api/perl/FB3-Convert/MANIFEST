@@ -19,5 +19,10 @@ share/fb3_2_fb2_descr.xsl
 share/fb3_to_fb2_genre.json
 share/general.xsl
 t/00-load.t
+t/examples/rm_unlink_id_a_span_109373.epub
+t/examples/rm_unlink_id_a_span_109373.xml
+t/examples/simple_108909.epub
+t/examples/simple_108909.xml
+t/examples/trim_split_empty_p_108909.epub
+t/examples/trim_split_empty_p_108909.xml
 t/test1.t
-

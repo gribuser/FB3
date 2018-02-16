@@ -27,6 +27,7 @@ my $builder = Module::Build->new(
         'HTML::Entities' => 0,
         'Clone' => 0,
         'File::ShareDir' => 0,
+				'XML::Diff' => 0,
     },
     script_files => [qw{
       bin/convert2fb3.pl
@@ -35,7 +36,9 @@ my $builder = Module::Build->new(
       bin/fb3_2_json.pl
       bin/importfb3_from_fb2.pl
     }],
-    share_dir => 'share',
+    share_dir => {
+			dist => [ 'share', 't/examples' ]
+		},
     add_to_cleanup     => [ 'FB3-Convert-*' ],
 );
 
