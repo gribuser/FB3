@@ -59,7 +59,7 @@ our $ElsMainList = {
 
 my %AllowElementsMain = (
   'strong' => {
-    'allow_attributes' => [],
+    'allow_attributes' => ['id'],
     'allow_elements_inside' => $ElsMainList,
   },
   'underline' => {

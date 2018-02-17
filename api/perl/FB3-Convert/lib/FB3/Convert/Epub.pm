@@ -37,7 +37,7 @@ sub Reaper {
     'processor' => \&ProcessHref,
   };
   $AllowElements->{'b'} = {
-    'allow_attributes' => [],
+    'allow_attributes' => ['id'],
     processor => \&TransformTo,
     processor_params => ['strong']
   };
@@ -64,6 +64,11 @@ sub Reaper {
   $AllowElements->{'h5'} = $AllowElements->{'h1'};
   $AllowElements->{'h6'} = $AllowElements->{'h1'};
 
+  
+###### счетчики, настройки, аккмуляторы и пр.
+  $X->{'MaxMoveCount'} = 4; # максимальное кол-во символов принятия решения пустых <a id="good_link" href=""> на перенос 
+  $X->{'EmptyLinksList'} = {}; # список пустых <a id="good_link" href=""> на перенос или превращение
+  
 ##### где хранится содержимое книги
   my $ContainerFile = $Source."/META-INF/container.xml";
   die $self." ".$ContainerFile." not found!" unless -f $ContainerFile;
@@ -171,8 +176,35 @@ sub Reaper {
     push @Authors, $self->BuildAuthorName('Unknown');
     $Description->{'TITLE-INFO'}->{'AUTHORS'} = \@Authors;
   }
+  
+=pod
+my $AC =  [
+          {
+            'content' => '<p/>
 
-  #print Data::Dumper::Dumper($AC);
+<a id="ch" href=""/>
+<p><b>TEXT2</b></p>
+
+<p id="one">1</p>
+<p>...</p>
+<p><a id="1" href="">link</a></p>
+<p>......</p>
+<p id="two">2</p>
+
+<p>12345678</p>
+
+<p><a href="#1">link1</a></p>
+
+<p><a href="#one">st1</a></p>
+<p><a href="#two">st2</a></p>
+',
+            'file' => 'xhtml/page1.xhtml'
+          },
+        ];
+
+=cut
+  
+ # print Data::Dumper::Dumper($AC);
   
   #КОНТЕНТ
 
@@ -381,11 +413,82 @@ sub Reaper {
       }
     };
   }
-
+  
+  foreach (@Body) {
+    MoveIdEmptyHref($X,$_->{'section'});
+  }
+  
+  #print "EmptyLinkstoMove".Data::Dumper::Dumper($X->{'EmptyLinksList'});
+  
   $Structure->{'PAGES'} = {
     value => \@Body
   };
 
+}
+
+sub MoveIdEmptyHref {
+  my $X = shift;
+  my $Data = shift;
+  my $Hash4Move = shift;
+
+  my $First = 0;
+  unless ($Hash4Move) {
+   $Hash4Move = {
+     'count_abs' =>  0, #счетчик от начала секции
+     'neighbour' => {}, #счетчик от начала секции - кандидатов, куда можно переносить
+     'candidates' => {} #счетчик от начала секции кандидатов на перенос
+   };
+   $First = 1;
+  }
+
+  foreach my $Item (@{$Data->{'value'}}) {
+
+    if (ref $Item eq '') { # это голый текст
+      $Hash4Move->{'count_abs'} += length($Item);
+    } elsif (ref $Item eq 'HASH') { # это нода
+      
+      foreach my $El (keys %$Item) {   
+        if ($El eq 'section') {
+          MoveIdEmptyHref($X,$Item->{$El}); #вложенную секцию обрабатывает как отдельную
+        } else {  
+          if (exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
+            if ($El eq 'a' && exists $Item->{$El}->{'attributes'}->{'xlink:href'} && $Item->{$El}->{'attributes'}->{'xlink:href'} eq '') {
+              #кандидат на перенос ссылки
+              $Hash4Move->{'candidates'}->{$Item->{$El}->{'attributes'}->{'id'}} = $Hash4Move->{'count_abs'};
+            } else {
+              #кандидат, куда можно перенести ссылку
+              $Hash4Move->{'neighbour'}->{$Item->{$El}->{'attributes'}->{'id'}} = $Hash4Move->{'count_abs'};
+            }
+          }
+          MoveIdEmptyHref($X,$Item->{$El},$Hash4Move);
+        }
+      }
+    
+    }
+
+  }
+  
+  if ($First) {
+    #анализируем и собираем элементы для переноса или превращения
+    foreach my $Cand (keys %{$Hash4Move->{'candidates'}}) {
+    
+      if ( $Hash4Move->{'candidates'}->{$Cand} <= $X->{'MaxMoveCount'} ) {
+        #переносим в id секции
+        $X->{'EmptyLinksList'}->{$Cand} = $Data->{'attributes'}->{'id'};
+      } else {
+        #вычислим ближайшего соседа для переноса
+        my %Sort = ();
+        foreach (keys %{$Hash4Move->{'neighbour'}}) {
+          $Sort{$_} = abs($Hash4Move->{'candidates'}->{$Cand} - $Hash4Move->{'neighbour'}->{$_});
+        }
+        my $MinNeigh = [sort {$Sort{$a} <=> $Sort{$b}} keys %Sort]->[0];
+        $X->{'EmptyLinksList'}->{$Cand} = $MinNeigh if ($Sort{$MinNeigh} <= $X->{'MaxMoveCount'});
+      }
+      #иначе отдаем на превращение
+      $X->{'EmptyLinksList'}->{$Cand} = 'rename' unless exists $X->{'EmptyLinksList'}->{$Cand};
+    }
+  }
+  
 }
 
 sub AssembleContent {
