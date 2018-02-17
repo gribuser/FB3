@@ -119,7 +119,6 @@ sub ProceedNode {
 			$ImmortalBranch = 1;
 		}
 	}
-
 	for my $ChildNode ($Node->childNodes) {
 		if ($ChildNode->nodeName =~ /$Blocks/) {
 			unless (($CharsProcessed + length($ChildNode->textContent)) < $CutChars) {
