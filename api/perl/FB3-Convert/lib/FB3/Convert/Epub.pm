@@ -480,7 +480,7 @@ sub MoveIdEmptyHref {
           $X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) } ne 'rename'
           && exists $El->{'attributes'}
           && exists $El->{'attributes'}->{'xlink:href'}
-          && exists $X->{'EmptyLinksList'}->{ $X->CutLinkAmp($El->{'attributes'}->{'xlink:href'}) }
+          && exists $X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) }
         );
       #удаляем элемент со старым id либо превращаем в span, если нет кандидатов на перенос
       if (
