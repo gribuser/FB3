@@ -178,7 +178,7 @@ sub Reaper {
   }
 
   #print Data::Dumper::Dumper($AC);
-  
+
   #КОНТЕНТ
 
   my @Pages;
@@ -295,14 +295,8 @@ sub Reaper {
 
     #РИсуем section's
      my @P;
-     my $Sec = { #заготовка section
-      'section' => {
-        'value' => [],
-        'attributes' => {
-          'id' => $Page->{'ID_SUB'},
-        }
-      }
-     };
+
+     my $Sec = SectionBody($X);
 
      my $c=0;
      my $TitleOK = 0;
@@ -322,7 +316,11 @@ sub Reaper {
       }
 
       if ($TitleOK) { #встретили title
-        push @P, clone($Sec) if @{$Sec->{'section'}->{'value'}};
+        if (@{$Sec->{'section'}->{'value'}}) {
+          my $CloneSec = clone($Sec);
+          $CloneSec->{'section'}->{'attributes'}->{'id'} = $X->UUID();
+          push @P, clone($CloneSec);
+        }
         $Sec->{'section'}->{'value'} = []; #надо закрыть section
         push @{$Sec->{'section'}->{'value'}}, $Item; #и продолжить пушить в новый
         next;
@@ -333,7 +331,9 @@ sub Reaper {
       if ( #страница закрывается, пушим section что там в нем осталось
         $c >= scalar @{$Page->{'content'}}
       ) {
-        push @P, clone($Sec);
+        my $CloneSec = clone($Sec);
+        $CloneSec->{'section'}->{'attributes'}->{'id'} = $X->UUID();
+        push @P, $CloneSec;
         $Sec->{'section'}->{'value'} = [];
       }
 
@@ -398,6 +398,18 @@ sub Reaper {
 
 }
 
+sub SectionBody {
+  my $X=shift;
+  my $Sec = { #заготовка section
+    'section' => {
+      'value' => [],
+      'attributes' => {
+        'id' => $X->UUID(),
+      }
+    }
+  };
+}
+  
 # заполняет $X->{'EmptyLinksList'}
 # <a id="ID" href=""> ID => newID
 sub AnaliseIdEmptyHref {
