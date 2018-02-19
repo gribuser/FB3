@@ -751,16 +751,19 @@ sub TransformH2Title {
   my %Args = @_;
   my $Node = $Args{'node'};
 
-  $Node->setNodeName('title');
-
-  foreach my $Child ($Node->getChildnodes) {
-    next if $Child->nodeName =~ /^p$/i;
-    my $NewNode = XML::LibXML::Element->new("p");
-    $NewNode->addChild($Child->cloneNode(1));
-    $Child->replaceNode($NewNode);
+  my $NewNode = XML::LibXML::Element->new('title');
+  foreach ($Node->getAttributes) { #скопируем атрибуты
+    $NewNode->setAttribute($_->name => $_->value);
   }
-  
-  return $Node;
+
+  my $Wrap = XML::LibXML::Element->new("p"); #wrapper
+  foreach my $Child ($Node->getChildnodes) {
+    $Wrap->addChild($Child->cloneNode(1));
+  }
+ 
+  $NewNode->addChild($Wrap);
+
+  return $NewNode;
 }
 
 1;

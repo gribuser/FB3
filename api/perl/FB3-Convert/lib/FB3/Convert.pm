@@ -109,6 +109,9 @@ my %AllowElementsMain = (
   },
   'root_fb3_container' => {
     'allow_elements_inside' => {
+      'underline'=>undef,
+      'b'=>undef,
+      'strong'=>undef,
       'span'=>undef, 
       'div'=>undef,
       'b'=>undef,
@@ -1258,19 +1261,34 @@ sub Transform2Valid {
   my %Args = @_;
   my $Node = $Args{'node'};
 
-  foreach my $Child ($Node->getChildnodes) {
-    next if $Child->nodeName =~ /^(p|ul|ol|title|subtitle|section)$/;
-
-    if ($Child->toString =~ /^[\s\t\n\r]+$/) { #почистим пустые текстовые ноды
-      $Child->parentNode()->removeChild($Child);
-    } else {# остальные в <p>node</p>
-      my $NewNode = XML::LibXML::Element->new("p");
-      $NewNode->addChild($Child->cloneNode(1));
-      $Child->replaceNode($NewNode);
-    }
-  
+  my $NewNode = XML::LibXML::Element->new($Node->nodeName); #будем собирать новую ноду
+  foreach ($Node->getAttributes) { #скопируем атрибуты
+    $NewNode->setAttribute($_->name => $_->value);
   }
-  
+
+  my $Wrap = XML::LibXML::Element->new("p");
+
+  foreach my $Child ($Node->getChildnodes) {
+    if ($Child->nodeName =~ /^(p|ul|ol|title|subtitle|section)$/) {
+      if ($Wrap->hasChildNodes) {
+        #закроем текуший враппер и создадим новый
+        $NewNode->addChild($Wrap->cloneNode(1));
+        $Wrap = XML::LibXML::Element->new("p") if $Wrap->hasChildNodes;
+      }
+      #на текущие ноды не применяем враппер
+      $NewNode->addChild($Child->cloneNode(1));
+      next;
+    }
+
+    # остальные в <p>node</p>
+    $Wrap->addChild($Child->cloneNode(1));
+
+  }
+
+  #закрываем остатки враппера
+  $NewNode->addChild($Wrap->cloneNode(1)) if $Wrap->hasChildNodes;
+
+  $Node->replaceNode($NewNode);
   return $Node;
 }
 
