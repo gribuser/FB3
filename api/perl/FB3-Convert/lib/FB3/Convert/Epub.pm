@@ -427,7 +427,7 @@ sub AnaliseIdEmptyHref {
         } else {  
           if (exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
             if ($El eq 'a' && exists $Item->{$El}->{'attributes'}->{'xlink:href'} && $Item->{$El}->{'attributes'}->{'xlink:href'} eq '') {
-              #кандидат на перенос ссылки
+              #ссылка - кандидат на перенос
               $Hash4Move->{'candidates'}->{$Item->{$El}->{'attributes'}->{'id'}} = $Hash4Move->{'count_abs'};
             } else {
               #кандидат, куда можно перенести ссылку
