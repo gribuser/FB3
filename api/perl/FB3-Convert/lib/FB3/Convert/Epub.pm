@@ -475,9 +475,9 @@ sub MoveIdEmptyHref {
     foreach my $ElName (keys %$Item) {
       my $El = $Item->{$ElName};
       #меняем ссылку
-      $El->{'attributes'}->{'xlink:href'} = "#".$X->{'EmptyLinksList'}->{ $X->CutLinkAmp($El->{'attributes'}->{'xlink:href'}) }
+      $El->{'attributes'}->{'xlink:href'} = "#".$X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) }
         if (
-          $X->{'EmptyLinksList'}->{ $X->CutLinkAmp($El->{'attributes'}->{'xlink:href'}) } ne 'rename'
+          $X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) } ne 'rename'
           && exists $El->{'attributes'}
           && exists $El->{'attributes'}->{'xlink:href'}
           && exists $X->{'EmptyLinksList'}->{ $X->CutLinkAmp($El->{'attributes'}->{'xlink:href'}) }

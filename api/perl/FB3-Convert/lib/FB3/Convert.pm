@@ -1340,7 +1340,7 @@ sub IsEmptyLineValue {
   return 0;
 }
 
-sub CutLinkAmp {
+sub CutLinkDiez {
   my $X = shift;
   my $Str = shift;
   $Str =~ s/^#//;
