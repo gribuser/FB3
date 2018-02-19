@@ -475,13 +475,15 @@ sub MoveIdEmptyHref {
     foreach my $ElName (keys %$Item) {
       my $El = $Item->{$ElName};
       #меняем ссылку
-      $El->{'attributes'}->{'xlink:href'} = "#".$X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) }
-        if (
-          $X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) } ne 'rename'
-          && exists $El->{'attributes'}
-          && exists $El->{'attributes'}->{'xlink:href'}
-          && exists $X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) }
-        );
+      if (
+        $X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) } ne 'rename'
+        && exists $El->{'attributes'}
+        && exists $El->{'attributes'}->{'xlink:href'}
+        && exists $X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) }
+      ) {
+        $El->{'attributes'}->{'xlink:href'} = "#".$X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) };
+        $X->Msg("Empty link move to neighbour id $El->{'attributes'}->{'xlink:href'} [".$X->{'id_list'}->{$X->CutLinkDiez($El->{'attributes'}->{'xlink:href'})}."]\n","w");
+      }
       #удаляем элемент со старым id либо превращаем в span, если нет кандидатов на перенос
       if (
           exists $El->{'attributes'}
@@ -490,15 +492,15 @@ sub MoveIdEmptyHref {
       ) {
         if ($X->{'EmptyLinksList'}->{ $El->{'attributes'}->{'id'} } eq 'rename') {
           $Item = $El->{'value'} = {'span'=>{'value'=>$El->{'value'},'attributes'=>{'id'=>$El->{'attributes'}->{'id'}}}}; #-> span
+          $X->Msg("Empty link rename to <span> [".$X->{'id_list'}->{$El->{'attributes'}->{'id'}}."]\n","w");
         } else {
           $Item = $El->{'value'}; #удаляем
         }
-        
       }
       MoveIdEmptyHref($X,$El->{'value'});
     }
   }
-  
+
 }
 
 sub AssembleContent {
