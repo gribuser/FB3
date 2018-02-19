@@ -66,7 +66,7 @@ sub Reaper {
 
   
 ###### счетчики, настройки, аккмуляторы и пр.
-  $X->{'MaxMoveCount'} = 4; # максимальное кол-во символов принятия решения пустых <a id="good_link" href=""> на перенос 
+  $X->{'MaxMoveCount'} = 100; # максимальное кол-во символов принятия решения пустых <a id="good_link" href=""> на перенос 
   $X->{'EmptyLinksList'} = {}; # список пустых <a id="good_link" href=""> на перенос или превращение
   
 ##### где хранится содержимое книги
@@ -176,35 +176,8 @@ sub Reaper {
     push @Authors, $self->BuildAuthorName('Unknown');
     $Description->{'TITLE-INFO'}->{'AUTHORS'} = \@Authors;
   }
-  
-=pod
-my $AC =  [
-          {
-            'content' => '<p/>
 
-<a id="ch" href=""/>
-<p><b>TEXT2</b></p>
-
-<p id="one">1</p>
-<p>...</p>
-<p><a id="1" href="">link</a></p>
-<p>......</p>
-<p id="two">2</p>
-
-<p>12345678</p>
-
-<p><a href="#1">link1</a></p>
-
-<p><a href="#one">st1</a></p>
-<p><a href="#two">st2</a></p>
-',
-            'file' => 'xhtml/page1.xhtml'
-          },
-        ];
-
-=cut
-  
- # print Data::Dumper::Dumper($AC);
+  #print Data::Dumper::Dumper($AC);
   
   #КОНТЕНТ
 
@@ -415,10 +388,9 @@ my $AC =  [
   }
   
   foreach (@Body) {
-    MoveIdEmptyHref($X,$_->{'section'});
+    AnaliseIdEmptyHref($X,$_->{'section'});
   }
-  
-  #print "EmptyLinkstoMove".Data::Dumper::Dumper($X->{'EmptyLinksList'});
+  MoveIdEmptyHref($X,\@Body);
   
   $Structure->{'PAGES'} = {
     value => \@Body
@@ -426,7 +398,9 @@ my $AC =  [
 
 }
 
-sub MoveIdEmptyHref {
+# заполняет $X->{'EmptyLinksList'}
+# <a id="ID" href=""> ID => newID
+sub AnaliseIdEmptyHref {
   my $X = shift;
   my $Data = shift;
   my $Hash4Move = shift;
@@ -449,7 +423,7 @@ sub MoveIdEmptyHref {
       
       foreach my $El (keys %$Item) {   
         if ($El eq 'section') {
-          MoveIdEmptyHref($X,$Item->{$El}); #вложенную секцию обрабатывает как отдельную
+          AnaliseIdEmptyHref($X,$Item->{$El}); #вложенную секцию обрабатывает как отдельную
         } else {  
           if (exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
             if ($El eq 'a' && exists $Item->{$El}->{'attributes'}->{'xlink:href'} && $Item->{$El}->{'attributes'}->{'xlink:href'} eq '') {
@@ -460,7 +434,7 @@ sub MoveIdEmptyHref {
               $Hash4Move->{'neighbour'}->{$Item->{$El}->{'attributes'}->{'id'}} = $Hash4Move->{'count_abs'};
             }
           }
-          MoveIdEmptyHref($X,$Item->{$El},$Hash4Move);
+          AnaliseIdEmptyHref($X,$Item->{$El},$Hash4Move);
         }
       }
     
@@ -482,10 +456,46 @@ sub MoveIdEmptyHref {
           $Sort{$_} = abs($Hash4Move->{'candidates'}->{$Cand} - $Hash4Move->{'neighbour'}->{$_});
         }
         my $MinNeigh = [sort {$Sort{$a} <=> $Sort{$b}} keys %Sort]->[0];
-        $X->{'EmptyLinksList'}->{$Cand} = $MinNeigh if ($Sort{$MinNeigh} <= $X->{'MaxMoveCount'});
+        $X->{'EmptyLinksList'}->{$Cand} = $MinNeigh if (%Sort && $Sort{$MinNeigh} <= $X->{'MaxMoveCount'});
       }
       #иначе отдаем на превращение
-      $X->{'EmptyLinksList'}->{$Cand} = 'rename' unless exists $X->{'EmptyLinksList'}->{$Cand};
+      $X->{'EmptyLinksList'}->{$Cand} = 'rename' if !exists $X->{'EmptyLinksList'}->{$Cand} || !defined $X->{'EmptyLinksList'}->{$Cand};
+    }
+  }
+  
+}
+
+sub MoveIdEmptyHref {
+  my $X = shift;
+  my $Data = shift;
+  return unless ref $Data eq 'ARRAY';
+
+  foreach my $Item (@$Data) {
+    next unless ref $Item eq 'HASH';
+    foreach my $ElName (keys %$Item) {
+      my $El = $Item->{$ElName};
+      #меняем ссылку
+      $El->{'attributes'}->{'xlink:href'} = "#".$X->{'EmptyLinksList'}->{ $X->CutLinkAmp($El->{'attributes'}->{'xlink:href'}) }
+        if (
+          $X->{'EmptyLinksList'}->{ $X->CutLinkAmp($El->{'attributes'}->{'xlink:href'}) } ne 'rename'
+          && exists $El->{'attributes'}
+          && exists $El->{'attributes'}->{'xlink:href'}
+          && exists $X->{'EmptyLinksList'}->{ $X->CutLinkAmp($El->{'attributes'}->{'xlink:href'}) }
+        );
+      #удаляем элемент со старым id либо превращаем в span, если нет кандидатов на перенос
+      if (
+          exists $El->{'attributes'}
+          && exists $El->{'attributes'}->{'id'}
+          && exists $X->{'EmptyLinksList'}->{ $El->{'attributes'}->{'id'} }
+      ) {
+        if ($X->{'EmptyLinksList'}->{ $El->{'attributes'}->{'id'} } eq 'rename') {
+          $Item = $El->{'value'} = {'span'=>{'value'=>$El->{'value'},'attributes'=>{'id'=>$El->{'attributes'}->{'id'}}}}; #-> span
+        } else {
+          $Item = $El->{'value'}; #удаляем
+        }
+        
+      }
+      MoveIdEmptyHref($X,$El->{'value'});
     }
   }
   
