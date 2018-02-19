@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="80d3f7e2-d723-4567-a6e5-fc74811ccee8" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <section id="80d3f7e2-d723-4567-a6e5-fc74811ccee8">
-    <section id="a25936c1-bae0-5ae0-b353-a1b8cf5a1c76">
+<fb3-body id="aa0a2d71-06d1-4933-a913-77712fe6e252" xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="aa0a2d71-06d1-4933-a913-77712fe6e252">
+    <section id="a1072c15-1c1d-5e9c-b48b-e1cbcaee3949">
       <p>
-        <a xlink:href="#ea5cbb6c-8baa-5118-adcb-a4a0f15a34fb"/>
+        <a xlink:href="#47a0170f-11f5-50e1-b09f-68a574ea5e96"/>
       </p>
       <p>
-        <a xlink:href="#link_1939053b-2aa3-5d00-9da1-6eaffc50c5d4"/>
+        <a xlink:href="#47a0170f-11f5-50e1-b09f-68a574ea5e96"/>
       </p>
       <p>
-        <a xlink:href="#link_9a30514c-ccf4-5433-ac0c-016f21c3c181"/>
+        <a xlink:href="#47a0170f-11f5-50e1-b09f-68a574ea5e96"/>
       </p>
       <p>
-        <a xlink:href="#link_b80ccaca-a48e-5a4e-bf1f-acc42f67e150"/>
+        <a xlink:href="#link_75a7fca1-59f8-5827-b9bc-cd4b28e3bebf"/>
       </p>
     </section>
-    <section id="ea5cbb6c-8baa-5118-adcb-a4a0f15a34fb">
-      <p>
-        <a id="link_1939053b-2aa3-5d00-9da1-6eaffc50c5d4" xlink:href=""/>
-      </p>
+    <section id="47a0170f-11f5-50e1-b09f-68a574ea5e96">
       <p>
         <a xlink:href="http://www.litres.ru"/>
       </p>
-      <p>
-        <a id="link_9a30514c-ccf4-5433-ac0c-016f21c3c181" xlink:href="">text</a>
-      </p>
+      <p>text</p>
       <p>TEXT1 TEXT2</p>
       <p>
-        <span id="link_b80ccaca-a48e-5a4e-bf1f-acc42f67e150">
+        <span id="link_75a7fca1-59f8-5827-b9bc-cd4b28e3bebf">
           <strong>text span ok</strong>
         </span>
       </p>

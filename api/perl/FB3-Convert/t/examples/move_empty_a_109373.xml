@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" id="c31baaf1-4f05-46ab-8541-4010239e9ee4" xmlns="http://www.fictionbook.org/FictionBook3/body">
+  <section id="c31baaf1-4f05-46ab-8541-4010239e9ee4">
+    <section id="e9f1c3ae-1b0a-5cde-af11-7e56be1e26f9">
+      <p>
+        <strong>100symbols_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</strong>
+      </p>
+      <p>link move to section</p>
+      <p>
+        <span id="link_51c51e27-9a30-55f4-a96b-5aee41b9f1e2">link change to span</span>
+      </p>
+      <p>
+        <strong>101symbols_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</strong>
+      </p>
+      <p id="link_e22f3e85-faa3-5b50-a219-143b7b130d9e"/>
+      <p>
+        <strong>101symbols_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</strong>
+      </p>
+      <p>[2] link move to "t1"</p>
+      <p>
+        <strong>100symbols_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</strong>
+      </p>
+      <p id="link_9f110eb0-c349-5b07-9da9-562149648e0c">123_1</p>
+      <p>link move to "t1"</p>
+      <p id="link_758f364b-bd4d-5bdc-a4f4-23751e7b7e2a">text_1</p>
+      <p>DELIMETER</p>
+      <p id="link_02358c67-0c76-5563-89a4-97e28b2ec2fb">18symbols_AAAAAAAA</p>
+      <p>link move to "t4"</p>
+      <p id="link_7dc9b921-5f8c-5b81-876d-9afd3410d708">text_2</p>
+      <p>DELIMETER</p>
+      <p>
+        <a xlink:href="#e9f1c3ae-1b0a-5cde-af11-7e56be1e26f9">[href] link move to section</a>
+      </p>
+      <p>
+        <a xlink:href="#link_51c51e27-9a30-55f4-a96b-5aee41b9f1e2">[href] link change to span</a>
+      </p>
+      <p>
+        <a xlink:href="#link_9f110eb0-c349-5b07-9da9-562149648e0c">[href] link move to "t1" [123_1]</a>
+      </p>
+      <p>
+        <a xlink:href="#link_7dc9b921-5f8c-5b81-876d-9afd3410d708">[href] link move to "t4" [text_2]</a>
+      </p>
+      <p>
+        <a xlink:href="#link_9f110eb0-c349-5b07-9da9-562149648e0c">[href] [2] link move to "t1" [123_1]</a>
+      </p>
+      <p>
+        <a xlink:href="#link_9f110eb0-c349-5b07-9da9-562149648e0c"/>
+      </p>
+      <p>
+        <a xlink:href="#link_758f364b-bd4d-5bdc-a4f4-23751e7b7e2a"/>
+      </p>
+      <p>
+        <a xlink:href="#link_02358c67-0c76-5563-89a4-97e28b2ec2fb"/>
+      </p>
+      <p>
+        <a xlink:href="#link_7dc9b921-5f8c-5b81-876d-9afd3410d708"/>
+      </p>
+      <p>
+        <a xlink:href="#link_e22f3e85-faa3-5b50-a219-143b7b130d9e"/>
+      </p>
+    </section>
+  </section>
+</fb3-body>
