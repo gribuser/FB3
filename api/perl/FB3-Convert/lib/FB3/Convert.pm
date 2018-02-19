@@ -1340,6 +1340,13 @@ sub IsEmptyLineValue {
   return 0;
 }
 
+sub CutLinkAmp {
+  my $X = shift;
+  my $Str = shift;
+  $Str =~ s/^#//;
+  return $Str;
+}
+
 sub ParseMetaFile {
   my $X = shift;
 
