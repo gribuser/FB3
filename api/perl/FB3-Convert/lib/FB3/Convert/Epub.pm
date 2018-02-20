@@ -35,6 +35,7 @@ sub Reaper {
   $AllowElements->{'a'} = {
     'allow_attributes' => ['src','id','xlink:href'],
     'processor' => \&ProcessHref,
+    'allow_elements_inside' => $FB3::Convert::ElsMainList,
   };
   $AllowElements->{'b'} = {
     'allow_attributes' => ['id'],
@@ -267,11 +268,8 @@ sub Reaper {
         next if (ref $Item ne 'HASH' || !exists $Item->{'title'});
 
         for (my $i=$c-1;$i>=0;$i--) { #бежим назад и ищем, нет ли перед нами title?
-
           my $Last = $Page->{'content'}->[$i];
-
           next if !ref($Last) && $X->trim($Last) eq ''; #если перед нами перенос строки, игнорим, ищем title дальше
-
           if (ref $Last eq 'HASH' && exists $Last->{'title'}) { #перед нами title, будем клеить текущий title с ним
             $LastTitleOK = $i;
             last;
@@ -292,6 +290,34 @@ sub Reaper {
         }
 
     }
+
+    #MOVE EMPTY LINKS to title
+    for (my $c = scalar @{$Page->{'content'}}; $c>=0; $c--) {
+        my $Item = $Page->{'content'}->[$c];
+        
+        next if (ref $Item ne 'HASH' || !exists $Item->{'title'});
+
+        my @LinksMove2Title;
+        for (my $i=$c-1;$i>=0;$i--) { #бежим назад и ищем, нет ли перед нами <a id="some"/>?
+          my $Last = $Page->{'content'}->[$i];
+          next if !ref($Last) && $X->trim($Last) eq ''; #если перед нами перенос строки, игнорим, ищем <a> дальше
+          if (
+            ref $Last eq 'HASH'
+            && exists $Last->{'a'}
+            && $Last->{'a'}->{'attributes'}->{'xlink:href'} eq ''
+            && !@{$Last->{'a'}->{'value'}} #в <a> ничего нет. Иначе это уже полезный контент, и нечего его в title переносить
+          ) {
+            push @LinksMove2Title, delete $Page->{'content'}->[$i];
+          } else {
+            last; #наткнулись на НЕ-<a>, хватит перебирать
+          }
+        }
+
+        if (@LinksMove2Title && ref $Item eq 'HASH' && exists $Item->{'title'}) {
+          push @{$Item->{'title'}->{'value'}}, @LinksMove2Title; #переносим <a> в ближайший
+        }
+    }
+
 
     #РИсуем section's
      my @P;
