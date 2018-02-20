@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" id="2afe396e-5065-4c9b-a225-02c2ed5bd3f9" xmlns="http://www.fictionbook.org/FictionBook3/body">
-  <section id="2afe396e-5065-4c9b-a225-02c2ed5bd3f9">
-    <section id="b0df166f-cc92-5524-802a-0c2c3035231e">
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body" id="82c9e819-cab0-4421-b681-48c7fa239d46">
+  <section id="82c9e819-cab0-4421-b681-48c7fa239d46">
+    <section id="ed14f8f3-71be-52fd-9f3a-4f01eff2c237">
       <title>
         <p>ВСТУПЛЕНИЕ</p>
         <p>Глава 1</p>
@@ -14,13 +14,15 @@
       </p>
       <p>“Do you know what you want to do when you get old?”</p>
     </section>
-    <section id="21025300-3fd2-5225-aec5-016672b78023">
-      <section id="2b9f9047-800c-441d-ac13-56f0f2e282f2">
+    <section id="d44065e5-010a-5338-b71c-aa89459e8a7b">
+      <section id="c63251d2-144c-47b2-ba83-4501323ccc69">
         <p>
-          <a xlink:href="#b0df166f-cc92-5524-802a-0c2c3035231e">Page 1</a>
+          <a xlink:href="#ed14f8f3-71be-52fd-9f3a-4f01eff2c237">
+            <span>Page 1</span>
+          </a>
         </p>
       </section>
-      <section id="2b9f9047-800c-441d-ac13-56f0f2e282f2">
+      <section id="a2c8e099-bcb7-4b77-9f81-c70ed18a09ec">
         <title>
           <p>«Пучина страстей»</p>
         </title>
