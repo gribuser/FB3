@@ -37,7 +37,9 @@ $OPT{'source'} = $ARGV[0] unless $OPT{'source'};
 $OPT{'df'} = $ARGV[1] unless $OPT{'df'};
 
 if (!$OPT{'dd'} && !$OPT{'df'}) {
-  $OPT{'df'} = $OPT{'source'}.'.fb3';
+  my $FName = $OPT{'source'};
+  $FName =~ s/\.\w+$//;
+  $OPT{'df'} = $FName.'.fb3';
 }
 
 unless ($OPT{'source'}) {
