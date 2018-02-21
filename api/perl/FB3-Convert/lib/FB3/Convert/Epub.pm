@@ -693,15 +693,23 @@ sub CleanNodeEmptyId {
     next unless ref $Item eq 'HASH';
     foreach my $El (keys %$Item) {
       $Item->{$El}->{'value'} = CleanNodeEmptyId($X,$Item->{$El}->{'value'});
-      if (exists $Item->{$El}->{'attributes'}->{'id'}) {
-        my $Id = $Item->{$El}->{'attributes'}->{'id'};
-        unless (exists $X->{'href_list'}->{"#".$Id}) { #элементы с несуществующими id
-          $X->Msg("Find non exists ID and delete '$Id' in node '$El' [".$X->{'id_list'}->{$Id}."]\n","w");
-          delete $Item->{$El}->{'attributes'}->{'id'}; #удалим id
+      if (exists $Item->{$El}->{'attributes'}->{'id'} || $El =~ /^(a|span)$/) {
+        my $Id = exists $Item->{$El}->{'attributes'}->{'id'} ? $Item->{$El}->{'attributes'}->{'id'} : '';
+        if (!exists $X->{'href_list'}->{"#".$Id} || !$Id) { #элементы с несуществующими id
+          
+          my $Link;
+          $Link = $X->trim($Item->{$El}->{'attributes'}->{'xlink:href'})if exists $Item->{$El}->{'attributes'}->{'xlink:href'};
+          
+          if ($Id) {
+            $X->Msg("Find non exists ID and delete '$Id' in node '$El' [".$X->{'id_list'}->{$Id}."]\n","w");
+            delete $Item->{$El}->{'attributes'}->{'id'}; #удалим id
+          } elsif ($Link eq '') {
+            $X->Msg("Find node '$El' without id\n","w");
+          }
+          
           next unless $El =~ /^(a|span)$/;
-          my $Link = $X->trim($Item->{$El}->{'attributes'}->{'xlink:href'});
           if ($El eq 'a' && $Link ne '') { #<a> c линками оставим
-            $X->Msg("Find link [$Link]. Skip\n");
+            $X->Msg("Find link [$Link]. Skip\n","w");
             next;
           }
           pop @$Ret;
