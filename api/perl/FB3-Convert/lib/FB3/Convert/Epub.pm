@@ -199,11 +199,11 @@ sub Reaper {
 
     #^<p/> и emptyline режем в начале
     foreach my $Item (@{$Page->{'content'}}) {
-
       if (
-          ref $Item eq 'HASH'
+          (ref $Item eq 'HASH'
           && exists $Item->{'p'}
-          && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}) )
+          && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}))
+          || !defined $Item || (ref $Item eq '' && $Item =~ /^[\s\t]$/))
         ) {
         $Item = undef;
       } else {
@@ -214,16 +214,18 @@ sub Reaper {
     #^<p/> и emptyline режем в конце
     foreach my $Item (reverse @{$Page->{'content'}}) {
       if (
-          ref $Item eq 'HASH'
+          (ref $Item eq 'HASH'
           && exists $Item->{'p'}
-          && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}) )
+          && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}))
+          || (!defined $Item || (ref $Item eq '' && $Item =~ /^[\s\t]+$/))
+              )
         ) {
         $Item = undef;
       } else {
         last;
       }
     }
-    
+
     my $c=-1;
     my $EmptyLineDetect=undef;
     my $LastSpace=0;
@@ -334,6 +336,8 @@ sub Reaper {
     #РИсуем section's
      my @P;
      my $Sec = SectionBody($X);
+     
+     
 
      my $c=0;
      my $TitleOK = 0;
