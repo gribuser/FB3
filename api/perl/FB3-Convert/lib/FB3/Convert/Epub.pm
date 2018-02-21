@@ -233,13 +233,13 @@ sub Reaper {
         $Item=undef;
         next;
       }
-      
+
       #клеим смежные emptyline
       if (ref $Item eq 'HASH'
           && exists $Item->{'p'}
           && $X->IsEmptyLineValue($Item->{'p'}->{'value'})
         ) {
-       
+
         if (defined $EmptyLineDetect) {
           push @{$Page->{'content'}->[$EmptyLineDetect]->{p}->{'value'}}, $Item->{'p'}->{'value'};
           $Item = undef;
@@ -249,7 +249,7 @@ sub Reaper {
       } else {
         $EmptyLineDetect = undef;
       }
-    
+
       #<title/> иногда попадаются - режем
       if (
           ref $Item eq 'HASH'
@@ -258,7 +258,7 @@ sub Reaper {
           $Item->{'title'}->{'value'} = CleanTitle($X,$Item->{'title'}->{'value'});
           $Item = undef unless @{$Item->{'title'}->{'value'}};
       }
-      
+
     }
 
     for (my $c = scalar @{$Page->{'content'}}; $c>=0; $c--) {
@@ -276,7 +276,7 @@ sub Reaper {
           } else {
             last; #наткнулись на НЕ-title, хватит перебирать
           }
-          
+
         }
 
         if ($LastTitleOK > -1) {
@@ -303,11 +303,11 @@ sub Reaper {
           next if !ref($Last) && $X->trim($Last) eq ''; #если перед нами перенос строки, игнорим, ищем <a> дальше
           if (
             ref $Last eq 'HASH'
-            && exists $Last->{'a'}
-            && $Last->{'a'}->{'attributes'}->{'xlink:href'} eq ''
-            && !@{$Last->{'a'}->{'value'}} #в <a> ничего нет. Иначе это уже полезный контент, и нечего его в title переносить
+            && IsEmptyA($Last)
           ) {
-            push @LinksMove2Title, delete $Page->{'content'}->[$i];
+            my $Move = delete $Page->{'content'}->[$i];
+            my $key = each %$Move; 
+            push @LinksMove2Title, $key ne 'a' ? @{$Move->{$key}->{'value'}} : $Move;
           } else {
             last; #наткнулись на НЕ-<a>, хватит перебирать
           }
@@ -316,12 +316,11 @@ sub Reaper {
         if (@LinksMove2Title && ref $Item eq 'HASH' && exists $Item->{'title'}) {
           push @{$Item->{'title'}->{'value'}}, @LinksMove2Title; #переносим <a> в ближайший
         }
+        CleanTitle($X,$Item->{'title'}->{'value'});
     }
-
 
     #РИсуем section's
      my @P;
-
      my $Sec = SectionBody($X);
 
      my $c=0;
@@ -412,16 +411,41 @@ sub Reaper {
       }
     };
   }
-  
-  foreach (@Body) {
-    AnaliseIdEmptyHref($X,$_->{'section'});
+
+  foreach my $Page (@Body) {
+    AnaliseIdEmptyHref($X,$Page->{'section'});
   }
   MoveIdEmptyHref($X,\@Body);
-  
+
   $Structure->{'PAGES'} = {
     value => \@Body
   };
 
+}
+
+sub IsEmptyA {
+  my $Data = shift;
+  return 0 unless ref $Data eq 'HASH';
+  
+  return 1 if (
+    (
+    exists $Data->{'p'}
+    && @{$Data->{'p'}->{'value'}} == 1
+    && IsEmptyA($Data->{'p'}->{'value'}->[0])
+    )
+    ||
+    (
+    exists $Data->{'span'}
+    && @{$Data->{'span'}->{'value'}} == 1
+    && IsEmptyA($Data->{'span'}->{'value'}->[0])
+    )
+    ||
+    (exists $Data->{'a'}
+    && $Data->{'a'}->{'attributes'}->{'xlink:href'} eq ''
+    && !@{$Data->{'a'}->{'value'}}
+    )
+  ); #в <a> ничего нет. Иначе это уже полезный контент, и нечего его в title переносить
+  return 0;      
 }
 
 sub SectionBody {
@@ -458,11 +482,11 @@ sub AnaliseIdEmptyHref {
     if (ref $Item eq '') { # это голый текст
       $Hash4Move->{'count_abs'} += length($Item);
     } elsif (ref $Item eq 'HASH') { # это нода
-      
+
       foreach my $El (keys %$Item) {   
         if ($El eq 'section') {
           AnaliseIdEmptyHref($X,$Item->{$El}); #вложенную секцию обрабатывает как отдельную
-        } else {  
+        } else {
           if (exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
             if ($El eq 'a' && exists $Item->{$El}->{'attributes'}->{'xlink:href'} && $Item->{$El}->{'attributes'}->{'xlink:href'} eq '') {
               #ссылка - кандидат на перенос
@@ -644,7 +668,6 @@ sub CleanTitle {
   my $Node = shift;
 
   return $Node unless ref $Node eq 'ARRAY';
-
   foreach my $Item (@$Node) {
     $Item = undef if ref $Item eq 'HASH' && exists $Item->{'p'} && !scalar @{$Item->{'p'}->{'value'}};  
   }
