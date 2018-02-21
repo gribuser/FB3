@@ -1,65 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="c23fab1a-0b73-4de8-b5de-39e01417a36c" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <section id="c23fab1a-0b73-4de8-b5de-39e01417a36c">
-    <section id="e17a283d-19f8-58bf-844e-1354f755e5a6">
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="58d3ce2b-5ccc-478a-a7f7-f82555ef613c" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="58d3ce2b-5ccc-478a-a7f7-f82555ef613c">
+    <section id="4eef68e2-25a7-5f05-8de9-cd0a2372a6ae">
       <title>
         <p>Title 1</p>
       </title>
-      <p>
-        <a xlink:href="#e17a283d-19f8-58bf-844e-1354f755e5a6"/>
-      </p>
+      <p> <a xlink:href="#4eef68e2-25a7-5f05-8de9-cd0a2372a6ae"/></p>
     </section>
-    <section id="40af0c32-a49e-5563-8960-d086eb0f0293">
+    <section id="2035276f-3d74-563a-b98f-df3b0ee8cfe0">
       <title>
         <p>Title 2</p>
       </title>
-      <p>
-        <a xlink:href="#40af0c32-a49e-5563-8960-d086eb0f0293">link1</a>
-        <a xlink:href="#40af0c32-a49e-5563-8960-d086eb0f0293">link2</a>
-        <a xlink:href="#40af0c32-a49e-5563-8960-d086eb0f0293">link3</a>
-      </p>
+      <p> <a xlink:href="#2035276f-3d74-563a-b98f-df3b0ee8cfe0">link1</a> <a xlink:href="#2035276f-3d74-563a-b98f-df3b0ee8cfe0">link2</a> <a xlink:href="#2035276f-3d74-563a-b98f-df3b0ee8cfe0">link3</a></p>
     </section>
-    <section id="d43fdd04-89c8-5f8b-a99d-3a396d5c79d9">
+    <section id="0bb7c619-c7d0-51be-9e6c-b7dcef5ef174">
       <title>
         <p>Title 2</p>
       </title>
-      <p>
-        <a xlink:href="#d43fdd04-89c8-5f8b-a99d-3a396d5c79d9">link1</a>
-        <a xlink:href="#d43fdd04-89c8-5f8b-a99d-3a396d5c79d9">link2</a>
-      </p>
+      <p> <a xlink:href="#0bb7c619-c7d0-51be-9e6c-b7dcef5ef174">link1</a> <a xlink:href="#0bb7c619-c7d0-51be-9e6c-b7dcef5ef174">link2</a></p>
     </section>
-    <section id="82894089-ad3f-553e-bc1e-d7b413ad1416">
-      <section id="4878bad6-776c-4683-9d70-f2bedf01d287">
-        <p><strong>link don't move to title (link1)</strong>link don't move to title (link4)</p>
+    <section id="3e676f56-49ff-5615-9306-ab20dc16ec4d">
+      <section id="2ba4f03e-ff6d-4b06-bac2-3ef79183a6fd">
+        <p><strong>link don't move to title (link1)</strong>link don't move to title (link4)  </p>
       </section>
-      <section id="af098a85-88c3-434e-9562-83e17b2a1686">
+      <section id="043d9a93-26c5-4973-884b-82bceb44c5d7">
         <title>
           <p>Title</p>
         </title>
+        <p> </p>
         <p>DELIMETER</p>
       </section>
-      <section id="960dead3-5e9e-4867-ba11-61fe3c8f83f7">
+      <section id="bc18bbed-6c88-4339-b0bf-61fea572d894">
         <title>
           <p>Title2</p>
         </title>
-        <p>
-          <a xlink:href="#4878bad6-776c-4683-9d70-f2bedf01d287">link1</a>
-          <a xlink:href="#af098a85-88c3-434e-9562-83e17b2a1686">link2</a>
-          <a xlink:href="#af098a85-88c3-434e-9562-83e17b2a1686">link3</a>
-          <a xlink:href="#4878bad6-776c-4683-9d70-f2bedf01d287">link4</a>
-          <a xlink:href="#960dead3-5e9e-4867-ba11-61fe3c8f83f7">link5</a>
-        </p>
+        <p> <a xlink:href="#2ba4f03e-ff6d-4b06-bac2-3ef79183a6fd">link1</a> <a xlink:href="#043d9a93-26c5-4973-884b-82bceb44c5d7">link2</a> <a xlink:href="#043d9a93-26c5-4973-884b-82bceb44c5d7">link3</a> <a xlink:href="#2ba4f03e-ff6d-4b06-bac2-3ef79183a6fd">link4</a> <a xlink:href="#bc18bbed-6c88-4339-b0bf-61fea572d894">link5</a></p>
       </section>
     </section>
-    <section id="514c4b20-25af-563c-b796-1de2cae1db4e">
+    <section id="3242b32e-c17b-5199-a663-15d5f90fbd05">
       <p>LINKS FROM ANOTHER PAGE</p>
-      <p>
-        <a xlink:href="#4878bad6-776c-4683-9d70-f2bedf01d287">link1</a>
-        <a xlink:href="#af098a85-88c3-434e-9562-83e17b2a1686">link2</a>
-        <a xlink:href="#af098a85-88c3-434e-9562-83e17b2a1686">link3</a>
-        <a xlink:href="#4878bad6-776c-4683-9d70-f2bedf01d287">link4</a>
-        <a xlink:href="#960dead3-5e9e-4867-ba11-61fe3c8f83f7">link5</a>
-      </p>
+      <p> <a xlink:href="#2ba4f03e-ff6d-4b06-bac2-3ef79183a6fd">link1</a> <a xlink:href="#043d9a93-26c5-4973-884b-82bceb44c5d7">link2</a> <a xlink:href="#043d9a93-26c5-4973-884b-82bceb44c5d7">link3</a> <a xlink:href="#2ba4f03e-ff6d-4b06-bac2-3ef79183a6fd">link4</a> <a xlink:href="#bc18bbed-6c88-4339-b0bf-61fea572d894">link5</a></p>
+    </section>
+    <section id="b390b5da-e512-56a0-997c-b51aadfccb9b">
+      <title>
+        <p>title1</p>
+        <p><a id="link_c5b01ef8-8bb3-5d93-a06c-fdaab7875c33" xlink:href="http://www.litres.ru">have link</a> title2</p>
+      </title>
+      <p> <a xlink:href="#b390b5da-e512-56a0-997c-b51aadfccb9b"/> <a xlink:href="#b390b5da-e512-56a0-997c-b51aadfccb9b"/> <a xlink:href="#b390b5da-e512-56a0-997c-b51aadfccb9b"/> <a xlink:href="#link_c5b01ef8-8bb3-5d93-a06c-fdaab7875c33"/></p>
     </section>
   </section>
 </fb3-body>

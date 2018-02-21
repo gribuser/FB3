@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body" id="a72f657f-6890-44e8-af99-8162fe9e5ee1">
-  <section id="a72f657f-6890-44e8-af99-8162fe9e5ee1">
-    <section id="9cf7206f-d90c-53fc-bf42-023343b1a62a">
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="21e37267-b4f6-424e-87af-a3d2f2b303ff" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="21e37267-b4f6-424e-87af-a3d2f2b303ff">
+    <section id="d17709c7-d64a-5b59-96f4-c48072247ecc">
       <title>
         <p>Title as title</p>
       </title>
-      <p>
-TEXT
-</p>
+      <p> TEXT </p>
     </section>
-    <section id="8e4a9a36-a0b9-58ce-9280-beef0c702539">
+    <section id="7fdc5ab4-0e77-5970-a585-795db163b94f">
       <subtitle>Title to subtitle</subtitle>
     </section>
   </section>

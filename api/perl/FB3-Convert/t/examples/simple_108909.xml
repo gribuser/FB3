@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="0e36e20d-a76a-4e34-830d-eeec4e1a5c93" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <section id="0e36e20d-a76a-4e34-830d-eeec4e1a5c93">
-    <section id="09b00cb7-47a5-5f14-89d3-1d6fa5256823">
+<fb3-body id="77ca6fa2-a8c6-4f2b-94af-aa680b8ec5bb" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body">
+  <section id="77ca6fa2-a8c6-4f2b-94af-aa680b8ec5bb">
+    <section id="7d122b7b-ac69-5cf9-8ee9-9dd95cdc50b7">
       <title>
         <p>ВСТУПЛЕНИЕ</p>
         <p>Глава 1</p>
       </title>
-      <p>
-Иностранная речь
-</p>
+      <p> Иностранная речь </p>
       <p>“Get me a gin!”</p>
+      <p> </p>
       <p>“Do you know what you want to do when you get old?”</p>
     </section>
-    <section id="2d359433-aee5-5b19-9219-86f9d968a872">
-      <section id="6e51fd98-38d2-4e4d-a639-088b56c09f13">
+    <section id="ce7a5703-2269-573c-bcf9-1d7101097181">
+      <section id="2d2c5d13-767c-4663-ae75-a45235f19db7">
         <p>
-          <a xlink:href="#09b00cb7-47a5-5f14-89d3-1d6fa5256823">Page 1</a>
+          <a xlink:href="#7d122b7b-ac69-5cf9-8ee9-9dd95cdc50b7">Page 1</a>
         </p>
       </section>
-      <section id="8cb595c9-75fc-47df-bbef-fcc2eb449019">
+      <section id="5b065dfe-0654-432b-82c5-7aca7b72f2b0">
         <title>
           <p>«Пучина страстей»</p>
         </title>
+        <p> </p>
         <p>Виснет ветвь с орехом грецким, Камень падает на дно. В светлом платьице немецком Вылетает жук в окно.</p>
+        <p> </p>
         <p>Позабыв свою тревогу И сомнений целый ряд, Выбегает на дорогу Барабанщиков отряд. </p>
       </section>
     </section>
