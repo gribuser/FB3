@@ -294,7 +294,8 @@ sub Reaper {
         }
 
         if ($LastTitleOK > -1) {
-          push @{$Page->{'content'}->[$LastTitleOK]->{'title'}->{'value'}}, clone(\@{$Item->{'title'}->{'value'}}); #переносим title в предыдущий
+          my $TitleMove = clone($Item->{'title'}->{'value'});
+          push @{$Page->{'content'}->[$LastTitleOK]->{'title'}->{'value'}},  @$TitleMove; #переносим title в предыдущий
           delete $Page->{'content'}->[$c];
           delete $Page->{'content'}->[$c-1] #перенос строки тоже грохнем
             if (
