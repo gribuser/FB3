@@ -226,13 +226,25 @@ sub Reaper {
     
     my $c=-1;
     my $EmptyLineDetect=undef;
+    my $LastSpace=0;
     foreach my $Item (@{$Page->{'content'}}) {
       $c++;
       next unless defined $Item;
-      if (ref $Item eq '' && $X->trim($Item) eq '') {
+      if (ref $Item eq '' && $Item eq '') {
         $Item=undef;
         next;
       }
+
+      if (ref $Item eq '' && $Item =~ /^[\s\n\r\t]+$/) {
+        if ($LastSpace) {
+          $Item=undef;
+        } else {
+          $Item=" ";
+        }  
+        $LastSpace=1;
+        next;
+      }
+      $LastSpace=0;
 
       #клеим смежные emptyline
       if (ref $Item eq 'HASH'

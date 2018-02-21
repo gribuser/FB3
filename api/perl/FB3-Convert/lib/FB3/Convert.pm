@@ -905,6 +905,8 @@ sub Content2Tree {
   my $Content = $Obj->{'content'};
   my $File = $Obj->{'file'};
 
+  $Content = $X->trim($Content);
+  
   my $XMLDoc = XML::LibXML->new(
       #expand_entities => 0, # не считать & за entity
       no_network => 1, # не будем тянуть внешние вложения
