@@ -25,14 +25,19 @@ GetOptions(
   'meta_date=s' => \$OPT{'meta_date'},
 ) || help();
 
-$OPT{'source'} = $ARGV[0] unless $OPT{'source'};
-$OPT{'df'} = $ARGV[1] unless $OPT{'df'};
 
 if ($OPT{'vl'}) {
   my $Obj = new FB3::Convert(empty=>1);
   my $Valid = $Obj->Validate($OPT{'vl'});
   print $Valid;
   exit;
+}
+
+$OPT{'source'} = $ARGV[0] unless $OPT{'source'};
+$OPT{'df'} = $ARGV[1] unless $OPT{'df'};
+
+if (!$OPT{'dd'} && !$OPT{'df'}) {
+  $OPT{'df'} = $OPT{'source'}.'.fb3';
 }
 
 unless ($OPT{'source'}) {
