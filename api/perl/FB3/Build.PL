@@ -12,7 +12,6 @@ if (-d 'share') {
 	foreach (@XSDFiles) {
 		unless (-e 'share/'.$_) {
 			rmtree('share');
-			die 'Unable to get schema file '.$_;
 			$XSDFound = 0;
 			last;
 		} else {
