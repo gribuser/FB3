@@ -46,8 +46,6 @@ unless ($XSDFound) {
 		}
 	}
 }
-
-
 die 'Unable to get schema files' unless $XSDFound;
 	
 my $Builder = Module::Build->new(
