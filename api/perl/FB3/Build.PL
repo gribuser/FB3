@@ -33,18 +33,6 @@ unless ($XSDFound) {
 		}
 	}
 }
-unless ($XSDFound) {
-	mkdir 'share';
-	foreach (@XSDFiles) {
-		unless (File::Fetch->new(uri => 'http://github.com/gribuser/FB3/blob/master/'.$_)->fetch(to => 'share')) {
-			$XSDFound = 0;
-			rmtree('share');
-			last;
-		} else {
-			$XSDFound = 1;
-		}
-	}
-}
 die 'Unable to get schema files' unless $XSDFound;
 	
 my $Builder = Module::Build->new(
