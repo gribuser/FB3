@@ -141,7 +141,7 @@ sub _Diff {
       $Err .= "Critical diff!\n";
       $Err .= " event: ".xtrim($EventName)."\n";
       $Err .= " ".$ContainerName.": ".$EventNodeName."\n";
-      $Err .= " content: ".$DiffError."\n\n";
+      $Err .= " content: [".$DiffError."]\n\n";
     }
 
   }
