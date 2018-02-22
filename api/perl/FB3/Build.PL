@@ -2,7 +2,6 @@ use 5.014;
 use strict;
 use warnings;
 use Module::Build;
-use File::Fetch;
 use File::Path;
 use File::Copy;
 
@@ -50,7 +49,6 @@ my $Builder = Module::Build->new(
     },
     requires => {
         'perl'        => 5.014,
-				'File::Fetch' => 0,
 				'File::Path'  => 0,
 				'File::Copy'  => 0,
         'OPC'         => 0,
