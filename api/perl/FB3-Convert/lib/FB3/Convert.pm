@@ -752,7 +752,7 @@ sub FB3_2_Zip {
 
   my $old_dir = cwd();
   chdir("$X->{'DestinationDir'}");
-  system("/usr/bin/zip -rq9 ".$X->{'DestinationFile'}." ./*");
+  system("/usr/bin/zip -rq9 '".$X->{'DestinationFile'}."' ./*");
   chdir $old_dir if $old_dir;
   Msg($X,"Delete dir after zip: $X->{'DestinationDir'}\n");
   ForceRmDir($X,$X->{'DestinationDir'});
