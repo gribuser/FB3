@@ -36,8 +36,14 @@ unless ($XSDFound) {
 unless ($XSDFound) {
 	mkdir 'share';
 	$File::Fetch::WARN = 0;
+	my $Wget = (`wget -V` !~ /No command/)?1:0;
 	foreach (@XSDFiles) {
-		File::Fetch->new(uri => 'https://raw.githubusercontent.com/gribuser/FB3/master/'.$_)->fetch(to => 'share');
+		my $Url = 'https://raw.githubusercontent.com/gribuser/FB3/master/'.$_;
+		if ($Wget) {
+		    `wget -q $Url -P share`;
+		} else {
+		    File::Fetch->new(uri => $Url)->fetch(to => 'share');
+		}
 		unless (-e 'share/'.$_) {
 			$XSDFound = 0;
 			rmtree('share');
