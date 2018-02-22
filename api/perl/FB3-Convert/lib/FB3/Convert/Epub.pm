@@ -147,7 +147,7 @@ sub Reaper {
     my @Genres;
     for my $Genre ($XC->findnodes('/root:package/root:metadata/dc:subject',$RootDoc)) {
       next unless $Genre->to_literal;
-      push @Genres, $self->html_trim($Genre->to_literal),
+      push @Genres, $self->EncodeUtf8($self->html_trim($Genre->to_literal)),
     }
     push @Genres, 'Unknown' unless @Genres;
     
