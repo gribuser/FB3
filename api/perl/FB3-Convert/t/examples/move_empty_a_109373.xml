@@ -1,91 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="78cd6778-a1ce-4aa0-803e-8162a95057f1" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <section id="78cd6778-a1ce-4aa0-803e-8162a95057f1">
-    <section id="36413433-302a-5947-a5d1-b00150c41f85">
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body" id="49d200e8-dba8-4158-b608-3ca7dbddaef5">
+  <section id="49d200e8-dba8-4158-b608-3ca7dbddaef5">
+    <section id="30443e43-400b-53bc-adab-3a917f0b53e7">
       <p>
         <strong>100symbols_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</strong>
       </p>
-      <p> </p>
+      <p>link move to section</p>
       <p>
-        <span id="link_5dec365d-5f1f-5aba-9d3e-7279d22f1fe3">link move to section</span>
+        <span id="link_0c357f46-c5cc-5e55-9192-3285690746a6">link change to span</span>
       </p>
-      <p> </p>
-      <p>
-        <span id="link_4f27cceb-e6ef-5497-8b6a-f55e98579f15">link change to span</span>
-      </p>
-      <p> </p>
       <p>
         <strong>101symbols_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</strong>
       </p>
-      <p> </p>
-      <p id="link_d556ddf9-04bb-5f58-87b8-540db7c65da1"/>
-      <p> </p>
+      <p id="link_23c9d247-7a9f-5282-9628-0df0732237f3"/>
       <p>
         <strong>101symbols_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</strong>
       </p>
-      <p> </p>
-      <p>
-        <span id="link_5d8911ee-996d-530d-9d00-0b49ff23c752">[2] link move to "t1"</span>
-      </p>
-      <p> </p>
+      <p>[2] link move to "t1"</p>
       <p>
         <strong>100symbols_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</strong>
       </p>
-      <p> </p>
-      <p id="link_9ae24284-ccc6-5c3c-8c40-99c6d736029c">123_1</p>
-      <p> </p>
+      <p id="link_b196fc62-b86a-550f-8803-7b1edda3534b">123_1</p>
       <p>link move to "t1"</p>
-      <p> </p>
-      <p id="link_d63a5db7-d72e-502e-9067-ce9bbeaa8ac2">text_1</p>
-      <p> </p>
+      <p id="link_05e8332d-88e9-5e1c-b910-ff5daa311002">text_1</p>
       <p>DELIMETER</p>
-      <p> </p>
-      <p id="link_f2a8dd37-cf29-5540-b11a-3eaf07521853">18symbols_AAAAAAAA</p>
-      <p> </p>
+      <p id="link_260ad9f4-8217-5d91-a031-ed41efbde533">18symbols_AAAAAAAA</p>
       <p>link move to "t4"</p>
-      <p> </p>
-      <p id="link_68209393-2cae-53d0-ad52-b76dd9a0ac63">text_2</p>
-      <p> </p>
+      <p id="link_5d260de5-a9cb-5476-b393-e0ad4fad8284">text_2</p>
       <p>DELIMETER</p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_5dec365d-5f1f-5aba-9d3e-7279d22f1fe3">[href] link move to section</a>
+        <a xlink:href="#30443e43-400b-53bc-adab-3a917f0b53e7">[href] link move to section</a>
       </p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_4f27cceb-e6ef-5497-8b6a-f55e98579f15">[href] link change to span</a>
+        <a xlink:href="#link_0c357f46-c5cc-5e55-9192-3285690746a6">[href] link change to span</a>
       </p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_9ae24284-ccc6-5c3c-8c40-99c6d736029c">[href] link move to "t1" [123_1]</a>
+        <a xlink:href="#link_b196fc62-b86a-550f-8803-7b1edda3534b">[href] link move to "t1" [123_1]</a>
       </p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_68209393-2cae-53d0-ad52-b76dd9a0ac63">[href] link move to "t4" [text_2]</a>
+        <a xlink:href="#link_5d260de5-a9cb-5476-b393-e0ad4fad8284">[href] link move to "t4" [text_2]</a>
       </p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_5d8911ee-996d-530d-9d00-0b49ff23c752">[href] [2] link move to "t1" [123_1]</a>
+        <a xlink:href="#link_b196fc62-b86a-550f-8803-7b1edda3534b">[href] [2] link move to "t1" [123_1]</a>
       </p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_9ae24284-ccc6-5c3c-8c40-99c6d736029c"/>
+        <a xlink:href="#link_b196fc62-b86a-550f-8803-7b1edda3534b"/>
       </p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_d63a5db7-d72e-502e-9067-ce9bbeaa8ac2"/>
+        <a xlink:href="#link_05e8332d-88e9-5e1c-b910-ff5daa311002"/>
       </p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_f2a8dd37-cf29-5540-b11a-3eaf07521853"/>
+        <a xlink:href="#link_260ad9f4-8217-5d91-a031-ed41efbde533"/>
       </p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_68209393-2cae-53d0-ad52-b76dd9a0ac63"/>
+        <a xlink:href="#link_5d260de5-a9cb-5476-b393-e0ad4fad8284"/>
       </p>
-      <p> </p>
       <p>
-        <a xlink:href="#link_d556ddf9-04bb-5f58-87b8-540db7c65da1"/>
+        <a xlink:href="#link_23c9d247-7a9f-5282-9628-0df0732237f3"/>
       </p>
     </section>
   </section>
