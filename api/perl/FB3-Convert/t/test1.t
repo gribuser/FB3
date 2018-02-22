@@ -12,6 +12,7 @@ use Encode;
 use XML::LibXML;
 use Test::More;
 use File::Temp qw/tempdir/;
+use File::ShareDir qw/dist_dir/;
 
 plan tests => 1;
 
@@ -42,7 +43,7 @@ foreach my $EpubFile (sort{Num($a)<=>Num($b)} @Epubs ) {
 
   $Obj->Reap();
   my $FB3Path =  $Obj->FB3Create();
-  my $ValidErr = $Obj->Validate();
+  my $ValidErr = $Obj->Validate(xsd=>dist_dir("FB3"));
   if ($ValidErr) {
     diag($ValidErr);
     $Obj->Cleanup();

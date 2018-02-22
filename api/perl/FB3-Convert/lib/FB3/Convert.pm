@@ -319,10 +319,6 @@ my %GenreTranslate = (
   'visual_arts'=>'Изобразительное искусство, фотография',
 );
 
-# Local paths
-our $LocalPath = "/litres/www/WWWHub";
-our $XsdPath = $LocalPath.'/xsd/fb3';
-
 my $XSLT = XML::LibXSLT->new;
 my $XC = XML::LibXML::XPathContext->new();
 my $Parser = XML::LibXML->new();
@@ -1214,7 +1210,9 @@ sub Error {
 #проверка валидности полученного FB3
 sub Validate {
   my $X = shift;
-  my $ValidateDir = shift;
+  my %Args = @_;
+  my $ValidateDir = $Args{'path'};
+  my $XsdPath = $Args{'xsd'};
   
   my $Valid = FB3::Validator->new( $XsdPath );
   return $Valid->Validate($ValidateDir||$X->{'DestinationDir'});
