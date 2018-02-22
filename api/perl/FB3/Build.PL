@@ -19,7 +19,8 @@ if (-d 'share') {
 			$XSDFound = 1;
 		}
 	}
-} else {
+}
+unless ($XSDFound) {
 	mkdir 'share';
 	my $LocalXSDDir = '../../../';
 	foreach (@XSDFiles) {
@@ -28,20 +29,24 @@ if (-d 'share') {
 			$XSDFound = 1;
 		} else {
 			$XSDFound = 0;
+			rmtree('share');
 			last;
 		}
 	}
-	unless ($XSDFound) {
-		foreach (@XSDFiles) {
-			unless (File::Fetch->new(uri => 'http://github.com/gribuser/FB3/blob/master/'.$_)->fetch(to => 'share')) {
-				$XSDFound = 0;
-				rmtree('share');
-				last;
-			}
+}
+unless ($XSDFound) {
+	mkdir 'share';
+	foreach (@XSDFiles) {
+		unless (File::Fetch->new(uri => 'http://github.com/gribuser/FB3/blob/master/'.$_)->fetch(to => 'share')) {
+			$XSDFound = 0;
+			rmtree('share');
+			last;
+		} else {
 			$XSDFound = 1;
 		}
 	}
 }
+
 
 die 'Unable to get schema files' unless $XSDFound;
 	
