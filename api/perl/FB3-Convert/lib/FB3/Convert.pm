@@ -80,7 +80,8 @@ my %AllowElementsMain = (
   },
   'p' => {
     'allow_attributes' => ['id'],
-    'allow_elements_inside' => $ElsMainList
+    'allow_elements_inside' => $ElsMainList,
+    'block' => 1
   },
   'span' => {
     'allow_attributes' => ['id'],
@@ -97,15 +98,18 @@ my %AllowElementsMain = (
   },
   'ul' => {
     'allow_attributes' => ['id'],
-    'allow_elements_inside' => {'li'=>undef, 'title'=>undef, 'epigraph'=>undef}
+    'allow_elements_inside' => {'li'=>undef, 'title'=>undef, 'epigraph'=>undef},
+    'block' => 1
   },
   'ol' => {
     'allow_attributes' => ['id'],
-    'allow_elements_inside' => {'li'=>undef, 'title'=>undef, 'epigraph'=>undef}
+    'allow_elements_inside' => {'li'=>undef, 'title'=>undef, 'epigraph'=>undef},
+    'block' => 1
   },
   'li' => {
     'allow_attributes' => [],
-    'allow_elements_inside' => {'em'=>undef,a=>undef}
+    'allow_elements_inside' => {'em'=>undef,a=>undef},
+    'block' => 1
   },
   'root_fb3_container' => {
     'allow_elements_inside' => {
@@ -382,7 +386,12 @@ sub new {
   $X->{'allow_elements'} = \%AllowElementsMain;
   $X->{'href_list'} = {}; #собираем ссылки в документе
   $X->{'id_list'} = {}; #собираем ссылки в документе
-  
+
+  $X->{'block-level'} = [];
+  foreach (keys %AllowElementsMain) {
+    push $X->{'block-level'}, $_ if exists $AllowElementsMain{$_}->{'block'} && exists $AllowElementsMain{$_}->{'block'}; 
+  }
+
   #Наша внутренняя структура данных конвертора. шаг влево  - расстрел
   $X->{'STRUCTURE'} = {
 
@@ -906,7 +915,11 @@ sub Content2Tree {
   my $File = $Obj->{'file'};
 
   $Content = $X->trim($Content);
-  
+
+  #ровняем пробелы у block-level
+  my $BlockRegExp = '('.(join "|", @{$X->{'block-level'}}).')';
+  $Content =~ s#\s*(</?$BlockRegExp[^>]*>)\s*#$1#gi;
+
   my $XMLDoc = XML::LibXML->new(
       #expand_entities => 0, # не считать & за entity
       no_network => 1, # не будем тянуть внешние вложения

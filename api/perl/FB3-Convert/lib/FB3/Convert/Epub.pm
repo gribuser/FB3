@@ -53,6 +53,7 @@ sub Reaper {
     processor => \&TransformTo,
     processor_params => ['p'],
     'allow_elements_inside' => $FB3::Convert::ElsMainList,
+    'block' => 1
   };
   $AllowElements->{'h1'} = {
     'allow_attributes' => ['id'],
@@ -337,8 +338,6 @@ sub Reaper {
     #РИсуем section's
      my @P;
      my $Sec = SectionBody($X);
-     
-     
 
      my $c=0;
      my $TitleOK = 0;
