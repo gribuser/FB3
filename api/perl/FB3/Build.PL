@@ -2,6 +2,7 @@ use 5.014;
 use strict;
 use warnings;
 use Module::Build;
+use File::Fetch;
 use File::Path;
 use File::Copy;
 
@@ -32,6 +33,20 @@ unless ($XSDFound) {
 		}
 	}
 }
+unless ($XSDFound) {
+	mkdir 'share';
+	$File::Fetch::WARN = 0;
+	foreach (@XSDFiles) {
+		File::Fetch->new(uri => 'https://raw.githubusercontent.com/gribuser/FB3/master/'.$_)->fetch(to => 'share');
+		unless (-e 'share/'.$_) {
+			$XSDFound = 0;
+			rmtree('share');
+			last;
+		} else {
+			$XSDFound = 1;
+		}
+	}
+}
 die 'Unable to get schema files' unless $XSDFound;
 	
 my $Builder = Module::Build->new(
@@ -49,6 +64,7 @@ my $Builder = Module::Build->new(
     },
     requires => {
         'perl'        => 5.014,
+				'File::Fetch' => 0,
 				'File::Path'  => 0,
 				'File::Copy'  => 0,
         'OPC'         => 0,
