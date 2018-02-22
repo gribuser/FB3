@@ -41,6 +41,8 @@ my %MODULES;
 );
 
 
+my @BlockLevel = ('p','ul','ol','li','div','h1','h2','h3','h4','h5','h6','table'); 
+
 #Элементы, которые парсим в контенте и сохраняем в структуру 
 our $ElsMainList = {
   'span'=>undef,
@@ -55,7 +57,6 @@ our $ElsMainList = {
   'b'=>'strong', #переименование дочерней ноды
   'strong'=>undef, #разрешение переименованной ноды
 };
-
 
 my %AllowElementsMain = (
   'strong' => {
@@ -81,7 +82,6 @@ my %AllowElementsMain = (
   'p' => {
     'allow_attributes' => ['id'],
     'allow_elements_inside' => $ElsMainList,
-    'block' => 1
   },
   'span' => {
     'allow_attributes' => ['id'],
@@ -99,17 +99,14 @@ my %AllowElementsMain = (
   'ul' => {
     'allow_attributes' => ['id'],
     'allow_elements_inside' => {'li'=>undef, 'title'=>undef, 'epigraph'=>undef},
-    'block' => 1
   },
   'ol' => {
     'allow_attributes' => ['id'],
     'allow_elements_inside' => {'li'=>undef, 'title'=>undef, 'epigraph'=>undef},
-    'block' => 1
   },
   'li' => {
     'allow_attributes' => [],
     'allow_elements_inside' => {'em'=>undef,a=>undef},
-    'block' => 1
   },
   'root_fb3_container' => {
     'allow_elements_inside' => {
@@ -387,11 +384,6 @@ sub new {
   $X->{'href_list'} = {}; #собираем ссылки в документе
   $X->{'id_list'} = {}; #собираем ссылки в документе
 
-  $X->{'block-level'} = [];
-  foreach (keys %AllowElementsMain) {
-    push $X->{'block-level'}, $_ if exists $AllowElementsMain{$_}->{'block'} && exists $AllowElementsMain{$_}->{'block'}; 
-  }
-
   #Наша внутренняя структура данных конвертора. шаг влево  - расстрел
   $X->{'STRUCTURE'} = {
 
@@ -493,11 +485,10 @@ sub Reap {
   my $X = shift;
   my $Processor = $MODULES{$X->{'ClassName'}};
   my $File = $X->{'Source'};
-  
+
   $X->Msg("working with file ".$File."\n",'w',1) if $X->{'showname'} || $X->{'verbose'};
   $File = $Processor->{class}->_Unpacker($X,$File) if $Processor->{'unpack'};
-  
-  my $ProcStrcture = $Processor->{'class'}->Reaper($X, source => ($File || $X->{'Source'}));
+  $Processor->{'class'}->Reaper($X, source => ($File || $X->{'Source'}));
   return $X->{'STRUCTURE'};
 }
 
@@ -917,7 +908,7 @@ sub Content2Tree {
   $Content = $X->trim($Content);
 
   #ровняем пробелы у block-level
-  my $BlockRegExp = '('.(join "|", @{$X->{'block-level'}}).')';
+  my $BlockRegExp = '('.(join "|", @BlockLevel).')';
   $Content =~ s#\s*(</?$BlockRegExp[^>]*>)\s*#$1#gi;
 
   my $XMLDoc = XML::LibXML->new(
