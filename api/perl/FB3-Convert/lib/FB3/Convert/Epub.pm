@@ -193,25 +193,28 @@ sub Reaper {
 
   #Клеим смежные title
   #Отрезаем ненужное
+  
   foreach my $Page (@Pages) {
 
     $Page->{'content'} = CleanNodeEmptyId($X,$Page->{'content'});
 
     #^<p/> и emptyline режем в начале
     foreach my $Item (@{$Page->{'content'}}) {
+      next unless defined $Item;
       if (
           (ref $Item eq 'HASH'
           && exists $Item->{'p'}
           && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}))
           || !defined $Item || (ref $Item eq '' && $Item =~ /^[\s\t]$/))
         ) {
-        $Item = undef;
+        $Item=undef;
       } else {
         last;
       }
     }
 
     #^<p/> и emptyline режем в конце
+
     foreach my $Item (reverse @{$Page->{'content'}}) {
       if (
           (ref $Item eq 'HASH'
@@ -334,14 +337,22 @@ sub Reaper {
         CleanTitle($X,$Item->{'title'}->{'value'});
     }
 
+    #Clean undef
+    my @Push;
+    foreach (@{$Page->{'content'}}) {
+      next unless defined $_;
+      push @Push, $_; 
+    }
+    $Page->{'content'} = \@Push;
+  
     #РИсуем section's
-     my @P;
-     my $Sec = SectionBody($X);
+    my @P;
+    my $Sec = SectionBody($X);
 
-     my $c=0;
-     my $TitleOK = 0;
-     push @{$Page->{'content'}},''; #пустышка-закрывашка (так легче обработать массив)
-     foreach my $Item (@{$Page->{'content'}}) {
+    my $c=0;
+    my $TitleOK = 0;
+    push @{$Page->{'content'}},''; #пустышка-закрывашка (так легче обработать массив)
+    foreach my $Item (@{$Page->{'content'}}) {
 
       $c++;
       if (ref $Item eq 'HASH') {
@@ -378,6 +389,7 @@ sub Reaper {
       }
 
     }
+    pop @{$Page->{'content'}}; #закрывашка
 
     #одиночки title нам в section не нужны - не валидно
     #таких разжалуем в subtitle
@@ -411,7 +423,12 @@ sub Reaper {
       $Content = $P[0]->{'section'}->{'value'};  #если section один, то берем только его внутренности, контейнер section лишний 
     }
 
-    push @PagesComplete, {ID=>$Page->{'ID'},'content'=>$Content};
+    if (@$Content) {
+      push @PagesComplete, {ID=>$Page->{'ID'},'content'=>$Content};
+    } else {
+      $X->Msg("Find empty page. Skip [id: $Page->{'ID'}]\n");      
+    }
+  
   }
   @Pages = ();
 
