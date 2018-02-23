@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="1953f081-8320-4db6-a09f-d101b86744a9" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="1953f081-8320-4db6-a09f-d101b86744a9">
+    <section id="72e4d958-3d0e-5d86-a82f-75426e85b354">
+      <p>!DOCTYPE foo [ !ELEMENT foo ANY &gt; !ENTITY xxe SYSTEM "file:///etc/hosts" &gt;]&gt;&amp;xxe;</p>
+    </section>
+  </section>
+</fb3-body>
