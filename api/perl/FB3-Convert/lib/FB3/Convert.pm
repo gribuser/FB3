@@ -1390,7 +1390,7 @@ sub CorrectOuterLink{
   my $X = shift;
   my $Str = shift;
   
-  unless ($Str =~ /^(http|https|mailto)\:(.+)/i) {
+  unless ($Str =~ /^(http|https|mailto|ftp)\:(.+)/i) {
     $X->Msg("Find not valid Link and delete [$Str]\n");
     return "";
   }
@@ -1421,7 +1421,7 @@ sub ValidURL{
   return 0 if length($Url)>300;
 
   my $RegExp =
-  '^(https?):\/\/'.                                          # protocol
+  '^(https|http|ftp):\/\/'.                                          # protocol
   '(([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+'.         # username
   '(:([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+)?'.      # password
   '@)?(?#'.                                                  # auth requires @
