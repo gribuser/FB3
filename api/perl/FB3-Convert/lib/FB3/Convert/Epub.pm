@@ -863,12 +863,13 @@ sub ProcessHref {
 
   my $Href = $Node->getAttribute('href') || "";
 
+  $Href = $X->trim_soft($Href);
   my ($Link, $Anchor) = split /\#/, $Href, 2;
 
   my $NewHref =
   $Href ?
-        $Href =~ /^[a-zA-Z]+\:/
-          ? $Href
+        $Href =~ /^[a-z]+\:/i
+          ? $X->CorrectOuterLink($Href)
           : '#'.($Anchor ? 'link_' : '').$X->Path2ID( ($Link
                                                        ?$Href: #внешний section
                                                        basename($RelPath)."#".$Anchor #текущий section

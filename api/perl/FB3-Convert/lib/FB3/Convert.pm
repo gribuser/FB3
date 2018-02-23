@@ -1131,6 +1131,18 @@ sub trim {
   $str =~ s/\s+/ /g;
   $str =~ s/^\s*//;
   $str =~ s/\s*$//;
+  $str =~ s/^\t*//;
+  $str =~ s/\t*$//;
+  return $str;
+}
+
+sub trim_soft {
+  my $X = shift;
+  my $str = shift;
+  $str =~ s/^\s*//;
+  $str =~ s/\s*$//;
+  $str =~ s/^\t*//;
+  $str =~ s/\t*$//;
   return $str;
 }
 
@@ -1372,6 +1384,66 @@ sub CutLinkDiez {
   my $Str = shift;
   $Str =~ s/^#//;
   return $Str;
+}
+
+sub CorrectOuterLink{
+  my $X = shift;
+  my $Str = shift;
+  
+  unless ($Str =~ /^(http|https|mailto)\:(.+)/i) {
+    $X->Msg("Find not valid Link and delete [$Str]\n");
+    return "";
+  }
+  
+  
+  my $Protocol = $1;
+  my $Link = $2;
+  $Link = $X->trim_soft($Link);
+ 
+  if ($Protocol eq 'mailto') {
+    unless (ValidEMAIL($Link)) {
+      $X->Msg("Find not valid Email and delete [".$Protocol.":".$Link."]\n");
+      return "";
+    }
+  } else {
+    unless (ValidURL($Protocol.':'.$Link)) {
+      $X->Msg("Find not valid URL and delete [".$Protocol.":".$Link."]\n");
+      return "";
+    }
+  }
+    
+  return $Protocol.':'.$Link;
+}
+
+sub ValidURL{
+  my $Url=shift;
+  return 0 unless $Url;
+  return 0 if length($Url)>300;
+
+  my $RegExp =
+  '^(https?):\/\/'.                                          # protocol
+  '(([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+'.         # username
+  '(:([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+)?'.      # password
+  '@)?(?#'.                                                  # auth requires @
+  ')((([a-z0-9]\.|[a-z0-9][a-z0-9-]*[a-z0-9]\.)*'.           # domain segments AND
+  '[a-z][a-z0-9-]*[a-z0-9]'.                                 # top level domain  OR
+  '|((\d|[1-9]\d|1\d{2}|2[0-4][0-9]|25[0-5])\.){3}'.
+  '(\d|[1-9]\d|1\d{2}|2[0-4][0-9]|25[0-5])'.                 # IP address
+  ')(:\d{1,5})?'.                                            # port
+  ')(((\/+([a-z0-9$_\.\+!\*\'\(\),;:@&=-]|%[0-9a-f]{2})*)*'. # path
+  '(\?([a-z0-9$_\.\+!\*\'\(\),;:@&=-]|%[0-9a-f]{2})*)'.      # query string
+  '?)?)?'.                                                   # path and query string optional
+  '(#([a-z0-9$_\.\+!\*\'\(\),;:@&=-]|%[0-9a-f]{2})*)?'.      # fragment
+  '$';
+
+  return $Url=~/$RegExp/i;
+}
+
+sub ValidEMAIL{
+  my $Email=shift;
+  return 0 unless $Email;
+  return 0 if length($Email)>50;
+  return $Email=~ /^[-+a-z0-9_]+(\.[-+a-z0-9_]+)*\@([-a-z0-9_]+\.)+[a-z]{2,10}$/i;
 }
 
 sub ParseMetaFile {
