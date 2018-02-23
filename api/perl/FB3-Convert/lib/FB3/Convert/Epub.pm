@@ -174,7 +174,7 @@ sub Reaper {
       my $Author = $self->BuildAuthorName($self->EncodeUtf8($self->html_trim($Author->to_literal)));
       push @Authors, $Author;
     }
-    push @Authors, $self->BuildAuthorName('Unknown');
+    push @Authors, $self->BuildAuthorName('Unknown') unless scalar @Authors;
     $Description->{'TITLE-INFO'}->{'AUTHORS'} = \@Authors;
   }
 
