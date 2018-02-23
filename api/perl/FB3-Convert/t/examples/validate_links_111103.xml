@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" id="9cea5ea1-a9a8-48ce-92af-ce27c562ad91" xmlns="http://www.fictionbook.org/FictionBook3/body">
-  <section id="9cea5ea1-a9a8-48ce-92af-ce27c562ad91">
-    <section id="426801b0-7d54-5877-a171-6f0cf151d751">
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" id="2d6af588-29e2-4f56-8ff2-ba39d3dc7d11" xmlns="http://www.fictionbook.org/FictionBook3/body">
+  <section id="2d6af588-29e2-4f56-8ff2-ba39d3dc7d11">
+    <section id="169638ef-2b25-5863-8dae-fed090fc99e4">
       <p>
         <a xlink:href="http://www.litres.ru">good link1</a>
       </p>
@@ -22,6 +22,9 @@
       </p>
       <p>
         <a xlink:href="https://user:pwd@www.litres.ru:65535/o-kompanii/contactnaya-informaciya/?ddd=1&amp;rrr=243434343">good link7</a>
+      </p>
+      <p>
+        <a xlink:href="ftp://www.litres.ru">good FTP link8</a>
       </p>
       <p>
         <a xlink:href="mailto:planputina@kremlin.ru">good mail link</a>
