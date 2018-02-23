@@ -908,7 +908,7 @@ sub Content2Tree {
   $Content =~ s#\s*(</?$BlockRegExp[^>]*>)\s*#$1#gi;
 
   my $XMLDoc = XML::LibXML->new(
-      #expand_entities => 0, # не считать & за entity
+      expand_entities => 0, # не считать & за entity
       no_network => 1, # не будем тянуть внешние вложения
       recover => ($X->{'verbose'} && $X->{'verbose'} > 1 ? 1 : 2), # не падать при кривой структуре. например, не закрыт тег. entity и пр | => 1 - вопить, 2 - совсем молчать
       load_ext_dtd => 0, # полный молчок про dtd
@@ -1312,7 +1312,12 @@ sub BuildOuterMeta {
 
   my $MetaFile = $X->{'metadata'} if -s $X->{'metadata'};
 	if (-s $MetaFile) {
-    my $xpc = XML::LibXML::XPathContext->new($Parser->load_xml( location =>  $MetaFile ));
+    my $xpc = XML::LibXML::XPathContext->new($Parser->load_xml(
+      location =>  $MetaFile,
+      expand_entities => 0,
+      no_network => 1,
+      load_ext_dtd => 0
+    ));
     $xpc->registerNs('fbd', &NS_FB3_DESCRIPTION);
 		$ID = ($xpc->findnodes('/fbd:fb3-description')->[0])->getAttribute('id');
 	};
@@ -1379,7 +1384,12 @@ sub ParseMetaFile {
     my $DESCRIPTION = $X->{'STRUCTURE'}->{'DESCRIPTION'};
  
     Msg($X,"Parse metafile ".$MetaFile."\n");
-    my $xpc = XML::LibXML::XPathContext->new($Parser->load_xml( location => $MetaFile ));
+    my $xpc = XML::LibXML::XPathContext->new($Parser->load_xml(
+      location => $MetaFile,
+      expand_entities => 0,
+      no_network => 1,
+      load_ext_dtd => 0
+    ));
     $xpc->registerNs('fbd', &NS_FB3_DESCRIPTION);
 
     my $ID = ($xpc->findnodes('/fbd:fb3-description')->[0])->getAttribute('id');

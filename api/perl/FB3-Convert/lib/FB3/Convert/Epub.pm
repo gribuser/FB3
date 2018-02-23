@@ -75,7 +75,13 @@ sub Reaper {
   die $self." ".$ContainerFile." not found!" unless -f $ContainerFile;
 
   $X->Msg("Parse container ".$ContainerFile."\n");
-  my $CtDoc = XML::LibXML->new()->parse_file($ContainerFile) || die "Can't parse file ".$ContainerFile;
+  my $CtDoc = XML::LibXML->load_xml(
+    location=>$ContainerFile,
+    expand_entities => 0,
+    no_network => 1,
+    load_ext_dtd => 0
+  ) || die "Can't parse file ".$ContainerFile;
+  
   my $RootFile = $XC->findnodes('/container:container/container:rootfiles/container:rootfile',$CtDoc)->[0]->getAttribute('full-path');
   die "Can't find full-path attribute in Container [".$NS{'container'}." space]" unless $RootFile;
 
@@ -89,7 +95,12 @@ sub Reaper {
 
   $X->Msg("Parse rootfile ".$RootFile."\n");
   
-  my $RootDoc = XML::LibXML->load_xml( location => $RootFile ) || die "Can't parse file ".$RootFile;
+  my $RootDoc = XML::LibXML->load_xml(
+    location => $RootFile,
+    expand_entities => 0,
+    no_network => 1,
+    load_ext_dtd => 0
+  ) || die "Can't parse file ".$RootFile;
   $RootDoc->setEncoding('utf-8');
 
   # список файлов с контентом
