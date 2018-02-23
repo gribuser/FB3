@@ -197,37 +197,7 @@ sub Reaper {
   foreach my $Page (@Pages) {
 
     $Page->{'content'} = CleanNodeEmptyId($X,$Page->{'content'});
-
-    #^<p/> и emptyline режем в начале
-    foreach my $Item (@{$Page->{'content'}}) {
-      next unless defined $Item;
-      if (
-          (ref $Item eq 'HASH'
-          && exists $Item->{'p'}
-          && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}))
-          || !defined $Item || (ref $Item eq '' && $Item =~ /^[\s\t]$/))
-        ) {
-        $Item=undef;
-      } else {
-        last;
-      }
-    }
-
-    #^<p/> и emptyline режем в конце
-
-    foreach my $Item (reverse @{$Page->{'content'}}) {
-      if (
-          (ref $Item eq 'HASH'
-          && exists $Item->{'p'}
-          && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}))
-          || (!defined $Item || (ref $Item eq '' && $Item =~ /^[\s\t]+$/))
-              )
-        ) {
-        $Item = undef;
-      } else {
-        last;
-      }
-    }
+    $Page->{'content'} = CleanEmptyP($X,$Page->{'content'});
 
     my $c=-1;
     my $EmptyLineDetect=undef;
@@ -258,7 +228,7 @@ sub Reaper {
         ) {
 
         if (defined $EmptyLineDetect) {
-          push @{$Page->{'content'}->[$EmptyLineDetect]->{p}->{'value'}}, $Item->{'p'}->{'value'};
+          push @{$Page->{'content'}->[$EmptyLineDetect]->{p}->{'value'}}, @{$Item->{'p'}->{'value'}};
           $Item = undef;
           next;
         }
@@ -444,15 +414,91 @@ sub Reaper {
     };
   }
 
+  #анализируем и переносим пустые <a> и элементы с несушествующими id
   foreach my $Page (@Body) {
     AnaliseIdEmptyHref($X,$Page->{'section'});
   }
   MoveIdEmptyHref($X,\@Body);
+  
+  #финальная подчистка
+  foreach my $Page (@Body) {
+    CleanEmptyP($X,$Page->{'section'}->{'value'});
+  }
 
   $Structure->{'PAGES'} = {
     value => \@Body
   };
 
+}
+
+sub CleanEmptyP {
+  my $X = shift;
+  my $Data = shift;
+  return $Data unless ref $Data eq 'ARRAY';
+
+  #^<p/> и emptyline режем в начале
+  foreach my $Item (@$Data) {
+    next unless defined $Item;
+    if (
+        (ref $Item eq 'HASH'
+        && exists $Item->{'p'}
+        && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}))
+        || !defined $Item || (ref $Item eq '' && $Item =~ /^[\s\t]$/))
+      ) {
+      $Item=undef;
+    } else {
+      last;
+    }
+  }
+
+  #^<p/> и emptyline режем в конце
+  foreach my $Item (reverse @$Data) {
+    if (
+        (ref $Item eq 'HASH'
+        && exists $Item->{'p'}
+        && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}))
+        || (!defined $Item || (ref $Item eq '' && $Item =~ /^[\s\t]+$/))
+           )
+      ) {
+      $Item = undef;
+    } else {
+      last;
+    }
+  }
+
+  #^<p/> и emptyline режем после title
+  my $LastTitleOK=0;
+  foreach my $Item (@$Data) {
+
+    next unless defined $Item;
+    
+    if (ref $Item eq 'HASH'
+        && exists $Item->{'title'}
+    ) {
+      $LastTitleOK=1;
+      next;
+    }
+
+    if ( $LastTitleOK &&
+        (ref $Item eq 'HASH'
+        && exists $Item->{'p'}
+        && ( $X->IsEmptyLineValue($Item->{'p'}->{'value'}))
+        || !defined $Item || (ref $Item eq '' && $Item =~ /^[\s\t]$/))
+      ) {
+      $Item=undef;
+    } else {
+      $LastTitleOK=0;
+      #next;
+    }
+
+    if (ref $Item eq 'HASH'
+        && exists $Item->{'section'}) {
+      $Item->{'section'}->{'value'} = CleanEmptyP($X,$Item->{'section'}->{'value'});
+    }
+
+  }
+  
+  return $Data;
 }
 
 sub IsEmptyA {
