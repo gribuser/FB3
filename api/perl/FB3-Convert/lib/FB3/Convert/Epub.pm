@@ -698,17 +698,22 @@ sub AssembleContent {
 
       $X->Msg("Parse content file ".$ContentFile."\n");
 
+      my $Content;
+      open F,"<".$ContentFile;
+      map {$Content.=$_} <F>;
+      close F;
+      $Content = HTML::Entities::decode_entities(Encode::decode_utf8($Content));
+      $Content =~ s/\&/&#38;/g;
+
       my $ContentDoc = XML::LibXML->load_xml(
-        location => $ContentFile,
+        string => $Content,
         expand_entities => 0, # не считать & за entity
         no_network => 1, # не будем тянуть внешние вложения
         recover => 2, # не падать при кривой структуре. например, не закрыт тег. entity и пр | => 1 - вопить, 2 - совсем молчать
         load_ext_dtd => 0 # полный молчок про dtd
       );
       $ContentDoc->setEncoding('utf-8');
-      
       my $Body = $XC->findnodes('/xhtml:html/xhtml:body',$ContentDoc)->[0];
-      
       $X->Error("Can't find /html/body node in file $ContentFile. This is true XML?") unless $Body;
 
       #перерисуем все ns-подобные атрибуты. мешают при дальнейшем парсинге
