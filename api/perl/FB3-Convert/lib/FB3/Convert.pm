@@ -9,7 +9,7 @@ use XML::LibXSLT;
 use XML::LibXML;
 use File::Basename;
 use Hash::Merge;
-use Cwd qw(cwd abs_path getcwd);
+use Cwd qw(cwd abs_path getcwd realpath);
 use UUID::Tiny ':std';
 use File::Copy qw(copy);
 use File::Temp qw/ tempfile tempdir /;
