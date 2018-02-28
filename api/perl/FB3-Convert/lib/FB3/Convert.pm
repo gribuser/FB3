@@ -40,8 +40,11 @@ my %MODULES;
   'fb2.zip' => \$MODULES{'fb2'},
 );
 
-
-my @BlockLevel = ('p','ul','ol','li','div','h1','h2','h3','h4','h5','h6','table'); 
+my @BlockLevel =
+('address','article','aside','blockquote','canvas','dd','div','dl','dt','fieldset','figcaption','figure','footer','form',
+'h1','h2','h3','h4','h5','h6',
+'header','hr','li','main','nav','noscript','ol','output','p','pre','section','table','tfoot','ul','video',
+);
 
 #Элементы, которые парсим в контенте и сохраняем в структуру 
 our $ElsMainList = {
