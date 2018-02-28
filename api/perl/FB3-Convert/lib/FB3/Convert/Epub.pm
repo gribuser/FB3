@@ -48,7 +48,7 @@ sub Reaper {
     processor_params => ['underline']
   };
   $AllowElements->{'div'} = {
-    'exclude_if_inside' => ['p','ul','ol','h1','h2','h3','h4','h5','h6','li','pre','table'], #Если div содежрит block-level элементы, мы его чикаем 
+    'exclude_if_inside' => ['div','p','ul','ol','h1','h2','h3','h4','h5','h6','li','pre','table'], #Если div содежрит block-level элементы, мы его чикаем 
     'allow_attributes' => [],
     processor => \&TransformTo,
     processor_params => ['p'],
