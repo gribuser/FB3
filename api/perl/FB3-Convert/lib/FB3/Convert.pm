@@ -603,12 +603,15 @@ sub FB3Create {
     'id'=>$GlobalID,
   };
   my $Body = Obj2DOM($X,
-              obj=>{ attributes=>{CP_compact=>1},value=>{section=>{attributes=>{id=>$GlobalID}, value=>$Structure->{'PAGES'}->{'value'} }} },
+              obj=>{
+                attributes=>{CP_compact=>1},
+                value=>$Structure->{'PAGES'}->{'value'}
+              },
               root=>{name=>'fb3-body', attributes=>$BodyAttr}
             );  
   
   #финальное приведение section к валидному виду
-  foreach my $Section ($XC->findnodes( "/fb3-body/section/section/section", $Body), $XC->findnodes( "/fb3-body/section/section", $Body)) {
+  foreach my $Section ($XC->findnodes( "/fb3-body/section/section", $Body), $XC->findnodes( "/fb3-body/section", $Body)) {
     $Section = $X->Transform2Valid(node=>$Section);
   }
   
