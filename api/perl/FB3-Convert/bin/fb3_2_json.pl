@@ -139,7 +139,13 @@ for my $Image (@Img) {
 	}
 	my $FN = $Out.$ImgHash->{$Image->{Id}}->{name};
 	my $PhysicalName = $FB3Package->{opc}->PhysicalNameByPartName($Image->{'TargetFullName'});
-	File::Copy::copy( $PhysicalName, $FN );
+	unless ( $FB3Package->{opc}->{_is_zip} ) {
+		File::Copy::copy( $PhysicalName, $FN );
+	} else {
+		my $fh = open(my $fh, '>:raw', $FN) || die("Unable to open file `$FN'");
+		print $fh $FB3Package->{opc}->GetPhysicalContents($PhysicalName, 'binary' => 1);
+		close($fh) || die("Unable to close file `$FN'");
+	}
 	($ImgHash->{$Image->{Id}}->{height}, $ImgHash->{$Image->{Id}}->{width}) = GetImgSize($FN);
 }
 
