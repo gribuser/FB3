@@ -114,7 +114,10 @@ my $SubtitleParents = qr/^(section)$/;
 
 my $jsonC = JSON::PP->new->pretty->allow_barekey;
 
-my $FB3Package = FB3->new( from_dir => $FB3 );
+my %FB3Params = ( -f $FB3 ) ? ('from_zip' => $FB3) :
+                ( -d $FB3 ) ? ('from_dir' => $FB3) : die 'Unable to determine source type';
+
+my $FB3Package = FB3->new( %FB3Params );
 my $TOCHeader = ProceedDescr($FB3Package->Meta->Content);
 my $FB3Body = $FB3Package->Body;
 my @Img = $FB3Body->Relations( type => RELATION_TYPE_FB3_IMAGES );
