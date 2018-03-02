@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" id="adc8f0c3-563a-48f7-9fa2-1156773dcd31" xmlns="http://www.fictionbook.org/FictionBook3/body">
-  <section id="adc8f0c3-563a-48f7-9fa2-1156773dcd31">
     <section id="f346c16b-277b-5974-bf23-692e5b3ac4b4">
       <p>text1</p>
       <p>text2</p>
@@ -11,5 +10,4 @@
       <p>1. <a xlink:href="http://www.litres.ru">Text4</a></p>
       <p>2. <a xlink:href="http://www.litres.ru">Text5</a></p>
     </section>
-  </section>
 </fb3-body>

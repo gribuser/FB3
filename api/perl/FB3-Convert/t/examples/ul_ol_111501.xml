@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body" id="ff440e3e-2514-48a5-aa52-01b28f017e4a">
-  <section id="ff440e3e-2514-48a5-aa52-01b28f017e4a">
     <section id="97d104d8-4465-5847-a0f9-0975734e5ca3">
       <title>
         <p>TITLE</p>
@@ -30,5 +29,4 @@
         </li>
       </ul>
     </section>
-  </section>
 </fb3-body>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="a2a28908-60e9-47d4-91b6-36d292b16681">
-  <section id="a2a28908-60e9-47d4-91b6-36d292b16681">
     <section id="1a50fdba-deaa-5072-a85d-c660233ce8c3">
       <title>
         <p>ВСТУПЛЕНИЕ</p>
@@ -24,5 +23,4 @@
         <p>Позабыв свою тревогу И сомнений целый ряд, Выбегает на дорогу Барабанщиков отряд. </p>
       </section>
     </section>
-  </section>
 </fb3-body>
