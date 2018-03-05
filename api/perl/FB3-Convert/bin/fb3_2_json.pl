@@ -106,6 +106,8 @@ my %LangDependentStr = (
 	'nl' => ['Einde fragment'],
 	);
 
+my @AuthorsPriority = qw(author co_author dubious_author lecturer compiler screenwriter translator contributing_editor managing_editor editor editorial_board_member adapter conceptor rendering associated commentator consultant scientific_advisor recipient_of_letters corrector composer);
+
 my $NoHyphRe = qr/^(poem|epigraph|subtitle|title)$/; # Ноды, текст которых(и их потомков) нельзя переносить
 my $Semiblocks = qr/^(epigraph|annotation|poem|stanza)$/;
 my $BlockPParents = qr/^(section|annotation|epigraph|notebody)$/;
@@ -494,19 +496,21 @@ sub ProceedDescr {
 	my $UUID = ($xpc->findnodes('/fbd:fb3-description')->[0])->getAttribute('id');
 
 	my @Authors;
-	for my $Author ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-relations/fbd:subject[@link="author"]')) {
-		my $AuthorFirstNameNode = $xpc->findnodes('./fbd:first-name', $Author)->[0];
-		my $AuthorFirstName = $AuthorFirstNameNode->string_value if $AuthorFirstNameNode;
-		$AuthorFirstName = EscString($AuthorFirstName);
+	foreach (@AuthorsPriority) {
+		for my $Author ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-relations/fbd:subject[@link="'.$_.'"]')) {
+			my $AuthorFirstNameNode = $xpc->findnodes('./fbd:first-name', $Author)->[0];
+			my $AuthorFirstName = $AuthorFirstNameNode->string_value if $AuthorFirstNameNode;
+			$AuthorFirstName = EscString($AuthorFirstName);
 
-		my $AuthorLastNameNode = $xpc->findnodes('./fbd:last-name', $Author)->[0];
-		my $AuthorLastName = $AuthorLastNameNode->string_value if $AuthorLastNameNode;
-		$AuthorLastName = EscString($AuthorLastName);
+			my $AuthorLastNameNode = $xpc->findnodes('./fbd:last-name', $Author)->[0];
+			my $AuthorLastName = $AuthorLastNameNode->string_value if $AuthorLastNameNode;
+			$AuthorLastName = EscString($AuthorLastName);
 
-		my $AuthorMiddleNameNode = $xpc->findnodes('./fbd:middle-name', $Author)->[0];
-		my $AuthorMiddleName = $AuthorMiddleNameNode->string_value if $AuthorMiddleNameNode;
-		$AuthorMiddleName = EscString($AuthorMiddleName);
-		push @Authors, '{First:"'.$AuthorFirstName.'",Last:"'.$AuthorLastName.'",Middle:"'.$AuthorMiddleName.'"}';
+			my $AuthorMiddleNameNode = $xpc->findnodes('./fbd:middle-name', $Author)->[0];
+			my $AuthorMiddleName = $AuthorMiddleNameNode->string_value if $AuthorMiddleNameNode;
+			$AuthorMiddleName = EscString($AuthorMiddleName);
+			push @Authors, '{Role:"'.$_.'",First:"'.$AuthorFirstName.'",Last:"'.$AuthorLastName.'",Middle:"'.$AuthorMiddleName.'"}';
+		}
 	}
 
 	my $FragmentNode = $xpc->findnodes('/fbd:fb3-description/fbd:fb3-fragment')->[0];
