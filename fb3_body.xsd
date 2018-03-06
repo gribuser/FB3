@@ -325,7 +325,7 @@
 	</complexType>
 	<complexType name="StyleType" mixed="true">
 		<annotation>
-			<documentation>Внутрибзацевый отформатированный текст - может содержать всеразличное форматирование, сноски и ссылки (и то, и то - не вложенное)</documentation>
+			<documentation>Внутриабзацевый отформатированный текст - может содержать всеразличное форматирование, сноски и ссылки (и то, и то - не вложенное)</documentation>
 		</annotation>
 		<choice minOccurs="0" maxOccurs="unbounded">
 			<element name="strong" type="fb3b:StyleType">
@@ -345,12 +345,12 @@
 			</element>
 			<element name="sub" type="fb3b:StyleType">
 				<annotation>
-					<documentation>Надстрочный текст</documentation>
+					<documentation>Подстрочный текст</documentation>
 				</annotation>
 			</element>
 			<element name="sup" type="fb3b:StyleType">
 				<annotation>
-					<documentation>Подстрочный текст</documentation>
+					<documentation>Надстрочный текст</documentation>
 				</annotation>
 			</element>
 			<element name="code" type="fb3b:StyleType">
