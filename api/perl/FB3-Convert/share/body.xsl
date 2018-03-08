@@ -225,8 +225,8 @@
     <xsl:param name="holder-name"/>
     <xsl:param name="paragraph-name">p</xsl:param>
 
-    <!-- must start with p element -->
-    <xsl:variable name="first-p" select="fb:*[local-name()=$paragraph-name][1]"/>
+    <!-- must start with p element. subtitle will be converted to paragraph later-->
+    <xsl:variable name="first-p" select="fb:*[local-name()=$paragraph-name][1] | fb:subtitle[1]"/>
     <xsl:if test="$first-p">
       <xsl:element name="{$holder-name}">
         <xsl:call-template name="TitledType"/>
