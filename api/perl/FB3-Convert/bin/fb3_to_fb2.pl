@@ -293,6 +293,8 @@ sub RootNode {
   
   if ($Replace) {
 
+		my @NodesForUnbind;
+		my $GenresCount = 0;
     #ищем ноду на замену
     foreach my $Genre ($xc->findnodes($Replace->[0])) {
       my $GenreName = $Genre->firstChild->toString();
@@ -300,12 +302,19 @@ sub RootNode {
       if ($Replace->[1]->{$GenreName}) {
         #меняем содержимое
         $Genre->firstChild->setData($Replace->[1]->{$GenreName});
+				$GenresCount++;
       } elsif ($Replace->[2]) {
-        #не нашли замену, ноду удалим
-        $Genre->unbindNode();    
+        #не нашли замену, ноду отложим для удаления
+        push @NodesForUnbind, $Genre;
       }
     }
- 
+
+		unless ($GenresCount) { # Ни одного нормального жанра.
+			my $Genre = shift @NodesForUnbind; # Первый оставим
+			$Genre->firstChild->setData('unrecognised'); # как "неопределённый"
+		}
+		map {$_->unbindNode()} @NodesForUnbind; # Удалим неподходящие жанры.
+
   }
 
   my $Node = $xc->findnodes("/")->[0]->firstChild;
