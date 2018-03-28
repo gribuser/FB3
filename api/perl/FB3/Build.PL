@@ -69,16 +69,16 @@ my $Builder = Module::Build->new(
         'Test::More' => '0',
     },
     requires => {
-        'perl'        => 5.014,
-				'File::Fetch' => 0,
-				'File::Path'  => 0,
-				'File::Copy'  => 0,
-        'OPC'         => 0,
-        'XML::LibXML' => 0,
+        'perl'           => 5.014,
+				'File::Fetch'    => 0,
+				'File::Path'     => 0,
+				'File::Copy'     => 0,
+        'OPC'            => 0,
+        'XML::LibXML'    => 0,
+				'File::ShareDir' => 0,
+				'Clone' => 0,
     },
-		share_dir => {
-			dist => 'share',
-		},
+		share_dir => 'share',
     add_to_cleanup     => [ 'FB3-*' ],
 );
 
