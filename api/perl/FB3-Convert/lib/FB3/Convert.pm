@@ -56,27 +56,32 @@ our $ElsMainList = {
   'sup'=>undef,
   'code'=>undef,
   'img'=>undef,
-  'u'=>'underline', #переименование дочерней ноды
-  'underline'=>undef, #разрешение переименованной ноды
-  'b'=>'strong', #переименование дочерней ноды
-  'strong'=>undef, #разрешение переименованной ноды
+  'i'=>undef,
+  'u'=>undef,
+  'underline'=>undef,
+  'b'=>undef,
+  'strong'=>undef,
 };
 
 my %AllowElementsMain = (
+  'i' => {
+    'allow_attributes' => [],
+    'allow_elements_inside' => $ElsMainList,
+  },
   'strong' => {
     'allow_attributes' => ['id'],
     'allow_elements_inside' => $ElsMainList,
   },
   'underline' => {
-    'allow_attributes' => [],
+    'allow_attributes' => ['id'],
     'allow_elements_inside' => $ElsMainList,
   },
   'em' => {
-    'allow_attributes' => [],
-    'allow_elements_inside' => {span=>undef}
+    'allow_attributes' => ['id'],
+    'allow_elements_inside' => $ElsMainList,
   },
   'u' => {
-    'allow_attributes' => []  
+    'allow_attributes' => ['id']  
   },
   'sup' => {
     'allow_attributes' => ['id']  
