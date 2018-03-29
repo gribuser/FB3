@@ -240,11 +240,9 @@ sub ProceedNode {
 	my $Id = $Node->getAttribute('id');
 	if ($Id) {
 		if ($NodeHash->{pr}) {
-			$NodeHash->{id} = $Id;
 			$InnerRefsHash{$Id} = $NodeHash->{b_id};
 		} else {
-			$NodeHash->{c}[0]->{id} = $Id if $NodeName ne 'fb3-body'; # Если это логический блок, то его первому потомку
-			$InnerRefsHash{$Id} = $NodeHash->{c}[0]->{b_id};
+			MoveRefToPrintableChild($NodeHash, $Id); # Если этот блок не отражается в json, то его первому потомку, который отражается
 		}
 	}
 
@@ -257,6 +255,23 @@ sub ProceedNode {
 	}
 
 	return $NodeHash;
+}
+
+sub MoveRefToPrintableChild {
+	my $NodeHash = shift;
+	my $Id = shift;
+
+	foreach (@{$NodeHash->{c}}) {
+		if ($_->{pr}) { # Потомок нам подходит
+			$InnerRefsHash{$Id} = $_->{b_id};
+			return 1;
+		} else { # Проходим по его потомкам
+			if (MoveRefToPrintableChild($_, $Id)) {
+				return 1;
+			}
+		}
+	}
+
 }
 
 my @ResultArr;
