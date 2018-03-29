@@ -42,7 +42,7 @@ sub Reaper {
     processor => \&TransformTo,
     processor_params => ['strong']
   };
-  $AllowElements->{'is'} = {
+  $AllowElements->{'i'} = {
     'allow_attributes' => ['id'],
     processor => \&TransformTo,
     processor_params => ['em']
