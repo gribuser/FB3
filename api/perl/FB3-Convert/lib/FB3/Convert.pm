@@ -63,7 +63,27 @@ our $ElsMainList = {
   'strong'=>undef,
 };
 
+our $ElsMainList2={};
+map {$ElsMainList2->{$_}=undef;} keys %$ElsMainList;
+$ElsMainList2->{p}=undef;
+
 my %AllowElementsMain = (
+  'table' => {
+    'allow_attributes' => ['id'],
+    'allow_elements_inside' => {'tr'=>undef},
+  },
+  'tr' => {
+    'allow_attributes' => ['id','align'],
+    'allow_elements_inside' => {'th'=>undef,'td'=>undef},
+  },
+  'th' => {
+    'allow_attributes' => ['colspan','rowspan','align','valign'],
+    'allow_elements_inside' => $ElsMainList2,
+  },
+  'td' => {
+    'allow_attributes' => ['colspan','rowspan','align','valign'],
+    'allow_elements_inside' => $ElsMainList2,
+  },
   'i' => {
     'allow_attributes' => [],
     'allow_elements_inside' => $ElsMainList,
@@ -132,6 +152,7 @@ my %AllowElementsMain = (
       'h4'=>undef,
       'h5'=>undef,
       'h6'=>undef,
+      'table'=>undef,
       'ul'=>undef, 
       'ol'=>undef, #полноправные элементы корня
       'p'=>undef,  # см. ^^^
@@ -1325,7 +1346,7 @@ sub Transform2Valid {
   my $Wrap = XML::LibXML::Element->new("p");
 
   foreach my $Child ($Node->getChildnodes) {
-    if ($Child->nodeName =~ /^(p|ul|ol|title|subtitle|section)$/) {
+    if ($Child->nodeName =~ /^(p|table|ul|ol|title|subtitle|section)$/) {
       if ($Wrap->hasChildNodes) {
         #закроем текуший враппер и создадим новый
         $NewNode->addChild($Wrap->cloneNode(1));
