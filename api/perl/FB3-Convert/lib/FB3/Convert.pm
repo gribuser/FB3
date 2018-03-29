@@ -67,11 +67,12 @@ my %AllowElementsMain = (
     'allow_elements_inside' => $ElsMainList,
   },
   'underline' => {
-    'allow_attributes' => []  
+    'allow_attributes' => [],
+    'allow_elements_inside' => $ElsMainList,
   },
   'em' => {
     'allow_attributes' => [],
-        'allow_elements_inside' => {span=>undef}
+    'allow_elements_inside' => {span=>undef}
   },
   'u' => {
     'allow_attributes' => []  
@@ -920,8 +921,8 @@ sub Content2Tree {
       load_ext_dtd => 0, # полный молчок про dtd
   );
 
-  $Content = HTML::Entities::decode_entities($Content);
-  $Content =~ s/\&/&#38;/g;
+  #$Content = HTML::Entities::decode_entities($Content);
+  #$Content =~ s/\&/&#38;/g;
 
   my $NodeDoc = $XMLDoc->parse_string('<root_fb3_container>'.$Content.'</root_fb3_container>') || die "Can't parse! ".$!;
 
@@ -1178,6 +1179,29 @@ sub quot {
   $str  =~ s/"/&apos;/g;
 
   return $str;
+}
+
+sub qent {
+  my $X = shift;
+  my $Str = shift;
+
+  $Str =~ s/&#(0+)?60;/&lt;/g;
+  $Str =~ s/&#(0+)?62;/&gt;/g;
+  $Str =~ s/&#x(0+)?3e;/&gt;/gi;
+  $Str =~ s/&#x(0+)?3c;/&lt;/gi;
+
+  $Str =~ s/&#(0+)?38;/&amp;/g;
+  $Str =~ s/&#x(0+)?26;/&amp;/g;
+
+  $Str =~ s/&#(0+)?34;/&quot;/g;
+  $Str =~ s/&#x(0+)?22;/&quot;/g;
+
+  $Str =~ s/&#(0+)?39;/&apos;/g;
+  $Str =~ s/&#x(0+)?27;/&apos;/g;
+
+  HTML::Entities::_decode_entities($Str, { nbsp => "\xA0" }, 1);
+  $Str =~ s/&(?!amp;|quot;|apos;|lt;|gt;)/&amp;/gi;
+  return $Str;
 }
 
 sub html_trim {

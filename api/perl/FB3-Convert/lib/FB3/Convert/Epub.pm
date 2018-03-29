@@ -556,6 +556,8 @@ sub AnaliseIdEmptyHref {
   my $Data = shift;
   my $Hash4Move = shift;
 
+  return if (ref $Data ne 'HASH' || !exists $Data->{'value'});
+
   my $First = 0;
   unless ($Hash4Move) {
    $Hash4Move = {
@@ -576,7 +578,7 @@ sub AnaliseIdEmptyHref {
         if ($El eq 'section') {
           AnaliseIdEmptyHref($X,$Item->{$El}); #вложенную секцию обрабатывает как отдельную
         } else {
-          if (exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
+          if (ref $Item->{$El} eq 'HASH' && exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
             if ($El eq 'a' && exists $Item->{$El}->{'attributes'}->{'xlink:href'} && $Item->{$El}->{'attributes'}->{'xlink:href'} eq '') {
               #ссылка - кандидат на перенос
               $Hash4Move->{'candidates'}->{$Item->{$El}->{'attributes'}->{'id'}} = $Hash4Move->{'count_abs'};
@@ -625,6 +627,7 @@ sub MoveIdEmptyHref {
     next unless ref $Item eq 'HASH';
     foreach my $ElName (keys %$Item) {
       my $El = $Item->{$ElName};
+      next unless ref $El eq 'HASH';
       #меняем ссылку
       if (
         $X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) } ne 'rename'
@@ -702,8 +705,8 @@ sub AssembleContent {
       open F,"<".$ContentFile;
       map {$Content.=$_} <F>;
       close F;
-      $Content = HTML::Entities::decode_entities(Encode::decode_utf8($Content));
-      $Content =~ s/\&/&#38;/g;
+
+      $Content = $X->qent(Encode::decode_utf8($Content));
 
       my $ContentDoc = XML::LibXML->load_xml(
         string => $Content,
@@ -713,6 +716,7 @@ sub AssembleContent {
         load_ext_dtd => 0 # полный молчок про dtd
       );
       $ContentDoc->setEncoding('utf-8');
+
       my $Body = $XC->findnodes('/xhtml:html/xhtml:body',$ContentDoc)->[0];
       $X->Error("Can't find /html/body node in file $ContentFile. This is true XML?") unless $Body;
 
@@ -786,6 +790,7 @@ sub CleanNodeEmptyId {
     push @$Ret, $Item;
     next unless ref $Item eq 'HASH';
     foreach my $El (keys %$Item) {
+      next if ref $Item->{$El} ne 'HASH' || !exists $Item->{$El}->{'value'};
       $Item->{$El}->{'value'} = CleanNodeEmptyId($X,$Item->{$El}->{'value'});
       if (exists $Item->{$El}->{'attributes'}->{'id'} || $El =~ /^(a|span)$/) {
         my $Id = exists $Item->{$El}->{'attributes'}->{'id'} ? $Item->{$El}->{'attributes'}->{'id'} : '';
