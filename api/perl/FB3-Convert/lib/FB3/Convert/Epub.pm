@@ -313,7 +313,17 @@ sub Reaper {
         }
 
         if (@LinksMove2Title && ref $Item eq 'HASH' && exists $Item->{'title'}) {
-          push @{$Item->{'title'}->{'value'}}, @LinksMove2Title; #переносим <a> в ближайший
+            foreach my $Link (@LinksMove2Title) {
+              #занято
+              if (exists $Item->{'title'}->{'attributes'}->{'id'} && $Item->{'title'}->{'attributes'}->{'id'}) {
+                #тогда будем менять линк на текущий
+                $X->{'EmptyLinksList'}->{$Link->{'a'}->{'attributes'}->{'id'}} = $Item->{'title'}->{'attributes'}->{'id'};
+              } else {
+                #пусто, займем это место! 
+                $Item->{'title'}->{'attributes'}->{'id'} = $Link->{'a'}->{'attributes'}->{'id'};
+              }
+
+            }
         }
         CleanTitle($X,$Item->{'title'}->{'value'});
     }
@@ -398,10 +408,15 @@ sub Reaper {
     }
 
     my $Content;
-    if (scalar @P > 1) {
-      $Content = \@P;
+    my @PN; #финальная подчистка
+    foreach (@P) {
+      push @PN, $_ if exists $_->{'section'}->{'value'} && scalar @{$_->{'section'}->{'value'}};
+    }
+
+    if (scalar @PN > 1) {
+      $Content = \@PN;
     } else {
-      $Content = $P[0]->{'section'}->{'value'};  #если section один, то берем только его внутренности, контейнер section лишний 
+      $Content = $PN[0]->{'section'}->{'value'};  #если section один, то берем только его внутренности, контейнер section лишний 
     }
 
     if (@$Content) {
@@ -707,8 +722,10 @@ sub AssembleContent {
       close F;
 
       $Content = $X->qent(Encode::decode_utf8($Content));
+      $X->Msg("Fix strange text\n");
       $Content = $X->ShitFix($Content);
 
+      $X->Msg("Parse XML\n");
       my $ContentDoc = XML::LibXML->load_xml(
         string => $Content,
         expand_entities => 0, # не считать & за entity

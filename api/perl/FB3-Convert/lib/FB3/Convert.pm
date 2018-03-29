@@ -1484,7 +1484,8 @@ sub ValidEMAIL{
 sub ShitFix {
   my $X = shift;
   my $Str = shift;
-  $Str =~ s#<img(.*?)([^/])>((.|\r|\n)*?)</img>#<img$1$2 />$3#gi; # <img>t</img> => <img/>t
+  # /i вызывает невероятные тормоза к сожалению
+  $Str =~ s#<img(.*?)([^/])>((.|\r|\n)*?)</img>#<img$1$2 />$3#g; # <img>t</img> => <img/>t
   return $Str;
 }
 
