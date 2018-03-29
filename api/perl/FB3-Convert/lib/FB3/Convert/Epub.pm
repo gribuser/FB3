@@ -410,7 +410,11 @@ sub Reaper {
     my $Content;
     my @PN; #финальная подчистка
     foreach (@P) {
-      push @PN, $_ if exists $_->{'section'}->{'value'} && scalar @{$_->{'section'}->{'value'}};
+      my $NotEmpty;
+      foreach my $String (@{$_->{'section'}->{'value'}}) {
+       $NotEmpty = 1 if ref $String eq 'HASH' || (ref $String eq '' && $X->trim($String) ne '');
+      }
+      push @PN, $_ if $NotEmpty;
     }
 
     if (scalar @PN > 1) {
