@@ -16,7 +16,8 @@ use File::Temp qw/ tempfile tempdir /;
 use FB3::Validator;
 use utf8;
 use Encode qw(encode_utf8 decode_utf8);
-use HTML::Entities;
+use XML::Entities;
+use XML::Entities::Data;
 
 our $VERSION = 0.03;
 
@@ -921,9 +922,6 @@ sub Content2Tree {
       load_ext_dtd => 0, # полный молчок про dtd
   );
 
-  #$Content = HTML::Entities::decode_entities($Content);
-  #$Content =~ s/\&/&#38;/g;
-
   my $NodeDoc = $XMLDoc->parse_string('<root_fb3_container>'.$Content.'</root_fb3_container>') || die "Can't parse! ".$!;
 
   my $RootEl = $NodeDoc->getDocumentElement;
@@ -1200,7 +1198,13 @@ sub qent {
   $Str =~ s/&#(0+)?39;/&apos;/g;
   $Str =~ s/&#x(0+)?27;/&apos;/g;
 
-  HTML::Entities::_decode_entities($Str, { nbsp => "\xA0" }, 1);
+  my $all = XML::Entities::Data::all;
+  delete $all->{'lt'};
+  delete $all->{'gt'};
+  delete $all->{'quot'};
+  delete $all->{'apos'};
+  delete $all->{'amp'};
+  XML::Entities::_decode_entities($Str, $all, 0);
   $Str =~ s/&(?!amp;|quot;|apos;|lt;|gt;)/&amp;/gi;
   return $Str;
 }
