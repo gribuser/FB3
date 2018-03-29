@@ -1098,6 +1098,7 @@ sub RealPath {
   my $RealPath = undef;
   
   if ($RealPath = Cwd::realpath($Path)) {
+    $RealPath =~ s/%20/ /g;
     my $RealPath2 = $RealPath;
     $RealPath2 =~ s/#.*$//g;
     $RealPath = undef if !-f $RealPath2 && !-d $RealPath2;
