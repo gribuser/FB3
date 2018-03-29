@@ -707,6 +707,7 @@ sub AssembleContent {
       close F;
 
       $Content = $X->qent(Encode::decode_utf8($Content));
+      $Content = $X->ShitFix($Content);
 
       my $ContentDoc = XML::LibXML->load_xml(
         string => $Content,
