@@ -1348,9 +1348,11 @@ sub TransformTable2Valid {
   my $Node = $Args{'node'};
 
   foreach my $TH ($Node->findnodes('./tr/th')) {
+    $TH->addChild(XML::LibXML::Text->new('')) unless $TH->getChildnodes;
     $X->Transform2Valid(node=>$TH);
   }
   foreach my $TD ($Node->findnodes('./tr/td')) {
+    $TD->addChild(XML::LibXML::Text->new('')) unless $TD->getChildnodes;
     $X->Transform2Valid(node=>$TD);
   }
 
