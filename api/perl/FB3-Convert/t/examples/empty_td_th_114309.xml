@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="2171b07c-776b-4c03-b734-2007a2653fbf">
+  <section id="2a1990ad-3203-59b9-b2e1-df1aa5d1c6c2">
+    <table>
+      <tr>
+        <th>
+          <p>123</p>
+        </th>
+        <th>
+          <p></p>
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <p></p>
+        </td>
+        <td>
+          <p>456</p>
+        </td>
+      </tr>
+    </table>
+  </section>
+</fb3-body>
