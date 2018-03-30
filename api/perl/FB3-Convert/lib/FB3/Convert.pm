@@ -47,6 +47,13 @@ my @BlockLevel =
 'header','hr','li','main','nav','noscript','ol','output','p','pre','section','table','tfoot','ul','video',
 );
 
+my $AllEntities = XML::Entities::Data::all;
+delete $AllEntities->{'lt'};
+delete $AllEntities->{'gt'};
+delete $AllEntities->{'quot'};
+delete $AllEntities->{'apos'};
+delete $AllEntities->{'amp'};
+
 #Элементы, которые парсим в контенте и сохраняем в структуру 
 our $ElsMainList = {
   'span'=>undef,
@@ -1224,13 +1231,7 @@ sub qent {
   $Str =~ s/&#(0+)?39;/&apos;/g;
   $Str =~ s/&#x(0+)?27;/&apos;/g;
 
-  my $all = XML::Entities::Data::all;
-  delete $all->{'lt'};
-  delete $all->{'gt'};
-  delete $all->{'quot'};
-  delete $all->{'apos'};
-  delete $all->{'amp'};
-  XML::Entities::_decode_entities($Str, $all, 0);
+  XML::Entities::_decode_entities($Str, $AllEntities, 0);
   $Str =~ s/&(?!amp;|quot;|apos;|lt;|gt;)/&amp;/gi;
   return $Str;
 }
@@ -1450,17 +1451,16 @@ sub CutLinkDiez {
 sub CorrectOuterLink{
   my $X = shift;
   my $Str = shift;
-  
+
   unless ($Str =~ /^(http|https|mailto|ftp)\:(.+)/i) {
     $X->Msg("Find not valid Link and delete [$Str]\n");
     return "";
   }
-  
-  
+
   my $Protocol = $1;
   my $Link = $2;
   $Link = $X->trim_soft($Link);
- 
+
   if ($Protocol eq 'mailto') {
     unless (ValidEMAIL($Link)) {
       $X->Msg("Find not valid Email and delete [".$Protocol.":".$Link."]\n");
@@ -1472,7 +1472,7 @@ sub CorrectOuterLink{
       return "";
     }
   }
-    
+
   return $Protocol.':'.$Link;
 }
 

@@ -414,21 +414,22 @@ sub Reaper {
 
     my $Content;
     my @PN; #финальная подчистка
-    foreach (@P) {
-      my $NotEmpty;
-      foreach my $String (@{$_->{'section'}->{'value'}}) {
-       $NotEmpty = 1 if ref $String eq 'HASH' || (ref $String eq '' && $X->trim($String) ne '');
+    foreach my $Item (@P) {
+      next unless defined $Item;
+      my $NotEmpty = 0;
+      foreach my $String (@{$Item->{'section'}->{'value'}}) {
+        $NotEmpty = 1 if defined $String && (ref $String eq 'HASH' || (ref $String eq '' && $X->trim($String) ne ''));
       }
-      push @PN, $_ if $NotEmpty;
+      push @PN, $Item if $NotEmpty;
     }
 
     if (scalar @PN > 1) {
       $Content = \@PN;
-    } else {
+    } elsif (scalar @PN) {
       $Content = $PN[0]->{'section'}->{'value'};  #если section один, то берем только его внутренности, контейнер section лишний 
     }
 
-    if (@$Content) {
+    if ($Content && @$Content) {
       push @PagesComplete, {ID=>$Page->{'ID'},'content'=>$Content};
     } else {
       $X->Msg("Find empty page. Skip [id: $Page->{'ID'}]\n");      
