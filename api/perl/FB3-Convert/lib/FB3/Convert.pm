@@ -1536,7 +1536,7 @@ sub ShitFix {
   my $X = shift;
   my $Str = shift;
   # /i вызывает невероятные тормоза к сожалению
-  $Str =~ s#<img(.*?)([^/])>((.|\r|\n)*?)</img>#<img$1$2 />$3#g; # <img>t</img> => <img/>t
+  $Str =~ s#<([iI][mM][gG])(.*?)([^/])>((.|\r|\n)*?)</\1>#<img$2$3 />$4#g; # <img>t</img> => <img/>t
   return $Str;
 }
 
