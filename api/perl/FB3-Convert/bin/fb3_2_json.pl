@@ -262,7 +262,7 @@ sub MoveRefToPrintableChild {
 	my $Id = shift;
 
 	foreach (@{$NodeHash->{c}}) {
-		if ($_->{pr}) { # Потомок нам подходит
+		if ($_->{pr} && $_->{b_id}) { # Потомок нам подходит
 			$InnerRefsHash{$Id} = $_->{b_id};
 			return 1;
 		} else { # Проходим по его потомкам
