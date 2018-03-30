@@ -103,7 +103,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
-          <xsl:when test="not(preceding-sibling::*) and not(parent::fb:cite[parent::fb:section[ancestor::fb:body[@name='notes']]]/preceding-sibling::*) and not(following-sibling::fb:subtitle)">
+          <xsl:when test="not(preceding-sibling::*) and (following-sibling::*) and not(parent::fb:cite[parent::fb:section[ancestor::fb:body[@name='notes']]]/preceding-sibling::*) and not(following-sibling::fb:subtitle)">
             <title>
               <p><xsl:apply-templates/></p>
             </title>
