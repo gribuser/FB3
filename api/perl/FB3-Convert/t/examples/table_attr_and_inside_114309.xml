@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" id="b13c000a-f377-4e53-9e6a-8805758a4460" xmlns="http://www.fictionbook.org/FictionBook3/body">
+  <section id="0026455b-b4fb-51d6-9c06-628c18766ba2">
+    <table id="link_a2560a9c-11f9-588e-b7a7-387ed062cb9f">
+      <tr align="center" id="link_8289dba3-7d2b-5676-9bac-92a5cc27c30f">
+        <th colspan="1" rowspan="1">
+          <p>123</p>
+        </th>
+        <th>
+          <p>456</p>
+        </th>
+      </tr>
+      <tr align="center">
+        <td colspan="1" rowspan="1">
+          <p>789</p>
+        </td>
+        <td>
+          <p>hello <strong>beauty</strong> world</p>
+        </td>
+      </tr>
+    </table>
+    <p>
+      <a xlink:href="#link_a2560a9c-11f9-588e-b7a7-387ed062cb9f">LINK1</a>
+    </p>
+    <p>
+      <a xlink:href="#link_8289dba3-7d2b-5676-9bac-92a5cc27c30f">LINK2</a>
+    </p>
+    <table>
+      <tr>
+        <td>
+          <p>123</p>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <p>456</p>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <p>789</p>
+        </td>
+      </tr>
+    </table>
+  </section>
+</fb3-body>
