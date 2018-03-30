@@ -45,6 +45,8 @@ my @BlockLevel =
 ('address','article','aside','blockquote','canvas','dd','div','dl','dt','fieldset','figcaption','figure','footer','form',
 'h1','h2','h3','h4','h5','h6',
 'header','hr','li','main','nav','noscript','ol','output','p','pre','section','table','tfoot','ul','video',
+#формально не блок-левел, но нам их тоже приводить к нормальному виду
+'th','tr','td'
 );
 
 my $AllEntities = XML::Entities::Data::all;
@@ -119,6 +121,7 @@ my %AllowElementsMain = (
   'p' => {
     'allow_attributes' => ['id'],
     'allow_elements_inside' => $ElsMainList,
+    'exclude_if_inside' => ['ul','ol','table'], #с этими вариантами лучше схлопнуться родительскому 'p'
   },
   'span' => {
     'allow_attributes' => ['id'],
@@ -649,7 +652,12 @@ sub FB3Create {
   foreach my $Section ($XC->findnodes( "/fb3-body/section/section", $Body), $XC->findnodes( "/fb3-body/section", $Body)) {
     $Section = $X->Transform2Valid(node=>$Section);
   }
-  
+
+  #финальное приведение table к валидному виду
+  foreach my $Table ($XC->findnodes( "/fb3-body//table", $Body)) {
+    $Table = $X->TransformTable2Valid(node=>$Table);
+  }
+
   open FHbody, ">$FNbody" or die "$FNbody: $!";
   print FHbody $Body->toString(1);
   close FHbody;
@@ -1332,6 +1340,21 @@ sub ForceRmDir{
 
 sub Reaper {
   print "This method in package " . __PACKAGE__ . " and not defined in Processor class\n";
+}
+
+sub TransformTable2Valid {
+  my $X = shift;
+  my %Args = @_;
+  my $Node = $Args{'node'};
+
+  foreach my $TH ($Node->findnodes('./tr/th')) {
+    $X->Transform2Valid(node=>$TH);
+  }
+  foreach my $TD ($Node->findnodes('./tr/td')) {
+    $X->Transform2Valid(node=>$TD);
+  }
+
+  return $Node;
 }
 
 sub Transform2Valid {
