@@ -71,6 +71,7 @@ my $Obj = new FB3::Convert(
   },
 );
 
+$Obj->_bs('ALL','Полная конвертация');
 
 $Obj->Reap();
 
@@ -93,6 +94,8 @@ if ($OPT{'df'} && !$ValidErr) {
 $Obj->_bs('cleanup','Сборка мусора');
 $Obj->Cleanup($ValidErr?1:0);
 $Obj->_be('cleanup');
+
+$Obj->_be('ALL');
 
 $Obj->_bf();
 
