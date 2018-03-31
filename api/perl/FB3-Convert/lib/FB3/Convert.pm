@@ -18,6 +18,8 @@ use utf8;
 use Encode qw(encode_utf8 decode_utf8);
 use XML::Entities;
 use XML::Entities::Data;
+use Time::HiRes qw(gettimeofday sleep);
+binmode(STDOUT,':utf8');
 
 our $VERSION = 0.03;
 
@@ -420,6 +422,9 @@ sub new {
   $X->{'allow_elements'} = \%AllowElementsMain;
   $X->{'href_list'} = {}; #собираем ссылки в документе
   $X->{'id_list'} = {}; #собираем ссылки в документе
+  $X->{'bench'} = $Args{'bench'} ? 1 : 0; #бенчмарк режим в stdout
+  $X->{'bench2file'} = $Args{'bench2file'} ? $Args{'bench2file'} : 0; #бенчмарк режим в файл
+  $X->{'bench_list'} = {}; #бенчмарк режим
 
   #Наша внутренняя структура данных конвертора. шаг влево  - расстрел
   $X->{'STRUCTURE'} = {
@@ -524,8 +529,15 @@ sub Reap {
   my $File = $X->{'Source'};
 
   $X->Msg("working with file ".$File."\n",'w',1) if $X->{'showname'} || $X->{'verbose'};
+
+  $X->_bs('unpack','Распаковка Epub');
   $File = $Processor->{class}->_Unpacker($X,$File) if $Processor->{'unpack'};
+  $X->_be('unpack');
+
+  $X->_bs('reap','Потрошение Epub, cборка данных');
   $Processor->{'class'}->Reaper($X, source => ($File || $X->{'Source'}));
+  $X->_be('reap');
+
   return $X->{'STRUCTURE'};
 }
 
@@ -640,6 +652,8 @@ sub FB3Create {
     'xmlns:xlink'=>"http://www.w3.org/1999/xlink",
     'id'=>$GlobalID,
   };
+
+  $X->_bs('Obj2DOM_body','PAGES => DOM');
   my $Body = Obj2DOM($X,
               obj=>{
                 attributes=>{CP_compact=>1},
@@ -647,6 +661,7 @@ sub FB3Create {
               },
               root=>{name=>'fb3-body', attributes=>$BodyAttr}
             );  
+  $X->_be('Obj2DOM_body');
   
   #финальное приведение section к валидному виду
   foreach my $Section ($XC->findnodes( "/fb3-body/section/section", $Body), $XC->findnodes( "/fb3-body/section", $Body)) {
@@ -665,8 +680,10 @@ sub FB3Create {
   #Пишем мету
   #Превращаем перл-структуру в DOM
   delete $Structure->{'PAGES'};
+  $X->_bs('Obj2DOM_meta','META => DOM');
   my $Doc = Obj2DOM($X, obj=>$Structure, like_parent=>0, compact=>0 ); 
-  
+  $X->_be('Obj2DOM_meta');
+
   #Пишем rels
   Msg($X,"FB3: Create /fb3/_rels/body.xml.rels\n","w");
   my $FNbodyrels="$FB3Path/fb3/_rels/body.xml.rels";
@@ -730,8 +747,7 @@ sub FB3Create {
     <main>}.$TitleInfo->{'BOOK-TITLE'}.qq{</main>
   </title>
   };
-  
-  
+    
   print FHdesc qq{<fb3-relations>
     };
 
@@ -1601,6 +1617,88 @@ sub ParseMetaFile {
   }
 
 }
+
+### BENCHMARK
+
+#Точка старта
+sub _bs {
+  my $X = shift;
+  my $Key = shift;
+  my $Desc = shift || undef;
+  return if ( !(exists $X->{'bench'} && $X->{'bench'}) && !(exists $X->{'bench2file'} && $X->{'bench2file'}) );
+
+  $X->Error("Bench: _bs(); key not defined in string format") unless $Key;
+  $X->Error("Bench: _bs(): Key is not a string") if ref $Key;
+
+    $X->{'bench_list'}->{$Key} = {
+      'desc' => $Desc,
+      'timers' => []
+    } unless exists $X->{'bench_list'}->{$Key};
+  
+  my $Timers = $X->{'bench_list'}->{$Key}->{'timers'};
+
+  if (@$Timers) {
+    $X->Error("Bench: last timer don't closed with X->_be('$Key') function")
+      if exists $Timers->[scalar @$Timers - 1]->{'start'} && !exists $Timers->[scalar @$Timers - 1]->{'end'};
+  }
+
+  my $ts = gettimeofday();
+  push @$Timers, {
+    'start' => $ts,
+  };
+}
+
+#Точка окончания
+sub _be {
+  my $X = shift;
+  my $Key = shift;
+  return if ( !(exists $X->{'bench'} && $X->{'bench'}) && !(exists $X->{'bench2file'} && $X->{'bench2file'}) );
+
+  $X->Error("Bench: _be(); key not defined in string format") unless $Key;
+  $X->Error("Bench: _be(): Key is not a string") if ref $Key;
+
+  $X->Error("Bench: _be(); Key '$Key' not exists. Do you make X->_bs($Key)??") unless exists $X->{'bench_list'}->{$Key};
+
+  my $Timers = $X->{'bench_list'}->{$Key}->{'timers'};
+  $X->Error("Bench: _be(): Can't close timer. Two o more calls of _be($Key)??")
+    if exists $Timers->[scalar @$Timers - 1]->{'end'};
+  my $te = gettimeofday();
+  $Timers->[scalar @$Timers - 1]->{'end'} = $te;
+}
+
+#Сброс статистики
+sub _bf {
+  my $X = shift;
+  return if ( !(exists $X->{'bench'} && $X->{'bench'}) && !(exists $X->{'bench2file'} && $X->{'bench2file'}) );
+
+  my $Out = "BENCHMARK ".localtime().":\n\n";
+
+  foreach my $Key (sort keys %{$X->{'bench_list'}}) {
+    my $Item = $X->{'bench_list'}->{$Key};
+    my $Cnt = scalar @{$Item->{'timers'}};
+    my $Summ=0;
+    $Out .= "[key: '$Key'] ";
+    $Out .= "[cnt: $Cnt] ";
+    foreach my $t ( @{$Item->{'timers'}} ) {
+      $Summ += ($t->{'end'} - $t->{'start'});
+    }
+    $Out .= "[time: ".sprintf('%.4f',$Summ)." sec] ";
+    $Out .= "[avg: ".sprintf('%.4f',$Summ/$Cnt)." sec]\n";
+    $Out .= "desc: ".$Item->{'desc'}."\n\n" if $Item->{'desc'};
+  }
+
+  $X->{'bench_list'} = {};
+
+  $X->Msg("\n".$Out,'w',1) if $X->{'bench'};
+
+  if ($X->{'bench2file'}) {
+    open my $F,">>:utf8",$X->{'bench2file'} or die $!;
+    print $F $Out;
+    close $F;
+  }
+
+}
+
 
 =head1 LICENSE AND COPYRIGHT
 

@@ -16,7 +16,9 @@ GetOptions(
   'metadata|md=s' => \$OPT{'md'},
   'validate|vl=s' => \$OPT{'vl'},
   'name|n:1' => \$OPT{'showname'},
-  
+  'b:1' => \$OPT{'b'},
+  'bf:s' => \$OPT{'bf'},
+
   'meta_id=s' => \$OPT{'meta_id'},
   'meta_lang|meta_language=s' => \$OPT{'meta_lang'},
   'meta_title=s' => \$OPT{'meta_title'},
@@ -38,11 +40,10 @@ if ($OPT{'vl'}) {
 $OPT{'source'} = $ARGV[0] unless $OPT{'source'};
 $OPT{'df'} = $ARGV[1] unless $OPT{'df'};
 
-if (!$OPT{'dd'} && !$OPT{'df'}) {
-  my $FName = $OPT{'source'};
-  $FName =~ s/\.\w+$//;
-  $OPT{'df'} = $FName.'.fb3';
-}
+my $FName = $OPT{'source'};
+$FName =~ s/\.\w+$//;
+$OPT{'df'} = $FName.'.fb3' if !$OPT{'dd'} && !$OPT{'df'};
+$OPT{'bf'} = $FName.'.bench' if defined $OPT{'bf'} && !$OPT{'bf'};
 
 unless ($OPT{'source'}) {
   print "\nsource file not defined\n";
@@ -56,6 +57,8 @@ my $Obj = new FB3::Convert(
   'verbose' => $OPT{'verbose'},
   'metadata' => $OPT{'md'},
   'showname' => $OPT{'showname'},
+  'bench' => $OPT{'b'},
+  'bench2file' => $OPT{'bf'},
 
   'meta' => {
     'id' => $OPT{'meta_id'},
@@ -68,14 +71,30 @@ my $Obj = new FB3::Convert(
   },
 );
 
-$Obj->Reap();
-my $FB3Path =  $Obj->FB3Create();
-$Obj->Msg("FB3: ".$FB3Path." created\n","w");
-my $ValidErr = $Obj->Validate('xsd'=>$XsdPath);
-print $ValidErr;
-$Obj->FB3_2_Zip() if $OPT{'df'} && !$ValidErr;
-$Obj->Cleanup($ValidErr?1:0);
 
+$Obj->Reap();
+
+$Obj->_bs('fb3_create','Создание FB3 из данных, доводка до валидности');
+my $FB3Path =  $Obj->FB3Create();
+$Obj->_be('fb3_create');
+$Obj->Msg("FB3: ".$FB3Path." created\n","w");
+
+$Obj->_bs('validate_fb3','Валидация полученного FB3');
+my $ValidErr = $Obj->Validate('xsd'=>$XsdPath);
+$Obj->_be('validate_fb3');
+print $ValidErr;
+
+if ($OPT{'df'} && !$ValidErr) {
+  $Obj->_bs('pack','Упаковка FB3 -> zip');
+  $Obj->FB3_2_Zip();
+  $Obj->_be('pack');
+}
+
+$Obj->_bs('cleanup','Сборка мусора');
+$Obj->Cleanup($ValidErr?1:0);
+$Obj->_be('cleanup');
+
+$Obj->_bf();
 
 sub help {
   print <<_END

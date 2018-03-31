@@ -201,7 +201,9 @@ sub Reaper {
   my @Pages;
   foreach (@$AC) {
     $X->Msg("Processing in structure: ".$_->{'file'}."\n",'i');
+    $X->_bs('c2tree','Контент в дерево согласно схеме');
     push @Pages, $X->Content2Tree($_);
+    $X->_be('c2tree');
   }
 
   # [#01]
@@ -726,12 +728,16 @@ sub AssembleContent {
 
       $X->Msg("Parse content file ".$ContentFile."\n");
 
+      $X->_bs('parse_epub_xhtml', 'xml-парсинг файлов epub [Открытие, первичные преобразования, парсинг]');
       my $Content;
       open F,"<".$ContentFile;
       map {$Content.=$_} <F>;
       close F;
 
+      $X->_bs('Entities', 'Преобразование Entities');
       $Content = $X->qent(Encode::decode_utf8($Content));
+      $X->_be('Entities');
+
       $X->Msg("Fix strange text\n");
       $Content = $X->ShitFix($Content);
 
@@ -776,7 +782,9 @@ sub AssembleContent {
         content=>$Content,
         file=>$Item->{'href'}
       };
-  
+
+      $X->_be('parse_epub_xhtml');
+
     } else {
       $X->Msg("ID ".$Item->{'id'}.": I not understood what is it '".$Item->{'type'}."[".$Item->{'href'}."]'\n",'w');
     }
@@ -884,7 +892,9 @@ sub ProcessImg {
   #Копируем исходник на новое место с новым уникальным именем
   unless (-f $ImgDestFile) {
     $X->Msg("copy $ImgSrcFile -> $ImgDestFile\n");
+    $X->_bs('img_copy','Копирование IMG');
     FB3::Convert::copy($ImgSrcFile, $ImgDestFile) or $X->Error($!." [copy $ImgSrcFile -> $ImgDestFile]");        
+    $X->_be('img_copy','Копирование IMG');
   }
 
   $Node->setAttribute('src' => $ImgID);
@@ -913,8 +923,7 @@ sub ProcessHref {
                                                        basename($RelPath)."#".$Anchor #текущий section
                                                        ), $RelPath , 'process_href')
         : '';
-        
-        
+
   $X->{'href_list'}->{$NewHref} = $Href if $X->trim($NewHref) ne '';     
   $Node->setAttribute('xlink:href' => $NewHref);
 
