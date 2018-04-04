@@ -74,7 +74,7 @@
 		<xsl:choose>
 			<xsl:when test="$images_inside = 1 and $noimgtags_inside = 0 and string-length($p_text) = 0">
 				<xsl:apply-templates/>
-				<xsl:if test="not(parent::fb3b:div[not(parent::fb3b:section and not(preceding-sibling::*[local-name() != 'div']) and not(following-sibling::*[local-name() != 'div']))])">
+				<xsl:if test="not(parent::fb3b:div)">
 					<empty-line/>
 				</xsl:if>
 			</xsl:when>
@@ -133,9 +133,6 @@
 		<xsl:variable name="p_inside"><xsl:value-of select="count(fb3b:p)"/></xsl:variable>
 		<xsl:variable name="p_text"><xsl:value-of select="normalize-space(.)"/></xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$p_inside = 1 and $noptags_inside = 0 and string-length($p_text) = 0">
-				<xsl:apply-templates/>
-			</xsl:when>
 			<xsl:when test="fb3b:p[fb3b:img and string-length(normalize-space(.)) = 0]">
 				<xsl:apply-templates/>
 				<empty-line/>
