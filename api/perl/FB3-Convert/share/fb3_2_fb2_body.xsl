@@ -60,6 +60,9 @@
 		<xsl:choose>
 			<xsl:when test="$images_inside = 1 and $noimgtags_inside = 0 and string-length($p_text) = 0">
 				<xsl:apply-templates/>
+				<xsl:if test="not(parent::fb3b:div)">
+					<empty-line/>
+				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
 				<p>
@@ -84,9 +87,6 @@
 		<section>
 			<xsl:if test="@id"><xsl:attribute name="id">u<xsl:value-of select="@id"/></xsl:attribute></xsl:if>
 			<xsl:apply-templates/>
-			<xsl:if test="fb3b:p[fb3b:img and string-length(normalize-space(.)) = 0] and count(*) = 1">
-				<empty-line/>
-			</xsl:if>
 		</section>
 	</xsl:template>
 
