@@ -129,9 +129,6 @@
 	</xsl:template>
 
 	<xsl:template match="fb3b:div[not(@on-one-page = 'true')]">
-		<xsl:variable name="noptags_inside"><xsl:value-of select="count(*[name() != 'p'])"/></xsl:variable>
-		<xsl:variable name="p_inside"><xsl:value-of select="count(fb3b:p)"/></xsl:variable>
-		<xsl:variable name="p_text"><xsl:value-of select="normalize-space(.)"/></xsl:variable>
 		<xsl:choose>
 			<xsl:when test="fb3b:p[fb3b:img and string-length(normalize-space(.)) = 0]">
 				<xsl:apply-templates/>
