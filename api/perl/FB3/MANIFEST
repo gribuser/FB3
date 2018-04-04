@@ -1,7 +1,10 @@
+bin/validate_fb3.pl
 Build.PL
 lib/FB3.pm
 lib/FB3/Validator.pm
 MANIFEST			This list of files
+META.json
+META.yml
 README
 share/dc.xsd
 share/dcmitype.xsd
@@ -15,6 +18,5 @@ share/fb3_relations.xsd
 share/opc-contentTypes.xsd
 share/opc-coreProperties.xsd
 share/opc-relationships.xsd
+share/xml_namespace.xsd
 t/00-load.t
-META.yml
-META.json
