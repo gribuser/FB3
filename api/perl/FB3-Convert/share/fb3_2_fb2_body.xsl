@@ -35,11 +35,25 @@
 	</xsl:template>
 
 	<xsl:template match="fb3b:title">
-		<title><xsl:apply-templates/></title>
+		<xsl:choose>
+			<xsl:when test="parent::fb3b:blockquote">
+				<subtitle><xsl:apply-templates/></subtitle>
+			</xsl:when>
+			<xsl:otherwise>
+				<title><xsl:apply-templates/></title>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="fb3b:title" mode="notes">
-		<title><xsl:apply-templates/></title>
+		<xsl:choose>
+			<xsl:when test="parent::fb3b:blockquote">
+				<subtitle><xsl:apply-templates/></subtitle>
+			</xsl:when>
+			<xsl:otherwise>
+				<title><xsl:apply-templates/></title>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="fb3b:subtitle">
@@ -60,9 +74,12 @@
 		<xsl:choose>
 			<xsl:when test="$images_inside = 1 and $noimgtags_inside = 0 and string-length($p_text) = 0">
 				<xsl:apply-templates/>
-				<xsl:if test="not(parent::fb3b:div)">
+				<xsl:if test="not(parent::fb3b:div[not(parent::fb3b:section and not(preceding-sibling::*[local-name() != 'div']) and not(following-sibling::*[local-name() != 'div']))])">
 					<empty-line/>
 				</xsl:if>
+			</xsl:when>
+			<xsl:when test="parent::fb3b:title[parent::fb3b:blockquote]">
+				<xsl:apply-templates/>
 			</xsl:when>
 			<xsl:otherwise>
 				<p>
