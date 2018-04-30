@@ -5,6 +5,7 @@ use base 'FB3::Convert';
 use XML::LibXML;
 use File::Basename;
 use Clone qw(clone);
+use FB3::Euristica;
 use utf8;
 
 my %NS = (
@@ -17,6 +18,9 @@ my %NS = (
 sub Reaper {
   my $self = shift;
   my $X = shift;
+
+  my $EuristicaObj = new FB3::Euristica(verbose => $X->{verbose});
+  $X->{'EuristicaObj'} = $EuristicaObj;
 
   my %Args = @_;
   my $Source = $Args{'source'} || die "Source path not defined";
@@ -726,14 +730,26 @@ sub AssembleContent {
 
       my $ContentFile = $X->{'ContentDir'}.'/'.$Item->{'href'};
 
+      if ($X->{'EuristicaObj'}) {
+        my $Euristica = $X->{'EuristicaObj'}->ParseFile(file=>$ContentFile);
+        if ($Euristica->{'CHANGED'} && 1==2) {
+          open my $FS,">".$ContentFile;
+          print $FS $Euristica->{'CONTENT'};
+          close $FS;
+        }
+        ##print Data::Dumper::Dumper($Euristica) if $Euristica->{'CHANGED'};
+      }
+
+
+
       $X->Msg("Parse content file ".$ContentFile."\n");
 
       $X->_bs('parse_epub_xhtml', 'xml-парсинг файлов epub [Открытие, первичные преобразования, парсинг]');
       my $Content;
-      open F,"<".$ContentFile;
-      map {$Content.=$_} <F>;
-      close F;
-
+      open my $FO,"<".$ContentFile;
+      map {$Content.=$_} <$FO>;
+      close $FO;
+ 
       $X->_bs('Entities', 'Преобразование Entities');
       $Content = $X->qent(Encode::decode_utf8($Content));
       $X->_be('Entities');
