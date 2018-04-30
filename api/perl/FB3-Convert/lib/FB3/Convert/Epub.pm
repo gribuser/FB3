@@ -15,12 +15,34 @@ my %NS = (
   'dc' => 'http://purl.org/dc/elements/1.1/',
 );
 
+sub FindFile {
+  my $FileName = shift;
+  my $Dirs = shift;
+
+  foreach (@$Dirs) {
+    my $Path = $_.'/'.$FileName;
+    return $Path if -f $Path;
+  }
+  return undef;
+}
+
 sub Reaper {
   my $self = shift;
   my $X = shift;
 
-  my $EuristicaObj = new FB3::Euristica(verbose => $X->{verbose});
-  $X->{'EuristicaObj'} = $EuristicaObj;
+  unless ($X->{'euristic_skip'}) {
+    my $PhantomJS = $X->{'phantom_js_path'} || FindFile('phantomjs', [split /:/,$ENV{'PATH'}]);
+
+    if (-e $PhantomJS) {
+      my $EuristicaObj = new FB3::Euristica(verbose => $X->{verbose}, phjs => $PhantomJS);
+      $X->{'EuristicaObj'} = $EuristicaObj;
+    } else {
+      $X->Msg("[SKIP EURISTIC] PhantomJS binary not found. Try --phantomjs=PATH-TO-FILE, --euristic_skip options.\nPhantomJS mus be installed for euristic analize of titles <http://phantomjs.org/>\n",'e');
+    }
+ 
+  } else {
+    $X->Msg("Skip euristica\n",'w');
+  }
 
   my %Args = @_;
   my $Source = $Args{'source'} || die "Source path not defined";
@@ -739,10 +761,10 @@ sub AssembleContent {
           close $FS;
         }
         $X->_be('euristic');
-        ##if ($Euristica->{'CHANGED'}) { #DEBUG
-        ##  print Data::Dumper::Dumper($Euristica);
-        ##  File::Copy::copy($ContentFile, '/tmp/1/'.rand(1000));
-        ##}
+      #  if ($Euristica->{'CHANGED'}) { #DEBUG
+      #    print Data::Dumper::Dumper($Euristica);
+      #    File::Copy::copy($ContentFile, '/tmp/1/'.rand(1000));
+      #  }
       }
 
 

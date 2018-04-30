@@ -12,8 +12,9 @@ sub new {
   my %Args = @_;
 
   $X->{'verbose'} = $Args{'verbose'};
+  my $PHJS_bin = $Args{'phjs'} || undef;
 
-  my $mech = WWW::Mechanize::PhantomJS->new();
+  my $mech = WWW::Mechanize::PhantomJS->new('launch_exe'=>$PHJS_bin);
   $X->{'MECH'} = $mech;
 
   return bless $X, $class;
