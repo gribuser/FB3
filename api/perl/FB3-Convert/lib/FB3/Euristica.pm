@@ -83,13 +83,24 @@ sub ParseFile {
     'td':1
   };
 
+  String.prototype.HaveIn = function(words) {
+    var str = this;
+    str = str.trim();
+    str = str.replace(new RegExp('/\s+/', 'g'),' ');
+    var sp = str.split(' ');
+    var H = {}; words.forEach(function(v){H[v]=1;});
+    var find = 0;
+    ret = sp.forEach( function(v){ if (v in H) {find=1;return;}} );
+    return find;
+  };
+
   String.prototype.digCut = function() {
     return parseInt(this.replace(new RegExp('/[^\d]+/', 'g'), ''));
   };
 
   Array.prototype.digMax = function() {
     var Max = 0;
-    this.forEach(function(v){if(parseInt(v)>Max)Max = parseInt(v);});
+    this.forEach(function(v){if(parseInt(v)>Max) Max = parseInt(v);});
     return Max;
   };
 
@@ -198,7 +209,7 @@ sub ParseFile {
     TopNext['DATA'].forEach(
       function(v) {
         if ( v['HaveBRtop'] > 0 ) BRSumm += v['HaveBRtop']; //нашли отбивку br соседа по верху
-        if ( v['Top'].digMax() > v['TextSize'].digMax() ) { //отбивка нижнего соседа по верху
+        if ( v['Top'].digMax() > v['TextSize'].digMax() ) { //стили отбивки нижнего соседа по верху 
           MarginSumm += (v['Top'].digMax() - v['TextSize'].digMax());
         }
       }
@@ -235,7 +246,7 @@ sub ParseFile {
           val = currNode.nodeValue;
           TL += val.trim().length;
 
-          if (val.toLowerCase().match(/[^\w\d](глава|часть|chapter|part)[^\w\d]/,'g')) { // 'i' не работает :(
+          if ( val.toLowerCase().HaveIn(Array('глава','часть','chapter','part')) ) {
             MW += 1;
           }
 
@@ -261,6 +272,7 @@ sub ParseFile {
           if (val.trim().length > 0) BRB = 0; //это уже не отбивка <br> снизу, а межстрочный (голый текст за br)
 
         } else if (currNode.nodeType == ELEMENT_NODE) {
+
           var r = {};
           if (currNode.childNodes
            && currNode.innerHTML.trim() != '' // почему-то <tag></tag> повергает в бесконечную рекурсию, будто у него есть чайлдноды
