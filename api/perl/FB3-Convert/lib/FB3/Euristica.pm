@@ -139,7 +139,7 @@ sub ParseFile {
             Balls = 0; //следующему кандидату баллы за начало страницы уже не достанутся
 
             if (Calc['BALLS'] >= 10) { // По всей видимости детектировали заголовок
-              currNode.setTagName("h10");
+              currNode.setTagName("h1");
               Changed = 1;
             }
 

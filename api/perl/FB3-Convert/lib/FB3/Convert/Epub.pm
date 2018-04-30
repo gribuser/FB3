@@ -731,13 +731,18 @@ sub AssembleContent {
       my $ContentFile = $X->{'ContentDir'}.'/'.$Item->{'href'};
 
       if ($X->{'EuristicaObj'}) {
+        $X->_bs('euristic','Эвристический анализ заголовка');
         my $Euristica = $X->{'EuristicaObj'}->ParseFile(file=>$ContentFile);
         if ($Euristica->{'CHANGED'} && 1==2) {
           open my $FS,">".$ContentFile;
           print $FS $Euristica->{'CONTENT'};
           close $FS;
         }
-        ##print Data::Dumper::Dumper($Euristica) if $Euristica->{'CHANGED'};
+        $X->_be('euristic');
+        ##if ($Euristica->{'CHANGED'}) { #DEBUG
+        ##  print Data::Dumper::Dumper($Euristica);
+        ##  File::Copy::copy($ContentFile, '/tmp/1/'.rand(1000));
+        ##}
       }
 
 
