@@ -33,9 +33,24 @@ sub ParseFile {
   FB3::Convert::Error($Cobj, "Can't find file for parse or not defined 'file' param ".$Args{'file'}) if !defined $Args{'file'} || !-f $Args{'file'};
   $PHJS->get_local($Args{'file'});
 
+  my $CssList = $Args{'css_list'} || [];
+
+  $PHJS->eval_in_page(<<'LoadCSS', 'Foobar/1.0', $CssList );
+(function(arguments){
+  var CSSList = arguments[1];
+  CSSList.forEach(function(v) {
+    var css = document.createElement('link');
+    css.type = 'text/css';
+    css.rel = 'stylesheet';
+    css.href = v;
+    document.getElementsByTagName('head')[0].appendChild(css);
+  });
+
+})(arguments);
+LoadCSS
+
   my $Debug =  $PHJS->eval_in_page(<<'JS', "Foobar/1.0");
 (function(){
-
   // Node types
   var ELEMENT_NODE = 1;
   var TEXT_NODE = 3;

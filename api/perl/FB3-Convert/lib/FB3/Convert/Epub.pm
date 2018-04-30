@@ -724,18 +724,21 @@ sub AssembleContent {
 
   my %ReverseManifest; #так проще грепать
   my $Ind=0;
+  my @CssList;
   foreach my $Item (@$Manifest) {
     $Ind++;
     $ReverseManifest{$Item->{'id'}} = $Item;
 
     # !! Стили пока не трогаем !!
-    #if ($Item->{'type'} =~ /^text\/css$/) { # В манифесте css 
+    if ($Item->{'type'} =~ /^text\/css$/) { # В манифесте css 
     #  push @{$X->{'STRUCTURE'}->{'CSS_LIST'}}, {
     #    'src_path' => $Item->{'href'},
     #    'new_path' => undef,
     #    'id' => $Item->{'id'},
     #  };
-    #}
+      push @CssList, $X->{'ContentDir'}.'/'.$Item->{'href'}; #для анализатора все-таки соберем
+     ## File::Copy::copy($X->{'ContentDir'}.'/'.$Item->{'href'}, '/tmp/1/'.rand(10000)) or die $!;
+    }
 
   }
 
@@ -754,17 +757,23 @@ sub AssembleContent {
 
       if ($X->{'EuristicaObj'}) {
         $X->_bs('euristic','Эвристический анализ заголовка');
-        my $Euristica = $X->{'EuristicaObj'}->ParseFile(file=>$ContentFile);
-        if ($Euristica->{'CHANGED'} && 1==2) {
-          open my $FS,">".$ContentFile;
-          print $FS $Euristica->{'CONTENT'};
-          close $FS;
+        my $Euristica = $X->{'EuristicaObj'}->ParseFile('file'=>$ContentFile, 'css_list' => \@CssList);
+        if ($Euristica->{'CHANGED'}) {
+         ## open my $FS,">:utf8",$ContentFile;
+         ## print $FS $Euristica->{'CONTENT'};
+         ## close $FS;
         }
         $X->_be('euristic');
-      #  if ($Euristica->{'CHANGED'}) { #DEBUG
-      #    print Data::Dumper::Dumper($Euristica);
-      #    File::Copy::copy($ContentFile, '/tmp/1/'.rand(1000));
-      #  }
+       ## if ($Euristica->{'CHANGED'}) { #DEBUG
+       ##   $X->{FND} = 1 unless exists $X->{FND};
+       ##   my $FND = $X->{FND}++;
+       ##   ##print Data::Dumper::Dumper($Euristica);
+       ##   File::Copy::copy($ContentFile, '/tmp/1/'.$X->{FND});
+          
+       ##   open F,">:utf8","/tmp/1/".$X->{FND}.".cng";
+       ##   print F $Euristica->{'CONTENT'};
+       ##   close F;
+       ## }
       }
 
 
