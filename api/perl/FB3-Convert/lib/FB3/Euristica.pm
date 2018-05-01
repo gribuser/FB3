@@ -100,7 +100,7 @@ sub ParseFile {
   var ELEMENT_NODE = 1;
   var TEXT_NODE = 3;
 
-  var LocalLinks = arguments[1];
+  var LocalLinks = arguments[1] || {};
   var FILENAME = window.location.pathname;
   var RET = Array();
 
@@ -203,7 +203,7 @@ sub ParseFile {
 
             if (currNode.id) {
               var ID = currNode.id;
-              if (ID in LocalLinks[FILENAME]) {
+              if (ID != null && LocalLinks[FILENAME] != null && ID in LocalLinks[FILENAME]) {
                 Calc['BALLS'] += 3; // на ноду ссылаются из любого файла в книге
               }
             }
