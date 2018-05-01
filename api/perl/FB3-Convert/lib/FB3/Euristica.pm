@@ -11,7 +11,10 @@ sub new {
   my $X = {};
   my %Args = @_;
 
-  $X->{'verbose'} = $Args{'verbose'};
+  $X->{'verbose'}        = $Args{'verbose'};
+  $X->{'ContentDir'}     = $Args{'ContentDir'},
+  $X->{'DestinationDir'} = $Args{'DestinationDir'},
+
   my $PHJS_bin = $Args{'phjs'} || undef;
 
   my $mech = WWW::Mechanize::PhantomJS->new('launch_exe'=>$PHJS_bin);
@@ -20,21 +23,62 @@ sub new {
   return bless $X, $class;
 }
 
+sub CalculateLinks {
+  my $X = shift;
+  my %Args = @_;
+  my $Files = $Args{'files'} || [];
+
+  my $PHJS = $X->{'MECH'};
+  my %Links;
+
+  foreach my $File (@$Files) {
+    $PHJS->get_local($File) or FB3::Convert::Error($X, "Can't open file for phantomjs ".$File." : ".$!);
+
+    my $Links =  $PHJS->eval_in_page(<<'Links', 'Foobar/1.0');
+(function(arguments){
+  var TEXT_NODE = 3;
+  var nodesBody = Array.prototype.slice.call(document.body.childNodes);
+  var Ret = Array();
+
+  NodeProc(nodesBody);
+
+  function NodeProc(nodes) {
+    nodes.forEach(function(node) {
+      if (node.nodeType == TEXT_NODE) return;
+      var childs = Array.prototype.slice.call(node.childNodes);
+      NodeProc(childs);      
+      if (node.nodeName.toLowerCase() == 'a' && node.href.match(/^file:\/\//)) {
+        Ret.push(node.href);
+      }
+    });
+  }
+
+  return Ret;
+})(arguments);
+Links
+
+    foreach my $Link ( @$Links ) {
+      $Link =~ s/^file:\/\///;
+      my ($LinkFile,$Anchor) = split /\#/, $Link;
+      $Links{$LinkFile}->{$Anchor} = 1 if $Anchor;
+    }
+
+  }
+
+  $X->{'LocalLinks'} = \%Links;
+
+  return \%Links;
+}
+
 sub ParseFile {
   my $X = shift;
   my %Args = @_;
 
-  my $Cobj = {
-    verbose => $X->{'verbose'},
-    ContentDir => $X->{'ContentDir'},
-    DestinationDir => $X->{'DestinationDir'},
-  };
+  FB3::Convert::Error($X, "Can't find file for parse or not defined 'file' param ".$Args{'file'}) if !defined $Args{'file'} || !-f $Args{'file'};
 
   my $PHJS = $X->{'MECH'};
 
-  FB3::Convert::Error($Cobj, "Can't find file for parse or not defined 'file' param ".$Args{'file'}) if !defined $Args{'file'} || !-f $Args{'file'};
-
-  $PHJS->get_local($Args{'file'});
+  $PHJS->get_local($Args{'file'}) or FB3::Convert::Error($X, "Can't open file for phantomjs : ".$Args{'file'});
 
 #если нет проблем со стилями - убрать блок
 #  my $CssDebug =  $PHJS->eval_in_page(<<'LoadCSS', 'Foobar/1.0');
@@ -50,18 +94,21 @@ sub ParseFile {
 #LoadCSS
   #return $CssDebug;
 
-  my $Debug =  $PHJS->eval_in_page(<<'JS', "Foobar/1.0");
-(function(){
+  my $Debug =  $PHJS->eval_in_page(<<'JS', "Foobar/1.0", $X->{'LocalLinks'});
+(function(arguments){
   // Node types
   var ELEMENT_NODE = 1;
   var TEXT_NODE = 3;
+
+  var LocalLinks = arguments[1];
+  var FILENAME = window.location.pathname;
+  var RET = Array();
 
   //настройки
   var TooMuchFontSize = 4; //На сколько px нужно быть увеличенным шрифтом от document.body, чтобы тебя посчитали "большим" 
   var TooMuchMargin = 6; //На сколько px нужно иметь отступ, чтобы тебя посчитали "отбитым текстом" 
   var TooMuchBR = 1; //Сумма <br>, считаемая отбивкой 
 
-  var RET = Array();
 
   var BlockLevel = {
     'address':1,
@@ -153,6 +200,13 @@ sub ParseFile {
           if (!FindCandidateNode && Cand['TextLength'] >= 0 && Cand['TextLength'] <= 3) {
             FirstTextLength += Cand['TextLength']; //какой-то малозначимый текст в блоке, будем считать, что это мусор в начале
           } else if (Cand['TextLength'] > 3) {
+
+            if (currNode.id) {
+              var ID = currNode.id;
+              if (ID in LocalLinks[FILENAME]) {
+                Calc['BALLS'] += 3; // на ноду ссылаются из любого файла в книге
+              }
+            }
 
             //наткнулись на ноду с текстом, хватит перебирать "голый текст" в начале
             FindCandidateNode++; // (!!!) подумать, тут ему место или внизу ветки, смотря что мы считаем за кандидата
@@ -370,7 +424,7 @@ sub ParseFile {
     return styleMap;
   }
 
-})();
+})(arguments);
 JS
 
   my $Changed = 0;

@@ -745,8 +745,25 @@ sub AssembleContent {
     #}
   }
 
+  my @Files4Eur;
+  if ($X->{'EuristicaObj'}) { #придется собрать файлы для эвристики отдельно. нужно будет объединить с обработкой
+    for my $ItemID (@$Spine) {
+      my $Item = $ReverseManifest{$ItemID};
+      if ($Item->{'type'} =~ /^application\/xhtml/) {
+        my $ContentFile = $X->{'ContentDir'}.'/'.$Item->{'href'};
+        $ContentFile =~ s/%20/ /g;
+        push @Files4Eur, $ContentFile;
+      }
+    }
+    $X->Msg("Calculate all links for euristica\n");
+    $X->_bs('EuristicLinks','Калькуляция всех локальных ссылок для эвристики');
+    $X->{'EuristicaObj'}->CalculateLinks('files'=>\@Files4Eur);
+    $X->_be('EuristicLinks');
+  }
+
   #бежим по списку, составляем скелет контекстной части
   for my $ItemID (@$Spine) {
+    my $Item = $ReverseManifest{$ItemID};
 
     if (!exists $ReverseManifest{$ItemID}) {
       $X->Msg("id ".$ItemID." not exists in Manifest list\n",'i');
@@ -768,6 +785,7 @@ sub AssembleContent {
         $X->Msg("Euristic analize ".$ContentFile."\n");
         $X->_bs('euristic','Эвристический анализ заголовка');
         my $Euristica = $X->{'EuristicaObj'}->ParseFile('file'=>$ContentFile);
+        #print Data::Dumper::Dumper($Euristica);
         
         #Дебаг измененных эвристикой файлов 
         if ($Euristica->{'CHANGED'}
