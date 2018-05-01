@@ -26,6 +26,8 @@ sub ParseFile {
 
   my $Cobj = {
     verbose => $X->{'verbose'},
+    ContentDir => $X->{'ContentDir'},
+    DestinationDir => $X->{'DestinationDir'},
   };
 
   my $PHJS = $X->{'MECH'};
@@ -33,21 +35,19 @@ sub ParseFile {
   FB3::Convert::Error($Cobj, "Can't find file for parse or not defined 'file' param ".$Args{'file'}) if !defined $Args{'file'} || !-f $Args{'file'};
   $PHJS->get_local($Args{'file'});
 
-  my $CssList = $Args{'css_list'} || [];
-
-  $PHJS->eval_in_page(<<'LoadCSS', 'Foobar/1.0', $CssList );
-(function(arguments){
-  var CSSList = arguments[1];
-  CSSList.forEach(function(v) {
-    var css = document.createElement('link');
-    css.type = 'text/css';
-    css.rel = 'stylesheet';
-    css.href = v;
-    document.getElementsByTagName('head')[0].appendChild(css);
-  });
-
-})(arguments);
-LoadCSS
+#если нет проблем со стилями - убрать блок
+#  my $CssDebug =  $PHJS->eval_in_page(<<'LoadCSS', 'Foobar/1.0');
+#(function(arguments){
+#  var LinkList = document.getElementsByTagName('link');
+#  var LinkList = Array.prototype.slice.call(LinkList);
+#  if (LinkList.length > 0) {
+#    LinkList.forEach(function(link) {
+#      link.href = link.href; //конвертация в file://path в тексте html
+#    });
+#  }
+#})(arguments);
+#LoadCSS
+  #return $CssDebug;
 
   my $Debug =  $PHJS->eval_in_page(<<'JS', "Foobar/1.0");
 (function(){

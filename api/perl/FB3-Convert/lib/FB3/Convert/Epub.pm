@@ -30,20 +30,6 @@ sub Reaper {
   my $self = shift;
   my $X = shift;
 
-  unless ($X->{'euristic_skip'}) {
-    my $PhantomJS = $X->{'phantom_js_path'} || FindFile('phantomjs', [split /:/,$ENV{'PATH'}]);
-
-    if (-e $PhantomJS) {
-      my $EuristicaObj = new FB3::Euristica(verbose => $X->{verbose}, phjs => $PhantomJS);
-      $X->{'EuristicaObj'} = $EuristicaObj;
-    } else {
-      $X->Msg("[SKIP EURISTIC] PhantomJS binary not found. Try --phantomjs=PATH-TO-FILE, --euristic_skip options.\nPhantomJS mus be installed for euristic analize of titles <http://phantomjs.org/>\n",'e');
-    }
- 
-  } else {
-    $X->Msg("Skip euristica\n",'w');
-  }
-
   my %Args = @_;
   my $Source = $Args{'source'} || die "Source path not defined";
   my $XC = XML::LibXML::XPathContext->new();
@@ -123,6 +109,26 @@ sub Reaper {
   #Директория, относительно которой лежит контент. Нам с ней еще работать
   $X->{'ContentDir'} = $RootFile;
   $X->{'ContentDir'} =~ s/\/?[^\/]+$//;
+
+  unless ($X->{'euristic_skip'}) {
+    my $PhantomJS = $X->{'phantom_js_path'} || FindFile('phantomjs', [split /:/,$ENV{'PATH'}]);
+
+    if (-e $PhantomJS) {
+      my $EuristicaObj = new FB3::Euristica(
+        'verbose' => $X->{verbose},
+        'phjs' => $PhantomJS,
+        'ContentDir' => $X->{'ContentDir'},
+        'DestinationDir' => $X->{'DestinationDir'}
+      );
+      $X->{'EuristicaObj'} = $EuristicaObj;
+    } else {
+      $X->Msg("[SKIP EURISTIC] PhantomJS binary not found. Try --phantomjs=PATH-TO-FILE, --euristic_skip options.\nPhantomJS mus be installed for euristic analize of titles <http://phantomjs.org/>\n",'e');
+    }
+ 
+  } else {
+    $X->Msg("Skip euristica\n",'w');
+  }
+
 
   $X->Msg("Parse rootfile ".$RootFile."\n");
   
@@ -724,22 +730,17 @@ sub AssembleContent {
 
   my %ReverseManifest; #так проще грепать
   my $Ind=0;
-  my @CssList;
   foreach my $Item (@$Manifest) {
     $Ind++;
     $ReverseManifest{$Item->{'id'}} = $Item;
-
     # !! Стили пока не трогаем !!
-    if ($Item->{'type'} =~ /^text\/css$/) { # В манифесте css 
+    #if ($Item->{'type'} =~ /^text\/css$/) { # В манифесте css 
     #  push @{$X->{'STRUCTURE'}->{'CSS_LIST'}}, {
     #    'src_path' => $Item->{'href'},
     #    'new_path' => undef,
     #    'id' => $Item->{'id'},
     #  };
-      push @CssList, $X->{'ContentDir'}.'/'.$Item->{'href'}; #для анализатора все-таки соберем
-     ## File::Copy::copy($X->{'ContentDir'}.'/'.$Item->{'href'}, '/tmp/1/'.rand(10000)) or die $!;
-    }
-
+    #}
   }
 
   #бежим по списку, составляем скелет контекстной части
@@ -757,26 +758,27 @@ sub AssembleContent {
 
       if ($X->{'EuristicaObj'}) {
         $X->_bs('euristic','Эвристический анализ заголовка');
-        my $Euristica = $X->{'EuristicaObj'}->ParseFile('file'=>$ContentFile, 'css_list' => \@CssList);
+        my $Euristica = $X->{'EuristicaObj'}->ParseFile('file'=>$ContentFile);
         if ($Euristica->{'CHANGED'}) {
          ## open my $FS,">:utf8",$ContentFile;
          ## print $FS $Euristica->{'CONTENT'};
          ## close $FS;
         }
         $X->_be('euristic');
-       ## if ($Euristica->{'CHANGED'}) { #DEBUG
-       ##   $X->{FND} = 1 unless exists $X->{FND};
-       ##   my $FND = $X->{FND}++;
-       ##   ##print Data::Dumper::Dumper($Euristica);
-       ##   File::Copy::copy($ContentFile, '/tmp/1/'.$X->{FND});
-          
-       ##   open F,">:utf8","/tmp/1/".$X->{FND}.".cng";
-       ##   print F $Euristica->{'CONTENT'};
-       ##   close F;
-       ## }
+        #Дебаг измененных эвристикой файлов 
+        if ($Euristica->{'CHANGED'}
+          && 1==2 #закомментировать для включения
+        ) { #DEBUG
+          $X->{FND} = 0 unless exists $X->{FND};
+          my $FND = $X->{FND}++;
+          my $FNM = $X->{'SourceFileName'}.'_'.$X->{FND};
+          ##print Data::Dumper::Dumper($Euristica);
+          File::Copy::copy($ContentFile, '/tmp/1/'.$FNM.'.src');
+          open F,">:utf8","/tmp/1/".$FNM.".cng";
+          print F $Euristica->{'CONTENT'};
+          close F;
+        }
       }
-
-
 
       $X->Msg("Parse content file ".$ContentFile."\n");
 

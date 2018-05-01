@@ -381,6 +381,9 @@ sub new {
   }
 
   my $SourcePath = $Args{'source'};
+  my $SourceFileName = $SourcePath;
+  $SourceFileName =~ s/^[^\/]//g;
+
   my $DestinationDir = $Args{'destination_dir'} || tempdir();
   my $DestinationFile = $Args{'destination_file'};
 
@@ -413,6 +416,7 @@ sub new {
 
   $X->{'ClassName'} = $Sub;
   $X->{'Source'} = $SourcePath;
+  $X->{'SourceFileName'} = $SourceFileName;
   $X->{'SourceDir'} = undef;
   $X->{'DestinationDir'} = $DestinationDir;
   $X->{'DestinationFile'} = $DestinationFile;
