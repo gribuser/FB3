@@ -1557,8 +1557,13 @@ sub ValidEMAIL{
 sub ShitFix {
   my $X = shift;
   my $Str = shift;
-  # /i вызывает невероятные тормоза к сожалению
+  # /i здесь вызывает невероятные тормоза к сожалению
   $Str =~ s#<([iI][mM][gG]) ([^>]+?/?)>\s*</\1>#<img $2 />#g; # <img> </img> => <img/>t
+
+  # закрываем то, то в html не обязано
+  $Str =~ s/<\s*\/\s*(meta|link)\s*>//gi;
+  $Str =~ s/(<(meta|link)[^>]+?)\s*?(\/?\s*?)>/$1\/>/g;
+
   return $Str;
 }
 

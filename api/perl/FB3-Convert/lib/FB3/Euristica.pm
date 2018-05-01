@@ -33,6 +33,7 @@ sub ParseFile {
   my $PHJS = $X->{'MECH'};
 
   FB3::Convert::Error($Cobj, "Can't find file for parse or not defined 'file' param ".$Args{'file'}) if !defined $Args{'file'} || !-f $Args{'file'};
+
   $PHJS->get_local($Args{'file'});
 
 #если нет проблем со стилями - убрать блок

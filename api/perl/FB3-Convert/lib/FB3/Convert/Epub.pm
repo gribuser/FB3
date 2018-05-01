@@ -755,14 +755,15 @@ sub AssembleContent {
     if ($Item->{'type'} =~ /^application\/xhtml/) { # Видимо, текст
 
       my $ContentFile = $X->{'ContentDir'}.'/'.$Item->{'href'};
+      $ContentFile =~ s/%20/ /g;
 
       if ($X->{'EuristicaObj'}) {
         $X->_bs('euristic','Эвристический анализ заголовка');
         my $Euristica = $X->{'EuristicaObj'}->ParseFile('file'=>$ContentFile);
         if ($Euristica->{'CHANGED'}) {
-         ## open my $FS,">:utf8",$ContentFile;
-         ## print $FS $Euristica->{'CONTENT'};
-         ## close $FS;
+          open my $FS,">:utf8",$ContentFile;
+          print $FS $Euristica->{'CONTENT'};
+          close $FS;
         }
         $X->_be('euristic');
         #Дебаг измененных эвристикой файлов 
@@ -793,7 +794,9 @@ sub AssembleContent {
       $X->_be('Entities');
 
       $X->Msg("Fix strange text\n");
+      $X->_bs('Strange', 'Зачистка странностей');
       $Content = $X->ShitFix($Content);
+      $X->_be('Strange');
 
       $X->Msg("Parse XML\n");
       my $ContentDoc = XML::LibXML->load_xml(
