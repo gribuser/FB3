@@ -157,11 +157,11 @@ sub ParseFile {
     return find;
   };
 
-  String.prototype.digCut = function() {
+  String.prototype.digCut = function() { //откусывает буквы, оставляя число
     return parseInt(this.replace(new RegExp('/[^\d]+/', 'g'), ''));
   };
 
-  Array.prototype.digMax = function() {
+  Array.prototype.digMax = function() { //возвращает максимальное число в массиве
     var Max = 0;
     this.forEach(function(v){if(parseInt(v)>Max) Max = parseInt(v);});
     return Max;
@@ -182,7 +182,7 @@ sub ParseFile {
   var Balls = 3; //по умолчанию баллы за то, что кандидат вверху (может быть сброшен в контексте анализа)
 
   //бежим по нодам в body
-  nodes = Array.prototype.slice.call(document.body.childNodes,0);
+  nodes = Array.prototype.slice.call(document.body.childNodes);
   var BreakException = {};
   try {  
     nodes.forEach( 
@@ -323,7 +323,7 @@ sub ParseFile {
           var styles = simpleStyles(currNode.parentNode);
           var block;
           var PN = currNode.parentNode.nodeName.toLowerCase();
-          if (PN.toLowerCase() in BlockLevel) block = 1; //для остальных нет эффекта отступов
+          if (PN in BlockLevel) block = 1; //для остальных нет эффекта отступов
 
           if (block && 'text-align' in styles && styles['text-align'].toLowerCase() == 'center') CNT = 1;
 
