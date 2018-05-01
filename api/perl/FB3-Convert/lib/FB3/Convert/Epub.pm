@@ -757,28 +757,38 @@ sub AssembleContent {
       my $ContentFile = $X->{'ContentDir'}.'/'.$Item->{'href'};
       $ContentFile =~ s/%20/ /g;
 
+      $X->Msg("Fix strange text\n");
+      $X->_bs('Strange', 'Зачистка странностей');
+      $X->ShitFixFile($ContentFile);
+      $X->_be('Strange');
+
       if ($X->{'EuristicaObj'}) {
+        $X->Msg("Euristic analize ".$ContentFile."\n");
         $X->_bs('euristic','Эвристический анализ заголовка');
         my $Euristica = $X->{'EuristicaObj'}->ParseFile('file'=>$ContentFile);
-        if ($Euristica->{'CHANGED'}) {
-          open my $FS,">:utf8",$ContentFile;
-          print $FS $Euristica->{'CONTENT'};
-          close $FS;
-        }
-        $X->_be('euristic');
+        
         #Дебаг измененных эвристикой файлов 
         if ($Euristica->{'CHANGED'}
           && 1==2 #закомментировать для включения
         ) { #DEBUG
-          $X->{FND} = 0 unless exists $X->{FND};
-          my $FND = $X->{FND}++;
-          my $FNM = $X->{'SourceFileName'}.'_'.$X->{FND};
-          ##print Data::Dumper::Dumper($Euristica);
-          File::Copy::copy($ContentFile, '/tmp/1/'.$FNM.'.src');
-          open F,">:utf8","/tmp/1/".$FNM.".cng";
-          print F $Euristica->{'CONTENT'};
-          close F;
+          my $FND = $ContentFile;
+          $FND =~ s/.*?([^\/]+)$/$1/g;
+          $FND = $X->{'SourceFileName'}."-".$FND;
+          File::Copy::copy($ContentFile, '/tmp/1/'.$FND.'.src');
+          open my $F,">:utf8","/tmp/1/".$FND.".cng";
+          print $F $Euristica->{'CONTENT'};
+          close $F;
         }
+        #//Дебаг измененных эвристикой файлов 
+
+        ##if ($Euristica->{'CHANGED'}
+        ##) {
+          open my $FS,">:utf8",$ContentFile;
+          print $FS $Euristica->{'CONTENT'};
+          close $FS;
+        ##} 
+        $X->_be('euristic');
+
       }
 
       $X->Msg("Parse content file ".$ContentFile."\n");
@@ -793,10 +803,7 @@ sub AssembleContent {
       $Content = $X->qent(Encode::decode_utf8($Content));
       $X->_be('Entities');
 
-      $X->Msg("Fix strange text\n");
-      $X->_bs('Strange', 'Зачистка странностей');
-      $Content = $X->ShitFix($Content);
-      $X->_be('Strange');
+      $Content = $X->MetaFix($Content) if $X->{'EuristicaObj'}; #phantomjs нам снова наследил 
 
       $X->Msg("Parse XML\n");
       my $ContentDoc = XML::LibXML->load_xml(

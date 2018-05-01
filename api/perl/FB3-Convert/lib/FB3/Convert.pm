@@ -382,7 +382,7 @@ sub new {
 
   my $SourcePath = $Args{'source'};
   my $SourceFileName = $SourcePath;
-  $SourceFileName =~ s/^[^\/]//g;
+  $SourceFileName =~ s/.*?([^\/]+)$/$1/g;
 
   my $DestinationDir = $Args{'destination_dir'} || tempdir();
   my $DestinationFile = $Args{'destination_file'};
@@ -521,12 +521,13 @@ sub Init {
   }
 
   Msg($X,"Create FB3 directory: ".$FB3Path."\n");
-  mkdir($FB3Path);
+  mkdir "$FB3Path" or die "$FB3Path : $!";
 
   for my $Dir ("/fb3", "/fb3/img", "/fb3/style", "/fb3/meta", "/fb3/_rels", "/_rels") {
-    mkdir "$FB3Path$Dir";
+    mkdir "$FB3Path$Dir" or die "$FB3Path$Dir : $!";
   }
   Msg($X,"FB3: Directory structure is created successfully.\n");
+
 }
 
 sub Reap {
@@ -1554,15 +1555,42 @@ sub ValidEMAIL{
   return $Email=~ /^[-+a-z0-9_]+(\.[-+a-z0-9_]+)*\@([-a-z0-9_]+\.)+[a-z]{2,10}$/i;
 }
 
+sub ShitFixFile {
+  my $X = shift;
+  my $Fname = shift;
+
+  my $Content;
+  open my $Fo,"<".$Fname or die ("Can't open file $Fname: $!");
+  map {$Content.=$_;} <$Fo>;
+  close $Fo;
+
+  $Content = $X->ShitFix($Content); 
+
+  open my $Fs,">".$Fname or die ("Can't open file $Fname: $!");
+  print $Fs $Content;
+  close $Fs;
+}
+
+sub MetaFix {
+  my $X = shift;
+  my $Str = shift;
+  # закрываем то, что в html не обязано
+  $Str =~ s/<\s*\/\s*(meta|link)\s*>//gi;
+  $Str =~ s/(<(meta|link|img)[^>]+?)\s*?(\/?\s*?)>/$1\/>/g;
+
+  return $Str;
+}
+
 sub ShitFix {
   my $X = shift;
   my $Str = shift;
   # /i здесь вызывает невероятные тормоза к сожалению
   $Str =~ s#<([iI][mM][gG]) ([^>]+?/?)>\s*</\1>#<img $2 />#g; # <img> </img> => <img/>t
 
-  # закрываем то, то в html не обязано
-  $Str =~ s/<\s*\/\s*(meta|link)\s*>//gi;
-  $Str =~ s/(<(meta|link)[^>]+?)\s*?(\/?\s*?)>/$1\/>/g;
+  #DOM такое не любит
+  $Str =~ s/<\s*([aA])(.*?)\/\s*>/<$1$2><\/$1>/g; # <a/> => <a></a>
+
+  $Str = $X->MetaFix($Str);
 
   return $Str;
 }
