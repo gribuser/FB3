@@ -422,7 +422,7 @@ sub new {
   $X->{'DestinationFile'} = $DestinationFile;
   $X->{'Module'} = $Module;
   $X->{'verbose'} = $Args{'verbose'} ? $Args{'verbose'} : 0;
-  $X->{'euristic_skip'} = $Args{'euristic_skip'} ? 1 : 0;
+  $X->{'euristic'} = $Args{'euristic'} || undef;
   $X->{'phantom_js_path'} = $Args{'phantom_js_path'} || undef;
   $X->{'showname'} = $Args{'showname'} ? 1 : 0;
   $X->{'allow_elements'} = \%AllowElementsMain;

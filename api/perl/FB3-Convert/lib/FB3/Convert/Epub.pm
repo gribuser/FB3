@@ -110,7 +110,9 @@ sub Reaper {
   $X->{'ContentDir'} = $RootFile;
   $X->{'ContentDir'} =~ s/\/?[^\/]+$//;
 
-  unless ($X->{'euristic_skip'}) {
+  if ($X->{'euristic'}) {
+    $X->Msg("Euristica enabled\n",'w');
+
     my $PhantomJS = $X->{'phantom_js_path'} || FindFile('phantomjs', [split /:/,$ENV{'PATH'}]);
 
     if (-e $PhantomJS) {
@@ -125,10 +127,7 @@ sub Reaper {
       $X->Msg("[SKIP EURISTIC] PhantomJS binary not found. Try --phantomjs=PATH-TO-FILE, --euristic_skip options.\nPhantomJS mus be installed for euristic analize of titles <http://phantomjs.org/>\n",'e');
     }
  
-  } else {
-    $X->Msg("Skip euristica\n",'w');
   }
-
 
   $X->Msg("Parse rootfile ".$RootFile."\n");
   
