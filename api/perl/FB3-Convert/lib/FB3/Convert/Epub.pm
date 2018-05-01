@@ -225,7 +225,7 @@ sub Reaper {
     $Description->{'TITLE-INFO'}->{'AUTHORS'} = \@Authors;
   }
 
-  #print Data::Dumper::Dumper($AC);
+  ##print Data::Dumper::Dumper($AC);
 
   #КОНТЕНТ
 
@@ -432,11 +432,12 @@ sub Reaper {
         && exists $Sec->{'section'}->{'value'}->[0]->{'title'}
       ) {
 
+        my $ValNode = $Sec->{'section'}->{'value'}->[0]->{'title'}->{'value'}->[0];
         $Sec->{'section'}->{'value'} = 
           [
            {
             'subtitle' => {
-             'value' => $Sec->{'section'}->{'value'}->[0]->{'title'}->{'value'}->[0]->{'p'}->{'value'}
+             'value' => (ref $ValNode eq 'HASH' ? $ValNode->{'p'}->{'value'} : $ValNode),
             }
            }
           ];
@@ -625,6 +626,8 @@ sub AnaliseIdEmptyHref {
    };
    $First = 1;
   }
+
+  $Data->{'value'} = [$Data->{'value'}] unless ref $Data->{'value'} eq 'ARRAY';
 
   foreach my $Item (@{$Data->{'value'}}) {
 
@@ -1015,7 +1018,14 @@ sub TransformH2Title {
 
   my $Wrap = XML::LibXML::Element->new("p"); #wrapper
   foreach my $Child ($Node->getChildnodes) {
-    $Wrap->addChild($Child->cloneNode(1));
+    my $Excl = $X->{'allow_elements'}->{'p'}->{'exclude_if_inside'};
+    if ( grep {$Child->nodeName eq $_} @$Excl ) {
+      foreach my $ChildIns ($Child->getChildnodes) {
+        $Wrap->addChild($ChildIns->cloneNode(1));
+      }
+    } else {
+      $Wrap->addChild($Child->cloneNode(1));
+    }
   }
  
   $NewNode->addChild($Wrap);
