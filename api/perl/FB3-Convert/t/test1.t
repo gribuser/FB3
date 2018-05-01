@@ -25,6 +25,8 @@ opendir(my $DH, $DIR) || die "Can't opendir $DIR: $!";
 my @Epubs = grep { $_ =~ /.+\.epub$/ && -f $DIR."/".$_ } readdir($DH);
 closedir $DH;
 
+my $PHS = PhantomIsSupport();
+
 foreach my $EpubFile (sort{Num($a)<=>Num($b)} @Epubs ) {
 
   $EpubFile =~ m/^(.+)\.epub$/;
@@ -35,10 +37,17 @@ foreach my $EpubFile (sort{Num($a)<=>Num($b)} @Epubs ) {
   diag("Testing ".$DIR.'/'.$EpubFile.' and compare with '.$OldXml);
   die("file $OldXml not found") unless -f $OldXml;
 
+  my $Eur = 1;
+  $Eur = 0 if (
+    !$PHS ||
+    $EpubFile eq 'xss_108909.epub'
+  );
+
   my $Obj = new FB3::Convert(
     'source' => $DIR.'/'.$EpubFile,
     'destination_dir' => tempdir(CLEANUP=>1),
     'verbose' => 0,
+    'euristic' => $Eur,
   );
 
   $Obj->Reap();
@@ -60,6 +69,30 @@ foreach my $EpubFile (sort{Num($a)<=>Num($b)} @Epubs ) {
 
 ok(1,'Test ok');
 exit;
+
+sub PhantomIsSupport {
+  my $Supp = FindFile('phantomjs', [split /:/,$ENV{'PATH'}]);
+
+  if ($Supp) {
+    diag('phantomjs founded ['.$Supp.']. Euristic enabled');
+  } else {
+    diag('phantomjs not found. Euristic skipped. see <http://phantomjs.org/>');
+  }
+
+  return 1;
+}
+
+sub FindFile {
+  my $FileName = shift;
+  my $Dirs = shift;
+
+  foreach (@$Dirs) {
+    my $Path = $_.'/'.$FileName;
+    return $Path if -f $Path;
+  }
+  return undef;
+}
+
 
 sub Num {
   my $Fname=shift;
@@ -90,7 +123,7 @@ sub _Diff {
   my $Diffgram = $Diff->compare(-old => $OldXml, -new => $NewXml);
   $Diffgram =~ s#(<xvcs:diffgram)#$1 xmlns:xlink="http://www.w3.org/1999/xlink"#g;
   my $XMLDoc = XML::LibXML->load_xml(string=>$Diffgram) || die "Can't parse! ".$!;
- 
+
   my $Root = $XMLDoc->getDocumentElement;
 
   my $Err;
