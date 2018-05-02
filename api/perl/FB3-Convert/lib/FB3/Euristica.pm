@@ -455,14 +455,18 @@ JS
     File::Copy::copy($SrcFile, $X->{'DebugPath'}.'/'.$FND.'.src') or die "Can't copy file $SrcFile : $!";
 
     #посли прочитки в DOM
-    open my $F,">:utf8",$X->{'DebugPath'}.'/'.$FND.".before";
-    print $F $X->{'ContentBefore'};
-    close $F;
+    open my $Fb,">:utf8",$X->{'DebugPath'}.'/'.$FND.".before";
+    print $Fb $X->{'ContentBefore'};
+    close $Fb;
 
-    #после изменения
-    open my $F,">:utf8",$X->{'DebugPath'}.'/'.$FND.".changed";
-    print $F $CONTENT;
-    close $F;
+    #после изменения + debug
+    open my $Fc,">:utf8",$X->{'DebugPath'}.'/'.$FND.".debug";
+    print $Fc "DEBUG\n";
+    print $Fc Data::Dumper::Dumper($Debug);
+    print $Fc "\n============\n";
+    print $Fc "RESULT\n";
+    print $Fc $CONTENT;
+    close $Fc;
 
   }
   #//Дебаг измененных эвристикой файлов 
