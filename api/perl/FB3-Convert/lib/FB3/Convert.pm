@@ -423,6 +423,7 @@ sub new {
   $X->{'Module'} = $Module;
   $X->{'verbose'} = $Args{'verbose'} ? $Args{'verbose'} : 0;
   $X->{'euristic'} = $Args{'euristic'} || undef;
+  $X->{'euristic_debug'} = $Args{'euristic_debug'} || undef;
   $X->{'phantom_js_path'} = $Args{'phantom_js_path'} || undef;
   $X->{'showname'} = $Args{'showname'} ? 1 : 0;
   $X->{'allow_elements'} = \%AllowElementsMain;
@@ -1319,6 +1320,7 @@ sub Validate {
   my $ValidateDir = $Args{'path'};
   my $XsdPath = $Args{'xsd'};
   
+  $X->Msg("Validate result\n");
   my $Valid = FB3::Validator->new( $XsdPath );
   return $Valid->Validate($ValidateDir||$X->{'DestinationDir'});
 }
@@ -1585,10 +1587,11 @@ sub ShitFix {
   my $X = shift;
   my $Str = shift;
   # /i здесь вызывает невероятные тормоза к сожалению
-  $Str =~ s#<([iI][mM][gG]) ([^>]+?/?)>\s*</\1>#<img $2 />#g; # <img> </img> => <img/>t
+  $Str =~ s#<([iI][mM][gG]) ([^>]+?/?)>\s*</\1>#<img $2>#g; # <img> </img> => <img/>t
 
   #DOM такое не любит
   $Str =~ s/<\s*([aA])(.*?)\/\s*>/<$1$2><\/$1>/g; # <a/> => <a></a>
+  #$Str =~ s/<\s*([iI][mM][gG])(.*?)\/\s*>/<$1$2>/g; # <a/> => <a></a>
 
   $Str = $X->MetaFix($Str);
 

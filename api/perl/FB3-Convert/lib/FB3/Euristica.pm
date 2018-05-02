@@ -5,6 +5,7 @@ use Data::Dumper;
 use utf8;
 use WWW::Mechanize::PhantomJS;
 use FB3::Convert;
+use File::Copy;
 
 sub new {
   my $class = shift;
@@ -12,8 +13,15 @@ sub new {
   my %Args = @_;
 
   $X->{'verbose'}        = $Args{'verbose'};
-  $X->{'ContentDir'}     = $Args{'ContentDir'},
-  $X->{'DestinationDir'} = $Args{'DestinationDir'},
+  $X->{'ContentDir'}     = $Args{'ContentDir'};
+  $X->{'DestinationDir'} = $Args{'DestinationDir'};
+  $X->{'DebugPath'}      = $Args{'DebugPath'} || undef;
+  $X->{'DebugPrefix'}    = $Args{'DebugPrefix'} || undef;
+
+  if ($X->{'DebugPath'}) {
+    mkdir $X->{'DebugPath'} or die $X->{'DebugPath'}." : $!" unless -d $X->{'DebugPath'};
+    FB3::Convert::Msg($X, "Create euristica debug at $X->{'DebugPath'}\n");
+  }
 
   my $PHJS_bin = $Args{'phjs'} || undef;
 
@@ -75,10 +83,12 @@ sub ParseFile {
   my %Args = @_;
 
   FB3::Convert::Error($X, "Can't find file for parse or not defined 'file' param ".$Args{'file'}) if !defined $Args{'file'} || !-f $Args{'file'};
+  $X->{'SrcFile'} = $Args{'file'};
 
   my $PHJS = $X->{'MECH'};
 
   $PHJS->get_local($Args{'file'}) or FB3::Convert::Error($X, "Can't open file for phantomjs : ".$Args{'file'});
+  $X->{'ContentBefore'} = $PHJS->content( format => 'html' );
 
 #если нет проблем со стилями - убрать блок
 #  my $CssDebug =  $PHJS->eval_in_page(<<'LoadCSS', 'Foobar/1.0');
@@ -431,8 +441,34 @@ JS
   foreach (@$Debug) {
     $Changed = 1 if ref $_ eq 'HASH' && $_->{'CHANGED'}; 
   }
+
+  my $CONTENT = $PHJS->content( format => 'html' );
+
+  #Дебаг измененных эвристикой файлов 
+  if ($X->{'DebugPath'} && $Changed) {
+    my $SrcFile = $X->{'SrcFile'}; 
+    my $FND = $SrcFile;
+    $FND =~ s/.*?([^\/]+)$/$1/g;
+    $FND = ($X->{'DebugPrefix'} ? "[".$X->{'DebugPrefix'}."]_" : "").$FND;
+
+    #исходник
+    File::Copy::copy($SrcFile, $X->{'DebugPath'}.'/'.$FND.'.src') or die "Can't copy file $SrcFile : $!";
+
+    #посли прочитки в DOM
+    open my $F,">:utf8",$X->{'DebugPath'}.'/'.$FND.".before";
+    print $F $X->{'ContentBefore'};
+    close $F;
+
+    #после изменения
+    open my $F,">:utf8",$X->{'DebugPath'}.'/'.$FND.".changed";
+    print $F $CONTENT;
+    close $F;
+
+  }
+  #//Дебаг измененных эвристикой файлов 
+
   return {
-    'CONTENT' => $PHJS->content( format => 'html' ),
+    'CONTENT' => $CONTENT,
     'DBG' => $Debug,
     'CHANGED' => $Changed,
   }

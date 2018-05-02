@@ -120,7 +120,9 @@ sub Reaper {
         'verbose' => $X->{verbose},
         'phjs' => $PhantomJS,
         'ContentDir' => $X->{'ContentDir'},
-        'DestinationDir' => $X->{'DestinationDir'}
+        'DestinationDir' => $X->{'DestinationDir'},
+        'DebugPath' => $X->{'euristic_debug'},
+        'DebugPrefix' => $X->{'SourceFileName'},
       );
       $X->{'EuristicaObj'} = $EuristicaObj;
     } else {
@@ -787,20 +789,7 @@ sub AssembleContent {
         my $Euristica = $X->{'EuristicaObj'}->ParseFile('file'=>$ContentFile);
         #print Data::Dumper::Dumper($Euristica);
         
-        #Дебаг измененных эвристикой файлов 
-        if ($Euristica->{'CHANGED'}
-          && 1==2 #закомментировать для включения
-        ) { #DEBUG
-          my $FND = $ContentFile;
-          $FND =~ s/.*?([^\/]+)$/$1/g;
-          $FND = $X->{'SourceFileName'}."-".$FND;
-          File::Copy::copy($ContentFile, '/tmp/1/'.$FND.'.src');
-          open my $F,">:utf8","/tmp/1/".$FND.".cng";
-          print $F $Euristica->{'CONTENT'};
-          close $F;
-        }
-        #//Дебаг измененных эвристикой файлов 
-
+        #пишем контент из эвристики на место
         ##if ($Euristica->{'CHANGED'}
         ##) {
           open my $FS,">:utf8",$ContentFile;
