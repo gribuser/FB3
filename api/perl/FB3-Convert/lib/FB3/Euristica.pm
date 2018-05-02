@@ -159,7 +159,7 @@ sub ParseFile {
   String.prototype.HaveIn = function(words) {
     var str = this;
     str = str.trim();
-    str = str.replace(new RegExp('/\s+/', 'g'),' ');
+    str = str.replace(/[\s\n\r]+/g,' ');
     var sp = str.split(' ');
     var H = {}; words.forEach(function(v){H[v]=1;});
     var find = 0;
@@ -445,7 +445,9 @@ JS
   my $CONTENT = $PHJS->content( format => 'html' );
 
   #Дебаг измененных эвристикой файлов 
-  if ($X->{'DebugPath'} && $Changed) {
+  if ($X->{'DebugPath'}
+   ##&& $Changed #всех или измененные
+  ) {
     my $SrcFile = $X->{'SrcFile'}; 
     my $FND = $SrcFile;
     $FND =~ s/.*?([^\/]+)$/$1/g;
@@ -454,7 +456,7 @@ JS
     #исходник
     File::Copy::copy($SrcFile, $X->{'DebugPath'}.'/'.$FND.'.src') or die "Can't copy file $SrcFile : $!";
 
-    #посли прочитки в DOM
+    #после прочитки в DOM
     open my $Fb,">:utf8",$X->{'DebugPath'}.'/'.$FND.".before";
     print $Fb $X->{'ContentBefore'};
     close $Fb;
