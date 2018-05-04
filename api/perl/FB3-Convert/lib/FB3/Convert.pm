@@ -522,10 +522,10 @@ sub Init {
   }
 
   Msg($X,"Create FB3 directory: ".$FB3Path."\n");
-  mkdir "$FB3Path" or die "$FB3Path : $!";
+  mkdir "$FB3Path" or $X->Error("$FB3Path : $!");
 
   for my $Dir ("/fb3", "/fb3/img", "/fb3/style", "/fb3/meta", "/fb3/_rels", "/_rels") {
-    mkdir "$FB3Path$Dir" or die "$FB3Path$Dir : $!";
+    mkdir "$FB3Path$Dir" or $X->Error("$FB3Path$Dir : $!");
   }
   Msg($X,"FB3: Directory structure is created successfully.\n");
 
@@ -591,7 +591,7 @@ sub FB3Create {
 
   Msg($X,"FB3: Create /_rels/.rels\n","w");
   my $FNrels="$FB3Path/_rels/.rels";
-  open FHrels, ">$FNrels" or die "$FNrels: $!";
+  open FHrels, ">$FNrels" or $X->Error("$FNrels: $!");
   print FHrels qq{<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">}.
   ( $CoverSrc ? qq{
@@ -603,7 +603,7 @@ sub FB3Create {
 
   Msg($X,"FB3: Create [Content_Types].xml\n","w");
   my $FNct="$FB3Path/[Content_Types].xml";
-  open FHct, ">$FNct" or die "$FNct: $!";
+  open FHct, ">$FNct" or $X->Error("$FNct: $!");
   print FHct qq{<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
    	<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />
@@ -622,7 +622,7 @@ sub FB3Create {
 
   Msg($X,"FB3: Create /fb3/_rels/description.xml.rels\n","w");
   my $FNdrels="$FB3Path/fb3/_rels/description.xml.rels";
-  open FHdrels, ">$FNdrels" or die "$FNdrels: $!";
+  open FHdrels, ">$FNdrels" or $X->Error("$FNdrels: $!");
   print FHdrels qq{<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
    	<Relationship Id="rId0"
@@ -681,7 +681,7 @@ sub FB3Create {
     $Table = $X->TransformTable2Valid(node=>$Table);
   }
 
-  open FHbody, ">$FNbody" or die "$FNbody: $!";
+  open FHbody, ">$FNbody" or $X->Error("$FNbody: $!");
   print FHbody $Body->toString(1);
   close FHbody;
 
@@ -695,7 +695,7 @@ sub FB3Create {
   #Пишем rels
   Msg($X,"FB3: Create /fb3/_rels/body.xml.rels\n","w");
   my $FNbodyrels="$FB3Path/fb3/_rels/body.xml.rels";
-  open FHbodyrels, ">$FNbodyrels" or die "$FNbodyrels: $!";
+  open FHbodyrels, ">$FNbodyrels" or $X->Error("$FNbodyrels: $!");
   print FHbodyrels qq{<?xml version="1.0" encoding="UTF-8"?>
 <Relationships xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.openxmlformats.org/package/2006/relationships" xmlns:xlink="http://www.w3.org/1999/xlink">
 };
@@ -709,7 +709,7 @@ sub FB3Create {
   #Пишем core
   Msg($X,"FB3: Create /fb3/meta/core.xml\n","w");
   my $FNcore="$FB3Path/fb3/meta/core.xml";
-  open FHcore, ">$FNcore" or die "$FNcore: $!";
+  open FHcore, ">$FNcore" or $X->Error("$FNcore: $!");
   print FHcore qq{<?xml version="1.0" encoding="UTF-8"?>
   <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/description" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/">
     <dc:title>}.$TitleInfo->{'BOOK-TITLE'}.qq{</dc:title>
@@ -746,7 +746,7 @@ sub FB3Create {
   #Пишем description
   Msg($X,"FB3: Create /fb3/description.xml\n","w");
   my $FNdesc="$FB3Path/fb3/description.xml";
-  open FHdesc, ">$FNdesc" or die "$FNdesc: $!";
+  open FHdesc, ">$FNdesc" or $X->Error("$FNdesc: $!");
   print FHdesc qq{<?xml version="1.0" encoding="UTF-8"?>
 <fb3-description xmlns="http://www.fictionbook.org/FictionBook3/description" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" id="}.$GlobalID.qq{" version="1.0">
   };
@@ -987,7 +987,7 @@ sub Content2Tree {
       load_ext_dtd => 0, # полный молчок про dtd
   );
 
-  my $NodeDoc = $XMLDoc->parse_string('<root_fb3_container>'.$Content.'</root_fb3_container>') || die "Can't parse! ".$!;
+  my $NodeDoc = $XMLDoc->parse_string('<root_fb3_container>'.$Content.'</root_fb3_container>') || $X->Error("Can't parse! ".$!);
 
   my $RootEl = $NodeDoc->getDocumentElement;
   my $Result = &ProcNode($X,$RootEl,$File,'root_fb3_container');
@@ -1309,7 +1309,7 @@ sub Error {
   my $X = shift;
   my $ErrStr = shift;
   Msg($X,$ErrStr."\n",'e');
-  ForceRmDir($X,$X->{'DestinationDir'});
+  $X->Cleanup(1);
   exit;
 }
 
@@ -1332,7 +1332,6 @@ sub Cleanup {
   if ($X->{'unzipped'} && $X->{'SourceDir'}) { #если наследили распаковкой в tmp
     ForceRmDir($X,$X->{'SourceDir'});
     $X->Msg("Clean tmp directory ".$X->{'SourceDir'}."\n");
-
   }
   
   #просят почистить результат
@@ -1562,13 +1561,13 @@ sub ShitFixFile {
   my $Fname = shift;
 
   my $Content;
-  open my $Fo,"<".$Fname or die ("Can't open file $Fname: $!");
+  open my $Fo,"<".$Fname or $X->Error("Can't open file $Fname: $!");
   map {$Content.=$_;} <$Fo>;
   close $Fo;
 
   $Content = $X->ShitFix($Content); 
 
-  open my $Fs,">".$Fname or die ("Can't open file $Fname: $!");
+  open my $Fs,">".$Fname or $X->Error("Can't open file $Fname: $!");
   print $Fs $Content;
   close $Fs;
 }
@@ -1734,7 +1733,7 @@ sub _bf {
   $X->Msg("\n".$Out,'w',1) if $X->{'bench'};
 
   if ($X->{'bench2file'}) {
-    open my $F,">>:utf8",$X->{'bench2file'} or die $!;
+    open my $F,">>:utf8",$X->{'bench2file'} or $X->Error($!);
     print $F $Out;
     close $F;
   }

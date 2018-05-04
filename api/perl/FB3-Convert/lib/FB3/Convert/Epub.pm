@@ -31,7 +31,7 @@ sub Reaper {
   my $X = shift;
 
   my %Args = @_;
-  my $Source = $Args{'source'} || die "Source path not defined";
+  my $Source = $Args{'source'} || $X->Error("Source path not defined");
   my $XC = XML::LibXML::XPathContext->new();
 
   $XC->registerNs('container', $NS{'container'});
@@ -89,7 +89,7 @@ sub Reaper {
   
 ##### где хранится содержимое книги
   my $ContainerFile = $Source."/META-INF/container.xml";
-  die $self." ".$ContainerFile." not found!" unless -f $ContainerFile;
+  $X->Error($self." ".$ContainerFile." not found!") unless -f $ContainerFile;
 
   $X->Msg("Parse container ".$ContainerFile."\n");
   my $CtDoc = XML::LibXML->load_xml(
@@ -97,14 +97,14 @@ sub Reaper {
     expand_entities => 0,
     no_network => 1,
     load_ext_dtd => 0
-  ) || die "Can't parse file ".$ContainerFile;
+  ) || $X->Error("Can't parse file ".$ContainerFile);
   
   my $RootFile = $XC->findnodes('/container:container/container:rootfiles/container:rootfile',$CtDoc)->[0]->getAttribute('full-path');
-  die "Can't find full-path attribute in Container [".$NS{'container'}." space]" unless $RootFile;
+  $X->Error("Can't find full-path attribute in Container [".$NS{'container'}." space]") unless $RootFile;
 
 #### root-файл с описанием контента
   $RootFile = $Source."/".$RootFile;
-  die "Can't find root (full-path attribute) file ".$RootFile unless -f $RootFile;
+  $X->Error("Can't find root (full-path attribute) file ".$RootFile) unless -f $RootFile;
 
   #Директория, относительно которой лежит контент. Нам с ней еще работать
   $X->{'ContentDir'} = $RootFile;
@@ -138,7 +138,7 @@ sub Reaper {
     expand_entities => 0,
     no_network => 1,
     load_ext_dtd => 0
-  ) || die "Can't parse file ".$RootFile;
+  ) || $X->Error("Can't parse file ".$RootFile);
   $RootDoc->setEncoding('utf-8');
 
   # список файлов с контентом

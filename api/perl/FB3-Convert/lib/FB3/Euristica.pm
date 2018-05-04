@@ -19,7 +19,7 @@ sub new {
   $X->{'DebugPrefix'}    = $Args{'DebugPrefix'} || undef;
 
   if ($X->{'DebugPath'}) {
-    mkdir $X->{'DebugPath'} or die $X->{'DebugPath'}." : $!" unless -d $X->{'DebugPath'};
+    mkdir $X->{'DebugPath'} or FB3::Convert::Error($X, $X->{'DebugPath'}." : $!") unless -d $X->{'DebugPath'};
     FB3::Convert::Msg($X, "Create euristica debug at $X->{'DebugPath'}\n");
   }
 
@@ -90,20 +90,6 @@ sub ParseFile {
   $PHJS->get_local($Args{'file'}) or FB3::Convert::Error($X, "Can't open file for phantomjs : ".$Args{'file'});
   $X->{'ContentBefore'} = $PHJS->content( format => 'html' );
 
-#если нет проблем со стилями - убрать блок
-#  my $CssDebug =  $PHJS->eval_in_page(<<'LoadCSS', 'Foobar/1.0');
-#(function(arguments){
-#  var LinkList = document.getElementsByTagName('link');
-#  var LinkList = Array.prototype.slice.call(LinkList);
-#  if (LinkList.length > 0) {
-#    LinkList.forEach(function(link) {
-#      link.href = link.href; //конвертация в file://path в тексте html
-#    });
-#  }
-#})(arguments);
-#LoadCSS
-  #return $CssDebug;
-
   my $Debug =  $PHJS->eval_in_page(<<'JS', "Foobar/1.0", $X->{'LocalLinks'});
 (function(arguments){
   // Node types
@@ -115,10 +101,21 @@ sub ParseFile {
   var RET = Array();
 
   //настройки
-  var TooMuchFontSize = 4; //На сколько px нужно быть увеличенным шрифтом от document.body, чтобы тебя посчитали "большим" 
-  var TooMuchMargin = 6; //На сколько px нужно иметь отступ, чтобы тебя посчитали "отбитым текстом" 
-  var TooMuchBR = 1; //Сумма <br>, считаемая отбивкой 
 
+  var IsShortLength   = 100; // меньше скольки символов текст считать коротким
+  var TooMuchFontSize = 4; // на сколько px нужно быть увеличенным текстом от document.body, чтобы тебя посчитали "большим" (см. BALLS_FOR_BIG_FONT)
+  var TooMuchMargin   = 6; // на сколько px нужно иметь отступ, чтобы тебя посчитали "отбитым текстом" 
+  var TooMuchBR       = 1; // сумма <br>, считаемая отбивкой
+
+  var BALLS_FOR_TITLE = 10; // сколько баллов набрать, чтобы определить как title
+
+  //кол-во баллов за события
+  var BALLS_LINK              = 3; // на кандидата ссылаются из любого файла в книге
+  var BALLS_FOR_SHORT         = 3; // текст в кандидате короткий
+  var BALLS_FOR_MAGICK_WORDS  = 7; // за магические слова
+  var BALLS_FOR_CENTER        = 3; // за центрирование текста
+  var BALLS_FOR_BIG_FONT      = 3; // за увеличенный текст (см. TooMuchFontSize)
+  var BALLS_FOR_MARGIN        = 3; // за отступы
 
   var BlockLevel = {
     'address':1,
@@ -214,7 +211,7 @@ sub ParseFile {
             if (currNode.id) {
               var ID = currNode.id;
               if (ID != null && LocalLinks[FILENAME] != null && ID in LocalLinks[FILENAME]) {
-                Calc['BALLS'] += 3; // на ноду ссылаются из любого файла в книге
+                Calc['BALLS'] += BALLS_LINK;
               }
             }
 
@@ -230,8 +227,8 @@ sub ParseFile {
             Calc['BALLS'] += Balls; //Сложим баллы по ноде
             Balls = 0; //следующему кандидату баллы за начало страницы уже не достанутся
 
-            if (Calc['BALLS'] >= 10) { // По всей видимости детектировали заголовок
-              currNode.setTagName("h6");
+            if (Calc['BALLS'] >= BALLS_FOR_TITLE) { // По всей видимости детектировали заголовок
+              currNode.setTagName("h6"); 
               Changed = 1;
             }
 
@@ -259,15 +256,15 @@ sub ParseFile {
 
     //подсчет баллов для установления вероятности заголовка
     var Cballs = 0;
-    if (Calc['TextLength'] > 0 && Calc['TextLength'] < 100) Cballs += 3;
-    if (Calc['MagicWords'] > 0) Cballs += 7;
-    if (Calc['HaveCenter'] > 0) Cballs += 3;
+    if (Calc['TextLength'] > 0 && Calc['TextLength'] < IsShortLength) Cballs += BALLS_FOR_SHORT;
+    if (Calc['MagicWords'] > 0) Cballs += BALLS_FOR_MAGICK_WORDS;
+    if (Calc['HaveCenter'] > 0) Cballs += BALLS_FOR_CENTER;
 
     //увеличенный шрифт?
     var BodyStyle = simpleStyles(document.body);
     if ('font-size' in BodyStyle) { //вообще так не бывает
       var MainFsize = BodyStyle['font-size'].digCut();
-      if (Calc['TextSize'].digMax() - MainFsize >= TooMuchFontSize) Cballs += 3;
+      if (Calc['TextSize'].digMax() - MainFsize >= TooMuchFontSize) Cballs += BALLS_FOR_BIG_FONT;
     }
 
     //отбивка?
@@ -295,7 +292,7 @@ sub ParseFile {
       }
     );
 
-    if (BRSumm >= TooMuchBR || MarginSumm >= TooMuchMargin) Cballs += 3; //нашли достаточную отбивку
+    if (BRSumm >= TooMuchBR || MarginSumm >= TooMuchMargin) Cballs += BALLS_FOR_MARGIN; //нашли достаточную отбивку
 
     return {
       'CALC': Calc,
@@ -454,7 +451,7 @@ JS
     $FND = ($X->{'DebugPrefix'} ? "[".$X->{'DebugPrefix'}."]_" : "").$FND;
 
     #исходник
-    File::Copy::copy($SrcFile, $X->{'DebugPath'}.'/'.$FND.'.src') or die "Can't copy file $SrcFile : $!";
+    File::Copy::copy($SrcFile, $X->{'DebugPath'}.'/'.$FND.'.src') or FB3::Convert::Error($X, "Can't copy file $SrcFile : $!");
 
     #после прочитки в DOM
     open my $Fb,">:utf8",$X->{'DebugPath'}.'/'.$FND.".before";
