@@ -208,15 +208,15 @@ sub ParseFile {
             FirstTextLength += Cand['TextLength']; //какой-то малозначимый текст в блоке, будем считать, что это мусор в начале
           } else if (Cand['TextLength'] > 3) {
 
+            //наткнулись на ноду с текстом, хватит перебирать "голый текст" в начале
+            FindCandidateNode++; //
+
             if (currNode.id) {
               var ID = currNode.id;
               if (ID != null && LocalLinks[FILENAME] != null && ID in LocalLinks[FILENAME]) {
                 Calc['BALLS'] += BALLS_LINK;
               }
             }
-
-            //наткнулись на ноду с текстом, хватит перебирать "голый текст" в начале
-            FindCandidateNode++; // (!!!) подумать, тут ему место или внизу ветки, смотря что мы считаем за кандидата
 
             if (
               !(NodeName in BlockLevel) || // (!!!) подумать - нужно оно, или мы все элемент-ноды считаем
