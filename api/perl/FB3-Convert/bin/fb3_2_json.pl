@@ -341,15 +341,17 @@ sub DumpTree {
 	if (($NodeHash->{b_id} && $Length > $PartLimit) || ($NodeHash->{name} eq 'fb3-body' && $Length > 0)) {
 		my $ResultStr = join ",\n",@ResultArr;
 		$ResultStr =~ s/,\n$//g;
-		$ResultStr = '['.$ResultStr.']';
-		my $FileName = sprintf("%03i.js",$FileN);
-		ProceedJsonBodyPart($ResultStr, $FileName);
-		$FileN++;
-		@ResultArr = ();
-		$Length = 0;
-		push @Parts, '{s:'.$FirstBlockN.',e:'.$LastBlockN.',xps:['.$FirstXP.'],xpe:['.$LastXP.'],url:"'.$FileName.'"}';
-		$FirstBlockN = undef;
-		$FirstXP = undef;
+		if (trim($ResultStr)) {
+			$ResultStr = '['.$ResultStr.']';
+			my $FileName = sprintf("%03i.js",$FileN);
+			ProceedJsonBodyPart($ResultStr, $FileName);
+			$FileN++;
+			@ResultArr = ();
+			$Length = 0;
+			push @Parts, '{s:'.$FirstBlockN.',e:'.$LastBlockN.',xps:['.$FirstXP.'],xpe:['.$LastXP.'],url:"'.$FileName.'"}';
+			$FirstBlockN = undef;
+			$FirstXP = undef;
+		}
 	}
 
 	return $JsonStr;
@@ -628,6 +630,13 @@ sub GetImgSize {
 	my $Width = $ImgInfo->{width};
 
 	return ($Height, $Width);
+}
+
+sub trim {
+  my $str = shift;
+  $str =~ s/^\s+//s;
+  $str =~ s/\s+$//s;
+  return $str;
 }
 
 # ------------------------ Hyphenation functions ------------------------------
