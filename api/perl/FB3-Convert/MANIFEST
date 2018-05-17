@@ -6,7 +6,10 @@ bin/importfb3_from_fb2.pl
 Build.PL
 lib/FB3/Convert.pm
 lib/FB3/Convert/Epub.pm
+lib/FB3/Euristica.pm
 MANIFEST			This list of files
+META.json
+META.yml
 README
 share/body.xsl
 share/body_rels.xsl
@@ -21,14 +24,30 @@ t/examples/div_and_p_111501.epub
 t/examples/div_and_p_111501.xml
 t/examples/empty_a_near_h_109373.epub
 t/examples/empty_a_near_h_109373.xml
+t/examples/empty_a_near_h_2_id_114117.epub
+t/examples/empty_a_near_h_2_id_114117.xml
 t/examples/empty_p_near_h_109373.epub
 t/examples/empty_p_near_h_109373.xml
+t/examples/empty_td_th_114309.epub
+t/examples/empty_td_th_114309.xml
+t/examples/entities_114117.epub
+t/examples/entities_114117.xml
+t/examples/euristica_fail_109381.epub
+t/examples/euristica_fail_109381.xml
+t/examples/euristica_ok_109381.epub
+t/examples/euristica_ok_109381.xml
+t/examples/img_crazy_114117.epub
+t/examples/img_crazy_114117.xml
 t/examples/move_empty_a_109373.epub
 t/examples/move_empty_a_109373.xml
 t/examples/rm_unlink_id_a_span_109373.epub
 t/examples/rm_unlink_id_a_span_109373.xml
 t/examples/simple_108909.epub
 t/examples/simple_108909.xml
+t/examples/table_114309.epub
+t/examples/table_114309.xml
+t/examples/table_attr_and_inside_114309.epub
+t/examples/table_attr_and_inside_114309.xml
 t/examples/title_in_section_108909.epub
 t/examples/title_in_section_108909.xml
 t/examples/trim_split_empty_p_108909.epub
@@ -40,5 +59,3 @@ t/examples/validate_links_111103.xml
 t/examples/xss_108909.epub
 t/examples/xss_108909.xml
 t/test1.t
-META.yml
-META.json

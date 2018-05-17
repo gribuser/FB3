@@ -41,7 +41,13 @@ foreach my $EpubFile (sort{Num($a)<=>Num($b)} @Epubs ) {
   #my $Eur = 1;
 
   #пока автотесты только для текущей задачи, потом включить для всех
-  $Eur = 1 if $EpubFile =~ /_109381\.epub/;
+	if ($EpubFile =~ /_109381\.epub/) {
+		if ($PHS) {
+			$Eur = 1;
+		} else {
+			next;
+		}
+	}
  
   $Eur = 0 if (
     !$PHS ||
@@ -82,6 +88,7 @@ sub PhantomIsSupport {
     diag('phantomjs founded ['.$Supp.']. Euristic enabled');
   } else {
     diag('phantomjs not found. Euristic skipped. see <http://phantomjs.org/>');
+		return;
   }
 
   return 1;
