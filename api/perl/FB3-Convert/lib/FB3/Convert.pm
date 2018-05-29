@@ -1587,7 +1587,7 @@ sub SomeFix {
   my $X = shift;
   my $Str = shift;
 
-  $Str =~ s/<\s*br\s*>/<br\/>/g; # <br> => <br/>
+  $Str =~ s/<\s*[bB][rR]\s*>/<br\/>/g; # <br> => <br/>
 
   return $Str;
 }
