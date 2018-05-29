@@ -1601,7 +1601,7 @@ sub ShitFix {
 
   #DOM такое не любит
   $Str =~ s/<([aA])([^>]*?)\/\s*>/<$1$2><\/$1>/g; # <a/> => <a></a>
-  #$Str =~ s/<\s*([iI][mM][gG])(.*?)\/\s*>/<$1$2>/g; # <a/> => <a></a>
+  $Str =~ s/<([dD][iI][vV])([^>]*?)\/\s*>/<$1$2><\/$1>/g; # <div/> => <div></div>
 
   $Str = $X->SomeFix($Str);
   $Str = $X->MetaFix($Str);

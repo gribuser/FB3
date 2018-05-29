@@ -248,7 +248,7 @@ sub ParseFile {
               "CHANGED": Changed
             }
           ); 
-         // if (FindCandidateNode>=2) throw BreakException; //хватит перебирать
+          if (FindCandidateNode>=2) throw BreakException; //хватит перебирать
         }
       }
     );
