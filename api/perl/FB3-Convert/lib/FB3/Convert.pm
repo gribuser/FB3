@@ -1309,7 +1309,7 @@ sub Error {
   my $X = shift;
   my $ErrStr = shift;
   Msg($X,$ErrStr."\n",'e');
-  $X->Cleanup(1);
+  Cleanup($X,1);
   exit;
 }
 
@@ -1331,7 +1331,7 @@ sub Cleanup {
   
   if ($X->{'unzipped'} && $X->{'SourceDir'}) { #если наследили распаковкой в tmp
     ForceRmDir($X,$X->{'SourceDir'});
-    $X->Msg("Clean tmp directory ".$X->{'SourceDir'}."\n");
+    Msg($X,"Clean tmp directory ".$X->{'SourceDir'}."\n");
   }
   
   #просят почистить результат
@@ -1589,7 +1589,8 @@ sub ShitFix {
   $Str =~ s#<([iI][mM][gG]) ([^>]+?/?)>\s*</\1>#<img $2>#g; # <img> </img> => <img/>t
 
   #DOM такое не любит
-  $Str =~ s/<\s*([aA])(.*?)\/\s*>/<$1$2><\/$1>/g; # <a/> => <a></a>
+  $Str =~ s/<([aA])([^>]*?)\/\s*>/<$1$2><\/$1>/g; # <a/> => <a></a>
+
   #$Str =~ s/<\s*([iI][mM][gG])(.*?)\/\s*>/<$1$2>/g; # <a/> => <a></a>
 
   $Str = $X->MetaFix($Str);

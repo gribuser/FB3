@@ -14,9 +14,11 @@ sub new {
 
   $X->{'verbose'}        = $Args{'verbose'};
   $X->{'ContentDir'}     = $Args{'ContentDir'};
+  $X->{'SourceDir'}      = $Args{'SourceDir'};
   $X->{'DestinationDir'} = $Args{'DestinationDir'};
   $X->{'DebugPath'}      = $Args{'DebugPath'} || undef;
   $X->{'DebugPrefix'}    = $Args{'DebugPrefix'} || undef;
+  $X->{'unzipped'}       = $Args{'unzipped'} || undef;
 
   if ($X->{'DebugPath'}) {
     mkdir $X->{'DebugPath'} or FB3::Convert::Error($X, $X->{'DebugPath'}." : $!") unless -d $X->{'DebugPath'};
@@ -89,6 +91,12 @@ sub ParseFile {
 
   $PHJS->get_local($Args{'file'}) or FB3::Convert::Error($X, "Can't open file for phantomjs : ".$Args{'file'});
   $X->{'ContentBefore'} = $PHJS->content( format => 'html' );
+
+  if ($X->{'ContentBefore'} =~ /<parsererror/ && $X->{'ContentBefore'} =~ /following errors:/) {
+    my $Err = $X->{'ContentBefore'};
+    $Err =~ s/.*(<parsererror.*<\/parsererror>).*/$1/g;
+    FB3::Convert::Error($X, "Can't parse string. skip. : ".$Err );
+  }
 
   my $Debug =  $PHJS->eval_in_page(<<'JS', "Foobar/1.0", $X->{'LocalLinks'});
 (function(arguments){
@@ -240,7 +248,7 @@ sub ParseFile {
               "CHANGED": Changed
             }
           ); 
-          if (FindCandidateNode>=2) throw BreakException; //хватит перебирать
+         // if (FindCandidateNode>=2) throw BreakException; //хватит перебирать
         }
       }
     );

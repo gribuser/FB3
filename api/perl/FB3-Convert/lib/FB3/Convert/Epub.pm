@@ -120,9 +120,11 @@ sub Reaper {
         'verbose' => $X->{verbose},
         'phjs' => $PhantomJS,
         'ContentDir' => $X->{'ContentDir'},
+        'SourceDir' => $X->{'SourceDir'},
         'DestinationDir' => $X->{'DestinationDir'},
         'DebugPath' => $X->{'euristic_debug'},
         'DebugPrefix' => $X->{'SourceFileName'},
+        'unzipped' => $X->{'unzipped'},
       );
       $X->{'EuristicaObj'} = $EuristicaObj;
     } else {
