@@ -1582,6 +1582,17 @@ sub MetaFix {
   return $Str;
 }
 
+#phantomjs любит превращать кое-что в нечитаемое для Libxml
+sub SomeFix {
+  my $X = shift;
+  my $Str = shift;
+
+  $Str =~ s/<\s*br\s*>/<br\/>/g; # <br> => <br/>
+
+  return $Str;
+}
+
+
 sub ShitFix {
   my $X = shift;
   my $Str = shift;
@@ -1590,9 +1601,9 @@ sub ShitFix {
 
   #DOM такое не любит
   $Str =~ s/<([aA])([^>]*?)\/\s*>/<$1$2><\/$1>/g; # <a/> => <a></a>
-
   #$Str =~ s/<\s*([iI][mM][gG])(.*?)\/\s*>/<$1$2>/g; # <a/> => <a></a>
 
+  $Str = $X->SomeFix($Str);
   $Str = $X->MetaFix($Str);
 
   return $Str;

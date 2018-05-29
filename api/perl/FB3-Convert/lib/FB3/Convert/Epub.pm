@@ -809,19 +809,23 @@ sub AssembleContent {
       open my $FO,"<".$ContentFile;
       map {$Content.=$_} <$FO>;
       close $FO;
- 
+
       $X->_bs('Entities', 'Преобразование Entities');
       $Content = $X->qent(Encode::decode_utf8($Content));
       $X->_be('Entities');
 
-      $Content = $X->MetaFix($Content) if $X->{'EuristicaObj'}; #phantomjs нам снова наследил 
+      #phantomjs нам снова наследил
+      if ($X->{'EuristicaObj'}) {
+        $Content = $X->MetaFix($Content); 
+        $Content = $X->SomeFix($Content); 
+      }
 
       $X->Msg("Parse XML\n");
       my $ContentDoc = XML::LibXML->load_xml(
         string => $Content,
         expand_entities => 0, # не считать & за entity
         no_network => 1, # не будем тянуть внешние вложения
-        recover => 2, # не падать при кривой структуре. например, не закрыт тег. entity и пр | => 1 - вопить, 2 - совсем молчать
+        recover => 2, # => 0 - падать при кривой структуре. например, не закрыт тег. entity и пр | => 1 - вопить, 2 - совсем молчать
         load_ext_dtd => 0 # полный молчок про dtd
       );
       $ContentDoc->setEncoding('utf-8');
