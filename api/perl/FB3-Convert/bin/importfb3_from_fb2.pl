@@ -135,6 +135,18 @@ if( $PublishInfoNode ) {
 	}
 }
 
+# корректируем заголовок сноски: берём только текст между фигурными/квадратными скобками, идущими в произвольном порядке
+my $AutoNoteNumber = 0;
+for my $note ( $XPC->findnodes('//fb:a[@type="note"]//text()', $FB2Doc) ) {
+	if ( $note->data =~ /[\[({]*([^\[\](){}]+)[])}]*/ ) {
+		$note->setData($1);
+	}
+	elsif ( not $note->data =~ s/[\[\](){}\s]+//r ) {
+		# если в заголовке сноски нет ничего, кроме скобок, формируем самостоятельно
+		$note->setData('#auto' . ++$AutoNoteNumber);
+	}
+}
+
 # Особо сложные эпиграфы порубим на куски тут. TODO полностью перенести работу с эпиграфами сюда.
 for my $Cite ( $XPC->findnodes('//fb:epigraph/fb:cite[1]', $FB2Doc )) {
 	my @SetInEpigraph;
