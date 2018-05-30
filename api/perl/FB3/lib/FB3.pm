@@ -6,7 +6,7 @@ use utf8;
 use OPC;
 use Carp;
 
-our $VERSION = '0.04';
+our $VERSION = '0.06';
 
 =head1 NAME
 

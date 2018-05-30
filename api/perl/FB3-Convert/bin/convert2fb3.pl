@@ -16,7 +16,13 @@ GetOptions(
   'metadata|md=s' => \$OPT{'md'},
   'validate|vl=s' => \$OPT{'vl'},
   'name|n:1' => \$OPT{'showname'},
-  
+  'b:1' => \$OPT{'b'},
+  'bf:s' => \$OPT{'bf'},
+  'phantomjs|phjs=s' => \$OPT{'phjs'},
+  'euristic|e' => \$OPT{'eur'},
+  'euristic_debug|ed=s' => \$OPT{'eur_deb'},
+
+
   'meta_id=s' => \$OPT{'meta_id'},
   'meta_lang|meta_language=s' => \$OPT{'meta_lang'},
   'meta_title=s' => \$OPT{'meta_title'},
@@ -38,11 +44,10 @@ if ($OPT{'vl'}) {
 $OPT{'source'} = $ARGV[0] unless $OPT{'source'};
 $OPT{'df'} = $ARGV[1] unless $OPT{'df'};
 
-if (!$OPT{'dd'} && !$OPT{'df'}) {
-  my $FName = $OPT{'source'};
-  $FName =~ s/\.\w+$//;
-  $OPT{'df'} = $FName.'.fb3';
-}
+my $FName = $OPT{'source'};
+$FName =~ s/\.\w+$//;
+$OPT{'df'} = $FName.'.fb3' if !$OPT{'dd'} && !$OPT{'df'};
+$OPT{'bf'} = $FName.'.bench' if defined $OPT{'bf'} && !$OPT{'bf'};
 
 unless ($OPT{'source'}) {
   print "\nsource file not defined\n";
@@ -56,6 +61,11 @@ my $Obj = new FB3::Convert(
   'verbose' => $OPT{'verbose'},
   'metadata' => $OPT{'md'},
   'showname' => $OPT{'showname'},
+  'bench' => $OPT{'b'},
+  'bench2file' => $OPT{'bf'},
+  'phantom_js_path' => $OPT{'phjs'},
+  'euristic' => $OPT{'eur'},
+  'euristic_debug' => $OPT{'eur_deb'},
 
   'meta' => {
     'id' => $OPT{'meta_id'},
@@ -68,19 +78,38 @@ my $Obj = new FB3::Convert(
   },
 );
 
-$Obj->Reap();
-my $FB3Path =  $Obj->FB3Create();
-$Obj->Msg("FB3: ".$FB3Path." created\n","w");
-my $ValidErr = $Obj->Validate('xsd'=>$XsdPath);
-print $ValidErr;
-$Obj->FB3_2_Zip() if $OPT{'df'} && !$ValidErr;
-$Obj->Cleanup($ValidErr?1:0);
+$Obj->_bs('ALL','Полная конвертация');
 
+$Obj->Reap();
+
+$Obj->_bs('fb3_create','Создание FB3 из данных, доводка до валидности');
+my $FB3Path =  $Obj->FB3Create();
+$Obj->_be('fb3_create');
+$Obj->Msg("FB3: ".$FB3Path." created\n","w");
+
+$Obj->_bs('validate_fb3','Валидация полученного FB3');
+my $ValidErr = $Obj->Validate('xsd'=>$XsdPath);
+$Obj->_be('validate_fb3');
+print $ValidErr;
+
+if ($OPT{'df'} && !$ValidErr) {
+  $Obj->_bs('pack','Упаковка FB3 -> zip');
+  $Obj->FB3_2_Zip();
+  $Obj->_be('pack');
+}
+
+$Obj->_bs('cleanup','Сборка мусора');
+$Obj->Cleanup($ValidErr?1:0);
+$Obj->_be('cleanup');
+
+$Obj->_be('ALL');
+
+$Obj->_bf();
 
 sub help {
   print <<_END
   
-  USAGE: convert2fb3.pl --source|s= <input.file> [--verbose|v] [--help|h] [(--destination_dir|dd <dest.fb3>) | (--destination_file|df)]  [(--name|n)] [--validate|vl=]
+  USAGE: convert2fb3.pl --source|s= <input.file> [--verbose|v] [--help|h] [(--destination_dir|dd <dest.fb3>) | (--destination_file|df)]  [(--name|n)] [--validate|vl=] [--euristic|e] [--euristic_debug|ed] [--phantomjs|phjs]
   
   --help : print this text
   --verbose : print processing status. Show parsing warnings if Verbose > 1
@@ -90,7 +119,10 @@ sub help {
   --metadata : XML meta description file
   --name : show name of reaped epub file
   --validate : don't convert, only validate fb3 file from path
-  
+  --euristic : try euristic analize for detect strange titles
+  --euristic_debug : path to dir for euristica debug
+  --phantomjs|phjs : path to binary 'phantomjs'. Must be installed for euristica analize titles <http://phantomjs.org/> (with --e opt)
+
   META:
   --meta_id
   --meta_lang

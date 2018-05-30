@@ -5,6 +5,7 @@ use base 'FB3::Convert';
 use XML::LibXML;
 use File::Basename;
 use Clone qw(clone);
+use FB3::Euristica;
 use utf8;
 
 my %NS = (
@@ -14,12 +15,23 @@ my %NS = (
   'dc' => 'http://purl.org/dc/elements/1.1/',
 );
 
+sub FindFile {
+  my $FileName = shift;
+  my $Dirs = shift;
+
+  foreach (@$Dirs) {
+    my $Path = $_.'/'.$FileName;
+    return $Path if -f $Path;
+  }
+  return undef;
+}
+
 sub Reaper {
   my $self = shift;
   my $X = shift;
 
   my %Args = @_;
-  my $Source = $Args{'source'} || die "Source path not defined";
+  my $Source = $Args{'source'} || $X->Error("Source path not defined");
   my $XC = XML::LibXML::XPathContext->new();
 
   $XC->registerNs('container', $NS{'container'});
@@ -41,6 +53,11 @@ sub Reaper {
     'allow_attributes' => ['id'],
     processor => \&TransformTo,
     processor_params => ['strong']
+  };
+  $AllowElements->{'i'} = {
+    'allow_attributes' => ['id'],
+    processor => \&TransformTo,
+    processor_params => ['em']
   };
   $AllowElements->{'u'} = {
     'allow_attributes' => [],
@@ -72,7 +89,7 @@ sub Reaper {
   
 ##### где хранится содержимое книги
   my $ContainerFile = $Source."/META-INF/container.xml";
-  die $self." ".$ContainerFile." not found!" unless -f $ContainerFile;
+  $X->Error($self." ".$ContainerFile." not found!") unless -f $ContainerFile;
 
   $X->Msg("Parse container ".$ContainerFile."\n");
   my $CtDoc = XML::LibXML->load_xml(
@@ -80,18 +97,41 @@ sub Reaper {
     expand_entities => 0,
     no_network => 1,
     load_ext_dtd => 0
-  ) || die "Can't parse file ".$ContainerFile;
+  ) || $X->Error("Can't parse file ".$ContainerFile);
   
   my $RootFile = $XC->findnodes('/container:container/container:rootfiles/container:rootfile',$CtDoc)->[0]->getAttribute('full-path');
-  die "Can't find full-path attribute in Container [".$NS{'container'}." space]" unless $RootFile;
+  $X->Error("Can't find full-path attribute in Container [".$NS{'container'}." space]") unless $RootFile;
 
 #### root-файл с описанием контента
   $RootFile = $Source."/".$RootFile;
-  die "Can't find root (full-path attribute) file ".$RootFile unless -f $RootFile;
+  $X->Error("Can't find root (full-path attribute) file ".$RootFile) unless -f $RootFile;
 
   #Директория, относительно которой лежит контент. Нам с ней еще работать
   $X->{'ContentDir'} = $RootFile;
   $X->{'ContentDir'} =~ s/\/?[^\/]+$//;
+
+  if ($X->{'euristic'}) {
+    $X->Msg("Euristica enabled\n",'w');
+
+    my $PhantomJS = $X->{'phantom_js_path'} || FindFile('phantomjs', [split /:/,$ENV{'PATH'}]);
+
+    if (-e $PhantomJS) {
+      my $EuristicaObj = new FB3::Euristica(
+        'verbose' => $X->{verbose},
+        'phjs' => $PhantomJS,
+        'ContentDir' => $X->{'ContentDir'},
+        'SourceDir' => $X->{'SourceDir'},
+        'DestinationDir' => $X->{'DestinationDir'},
+        'DebugPath' => $X->{'euristic_debug'},
+        'DebugPrefix' => $X->{'SourceFileName'},
+        'unzipped' => $X->{'unzipped'},
+      );
+      $X->{'EuristicaObj'} = $EuristicaObj;
+    } else {
+      $X->Msg("[SKIP EURISTIC] PhantomJS binary not found. Try --phantomjs=PATH-TO-FILE, --euristic_skip options.\nPhantomJS mus be installed for euristic analize of titles <http://phantomjs.org/>\n",'e');
+    }
+ 
+  }
 
   $X->Msg("Parse rootfile ".$RootFile."\n");
   
@@ -100,7 +140,7 @@ sub Reaper {
     expand_entities => 0,
     no_network => 1,
     load_ext_dtd => 0
-  ) || die "Can't parse file ".$RootFile;
+  ) || $X->Error("Can't parse file ".$RootFile);
   $RootDoc->setEncoding('utf-8');
 
   # список файлов с контентом
@@ -189,14 +229,16 @@ sub Reaper {
     $Description->{'TITLE-INFO'}->{'AUTHORS'} = \@Authors;
   }
 
-  #print Data::Dumper::Dumper($AC);
+  ##print Data::Dumper::Dumper($AC);
 
   #КОНТЕНТ
 
   my @Pages;
   foreach (@$AC) {
     $X->Msg("Processing in structure: ".$_->{'file'}."\n",'i');
+    $X->_bs('c2tree','Контент в дерево согласно схеме');
     push @Pages, $X->Content2Tree($_);
+    $X->_be('c2tree');
   }
 
   # [#01]
@@ -313,7 +355,17 @@ sub Reaper {
         }
 
         if (@LinksMove2Title && ref $Item eq 'HASH' && exists $Item->{'title'}) {
-          push @{$Item->{'title'}->{'value'}}, @LinksMove2Title; #переносим <a> в ближайший
+            foreach my $Link (@LinksMove2Title) {
+              #занято
+              if (exists $Item->{'title'}->{'attributes'}->{'id'} && $Item->{'title'}->{'attributes'}->{'id'}) {
+                #тогда будем менять линк на текущий
+                $X->{'EmptyLinksList'}->{$Link->{'a'}->{'attributes'}->{'id'}} = $Item->{'title'}->{'attributes'}->{'id'};
+              } else {
+                #пусто, займем это место! 
+                $Item->{'title'}->{'attributes'}->{'id'} = $Link->{'a'}->{'attributes'}->{'id'};
+              }
+
+            }
         }
         CleanTitle($X,$Item->{'title'}->{'value'});
     }
@@ -384,11 +436,12 @@ sub Reaper {
         && exists $Sec->{'section'}->{'value'}->[0]->{'title'}
       ) {
 
+        my $ValNode = $Sec->{'section'}->{'value'}->[0]->{'title'}->{'value'}->[0];
         $Sec->{'section'}->{'value'} = 
           [
            {
             'subtitle' => {
-             'value' => $Sec->{'section'}->{'value'}->[0]->{'title'}->{'value'}->[0]->{'p'}->{'value'}
+             'value' => (ref $ValNode eq 'HASH' ? $ValNode->{'p'}->{'value'} : $ValNode),
             }
            }
           ];
@@ -398,13 +451,23 @@ sub Reaper {
     }
 
     my $Content;
-    if (scalar @P > 1) {
-      $Content = \@P;
-    } else {
-      $Content = $P[0]->{'section'}->{'value'};  #если section один, то берем только его внутренности, контейнер section лишний 
+    my @PN; #финальная подчистка
+    foreach my $Item (@P) {
+      next unless defined $Item;
+      my $NotEmpty = 0;
+      foreach my $String (@{$Item->{'section'}->{'value'}}) {
+        $NotEmpty = 1 if defined $String && (ref $String eq 'HASH' || (ref $String eq '' && $X->trim($String) ne ''));
+      }
+      push @PN, $Item if $NotEmpty;
     }
 
-    if (@$Content) {
+    if (scalar @PN > 1) {
+      $Content = \@PN;
+    } elsif (scalar @PN) {
+      $Content = $PN[0]->{'section'}->{'value'};  #если section один, то берем только его внутренности, контейнер section лишний 
+    }
+
+    if ($Content && @$Content) {
       push @PagesComplete, {ID=>$Page->{'ID'},'content'=>$Content};
     } else {
       $X->Msg("Find empty page. Skip [id: $Page->{'ID'}]\n");      
@@ -556,6 +619,8 @@ sub AnaliseIdEmptyHref {
   my $Data = shift;
   my $Hash4Move = shift;
 
+  return if (ref $Data ne 'HASH' || !exists $Data->{'value'});
+
   my $First = 0;
   unless ($Hash4Move) {
    $Hash4Move = {
@@ -565,6 +630,8 @@ sub AnaliseIdEmptyHref {
    };
    $First = 1;
   }
+
+  $Data->{'value'} = [$Data->{'value'}] unless ref $Data->{'value'} eq 'ARRAY';
 
   foreach my $Item (@{$Data->{'value'}}) {
 
@@ -576,7 +643,7 @@ sub AnaliseIdEmptyHref {
         if ($El eq 'section') {
           AnaliseIdEmptyHref($X,$Item->{$El}); #вложенную секцию обрабатывает как отдельную
         } else {
-          if (exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
+          if (ref $Item->{$El} eq 'HASH' && exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
             if ($El eq 'a' && exists $Item->{$El}->{'attributes'}->{'xlink:href'} && $Item->{$El}->{'attributes'}->{'xlink:href'} eq '') {
               #ссылка - кандидат на перенос
               $Hash4Move->{'candidates'}->{$Item->{$El}->{'attributes'}->{'id'}} = $Hash4Move->{'count_abs'};
@@ -625,6 +692,7 @@ sub MoveIdEmptyHref {
     next unless ref $Item eq 'HASH';
     foreach my $ElName (keys %$Item) {
       my $El = $Item->{$ElName};
+      next unless ref $El eq 'HASH';
       #меняем ссылку
       if (
         $X->{'EmptyLinksList'}->{ $X->CutLinkDiez($El->{'attributes'}->{'xlink:href'}) } ne 'rename'
@@ -671,7 +739,6 @@ sub AssembleContent {
   foreach my $Item (@$Manifest) {
     $Ind++;
     $ReverseManifest{$Item->{'id'}} = $Item;
-
     # !! Стили пока не трогаем !!
     #if ($Item->{'type'} =~ /^text\/css$/) { # В манифесте css 
     #  push @{$X->{'STRUCTURE'}->{'CSS_LIST'}}, {
@@ -680,11 +747,27 @@ sub AssembleContent {
     #    'id' => $Item->{'id'},
     #  };
     #}
+  }
 
+  my @Files4Eur;
+  if ($X->{'EuristicaObj'}) { #придется собрать файлы для эвристики отдельно. нужно будет объединить с обработкой
+    for my $ItemID (@$Spine) {
+      my $Item = $ReverseManifest{$ItemID};
+      if ($Item->{'type'} =~ /^application\/xhtml/) {
+        my $ContentFile = $X->{'ContentDir'}.'/'.$Item->{'href'};
+        $ContentFile =~ s/%20/ /g;
+        push @Files4Eur, $ContentFile;
+      }
+    }
+    $X->Msg("Calculate all links for euristica\n");
+    $X->_bs('EuristicLinks','Калькуляция всех локальных ссылок для эвристики');
+    $X->{'EuristicaObj'}->CalculateLinks('files'=>\@Files4Eur);
+    $X->_be('EuristicLinks');
   }
 
   #бежим по списку, составляем скелет контекстной части
   for my $ItemID (@$Spine) {
+    my $Item = $ReverseManifest{$ItemID};
 
     if (!exists $ReverseManifest{$ItemID}) {
       $X->Msg("id ".$ItemID." not exists in Manifest list\n",'i');
@@ -695,24 +778,58 @@ sub AssembleContent {
     if ($Item->{'type'} =~ /^application\/xhtml/) { # Видимо, текст
 
       my $ContentFile = $X->{'ContentDir'}.'/'.$Item->{'href'};
+      $ContentFile =~ s/%20/ /g;
+
+      $X->Msg("Fix strange text\n");
+      $X->_bs('Strange', 'Зачистка странностей');
+      $X->ShitFixFile($ContentFile);
+      $X->_be('Strange');
+
+      if ($X->{'EuristicaObj'}) {
+        $X->Msg("Euristic analize ".$ContentFile."\n");
+        $X->_bs('euristic','Эвристический анализ заголовка');
+        my $Euristica = $X->{'EuristicaObj'}->ParseFile('file'=>$ContentFile);
+        #print Data::Dumper::Dumper($Euristica);
+        
+        #пишем контент из эвристики на место
+        ##if ($Euristica->{'CHANGED'}
+        ##) {
+          open my $FS,">:utf8",$ContentFile;
+          print $FS $Euristica->{'CONTENT'};
+          close $FS;
+        ##} 
+        $X->_be('euristic');
+
+      }
 
       $X->Msg("Parse content file ".$ContentFile."\n");
 
+      $X->_bs('parse_epub_xhtml', 'xml-парсинг файлов epub [Открытие, первичные преобразования, парсинг]');
       my $Content;
-      open F,"<".$ContentFile;
-      map {$Content.=$_} <F>;
-      close F;
-      $Content = HTML::Entities::decode_entities(Encode::decode_utf8($Content));
-      $Content =~ s/\&/&#38;/g;
+      open my $FO,"<".$ContentFile;
+      map {$Content.=$_} <$FO>;
+      close $FO;
 
+      $X->_bs('Entities', 'Преобразование Entities');
+      $Content = $X->qent(Encode::decode_utf8($Content));
+      $X->_be('Entities');
+
+      #phantomjs нам снова наследил
+      if ($X->{'EuristicaObj'}) {
+        $Content = $X->MetaFix($Content); 
+        $Content = $X->SomeFix($Content); 
+      }
+
+      $X->Msg("Parse XML\n");
       my $ContentDoc = XML::LibXML->load_xml(
         string => $Content,
         expand_entities => 0, # не считать & за entity
         no_network => 1, # не будем тянуть внешние вложения
-        recover => 2, # не падать при кривой структуре. например, не закрыт тег. entity и пр | => 1 - вопить, 2 - совсем молчать
+        recover => 2, # => 0 - падать при кривой структуре. например, не закрыт тег. entity и пр | => 1 - вопить, 2 - совсем молчать
         load_ext_dtd => 0 # полный молчок про dtd
       );
       $ContentDoc->setEncoding('utf-8');
+
       my $Body = $XC->findnodes('/xhtml:html/xhtml:body',$ContentDoc)->[0];
       $X->Error("Can't find /html/body node in file $ContentFile. This is true XML?") unless $Body;
 
@@ -744,7 +861,9 @@ sub AssembleContent {
         content=>$Content,
         file=>$Item->{'href'}
       };
-  
+
+      $X->_be('parse_epub_xhtml');
+
     } else {
       $X->Msg("ID ".$Item->{'id'}.": I not understood what is it '".$Item->{'type'}."[".$Item->{'href'}."]'\n",'w');
     }
@@ -786,6 +905,7 @@ sub CleanNodeEmptyId {
     push @$Ret, $Item;
     next unless ref $Item eq 'HASH';
     foreach my $El (keys %$Item) {
+      next if ref $Item->{$El} ne 'HASH' || !exists $Item->{$El}->{'value'};
       $Item->{$El}->{'value'} = CleanNodeEmptyId($X,$Item->{$El}->{'value'});
       if (exists $Item->{$El}->{'attributes'}->{'id'} || $El =~ /^(a|span)$/) {
         my $Id = exists $Item->{$El}->{'attributes'}->{'id'} ? $Item->{$El}->{'attributes'}->{'id'} : '';
@@ -851,7 +971,9 @@ sub ProcessImg {
   #Копируем исходник на новое место с новым уникальным именем
   unless (-f $ImgDestFile) {
     $X->Msg("copy $ImgSrcFile -> $ImgDestFile\n");
+    $X->_bs('img_copy','Копирование IMG');
     FB3::Convert::copy($ImgSrcFile, $ImgDestFile) or $X->Error($!." [copy $ImgSrcFile -> $ImgDestFile]");        
+    $X->_be('img_copy','Копирование IMG');
   }
 
   $Node->setAttribute('src' => $ImgID);
@@ -880,8 +1002,7 @@ sub ProcessHref {
                                                        basename($RelPath)."#".$Anchor #текущий section
                                                        ), $RelPath , 'process_href')
         : '';
-        
-        
+
   $X->{'href_list'}->{$NewHref} = $Href if $X->trim($NewHref) ne '';     
   $Node->setAttribute('xlink:href' => $NewHref);
 
@@ -910,7 +1031,14 @@ sub TransformH2Title {
 
   my $Wrap = XML::LibXML::Element->new("p"); #wrapper
   foreach my $Child ($Node->getChildnodes) {
-    $Wrap->addChild($Child->cloneNode(1));
+    my $Excl = $X->{'allow_elements'}->{'p'}->{'exclude_if_inside'};
+    if ( grep {$Child->nodeName eq $_} @$Excl ) {
+      foreach my $ChildIns ($Child->getChildnodes) {
+        $Wrap->addChild($ChildIns->cloneNode(1));
+      }
+    } else {
+      $Wrap->addChild($Child->cloneNode(1));
+    }
   }
  
   $NewNode->addChild($Wrap);

@@ -7,7 +7,7 @@ use File::Path;
 use File::Copy;
 
 my $XSDFound = 0;
-my @XSDFiles = (qw(fb3_descr_classes.xsd fb3_general.xsd fb3_relations.xsd opc-contentTypes.xsd opc-relationships.xsd dcterms.xsd dcmitype.xsd dc.xsd fb3_body.xsd fb3_descr.xsd fb3_links.xsd opc-coreProperties.xsd));
+my @XSDFiles = (qw(fb3_descr_classes.xsd fb3_general.xsd fb3_relations.xsd opc-contentTypes.xsd opc-relationships.xsd dcterms.xsd dcmitype.xsd dc.xsd fb3_body.xsd fb3_descr.xsd fb3_links.xsd opc-coreProperties.xsd xml_namespace.xsd));
 if (-d 'share') {
 	foreach (@XSDFiles) {
 		unless (-e 'share/'.$_) {
@@ -69,16 +69,17 @@ my $Builder = Module::Build->new(
         'Test::More' => '0',
     },
     requires => {
-        'perl'        => 5.014,
-				'File::Fetch' => 0,
-				'File::Path'  => 0,
-				'File::Copy'  => 0,
-        'OPC'         => 0,
-        'XML::LibXML' => 0,
+        'perl'           => 5.014,
+				'File::Fetch'    => 0,
+				'File::Path'     => 0,
+				'File::Copy'     => 0,
+        'OPC'            => 0,
+        'XML::LibXML'    => 0,
+				'File::ShareDir' => 0,
+				'Clone' => 0,
     },
-		share_dir => {
-			dist => 'share',
-		},
+		script_files => 'bin/validate_fb3.pl',
+		share_dir => 'share',
     add_to_cleanup     => [ 'FB3-*' ],
 );
 

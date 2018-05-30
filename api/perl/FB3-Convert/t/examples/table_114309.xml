@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="96546cab-d398-40f8-a2bc-3c9e54de9205" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="27accec6-c98f-517e-b08b-41f1bb9c2c8d">
+    <p> <a xlink:href="#link_fe1af746-1c36-5ed7-a282-eb69db77fa00">Table 2-1</a>  SharePoint 2010 Column Types</p>
+    <table>
+      <tr>
+        <td>
+          <p>Column Type</p>
+        </td>
+        <td>
+          <p>Description</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Single Line of Text</p>
+        </td>
+        <td>
+          <p>Allows users to enter a custom value for the column, up to 255 characters.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Multiple Lines of Text</p>
+        </td>
+        <td>
+          <p>Allows users to enter multiple lines for a custom value for the column. Additional options allow for rich text editing.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Choice (menu to choose from)</p>
+        </td>
+        <td>
+          <p>Allows users to select pre-determined options from a drop-down menu, radio buttons, or checkboxes, which allow for multiple selections.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Number</p>
+        </td>
+        <td>
+          <p>Allows only numbers to be entered. Options include configuring decimal places, maximum and minimum allowed values, and whether the number should show as a percentage.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Currency</p>
+        </td>
+        <td>
+          <p>Similar to the number column. Displays the number entered as the selected type of currency.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Date and Time</p>
+        </td>
+        <td>
+          <p>Allows users to enter a date and optionally a time using a date picker. Date and time columns can be useful when creating Calendar views or used as filtering options.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Lookup</p>
+        </td>
+        <td>
+          <p>This column can be used to look up values from another list or library in the same site. Not all types of columns can be used with the lookup column.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Yes/No (check box)</p>
+        </td>
+        <td>
+          <p>A simple checkbox that can be used to indicate that a condition is true or not based on whether the box is checked. When filtering with a yes/no column, the value of the check is either a 1 (for yes, or checked) or 0 (for no, not checked).</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Person or Group</p>
+        </td>
+        <td>
+          <p>This column is essentially a “people picker” column that enables users and groups from the site to be looked up.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Hyperlink or Picture</p>
+        </td>
+        <td>
+          <p>Allows users to enter a URL to a site (internal or external) or an image in the site, depending on whether the option is selected to format the URL as a link or a picture.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Calculated</p>
+        </td>
+        <td>
+          <p>This column uses values from other columns in the same list in an equation to produce a value. The equations used in calculated columns are very similar to the types of equations used in Excel.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>External Data</p>
+        </td>
+        <td>
+          <p>A new column for SharePoint 2010 that allows external content types to be browsed and used as metadata in a list. External content types must be enabled by an administrator before this column is available.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Managed Metadata</p>
+        </td>
+        <td>
+          <p>Also new to SharePoint 2010, this allows values from a managed metadata term store to be browsed and selected. (See Chapter 16 for more about managed metadata.)</p>
+        </td>
+      </tr>
+    </table>
+    <p> </p>
+    <p>When creating a new column, it’s important to look at the Additional Column Settings section below the column type selector. This section varies according to the type of column that’s chosen, allowing various settings to be applied to further refine the type of data being collected. In addition, each column type can be configured to require that users enter something into the column, ensuring that the type of information that needs to be collected by an organization is being collected. Once the column is created, it can be populated with the corresponding type of data. Tagging list items with all this metadata can come in handy when working with filtering and creating views of the data, which is covered in more depth later in the chapter. Additionally, metadata can be searched, making it easy to find information in lists and libraries in this way.</p>
+  </section>
+</fb3-body>

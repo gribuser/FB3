@@ -50,7 +50,7 @@
   <xsl:template match="fb:section[not(count(fb:empty-line)=count(fb:*))]">
     <xsl:choose>
 <!--      основная секция сносок - без id-->
-      <xsl:when test="ancestor::fb:body[1]/@name='notes' and not(@id)">
+      <xsl:when test="parent::fb:body/@name='notes' and not(@id)">
         <xsl:apply-templates select="fb:section"/>
       </xsl:when>
 <!--      сноски с id внутри блока сносок-->
@@ -58,6 +58,10 @@
         <notebody id="{@id}">
           <xsl:apply-templates/>
         </notebody>
+      </xsl:when>
+<!--      sections inside notes (this happens sometimes) -->
+      <xsl:when test="parent::fb:section[&is_notebody;]">
+        <xsl:apply-templates/>
       </xsl:when>
       <xsl:otherwise>
 <!--        обычная секция в тексте-->
@@ -103,7 +107,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
-          <xsl:when test="not(preceding-sibling::*) and not(parent::fb:cite[parent::fb:section[ancestor::fb:body[@name='notes']]]/preceding-sibling::*) and not(following-sibling::fb:subtitle)">
+          <xsl:when test="not(preceding-sibling::*) and (following-sibling::*) and not(parent::fb:cite[parent::fb:section[ancestor::fb:body[@name='notes']]]/preceding-sibling::*) and not(following-sibling::fb:subtitle)">
             <title>
               <p><xsl:apply-templates/></p>
             </title>
@@ -225,8 +229,8 @@
     <xsl:param name="holder-name"/>
     <xsl:param name="paragraph-name">p</xsl:param>
 
-    <!-- must start with p element -->
-    <xsl:variable name="first-p" select="fb:*[local-name()=$paragraph-name][1]"/>
+    <!-- must start with p element. subtitle will be converted to paragraph later-->
+    <xsl:variable name="first-p" select="fb:*[local-name()=$paragraph-name][1] | fb:subtitle[1]"/>
     <xsl:if test="$first-p">
       <xsl:element name="{$holder-name}">
         <xsl:call-template name="TitledType"/>
@@ -440,24 +444,42 @@
   </xsl:template>
   
   <xsl:template match="fb:body[@name='notes']">
-    <!-- footnotes -->
-    <xsl:variable name="footnotes" select="fb:section[@id] | fb:section[1]/fb:section"/>
-    <xsl:if test="$footnotes">
-      <notes show="0">
-				<xsl:apply-templates select="$footnotes/../fb:title"/>
-        <xsl:apply-templates select="$footnotes"/>
-      </notes>
-    </xsl:if>
+    <xsl:variable name="root_sections_count" select="count(fb:section[fb:section])"/>
+    <xsl:choose>
+      <xsl:when test="root_sections_count >= 2 and not(fb:section[@id])">
+        <!-- two (or more) root sections structure. First root section is for
+          footnotes and others - for endnotes -->
 
-    <!-- endnotes -->
-    <xsl:variable name="endnotes"
-      select="fb:section[preceding-sibling::fb:section]/fb:section"/>
-    <xsl:if test="$endnotes">
-      <notes show="1">
-				<xsl:apply-templates select="$endnotes/../fb:title"/>
-        <xsl:apply-templates select="$endnotes"/>
-      </notes>
-    </xsl:if>
+        <!-- footnotes -->
+        <xsl:variable name="footnotes" select="fb:section[1]/fb:section[@id]"/>
+        <xsl:if test="$footnotes">
+          <notes show="0">
+            <xsl:apply-templates select="$footnotes/../fb:title"/>
+            <xsl:apply-templates select="$footnotes"/>
+          </notes>
+        </xsl:if>
+
+        <!-- endnotes -->
+        <xsl:variable name="endnotes"
+          select="fb:section[preceding-sibling::fb:section]/fb:section"/>
+        <xsl:if test="$endnotes">
+          <notes show="1">
+            <xsl:apply-templates select="$endnotes/../fb:title"/>
+            <xsl:apply-templates select="$endnotes"/>
+          </notes>
+        </xsl:if>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- no root sections structure - only footnotes -->
+        <xsl:variable name="footnotes" select=".//fb:section[@id]"/>
+        <xsl:if test="$footnotes">
+          <notes show="0">
+            <xsl:apply-templates select="fb:title"/>
+            <xsl:apply-templates select="$footnotes"/>
+          </notes>
+        </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="fb:table">

@@ -106,6 +106,8 @@ my %LangDependentStr = (
 	'nl' => ['Einde fragment'],
 	);
 
+my @AuthorsPriority = qw(author co_author dubious_author lecturer compiler screenwriter translator contributing_editor managing_editor editor editorial_board_member adapter conceptor rendering associated commentator consultant scientific_advisor recipient_of_letters corrector composer);
+
 my $NoHyphRe = qr/^(poem|epigraph|subtitle|title)$/; # Ноды, текст которых(и их потомков) нельзя переносить
 my $Semiblocks = qr/^(epigraph|annotation|poem|stanza)$/;
 my $BlockPParents = qr/^(section|annotation|epigraph|notebody)$/;
@@ -247,11 +249,9 @@ sub ProceedNode {
 	my $Id = $Node->getAttribute('id');
 	if ($Id) {
 		if ($NodeHash->{pr}) {
-			$NodeHash->{id} = $Id;
 			$InnerRefsHash{$Id} = $NodeHash->{b_id};
 		} else {
-			$NodeHash->{c}[0]->{id} = $Id if $NodeName ne 'fb3-body'; # Если это логический блок, то его первому потомку
-			$InnerRefsHash{$Id} = $NodeHash->{c}[0]->{b_id};
+			MoveRefToPrintableChild($NodeHash, $Id); # Если этот блок не отражается в json, то его первому потомку, который отражается
 		}
 	}
 
@@ -264,6 +264,23 @@ sub ProceedNode {
 	}
 
 	return $NodeHash;
+}
+
+sub MoveRefToPrintableChild {
+	my $NodeHash = shift;
+	my $Id = shift;
+
+	foreach (@{$NodeHash->{c}}) {
+		if ($_->{pr} && $_->{b_id}) { # Потомок нам подходит
+			$InnerRefsHash{$Id} = $_->{b_id};
+			return 1;
+		} else { # Проходим по его потомкам
+			if (MoveRefToPrintableChild($_, $Id)) {
+				return 1;
+			}
+		}
+	}
+
 }
 
 my @ResultArr;
@@ -335,15 +352,17 @@ sub DumpTree {
 	if (($NodeHash->{b_id} && $Length > $PartLimit) || ($NodeHash->{name} eq 'fb3-body' && $Length > 0)) {
 		my $ResultStr = join ",\n",@ResultArr;
 		$ResultStr =~ s/,\n$//g;
-		$ResultStr = '['.$ResultStr.']';
-		my $FileName = sprintf("%03i.js",$FileN);
-		ProceedJsonBodyPart($ResultStr, $FileName);
-		$FileN++;
-		@ResultArr = ();
-		$Length = 0;
-		push @Parts, '{s:'.$FirstBlockN.',e:'.$LastBlockN.',xps:['.$FirstXP.'],xpe:['.$LastXP.'],url:"'.$FileName.'"}';
-		$FirstBlockN = undef;
-		$FirstXP = undef;
+		if (trim($ResultStr)) {
+			$ResultStr = '['.$ResultStr.']';
+			my $FileName = sprintf("%03i.js",$FileN);
+			ProceedJsonBodyPart($ResultStr, $FileName);
+			$FileN++;
+			@ResultArr = ();
+			$Length = 0;
+			push @Parts, '{s:'.$FirstBlockN.',e:'.$LastBlockN.',xps:['.$FirstXP.'],xpe:['.$LastXP.'],url:"'.$FileName.'"}';
+			$FirstBlockN = undef;
+			$FirstXP = undef;
+		}
 	}
 
 	return $JsonStr;
@@ -505,19 +524,21 @@ sub ProceedDescr {
 	my $UUID = ($xpc->findnodes('/fbd:fb3-description')->[0])->getAttribute('id');
 
 	my @Authors;
-	for my $Author ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-relations/fbd:subject[@link="author"]')) {
-		my $AuthorFirstNameNode = $xpc->findnodes('./fbd:first-name', $Author)->[0];
-		my $AuthorFirstName = $AuthorFirstNameNode->string_value if $AuthorFirstNameNode;
-		$AuthorFirstName = EscString($AuthorFirstName);
+	foreach (@AuthorsPriority) {
+		for my $Author ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-relations/fbd:subject[@link="'.$_.'"]')) {
+			my $AuthorFirstNameNode = $xpc->findnodes('./fbd:first-name', $Author)->[0];
+			my $AuthorFirstName = $AuthorFirstNameNode->string_value if $AuthorFirstNameNode;
+			$AuthorFirstName = EscString($AuthorFirstName);
 
-		my $AuthorLastNameNode = $xpc->findnodes('./fbd:last-name', $Author)->[0];
-		my $AuthorLastName = $AuthorLastNameNode->string_value if $AuthorLastNameNode;
-		$AuthorLastName = EscString($AuthorLastName);
+			my $AuthorLastNameNode = $xpc->findnodes('./fbd:last-name', $Author)->[0];
+			my $AuthorLastName = $AuthorLastNameNode->string_value if $AuthorLastNameNode;
+			$AuthorLastName = EscString($AuthorLastName);
 
-		my $AuthorMiddleNameNode = $xpc->findnodes('./fbd:middle-name', $Author)->[0];
-		my $AuthorMiddleName = $AuthorMiddleNameNode->string_value if $AuthorMiddleNameNode;
-		$AuthorMiddleName = EscString($AuthorMiddleName);
-		push @Authors, '{First:"'.$AuthorFirstName.'",Last:"'.$AuthorLastName.'",Middle:"'.$AuthorMiddleName.'"}';
+			my $AuthorMiddleNameNode = $xpc->findnodes('./fbd:middle-name', $Author)->[0];
+			my $AuthorMiddleName = $AuthorMiddleNameNode->string_value if $AuthorMiddleNameNode;
+			$AuthorMiddleName = EscString($AuthorMiddleName);
+			push @Authors, '{Role:"'.$_.'",First:"'.$AuthorFirstName.'",Last:"'.$AuthorLastName.'",Middle:"'.$AuthorMiddleName.'"}';
+		}
 	}
 
 	my $FragmentNode = $xpc->findnodes('/fbd:fb3-description/fbd:fb3-fragment')->[0];
@@ -620,6 +641,13 @@ sub GetImgSize {
 	my $Width = $ImgInfo->{width};
 
 	return ($Height, $Width);
+}
+
+sub trim {
+  my $str = shift;
+  $str =~ s/^\s+//s;
+  $str =~ s/\s+$//s;
+  return $str;
 }
 
 # ------------------------ Hyphenation functions ------------------------------

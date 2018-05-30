@@ -18,16 +18,18 @@ my $builder = Module::Build->new(
     },
     requires => {
         'perl' => 5.014, 
-        'FB3' => 0,
+        'FB3' => 0.06,
         'XML::LibXML' => 0,
         'XML::LibXSLT' => 0,
         'Archive::Zip' => 0,
         'Hash::Merge' => 0,
         'UUID::Tiny' => 0,
-        'HTML::Entities' => 0,
+        'WWW::Mechanize::PhantomJS' => 0,
+        'XML::Entities' => 0,
+        'XML::Entities::Data' => 0,
         'Clone' => 0,
         'File::ShareDir' => 0,
-				'XML::Diff' => 0,
+        'XML::Diff' => 0,
     },
     script_files => [qw{
       bin/convert2fb3.pl

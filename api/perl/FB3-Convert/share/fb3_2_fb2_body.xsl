@@ -35,11 +35,25 @@
 	</xsl:template>
 
 	<xsl:template match="fb3b:title">
-		<title><xsl:apply-templates/></title>
+		<xsl:choose>
+			<xsl:when test="parent::fb3b:blockquote">
+				<subtitle><xsl:apply-templates/></subtitle>
+			</xsl:when>
+			<xsl:otherwise>
+				<title><xsl:apply-templates/></title>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="fb3b:title" mode="notes">
-		<title><xsl:apply-templates/></title>
+		<xsl:choose>
+			<xsl:when test="parent::fb3b:blockquote">
+				<subtitle><xsl:apply-templates/></subtitle>
+			</xsl:when>
+			<xsl:otherwise>
+				<title><xsl:apply-templates/></title>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="fb3b:subtitle">
@@ -60,7 +74,12 @@
 		<xsl:choose>
 			<xsl:when test="$images_inside = 1 and $noimgtags_inside = 0 and string-length($p_text) = 0">
 				<xsl:apply-templates/>
-				<empty-line/>
+				<xsl:if test="not(parent::fb3b:div)">
+					<empty-line/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="parent::fb3b:title[parent::fb3b:blockquote]">
+				<xsl:apply-templates/>
 			</xsl:when>
 			<xsl:otherwise>
 				<p>
@@ -110,12 +129,10 @@
 	</xsl:template>
 
 	<xsl:template match="fb3b:div[not(@on-one-page = 'true')]">
-		<xsl:variable name="noptags_inside"><xsl:value-of select="count(*[name() != 'p'])"/></xsl:variable>
-		<xsl:variable name="p_inside"><xsl:value-of select="count(fb3b:p)"/></xsl:variable>
-		<xsl:variable name="p_text"><xsl:value-of select="normalize-space(.)"/></xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$p_inside = 1 and $noptags_inside = 0 and string-length($p_text) = 0">
+			<xsl:when test="fb3b:p[fb3b:img and string-length(normalize-space(.)) = 0]">
 				<xsl:apply-templates/>
+				<empty-line/>
 			</xsl:when>
 			<xsl:otherwise>
 				<cite>
@@ -220,6 +237,9 @@
 	</xsl:template>
 	<xsl:template match="fb3b:td">
 		<td><xsl:apply-templates/></td>
+	</xsl:template>
+	<xsl:template match="fb3b:td/fb3b:p">
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template match="fb3b:ul">
