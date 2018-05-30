@@ -568,10 +568,10 @@
 
 	<xsl:template match="fb:a[@type='note']//text()">
     <xsl:choose>
-      <xsl:when test="starts-with(., '[')">
+      <xsl:when test="starts-with(., '[') and contains(., ']')">
         <xsl:value-of select="substring-before(substring-after(., '['), ']')"/>
       </xsl:when>
-      <xsl:when test="starts-with(., '{')">
+      <xsl:when test="starts-with(., '{') and contains(., '}')">
         <xsl:value-of select="substring-before(substring-after(., '{'), '}')"/>
       </xsl:when>
       <xsl:otherwise>
