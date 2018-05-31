@@ -114,6 +114,31 @@ my $BlockPParents = qr/^(section|annotation|epigraph|notebody)$/;
 my $LineBreakChars = qr/[\-\/…\?\!\}\|–—]/;
 my $SubtitleParents = qr/^(section)$/;
 
+# ------------------------ Hyphenation settings ------------------------------
+use constant HYPHEN => "\x{AD}"; #visible in, e.g., Komodo Edit.
+
+my ($hyphenPatterns, $hyphenRegexPattern, $soglasnie, $glasnie, $znaki, $RgxSoglasnie, $RgxGlasnie, $RgxZnaki, $RgxNonChar);
+
+$hyphenPatterns = {
+	GSS => 'GS' . &HYPHEN . 'S',
+	SGSG => 'SG' . &HYPHEN . 'SG',
+	SQS => 'SQ' . &HYPHEN . 'S',
+	GG => 'G' . &HYPHEN . 'G',
+	SS => 'S' . &HYPHEN . 'S'
+};
+$hyphenRegexPattern = join "|",keys %{$hyphenPatterns};
+$hyphenRegexPattern = qr/(.*)($hyphenRegexPattern){1}(.*)/o;
+
+$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщ";
+$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїў";
+$znaki = "ъь";
+
+$RgxSoglasnie = qr/[$soglasnie]/oi;
+$RgxGlasnie = qr/[$glasnie]/oi;
+$RgxZnaki = qr/[$znaki]/oi;
+$RgxNonChar = qr/([^$soglasnie$glasnie$znaki]+)/oi; #в скобках, чтобы оно возвращалось при сплите.
+# /----------------------- Hyphenation settings ------------------------------
+
 my $jsonC = JSON::PP->new->pretty->allow_barekey;
 
 my $FB3Package = FB3->new( from_dir => $FB3 );
@@ -640,28 +665,6 @@ sub trim {
 }
 
 # ------------------------ Hyphenation functions ------------------------------
-use constant HYPHEN => "\x{AD}"; #visible in, e.g., Komodo Edit.
-
-my ($hyphenPatterns, $hyphenRegexPattern, $soglasnie, $glasnie, $znaki, $RgxSoglasnie, $RgxGlasnie, $RgxZnaki, $RgxNonChar);
-
-$hyphenPatterns = {
-	GSS => 'GS' . &HYPHEN . 'S',
-	SGSG => 'SG' . &HYPHEN . 'SG',
-	SQS => 'SQ' . &HYPHEN . 'S',
-	GG => 'G' . &HYPHEN . 'G',
-	SS => 'S' . &HYPHEN . 'S'
-};
-$hyphenRegexPattern = join "|",keys %{$hyphenPatterns};
-$hyphenRegexPattern = qr/(.*)($hyphenRegexPattern){1}(.*)/o;
-
-$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщ";
-$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїў";
-$znaki = "ъь";
-
-$RgxSoglasnie = qr/[$soglasnie]/oi;
-$RgxGlasnie = qr/[$glasnie]/oi;
-$RgxZnaki = qr/[$znaki]/oi;
-$RgxNonChar = qr/([^$soglasnie$glasnie$znaki]+)/oi; #в скобках, чтобы оно возвращалось при сплите.
 
 sub HyphString {
 	use utf8;
