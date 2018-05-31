@@ -141,7 +141,10 @@ $RgxNonChar = qr/([^$soglasnie$glasnie$znaki]+)/oi; #в скобках, чтоб
 
 my $jsonC = JSON::PP->new->pretty->allow_barekey;
 
-my $FB3Package = FB3->new( from_dir => $FB3 );
+my %FB3Params = ( -f $FB3 ) ? ('from_zip' => $FB3) :
+                ( -d $FB3 ) ? ('from_dir' => $FB3) : die 'Unable to determine source type';
+
+my $FB3Package = FB3->new( %FB3Params );
 my $TOCHeader = ProceedDescr($FB3Package->Meta->Content);
 my $FB3Body = $FB3Package->Body;
 my @Img = $FB3Body->Relations( type => RELATION_TYPE_FB3_IMAGES );
@@ -163,7 +166,13 @@ for my $Image (@Img) {
 	}
 	my $FN = $Out.$ImgHash->{$Image->{Id}}->{name};
 	my $PhysicalName = $FB3Package->{opc}->PhysicalNameByPartName($Image->{'TargetFullName'});
-	File::Copy::copy( $PhysicalName, $FN );
+	unless ( $FB3Package->{opc}->{_is_zip} ) {
+		File::Copy::copy( $PhysicalName, $FN );
+	} else {
+		my $fh = open(my $fh, '>:raw', $FN) || die("Unable to open file `$FN'");
+		print $fh $FB3Package->{opc}->GetPhysicalContents($PhysicalName, 'binary' => 1);
+		close($fh) || die("Unable to close file `$FN'");
+	}
 	($ImgHash->{$Image->{Id}}->{height}, $ImgHash->{$Image->{Id}}->{width}) = GetImgSize($FN);
 }
 
@@ -322,8 +331,10 @@ sub DumpTree {
 		if ($NodeHash->{name} eq 'br') {
 			$JsonStr = '{t:"'.$NodeHash->{name}.'"'.$AttrStr.',xp:['.$NodeHash->{xp};
 		} elsif ($NodeHash->{name} eq 'img') {
-			$JsonStr = '{t:"'.$NodeHash->{name}.'"'.$AttrStr.',xp:['.$NodeHash->{xp}.'],s:"'.$ImgHash->{$NodeHash->{attr}->{src}}->{name}.'",w:'.
-					($ImgHash->{$NodeHash->{attr}->{src}}->{width}).',h:'.($ImgHash->{$NodeHash->{attr}->{src}}->{height}).'}';
+			$JsonStr  = '{t:"'.$NodeHash->{name}.'"'.$AttrStr.',xp:['.$NodeHash->{xp}.'],s:"'.$ImgHash->{$NodeHash->{attr}->{src}}->{name}.'"';
+			$JsonStr .= ',w:' . ($ImgHash->{$NodeHash->{attr}->{src}}->{width})  if ($ImgHash->{$NodeHash->{attr}->{src}}->{width});
+			$JsonStr .= ',h:' . ($ImgHash->{$NodeHash->{attr}->{src}}->{height}) if ($ImgHash->{$NodeHash->{attr}->{src}}->{height});
+			$JsonStr .= '}';
 		} else {
 			$JsonStr = '{t:"'.$NodeHash->{name}.'"'.$AttrStr.',xp:['.$NodeHash->{xp}.'],c:[';
 		}
