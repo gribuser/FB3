@@ -135,16 +135,16 @@ if( $PublishInfoNode ) {
 	}
 }
 
-# корректируем заголовок сноски: берём только текст между фигурными/квадратными скобками, идущими в произвольном порядке
+# корректируем заголовок сноски: берём текст между фигурными/квадратными скобками
 my $AutoNoteNumber = 0;
-for my $note ( $XPC->findnodes('//fb:a[@type="note"]//text()', $FB2Doc) ) {
-	if ( $note->data =~ /[\[({]*([^\[\](){}]+)[])}]*/ ) {
-		$note->setData($1);
-	}
-	elsif ( not $note->data =~ s/[\[\](){}\s]+//r ) {
-		# если в заголовке сноски нет ничего, кроме скобок, формируем самостоятельно
-		$note->setData('#auto' . ++$AutoNoteNumber);
-	}
+for my $note ( $XPC->findnodes('//fb:a[@type="note"]', $FB2Doc) ) {
+  if ( my $text = [ $note->findnodes('./text()') ]->[0] ) {
+        $text->setData($1) if ( $text->data =~ /\[(\w+)\]/ or $text->data =~ /\{(\w+)\}/ );
+  }
+  else {
+    # если в заголовке сноски нет ничего, формируем самостоятельно
+    $note->appendTextNode('#' . ++$AutoNoteNumber);
+  }
 }
 
 # Особо сложные эпиграфы порубим на куски тут. TODO полностью перенести работу с эпиграфами сюда.
