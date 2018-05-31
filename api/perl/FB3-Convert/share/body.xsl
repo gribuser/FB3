@@ -567,17 +567,7 @@
   </xsl:template>
 
 	<xsl:template match="fb:a[@type='note']//text()">
-    <xsl:choose>
-      <xsl:when test="starts-with(., '[')">
-        <xsl:value-of select="substring-before(substring-after(., '['), ']')"/>
-      </xsl:when>
-      <xsl:when test="starts-with(., '{')">
-        <xsl:value-of select="substring-before(substring-after(., '{'), '}')"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="."/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:value-of select="."/>
   </xsl:template>
   
   <xsl:template match="fb:section" mode="subsectionID">
