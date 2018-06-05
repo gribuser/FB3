@@ -241,6 +241,9 @@
 	<xsl:template match="fb3b:td/fb3b:p">
 		<xsl:apply-templates/>
 	</xsl:template>
+	<xsl:template match="fb3b:th/fb3b:p">
+		<xsl:apply-templates/>
+	</xsl:template>
 
 	<xsl:template match="fb3b:ul">
 		<cite><xsl:apply-templates>
