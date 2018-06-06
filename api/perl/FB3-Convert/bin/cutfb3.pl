@@ -173,8 +173,10 @@ sub CleanImages {
 	my %TrialImageFiles;
 	my @FilePathes;
 
+	# иногда так случается, что в исходном FB3 нет обложки
+	my $cover = eval { $FB3->Cover->PhysicalName };
 	# следующая строка чтобы не удалить обложку
-	$TrialImageFiles{$FB3->Cover->PhysicalName} = 1;
+	$TrialImageFiles{$cover} = 1 if $cover;
 
 	my @ImagesAll = $FB3Body->Relations(type => RELATION_TYPE_FB3_IMAGES);
 	foreach (@ImagesAll) { # эта картинка сохранилась в триалке
