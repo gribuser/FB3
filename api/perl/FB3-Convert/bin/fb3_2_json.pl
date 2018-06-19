@@ -322,8 +322,10 @@ sub DumpTree {
 		if ($NodeHash->{name} eq 'br') {
 			$JsonStr = '{t:"'.$NodeHash->{name}.'"'.$AttrStr.',xp:['.$NodeHash->{xp};
 		} elsif ($NodeHash->{name} eq 'img') {
-			$JsonStr = '{t:"'.$NodeHash->{name}.'"'.$AttrStr.',xp:['.$NodeHash->{xp}.'],s:"'.$ImgHash->{$NodeHash->{attr}->{src}}->{name}.'",w:'.
-					($ImgHash->{$NodeHash->{attr}->{src}}->{width}).',h:'.($ImgHash->{$NodeHash->{attr}->{src}}->{height}).'}';
+			$JsonStr  = '{t:"'.$NodeHash->{name}.'"'.$AttrStr.',xp:['.$NodeHash->{xp}.'],s:"'.$ImgHash->{$NodeHash->{attr}->{src}}->{name}.'"';
+			$JsonStr .= ',w:' . ($ImgHash->{$NodeHash->{attr}->{src}}->{width})  if ($ImgHash->{$NodeHash->{attr}->{src}}->{width});
+			$JsonStr .= ',h:' . ($ImgHash->{$NodeHash->{attr}->{src}}->{height}) if ($ImgHash->{$NodeHash->{attr}->{src}}->{height});
+			$JsonStr .= '}';
 		} else {
 			$JsonStr = '{t:"'.$NodeHash->{name}.'"'.$AttrStr.',xp:['.$NodeHash->{xp}.'],c:[';
 		}
@@ -514,7 +516,7 @@ sub ProceedJsonBodyPart {
 		#warn "\n$FileName: $@"; # Для отладки и теста. В боевых условиях падать, если фигня получается.
 	}
 
-	open TMPOUT, ">", $Out.$FileName or die "Cannot open tmp file";
+	open TMPOUT, ">", $Out.$FileName or die "Cannot open tmp file: `$Out.$FileName'";
 	print TMPOUT $JsonStr;
 	close TMPOUT;
 
