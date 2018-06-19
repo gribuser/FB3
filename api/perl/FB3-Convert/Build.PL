@@ -30,6 +30,8 @@ my $builder = Module::Build->new(
         'Clone' => 0,
         'File::ShareDir' => 0,
         'XML::Diff' => 0,
+        'Image::Info' => 0,
+        'JSON::Path' => 0,
     },
     script_files => [qw{
       bin/convert2fb3.pl
