@@ -1630,16 +1630,16 @@ sub ParseMetaFile {
     my $ID = ($xpc->findnodes('/fbd:fb3-description')->[0])->getAttribute('id');
     $DESCRIPTION->{'DOCUMENT-INFO'}->{'ID'} = $ID if defined $ID;
 
-    my $TITLE = $xpc->findnodes('/fbd:fb3-description/fbd:title/fbd:main')->[0]->string_value;
-    $DESCRIPTION->{'TITLE-INFO'}->{'BOOK-TITLE'} = $TITLE if defined $TITLE;
+    my $TITLE = $xpc->findnodes('/fbd:fb3-description/fbd:title/fbd:main')->[0];
+    $DESCRIPTION->{'TITLE-INFO'}->{'BOOK-TITLE'} = EncodeUtf8($X,$TITLE->string_value) if defined $TITLE;
 
-    my $ANNOTATION = $xpc->findnodes('/fbd:fb3-description/fbd:annotation/fbd:p')->[0]->string_value;;
-    $DESCRIPTION->{'TITLE-INFO'}->{'ANNOTATION'} = $ANNOTATION if defined $ANNOTATION;
+    my $ANNOTATION = $xpc->findnodes('/fbd:fb3-description/fbd:annotation/fbd:p')->[0];
+    $DESCRIPTION->{'TITLE-INFO'}->{'ANNOTATION'} = EncodeUtf8($X,$ANNOTATION->string_value) if defined $ANNOTATION;
 
-    my $LANGUAGE = $xpc->findnodes('/fbd:fb3-description/fbd:lang')->[0]->string_value; 
-    $DESCRIPTION->{'DOCUMENT-INFO'}->{'LANGUAGE'} = $LANGUAGE if defined $LANGUAGE;
+    my $LANGUAGE = $xpc->findnodes('/fbd:fb3-description/fbd:lang')->[0];
+    $DESCRIPTION->{'DOCUMENT-INFO'}->{'LANGUAGE'} = $LANGUAGE->string_value if defined $LANGUAGE;
 
-    my @GENRES = map {$_->string_value} ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-classification/fbd:subject'));
+    my @GENRES = map {EncodeUtf8($X,$_->string_value)} ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-classification/fbd:subject'));
     $DESCRIPTION->{'TITLE-INFO'}->{'GENRES'} = [ @GENRES ];
 
     my @AUTHORS;
@@ -1660,9 +1660,9 @@ sub ParseMetaFile {
         'id' => $SubjID,
         'link' => $SubjLink,
         'percent' => $SubjPercent,
-        'first-name' => $FirstName,
-        'middle-name' => $MiddleName,
-        'last-name' => $LastName,
+        'first-name' => EncodeUtf8($X,$FirstName),
+        'middle-name' => EncodeUtf8($X,$MiddleName),
+        'last-name' => EncodeUtf8($X,$LastName),
       };
     }
     $DESCRIPTION->{'TITLE-INFO'}->{'AUTHORS'} = [ @AUTHORS ];
