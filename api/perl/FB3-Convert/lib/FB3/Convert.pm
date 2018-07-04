@@ -36,11 +36,10 @@ my %MODULES;
     'class' => 'FB3::Convert::Epub',
     'unpack' => 1,
   },
-  'fb2' => { #не реализовано. просто пример подключения модуля в конвертор
+  'fb2' => {
     'class' => 'FB3::Convert::FB2',
-    'unpack' => ['fb2.zip']
+    'unpack' => 0,
   },
-  'fb2.zip' => \$MODULES{'fb2'},
 );
 
 my @BlockLevel =
@@ -216,7 +215,7 @@ sub new {
 
   $SourcePath =~ /\.([^\.]+)$/;
   my $FileType = $1;
-  Error($X, "File '".$SourcePath."' format not detected") unless $MODULES{$FileType};
+  Error($X, "File '".$SourcePath."' format '".$FileType."' not detected") unless $MODULES{$FileType};
   my $Sub = $FileType;
 
   my $Module = $MODULES{$Sub}->{class};
@@ -247,78 +246,82 @@ sub new {
   $X->{'bench'} = $Args{'bench'} ? 1 : 0; #бенчмарк режим в stdout
   $X->{'bench2file'} = $Args{'bench2file'} ? $Args{'bench2file'} : 0; #бенчмарк режим в файл
   $X->{'bench_list'} = {}; #бенчмарк режим
+	$X->{'simple'} = $Args{'simple'} ? 1 : 0; #Преобразование без создания структуры
+	$X->{'xsl_path'} = $Args{'xsl_path'};
 
-  #Наша внутренняя структура данных конвертора. шаг влево  - расстрел
-  $X->{'STRUCTURE'} = {
+	unless ($Args{'simple'}) {
+		#Наша внутренняя структура данных конвертора. шаг влево  - расстрел
+		$X->{'STRUCTURE'} = {
 
-  'DESCRIPTION' => {
-    'TITLE-INFO' => {
-      'COVER' => undef,
-        'AUTHORS' => undef, #[
-                    #{
-                    #  'first-name' => "Иван",
-                    #  'id' => 'bcf95bde-eedc-49ef-926c-588bd4cfd9cd',
-                    #  'middle-name' => undef,
-                    #  'last-name' => "Растеряйло"
-                    #},
-                  #],
-        'PUBLISHER' => undef,
-        'ANNOTATION' => undef,
-        'BOOK-TITLE' => undef,
-        'GENRES' => undef, #[
-                  # 'humor_prose',
-                  # 'prose_su_classics'
-                  #],
-    },
-    'DOCUMENT-INFO' => {
-      'DATE' => undef, #{
-        #'attributes' => {
-        #  'value' => undef
-        #}
-      #},
-      'TIME' => {
-        'attributes' => {
-          'value' => "00:00:00",
-        }
-      },
-      'LANGUAGE' => undef,
-      'ID' => undef
-    }
-  },
-  'IMG_LIST' => [ # сюда складывает все встреченные картинки. Их ведь нужно копировать в новую папку, и rels строить
-    # {
-    #   'src_path' => 'images/_1000516292.jpg',
-    #   'id' => 'img1',
-    #   'new_path' => 'img/794__1000516292.jpg'
-    # }
-  ],
-  'CSS_LIST' => [ # так же со стилями
-    #{
-    #  'id' => 'mainCSS',
-    #  'new_path' => undef,
-    #  'src_path' => 'css/main.css'
-    #},
-  ],
-  'PAGES' => { # контент для body
-  'attributes' => {
-                   'CP_compact' => 1 # узлы  без контейнеров
-                            },
-  'value' => [
-                        {} # дерево любой вложенности. см sub Obj2DOM
-                       ]
-             }
-  };
-   
+			'DESCRIPTION' => {
+			  'TITLE-INFO' => {
+			    'COVER' => undef,
+			      'AUTHORS' => undef, #[
+			                  #{
+			                  #  'first-name' => "Иван",
+			                  #  'id' => 'bcf95bde-eedc-49ef-926c-588bd4cfd9cd',
+			                  #  'middle-name' => undef,
+			                  #  'last-name' => "Растеряйло"
+			                  #},
+			                #],
+			      'PUBLISHER' => undef,
+			      'ANNOTATION' => undef,
+			      'BOOK-TITLE' => undef,
+			      'GENRES' => undef, #[
+			                # 'humor_prose',
+			                # 'prose_su_classics'
+			                #],
+			  },
+				'DOCUMENT-INFO' => {
+				  'DATE' => undef, #{
+				    #'attributes' => {
+				    #  'value' => undef
+				    #}
+				  #},
+				  'TIME' => {
+				    'attributes' => {
+				      'value' => "00:00:00",
+				    }
+				  },
+				  'LANGUAGE' => undef,
+				  'ID' => undef
+				}
+			},
+			'IMG_LIST' => [ # сюда складывает все встреченные картинки. Их ведь нужно копировать в новую папку, и rels строить
+			  # {
+			  #   'src_path' => 'images/_1000516292.jpg',
+			  #   'id' => 'img1',
+			  #   'new_path' => 'img/794__1000516292.jpg'
+			  # }
+			],
+			'CSS_LIST' => [ # так же со стилями
+			  #{
+			  #  'id' => 'mainCSS',
+			  #  'new_path' => undef,
+			  #  'src_path' => 'css/main.css'
+			  #},
+			],
+			'PAGES' => { # контент для body
+				'attributes' => {
+			    'CP_compact' => 1 # узлы  без контейнеров
+			  },
+				'value' => [
+			    {} # дерево любой вложенности. см sub Obj2DOM
+			  ]
+			}
+		};
+	}
+
   bless $X, $class;
   Init($X);
-   
+
   #мета из файла (->fb3/description.xml)
   if ($Args{'metadata'}) {
     $X->Error("Meta file ".$Args{'metadata'}." not exists\n") unless -f $Args{'metadata'};
     $X->{'metadata'} = $Args{'metadata'};
-    $X->ParseMetaFile();     
+    $X->ParseMetaFile() unless $Args{'simple'};     
     File::Copy::copy($X->{'metadata'}, $X->{'DestinationDir'}."/fb3/description.xml");
-  } else {
+  } elsif ($Args{'meta'}) {
     #или мета из  параметров  
     $X->BuildOuterMeta(meta => $Args{'meta'});
   }
@@ -353,11 +356,11 @@ sub Reap {
 
   $X->Msg("working with file ".$File."\n",'w',1) if $X->{'showname'} || $X->{'verbose'};
 
-  $X->_bs('unpack','Распаковка Epub');
+  $X->_bs('unpack','Распаковка файла');
   $File = $Processor->{class}->_Unpacker($X,$File) if $Processor->{'unpack'};
   $X->_be('unpack');
 
-  $X->_bs('reap','Потрошение Epub, cборка данных');
+  $X->_bs('reap','Потрошение исходного файла, cборка данных');
   $Processor->{'class'}->Reaper($X, source => ($File || $X->{'Source'}));
   $X->_be('reap');
 
@@ -384,13 +387,13 @@ sub _Unpacker {
 	}
 	
   my @FilesInZip = $Zip->members(); 
-	
-  Msg($X,"Unzip epub to directory: ".$TMPPath."\n");
+
+  Msg($X,"Unzip source file to directory: ".$TMPPath."\n");
   foreach (@FilesInZip) {
     my $ExtFile = $TMPPath.'/'.$_->fileName;
     Error($X,"can't unpuck ".$_->fileName." from ".$Source." archive") unless $Zip->extractMember($_, $ExtFile) == AZ_OK;
-  } 
- 
+  }
+
   return $TMPPath;
 }
 

@@ -33,6 +33,7 @@ GetOptions(
 ) || help();
 
 my $XsdPath = dist_dir("FB3");
+my $XslPath = dist_dir('FB3-Convert');
 
 if ($OPT{'vl'}) {
   my $Obj = new FB3::Convert(empty=>1);
@@ -66,6 +67,7 @@ my $Obj = new FB3::Convert(
   'phantom_js_path' => $OPT{'phjs'},
   'euristic' => $OPT{'eur'},
   'euristic_debug' => $OPT{'eur_deb'},
+	'xsl_path' => $XslPath,
 
   'meta' => {
     'id' => $OPT{'meta_id'},

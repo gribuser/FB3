@@ -38,7 +38,6 @@ my $builder = Module::Build->new(
       bin/cutfb3.pl
       bin/fb3_to_fb2.pl
       bin/fb3_2_json.pl
-      bin/importfb3_from_fb2.pl
     }],
     share_dir => {
 			dist => [ 'share', 't/examples' ]
