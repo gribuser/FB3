@@ -13,6 +13,7 @@ GetOptions(
   'source|s=s' => \$OPT{'source'},
   'destination_dir|dd=s' => \$OPT{'dd'},
   'destination_file|df=s' => \$OPT{'df'},
+  'xsd=s'	=> \$OPT{xsd_dir},
   'metadata|md=s' => \$OPT{'md'},
   'validate|vl=s' => \$OPT{'vl'},
   'name|n:1' => \$OPT{'showname'},
@@ -32,7 +33,7 @@ GetOptions(
   'meta_date=s' => \$OPT{'meta_date'},
 ) || help();
 
-my $XsdPath = dist_dir("FB3");
+my $XsdPath = $OPT{xsd_dir} || dist_dir("FB3");
 my $XslPath = dist_dir('FB3-Convert');
 
 if ($OPT{'vl'}) {
