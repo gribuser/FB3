@@ -177,6 +177,20 @@ sub Reaper {
 		}
 	}
 
+	# fix FB2 notes sections
+	for my $subSectionNode ( $XPC->findnodes('//fb:section[ancestor::fb:body[@name="notes"]]/fb:section', $FB2Doc )) {
+
+		if ( not $subSectionNode->parentNode->getAttribute('id') and $subSectionNode->getAttribute('id')) {
+			$subSectionNode->parentNode->setAttribute('id', $subSectionNode->getAttribute('id'));
+		}
+
+		for my $child ( $subSectionNode->nonBlankChildNodes() ) {
+			$subSectionNode->parentNode->appendChild($child);
+		}
+
+		$subSectionNode->parentNode->removeChild($subSectionNode);
+	}
+
 	$TmpDir ||= tempdir(CLEANUP=>1);
 
 	my $TmpFB2File = "$TmpDir/book.fb2";
