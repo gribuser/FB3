@@ -370,7 +370,7 @@
 			</element>
 			<element name="span">
 				<complexType mixed="true">
-					<complexContent>
+					<complexContent mixed="true">
 						<extension base="fb3b:StyleType">
 							<attribute name="class" type="normalizedString" use="optional"/>
 						</extension>
@@ -404,7 +404,7 @@
 			<element name="spacing" type="fb3b:StyleInLinkType"/>
 			<element name="span">
 				<complexType mixed="true">
-					<complexContent>
+					<complexContent mixed="true">
 						<extension base="fb3b:StyleInLinkType">
 							<attribute name="class" type="normalizedString" use="optional"/>
 						</extension>
@@ -421,7 +421,7 @@
 		<annotation>
 			<documentation>Ссылка - внешняя или на другой фрагмент этого же текста (адресация через id элемента)</documentation>
 		</annotation>
-		<complexContent>
+		<complexContent mixed="true">
 			<extension base="fb3b:StyleInLinkType">
 				<attribute ref="xlink:href" use="required"/>
 			</extension>
@@ -431,11 +431,24 @@
 		<annotation>
 			<documentation>Сноска в теле документа</documentation>
 		</annotation>
-		<complexContent>
+		<complexContent mixed="true">
 			<extension base="fb3b:StyleInLinkType">
 				<attribute name="href" type="IDREF" use="required"/>
 				<attribute ref="xlink:role" use="optional"/>
-				<attribute name="autotext" type="boolean" use="optional"/>
+				<attribute name="autotext" default="1" use="optional">
+					<annotation>
+						<documentation>Автонумерация для подстраничных сносок (1, 2, 3; I, II, III, IV; a, b, c; *, **, ***; без автонумерации)</documentation>
+					</annotation>
+					<simpleType>
+						<restriction base="token">
+							<enumeration value="1"/>
+							<enumeration value="i"/>
+							<enumeration value="a"/>
+							<enumeration value="*"/>
+							<enumeration value="keep"/>
+						</restriction>
+					</simpleType>
+				</attribute>
 			</extension>
 		</complexContent>
 	</complexType>
