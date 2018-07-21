@@ -13,7 +13,6 @@ GetOptions(
   'source|s=s' => \$OPT{'source'},
   'destination_dir|dd=s' => \$OPT{'dd'},
   'destination_file|df=s' => \$OPT{'df'},
-  'xsd=s'	=> \$OPT{xsd_dir},
   'metadata|md=s' => \$OPT{'md'},
   'validate|vl=s' => \$OPT{'vl'},
   'name|n:1' => \$OPT{'showname'},
@@ -33,12 +32,11 @@ GetOptions(
   'meta_date=s' => \$OPT{'meta_date'},
 ) || help();
 
-my $XsdPath = $OPT{xsd_dir} || dist_dir("FB3");
 my $XslPath = dist_dir('FB3-Convert');
 
 if ($OPT{'vl'}) {
   my $Obj = new FB3::Convert(empty=>1);
-  my $Valid = $Obj->Validate('path'=>$OPT{'vl'},'xsd'=>$XsdPath);
+  my $Valid = $Obj->Validate('path'=>$OPT{'vl'});
   print $Valid;
   exit;
 }
@@ -91,7 +89,7 @@ $Obj->_be('fb3_create');
 $Obj->Msg("FB3: ".$FB3Path." created\n","w");
 
 $Obj->_bs('validate_fb3','Валидация полученного FB3');
-my $ValidErr = $Obj->Validate('xsd'=>$XsdPath);
+my $ValidErr = $Obj->Validate();
 $Obj->_be('validate_fb3');
 print $ValidErr;
 

@@ -63,7 +63,7 @@ foreach my $EpubFile (sort{Num($a)<=>Num($b)} @Epubs ) {
 
   $Obj->Reap();
   my $FB3Path =  $Obj->FB3Create();
-  my $ValidErr = $Obj->Validate(xsd=>dist_dir("FB3"));
+  my $ValidErr = $Obj->Validate();
   if ($ValidErr) {
     diag($ValidErr);
     $Obj->Cleanup();

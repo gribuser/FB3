@@ -12,15 +12,14 @@ use Cwd qw(cwd abs_path);
 use Getopt::Long;
 use utf8;
 
-my ($Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath, $ImageFileName);
+my ($Force, $In, $Out, $CutChars, $ImagesPath, $ImageFileName);
 GetOptions(
 	'force|f'	  =>	\$Force,
 	'in|i=s'		=>	\$In,
 	'out|o=s'		=>	\$Out,
 	'chars|c=i'	=>	\$CutChars,
-	'xsd|x=s'   =>  \$XsdPath,
   'imagespath|p=s'  =>  \$ImagesPath,
-) or usage ("CutPartFB3: makes trial fragment from fb3\n\nUsage:\n\nCutPartFB3.pl in=<inputfile.fb3> out=<outputfile.fb3> chars=<chars_in_result> xsd=<xsd_path> imagespath=/path/to/fb3/images\n");
+) or usage ("CutPartFB3: makes trial fragment from fb3\n\nUsage:\n\nCutPartFB3.pl in=<inputfile.fb3> out=<outputfile.fb3> chars=<chars_in_result> imagespath=/path/to/fb3/images\n");
 
 if($ImagesPath){
   die "Path $ImagesPath not found\n" unless -d $ImagesPath;
@@ -48,7 +47,7 @@ use constant {
 		'http://www.fictionbook.org/FictionBook3/relationships/image',
 };
 
-our $Validator = FB3::Validator->new( $XsdPath );
+our $Validator = FB3::Validator->new;
 
 my $Finish;
 my $CharsProcessed = 0;
