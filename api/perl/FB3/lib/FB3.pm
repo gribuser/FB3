@@ -5,6 +5,7 @@ use warnings;
 use utf8;
 use OPC;
 use Carp;
+use File::ShareDir qw/dist_dir/;
 
 our $VERSION = '0.07';
 
@@ -40,6 +41,19 @@ use constant {
 	RELATION_TYPE_CORE_PROP =>
 		'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties'
 };
+
+# Returns path to FB3 schemas common directory
+sub SchemasDirPath {
+  return dist_dir('FB3');
+}
+
+# Returns path to requested FB3 scheme
+sub SchemaPath {
+  my $SchemaName = shift;
+  my $SchemaPath = FB3::SchemasDirPath().'/'.$SchemaName;
+  die "$SchemaName doesn't exist" unless -e $SchemaPath;
+  return $SchemaPath;
+}
 
 sub new {
 	my( $Class, %Params ) = @_;

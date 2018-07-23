@@ -21,7 +21,7 @@ use XML::Entities::Data;
 use Time::HiRes qw(gettimeofday sleep);
 binmode(STDOUT,':utf8');
 
-our $VERSION = 0.09;
+our $VERSION = 0.10;
 
 =head1 NAME
 
@@ -907,9 +907,10 @@ sub Validate {
   my $X = shift;
   my %Args = @_;
   my $ValidateDir = $Args{'path'};
+  my $XsdPath = $Args{'xsd'};
   
   $X->Msg("Validate result\n");
-  my $Valid = FB3::Validator->new;
+  my $Valid = FB3::Validator->new( $XsdPath );
   return $Valid->Validate($ValidateDir||$X->{'DestinationDir'});
 }
 

@@ -14,7 +14,7 @@ GetOptions(
 	'fb3=s'												=>	\$File,
 ) or usage ("Incorrect usage!");
 
-$XsdDir ||= dist_dir("FB3");
+$XsdDir ||= FB3::SchemasDirPath();
 
 usage() if (defined $Help);
 usage(qq{File $File doesn't exist or empty!}) unless ( -e $File );
@@ -34,8 +34,10 @@ sub usage {
     qq{usage: $command 
        --help -h                    => this help
        --verbose -v                 => debug messages
-       --xsd="path"                 => path to directory with FB3 xsd files (see https://github.com/gribuser/FB3)
-       --fb3="path"                 => path to FB3 file}
+       --fb3="path"                 => path to FB3 file
+       --xsd="path"                 => path to directory with FB3 xsd files
+                                       if omitted, internal schemes will be used
+                                       (convenient in most cases)}
   );
 
   die("\n")

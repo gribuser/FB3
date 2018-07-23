@@ -18,7 +18,7 @@ my $builder = Module::Build->new(
     },
     requires => {
         'perl' => 5.014, 
-        'FB3' => 0.06,
+        'FB3' => 0.07,
         'XML::LibXML' => 0,
         'XML::LibXSLT' => 0,
         'Archive::Zip' => 0,

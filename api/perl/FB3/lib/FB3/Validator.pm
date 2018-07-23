@@ -6,7 +6,7 @@ FB3::Validator - check file to be a valid FB3 book
 
 =head1 SYNOPSIS
 
-  my $Validator = FB3::Validator->new( "path/to/xsd/schemas/directory" );
+  my $Validator = FB3::Validator->new;
   if( my $ValidationError = $Validator->Validate( "path/to/book.fb3" )) {
     die "path/to/book.fb3 is not a valid FB3: $ValidationError";
   }
@@ -16,7 +16,9 @@ FB3::Validator - check file to be a valid FB3 book
 use strict;
 use OPC;
 use XML::LibXML;
-use File::ShareDir qw/dist_file/;
+use FB3;
+
+our $XSD_DIR;
 
 use constant {
   RELATION_TYPE_CORE_PROPERTIES =>
@@ -33,15 +35,24 @@ use constant {
 };
 
 sub new {
-  my $class = shift;
-  my $Validator = {};
+  my( $class, $XSD_DIR ) = @_;
+  $XSD_DIR //= FB3::SchemasDirPath(); # in development purposes it maybe
+    # convenient to use some other schemas path
+
+  my $Validator = {
+    xsd_dir => $XSD_DIR,
+  };
+  
   bless $Validator, $class;
+
   return $Validator;
 }
 
 # Возвращает пустую строку в случае успеха, иначе - текст ошибки
 sub Validate {
   my( $self, $FileName ) = @_;
+
+  my $XSD_DIR = $self->{xsd_dir};
 
   # Проверка, что файл - валидный ZIP архив
 
@@ -61,7 +72,7 @@ sub Validate {
 		return "Content Types part not found";
 	}
 	my $CtSchema = XML::LibXML::Schema->new( location =>
-		dist_file("FB3","opc-contentTypes.xsd") );
+		"$XSD_DIR/opc-contentTypes.xsd" );
 	my $CtDoc;
 	eval {
 		$CtDoc = XML::LibXML->new()->parse_string( $CtXML );
@@ -96,7 +107,7 @@ sub Validate {
   my $PackageRelsDoc; # заодно находим часть с Package Relationships
   my @PartNames; # заодно собираем названия всех частей, связи с которыми прописаны
 
-  my $RelsSchema = XML::LibXML::Schema->new( location => dist_file("FB3","opc-relationships.xsd") );
+  my $RelsSchema = XML::LibXML::Schema->new( location => "$XSD_DIR/opc-relationships.xsd" );
 
   for my $RelsPartName ( @RelsPartNames ) {
 
@@ -199,7 +210,7 @@ sub Validate {
       $CorePropRelations[0]->getAttribute('Target'), '/' );
     my $CorePropXML = $Package->PartContents( $CorePropPartName );
     my $CorePropSchema = XML::LibXML::Schema->new( location =>
-      dist_file("FB3","opc-coreProperties.xsd") );
+      "$XSD_DIR/opc-coreProperties.xsd" );
     eval {
       my $CorePropDoc = XML::LibXML->new()->parse_string( $CorePropXML );
       $CorePropSchema->validate( $CorePropDoc );
@@ -232,7 +243,7 @@ sub Validate {
       $DescrRelationNode->getAttribute('Target'), '/' );
     my $DescrXML = $Package->PartContents( $DescrPartName );
     my $DescrSchema = XML::LibXML::Schema->new( location =>
-      dist_file("FB3","fb3_descr.xsd") );
+      "$XSD_DIR/fb3_descr.xsd" );
     my $DescrDoc;
     eval {
       $DescrDoc = XML::LibXML->new()->parse_string( $DescrXML );
@@ -268,7 +279,7 @@ sub Validate {
 
     my $BodyXML = $Package->PartContents( $BodyPartName );
     my $BodySchema = XML::LibXML::Schema->new( location =>
-      dist_file("FB3","fb3_body.xsd") );
+      "$XSD_DIR/fb3_body.xsd" );
     my $BodyDoc;
     eval {
       $BodyDoc = XML::LibXML->new()->parse_string( $BodyXML );
