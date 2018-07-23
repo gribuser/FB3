@@ -25,7 +25,7 @@
 				<element name="sequence" type="fb3d:SequenceType" minOccurs="0" maxOccurs="unbounded">
 					<annotation>
 						<documentation xml:lang="ru">Серия, в которой выпущено произведение. Например "Детство, Отрочество, Юность" для книги Толстого "Детство"
-Не путать серию с названием периодического издания. Вроженность серий обозначает "многоуровневые" серии.</documentation>
+Не путать серию с названием периодического издания. Вложенность серий обозначает "многоуровневые" серии.</documentation>
 					</annotation>
 				</element>
 				<element ref="fb3d:fb3-relations">
