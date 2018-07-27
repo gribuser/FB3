@@ -21,7 +21,7 @@ use XML::Entities::Data;
 use Time::HiRes qw(gettimeofday sleep);
 binmode(STDOUT,':utf8');
 
-our $VERSION = 0.10;
+our $VERSION = 0.11;
 
 =head1 NAME
 
@@ -1070,7 +1070,7 @@ sub BuildAuthorName  {
 sub EncodeUtf8 {
   my $X = shift;
   my $Out = shift;
-  $Out = Encode::encode_utf8($Out);
+  $Out = Encode::encode_utf8($Out) if $Out;
   return $Out;
 }
 
