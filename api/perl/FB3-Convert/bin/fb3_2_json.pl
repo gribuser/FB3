@@ -28,11 +28,11 @@ my $ArtID   = undef;
 # my $Lang    = $ARGV[3] || 'ru';
 # my $ArtID   = $ARGV[4] || undef;
 
-GetOptions ('in|fb3=s'     => \$FB3,
-            'out|json=s'   => \$Out,
-            'lang=s'       => \$Lang,
-            'art|art-id=s' => \$ArtID,
-            'version=s'    => \$Version) or print join('', <DATA>) and die("Error in command line arguments\n");
+GetOptions ('in|from|src|fb3=s' => \$FB3,
+            'out|to|dst|json=s' => \$Out,
+            'lang=s'            => \$Lang,
+            'art|art-id=s'      => \$ArtID,
+            'version=s'         => \$Version) or print join('', <DATA>) and die("Error in command line arguments\n");
 
 print join('', <DATA>) and die "ERROR: source directory not specified, use --fb3 parameter\n"       unless $FB3;
 print join('', <DATA>) and die "ERROR: destination directory not specified, use --json parameter\n" unless $Out;
