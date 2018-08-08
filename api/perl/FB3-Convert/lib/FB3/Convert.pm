@@ -77,6 +77,8 @@ our $ElsMainList2={};
 map {$ElsMainList2->{$_}=undef;} keys %$ElsMainList;
 $ElsMainList2->{p}=undef;
 
+our @AccessImgFormat = ('png','gif','jpg','jpeg','svg');
+
 my %AllowElementsMain = (
   'table' => {
     'allow_attributes' => ['id'],
@@ -747,14 +749,17 @@ sub RealPath {
   my $X = shift;
   my $Path = shift;
   my $Debug = shift;
+  my $Skip = shift;
+
   my $RealPath = undef;
   
   if ($RealPath = Cwd::realpath($Path)) {
     $RealPath =~ s/%20/ /g;
     my $RealPath2 = $RealPath;
     $RealPath2 =~ s/#.*$//g;
-    $RealPath = undef if !-f $RealPath2 && !-d $RealPath2;
+    $RealPath = undef if !$Skip && !-f $RealPath2 && !-d $RealPath2;
   }
+
   $X->Error("Wrong path!\n$! $Path".($Debug?' ('.$Debug.')':'')) unless $RealPath;
   return $RealPath;
 }
