@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="63daccce-0941-4717-81ef-28a0f5d6cff8" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <section id="9b1b4ee8-f11e-59ec-affc-2b8755d2fe39">
-    <p>text <img src="img_0357bf34-b7ef-5042-92ff-5c7247144667"/> [no image in epub file] <img src="img_0357bf34-b7ef-5042-92ff-5c7247144667"/> [no image in epub file] [bad img format] <img src="img_0357bf34-b7ef-5042-92ff-5c7247144667"/> [bad img format] <img src="img_2d825407-b462-5667-8a30-0b47bd4eb411"/> <img src="img_a9500d02-f1d7-515e-9693-0df8791e9e51"/> [bad img format] <img src="img_4746878a-abba-5f67-8a54-4c8d2e943839"/> [bad img format] emptystart  emptyend</p>
+<fb3-body id="261378c6-f9ae-4a1a-9011-3bd1d6d87ce6" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body">
+  <section id="3a71ae86-1427-564b-ae49-5b50a35c835b">
+    <p>text <img id="link_d640e624-c5db-5ef6-94ae-b54461dc2f1b" src="img_be272026-4870-545d-ac32-67f97b62eff5"/> [no image in epub file] <img src="img_be272026-4870-545d-ac32-67f97b62eff5"/> [no image in epub file] [bad img format] <img src="img_be272026-4870-545d-ac32-67f97b62eff5"/> [bad img format] <img src="img_defd7a79-980c-5213-9901-f4bf2393d5b7"/> <img src="img_f61c5e67-9bf4-5c48-8faa-b59c466800ab"/> [bad img format] <img src="img_49ee2207-81f1-58d9-9760-e4aa421937b3"/> [bad img format] emptystart  emptyend <a xlink:href="#link_d640e624-c5db-5ef6-94ae-b54461dc2f1b">href1_true</a> href2_false href3_false href4_false <a xlink:href="#link_d640e624-c5db-5ef6-94ae-b54461dc2f1b"/></p>
   </section>
 </fb3-body>
