@@ -1128,6 +1128,7 @@ sub CleanNodeEmptyId {
 #Процессоры обработки нод
 
 # Копируем картинки, перерисовывает атрибуты картинок на новые
+my %ImgChecked;
 sub ProcessImg {
   my $X = shift;
   my %Args = @_;
@@ -1147,24 +1148,27 @@ sub ProcessImg {
     return $Text;
   }
 
-  $X->_bs('img_info','Тип IMG');
-  my $ImgInfo;
-  my $ImgType;
-  if ($ImgSrcFile =~ /.svg$/ || $ImgSrcFile =~ /broken_3.jpg$/ ) {
-    $ImgInfo = Image::ExifTool::ImageInfo($ImgSrcFile);
-    $ImgType = ref $ImgInfo eq 'HASH' ? $ImgInfo->{'FileType'} : undef;
-  } else {
-    $ImgInfo = [Image::Size::imgsize($ImgSrcFile)];
-    $ImgType = $ImgInfo->[2];
-  }
-  $X->_be('img_info');
+  unless (exists $ImgChecked{$ImgSrcFile}) {
+    $X->_bs('img_info','Тип IMG');
+    my $ImgInfo;
+    my $ImgType;
+    if ($ImgSrcFile =~ /.svg$/) {
+      $ImgInfo = Image::ExifTool::ImageInfo($ImgSrcFile);
+      $ImgType = ref $ImgInfo eq 'HASH' ? $ImgInfo->{'FileType'} : undef;
+    } else {
+      $ImgInfo = [Image::Size::imgsize($ImgSrcFile)];
+      $ImgType = $ImgInfo->[2];
+    }
+    $X->_be('img_info');
 
-  if ( !$ImgType || !grep {lc($ImgType) eq $_} @FB3::Convert::AccessImgFormat ) { #неизвестный формат
-    $X->Msg("Can't detect img".$ImgSrcFile." Replace to text [bad img format]\n","w");
-    my $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
-    my $Text = $Doc->createTextNode('[bad img format]');
-    return $Text;
+    if ( !$ImgType || !grep {lc($ImgType) eq $_} @FB3::Convert::AccessImgFormat ) { #неизвестный формат
+      $X->Msg("Can't detect img".$ImgSrcFile." Replace to text [bad img format]\n","w");
+      my $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
+      my $Text = $Doc->createTextNode('[bad img format]');
+      return $Text;
+    }
   }
+  $ImgChecked{$ImgSrcFile} = 1;
 
   $X->Msg("Find img, try transform: ".$Src."\n","w");
 
