@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="96546cab-d398-40f8-a2bc-3c9e54de9205" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <section id="27accec6-c98f-517e-b08b-41f1bb9c2c8d">
-    <p> <a xlink:href="#link_fe1af746-1c36-5ed7-a282-eb69db77fa00">Table 2-1</a>  SharePoint 2010 Column Types</p>
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body" id="267e3300-7561-477f-a60a-5496e92c7c2c">
+  <section id="b14c683a-2b5d-57e2-891e-5c6a5982b295">
+    <p> Table 2-1  SharePoint 2010 Column Types</p>
     <table>
       <tr>
         <td>

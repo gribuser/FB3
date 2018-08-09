@@ -77,7 +77,7 @@ our $ElsMainList2={};
 map {$ElsMainList2->{$_}=undef;} keys %$ElsMainList;
 $ElsMainList2->{p}=undef;
 
-our @AccessImgFormat = ('png','gif','jpg','jpeg','svg');
+my @AccessImgFormat = ('png','gif','jpg','jpeg','svg');
 
 my %AllowElementsMain = (
   'table' => {
@@ -1350,6 +1350,11 @@ sub _bf {
 
 }
 
+sub isAllowedImageType {
+  my $X = shift;
+  my $ImgType = shift || return;
+  return grep {lc($ImgType) eq $_} @AccessImgFormat;
+}
 
 =head1 LICENSE AND COPYRIGHT
 

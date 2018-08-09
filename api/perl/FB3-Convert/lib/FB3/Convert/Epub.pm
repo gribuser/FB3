@@ -230,7 +230,7 @@ sub Reaper {
   my $AllowElements = $X->{'allow_elements'};
 ### Обработчики нод для epub
   $AllowElements->{'img'} = {
-    'allow_attributes' => ['src','href'],
+    'allow_attributes' => ['src','id','alt','width','min-width','max-width'],
     'processor' => \&ProcessImg,
   };
   $AllowElements->{'a'} = {
@@ -1108,9 +1108,15 @@ sub CleanNodeEmptyId {
           } elsif ($Link eq '') {
             $X->Msg("Find node '$El' without id\n","w");
           }
-          
+
           next unless $El =~ /^(a|span)$/;
-          if ($El eq 'a' && $Link ne '') { #<a> c линками оставим
+          #<a> c действующими линками оставим
+          if ($El eq 'a' && $Link ne ''
+            && (
+              $Link !~ /^#link_/ #только ссылки внутри section нам интересны
+              || exists $X->{'id_list'}->{$X->CutLinkDiez($Link)} #ссылка живая
+            )
+          ) {
             $X->Msg("Find link [$Link]. Skip\n","w");
             next;
           }
@@ -1138,8 +1144,18 @@ sub ProcessImg {
   my $ImgList = $X->{'STRUCTURE'}->{'IMG_LIST'};
   my $Src = $Node->getAttribute('src');
 
+  unless ($Src) {
+    $X->Msg("Can't find img src. Remove img\n","w");
+    my $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
+    my $Text = $Doc->createTextNode('');
+    return $Text;
+  }
+
   #честный абсолютный путь к картинке
-  my $ImgSrcFile = $X->RealPath(FB3::Convert::dirname($X->RealPath( $RelPath ? $X->{'ContentDir'}.'/'.$RelPath : $X->{'ContentDir'},undef,1)).'/'.$Src,undef,1);
+  my $SkipExists = 1; #не падать, если файл отсутствует
+  my $ImgSrcFile = $X->RealPath(
+    FB3::Convert::dirname($X->RealPath( $RelPath ? $X->{'ContentDir'}.'/'.$RelPath : $X->{'ContentDir'}, undef, $SkipExists)).'/'.$Src,
+  undef,$SkipExists);
 
   unless (-f $ImgSrcFile) { #не нашли картинку
     $X->Msg("Can't find img".$ImgSrcFile." Replace to text [no image in epub file]\n","w");
@@ -1161,7 +1177,7 @@ sub ProcessImg {
     }
     $X->_be('img_info');
 
-    if ( !$ImgType || !grep {lc($ImgType) eq $_} @FB3::Convert::AccessImgFormat ) { #неизвестный формат
+    if ( !$ImgType || !$X->isAllowedImageType($ImgType) ) { #неизвестный формат
       $X->Msg("Can't detect img".$ImgSrcFile." Replace to text [bad img format]\n","w");
       my $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
       my $Text = $Doc->createTextNode('[bad img format]');
