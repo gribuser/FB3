@@ -1110,7 +1110,13 @@ sub CleanNodeEmptyId {
           }
 
           next unless $El =~ /^(a|span)$/;
-          if ($El eq 'a' && $Link ne '' && ( $Link !~ /^#link_/ || exists $X->{'id_list'}->{$X->CutLinkDiez($Link)} ) ) { #<a> c действующими линками оставим
+          #<a> c действующими линками оставим
+          if ($El eq 'a' && $Link ne ''
+            && (
+              $Link !~ /^#link_/ #только ссылки внутри section нам интересны
+              || exists $X->{'id_list'}->{$X->CutLinkDiez($Link)} #ссылка живая
+            )
+          ) {
             $X->Msg("Find link [$Link]. Skip\n","w");
             next;
           }
