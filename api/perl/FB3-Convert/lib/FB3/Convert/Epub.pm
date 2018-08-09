@@ -4,6 +4,8 @@ use strict;
 use base 'FB3::Convert';
 use XML::LibXML;
 use File::Basename;
+use Image::ExifTool qw(:Public);
+use Image::Size;
 use Clone qw(clone);
 use FB3::Euristica;
 use utf8;
@@ -1126,6 +1128,7 @@ sub CleanNodeEmptyId {
 #Процессоры обработки нод
 
 # Копируем картинки, перерисовывает атрибуты картинок на новые
+my %ImgChecked;
 sub ProcessImg {
   my $X = shift;
   my %Args = @_;
@@ -1136,7 +1139,36 @@ sub ProcessImg {
   my $Src = $Node->getAttribute('src');
 
   #честный абсолютный путь к картинке
-  my $ImgSrcFile = $X->RealPath(FB3::Convert::dirname($X->RealPath( $RelPath ? $X->{'ContentDir'}.'/'.$RelPath : $X->{'ContentDir'})).'/'.$Src);
+  my $ImgSrcFile = $X->RealPath(FB3::Convert::dirname($X->RealPath( $RelPath ? $X->{'ContentDir'}.'/'.$RelPath : $X->{'ContentDir'},undef,1)).'/'.$Src,undef,1);
+
+  unless (-f $ImgSrcFile) { #не нашли картинку
+    $X->Msg("Can't find img".$ImgSrcFile." Replace to text [no image in epub file]\n","w");
+    my $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
+    my $Text = $Doc->createTextNode('[no image in epub file]');
+    return $Text;
+  }
+
+  unless (exists $ImgChecked{$ImgSrcFile}) {
+    $X->_bs('img_info','Тип IMG');
+    my $ImgInfo;
+    my $ImgType;
+    if ($ImgSrcFile =~ /.svg$/) {
+      $ImgInfo = Image::ExifTool::ImageInfo($ImgSrcFile);
+      $ImgType = ref $ImgInfo eq 'HASH' ? $ImgInfo->{'FileType'} : undef;
+    } else {
+      $ImgInfo = [Image::Size::imgsize($ImgSrcFile)];
+      $ImgType = $ImgInfo->[2];
+    }
+    $X->_be('img_info');
+
+    if ( !$ImgType || !grep {lc($ImgType) eq $_} @FB3::Convert::AccessImgFormat ) { #неизвестный формат
+      $X->Msg("Can't detect img".$ImgSrcFile." Replace to text [bad img format]\n","w");
+      my $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
+      my $Text = $Doc->createTextNode('[bad img format]');
+      return $Text;
+    }
+  }
+  $ImgChecked{$ImgSrcFile} = 1;
 
   $X->Msg("Find img, try transform: ".$Src."\n","w");
 
@@ -1159,7 +1191,7 @@ sub ProcessImg {
     $X->Msg("copy $ImgSrcFile -> $ImgDestFile\n");
     $X->_bs('img_copy','Копирование IMG');
     FB3::Convert::copy($ImgSrcFile, $ImgDestFile) or $X->Error($!." [copy $ImgSrcFile -> $ImgDestFile]");        
-    $X->_be('img_copy','Копирование IMG');
+    $X->_be('img_copy');
   }
 
   $Node->setAttribute('src' => $ImgID);
