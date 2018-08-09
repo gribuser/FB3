@@ -230,7 +230,7 @@ sub Reaper {
   my $AllowElements = $X->{'allow_elements'};
 ### Обработчики нод для epub
   $AllowElements->{'img'} = {
-    'allow_attributes' => ['src','href'],
+    'allow_attributes' => ['src','id','alt','width','min-width','max-width'],
     'processor' => \&ProcessImg,
   };
   $AllowElements->{'a'} = {
@@ -1110,7 +1110,7 @@ sub CleanNodeEmptyId {
           }
           
           next unless $El =~ /^(a|span)$/;
-          if ($El eq 'a' && $Link ne '') { #<a> c линками оставим
+          if ($El eq 'a' && $Link ne '' && exists $X->{'id_list'}->{$X->CutLinkDiez($Link)} ) { #<a> c действующими линками оставим
             $X->Msg("Find link [$Link]. Skip\n","w");
             next;
           }
