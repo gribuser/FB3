@@ -57,6 +57,16 @@ delete $AllEntities->{'quot'};
 delete $AllEntities->{'apos'};
 delete $AllEntities->{'amp'};
 
+my %XMLEsc = (
+    q{>} => '&gt;',
+    q{<} => '&lt;',
+    q{&} => '&amp;',
+    q{"} => '&quot;',
+    q{'} => '&apos;',
+    "\x0d" => '&#xd;'
+);
+my $XMLEscRE = join('', keys %XMLEsc); $XMLEscRE = qr/([$XMLEscRE])/;
+
 #Элементы, которые парсим в контенте и сохраняем в структуру 
 our $ElsMainList = {
   'span'=>undef,
@@ -1207,6 +1217,16 @@ sub ShitFix {
   return $Str;
 }
 
+sub EscapeXMLEntites {
+
+  my $Str = shift;
+
+  return $Str unless $Str;
+
+  $Str =~ s/$XMLEscRE/$XMLEsc{$1}/ge;
+  return $Str;
+}
+
 sub ParseMetaFile {
   my $X = shift;
 
@@ -1226,26 +1246,26 @@ sub ParseMetaFile {
     $xpc->registerNs('fbd', &NS_FB3_DESCRIPTION);
 
     my $ID = ($xpc->findnodes('/fbd:fb3-description')->[0])->getAttribute('id');
-    $DESCRIPTION->{'DOCUMENT-INFO'}->{'ID'} = $ID if defined $ID;
+    $DESCRIPTION->{'DOCUMENT-INFO'}->{'ID'} = EscapeXMLEntites($ID) if defined $ID;
 
     my $TITLE = $xpc->findnodes('/fbd:fb3-description/fbd:title/fbd:main')->[0];
-    $DESCRIPTION->{'TITLE-INFO'}->{'BOOK-TITLE'} = EncodeUtf8($X,$TITLE->string_value) if defined $TITLE;
+    $DESCRIPTION->{'TITLE-INFO'}->{'BOOK-TITLE'} = EscapeXMLEntites(EncodeUtf8($X,$TITLE->string_value)) if defined $TITLE;
 
     my $ANNOTATION = $xpc->findnodes('/fbd:fb3-description/fbd:annotation/fbd:p')->[0];
-    $DESCRIPTION->{'TITLE-INFO'}->{'ANNOTATION'} = EncodeUtf8($X,$ANNOTATION->string_value) if defined $ANNOTATION;
+    $DESCRIPTION->{'TITLE-INFO'}->{'ANNOTATION'} = EscapeXMLEntites(EncodeUtf8($X,$ANNOTATION->string_value)) if defined $ANNOTATION;
 
     my $LANGUAGE = $xpc->findnodes('/fbd:fb3-description/fbd:lang')->[0];
-    $DESCRIPTION->{'DOCUMENT-INFO'}->{'LANGUAGE'} = $LANGUAGE->string_value if defined $LANGUAGE;
+    $DESCRIPTION->{'DOCUMENT-INFO'}->{'LANGUAGE'} = EscapeXMLEntites($LANGUAGE->string_value) if defined $LANGUAGE;
 
-    my @GENRES = map {EncodeUtf8($X,$_->string_value)} ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-classification/fbd:subject'));
+    my @GENRES = map { EscapeXMLEntites(EncodeUtf8($X,$_->string_value)) } ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-classification/fbd:subject'));
     $DESCRIPTION->{'TITLE-INFO'}->{'GENRES'} = [ @GENRES ];
 
     my @AUTHORS;
     foreach my $Subject ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-relations/fbd:subject')) {
-      my $SubjID = $Subject->getAttribute("id");
-      my $SubjLink = $Subject->getAttribute("link");
-      my $SubjPercent = $Subject->getAttribute("percent");
-      my $SubjNAME = $Subject->getElementsByTagName("main");
+      my $SubjID      = EscapeXMLEntites( $Subject->getAttribute("id")           );
+      my $SubjLink    = EscapeXMLEntites( $Subject->getAttribute("link")         );
+      my $SubjPercent = EscapeXMLEntites( $Subject->getAttribute("percent")      );
+      my $SubjNAME    = EscapeXMLEntites( $Subject->getElementsByTagName("main") );
 
       my ($FirstName, $MiddleName, $LastName) = split /\s+/, $SubjNAME, 3;
 
