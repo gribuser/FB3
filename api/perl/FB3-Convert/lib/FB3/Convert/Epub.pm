@@ -1350,9 +1350,9 @@ sub FB3Creator {
  # print Data::Dumper::Dumper($Structure);
  # exit;
   
-  my $GlobalID = $Structure->{'DESCRIPTION'}->{'DOCUMENT-INFO'}->{'ID'};
+  my $GlobalID  = $Structure->{'DESCRIPTION'}->{'DOCUMENT-INFO'}->{'ID'};
   my $TitleInfo = $Structure->{'DESCRIPTION'}->{'TITLE-INFO'};
-  my $DocInfo = $Structure->{'DESCRIPTION'}->{'DOCUMENT-INFO'};
+  my $DocInfo   = $Structure->{'DESCRIPTION'}->{'DOCUMENT-INFO'};
   
   #Пишем body
   $X->Msg("FB3: Create /fb3/body.xml\n","w");
@@ -1414,19 +1414,19 @@ sub FB3Creator {
   open FHcore, ">$FNcore" or $X->Error("$FNcore: $!");
   print FHcore qq{<?xml version="1.0" encoding="UTF-8"?>
   <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/description" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/">
-    <dc:title>}.$TitleInfo->{'BOOK-TITLE'}.qq{</dc:title>
-    <dc:subject>}.$TitleInfo->{'ANNOTATION'}.qq{</dc:subject>
+    <dc:title>}   . FB3::Convert::xmlescape($TitleInfo->{'BOOK-TITLE'}) . qq{</dc:title>
+    <dc:subject>} . FB3::Convert::xmlescape($TitleInfo->{'ANNOTATION'}) . qq{</dc:subject>
     <dc:creator>};
   
   my $c=1;         
   foreach (@{$TitleInfo->{'AUTHORS'}}) {
-    print FHcore $_->{'first-name'}." ".$_->{'last-name'};
+    print FHcore FB3::Convert::xmlescape($_->{'first-name'}." ".$_->{'last-name'});
     print FHcore ", " if $c < scalar @{$TitleInfo->{'AUTHORS'}};
     $c++;
   }
   
   print FHcore qq{</dc:creator>
-    <dc:description>}.$TitleInfo->{'ANNOTATION'}.qq{</dc:description>
+    <dc:description>}.FB3::Convert::xmlescape($TitleInfo->{'ANNOTATION'}).qq{</dc:description>
     <cp:keywords>XML, FictionBook, eBook, OPC</cp:keywords>
     <cp:revision>1.00</cp:revision>
     }.
@@ -1437,7 +1437,7 @@ sub FB3Creator {
   
   $c=1;         
   foreach (@{$TitleInfo->{'GENRES'}}) {
-    print FHcore $_;
+    print FHcore FB3::Convert::xmlescape($_);
     print FHcore ", " if $c < scalar @{$TitleInfo->{'GENRES'}};
     $c++;
   }
@@ -1450,11 +1450,11 @@ sub FB3Creator {
   my $FNdesc="$FB3Path/fb3/description.xml";
   open FHdesc, ">$FNdesc" or $X->Error("$FNdesc: $!");
   print FHdesc qq{<?xml version="1.0" encoding="UTF-8"?>
-<fb3-description xmlns="http://www.fictionbook.org/FictionBook3/description" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" id="}.$GlobalID.qq{" version="1.0">
+<fb3-description xmlns="http://www.fictionbook.org/FictionBook3/description" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" id="}.FB3::Convert::xmlescape($GlobalID).qq{" version="1.0">
   };
 
   print FHdesc qq{<title>
-    <main>}.$TitleInfo->{'BOOK-TITLE'}.qq{</main>
+    <main>} . FB3::Convert::xmlescape($TitleInfo->{'BOOK-TITLE'}) . qq{</main>
   </title>
   };
     
@@ -1463,9 +1463,9 @@ sub FB3Creator {
 
   foreach (@{$TitleInfo->{'AUTHORS'}}) {
 
-    my $First = $_->{'first-name'};
-    my $Middle = $_->{'middle-name'};
-    my $Last = $_->{'last-name'}||"Unknown";
+    my $First  = FB3::Convert::xmlescape($_->{'first-name'} );
+    my $Middle = FB3::Convert::xmlescape($_->{'middle-name'});
+    my $Last   = FB3::Convert::xmlescape($_->{'last-name'}  ) || "Unknown";
 
     print FHdesc qq{<subject link="author" id="}.($_->{'id'}||'00000000-0000-0000-0000-000000000000').qq{">
       <title>
@@ -1487,20 +1487,18 @@ sub FB3Creator {
   print FHdesc qq{</fb3-relations>
   };
 
-  
   print FHdesc qq{<fb3-classification>
     };
   foreach (@{$TitleInfo->{'GENRES'}}) {
-    print FHdesc qq{<subject>}.(exists $GenreTranslate{$_}?$GenreTranslate{$_}:$_).qq{</subject>
+    print FHdesc qq{<subject>} . ( exists $GenreTranslate{$_} ? $GenreTranslate{$_} : FB3::Convert::xmlescape($_) ) . qq{</subject>
     };
   }
   print FHdesc qq{</fb3-classification>
   };
   
-
   print FHdesc qq{<lang>}.$DocInfo->{'LANGUAGE'}.qq{</lang>
   <written>
-    <lang>}.$DocInfo->{'LANGUAGE'}.qq{</lang>
+    <lang>} . FB3::Convert::xmlescape($DocInfo->{'LANGUAGE'}) . qq{</lang>
   </written>
   };
 
@@ -1509,7 +1507,7 @@ sub FB3Creator {
 };
 
   print FHdesc qq{  <annotation>
-    <p>}.$TitleInfo->{'ANNOTATION'}.qq{</p>
+    <p>} . FB3::Convert::xmlescape($TitleInfo->{'ANNOTATION'}) . qq{</p>
   </annotation>
 } if $TitleInfo->{'ANNOTATION'};
 

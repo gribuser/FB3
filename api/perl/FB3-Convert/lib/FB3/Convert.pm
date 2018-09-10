@@ -21,7 +21,7 @@ use XML::Entities::Data;
 use Time::HiRes qw(gettimeofday sleep);
 binmode(STDOUT,':utf8');
 
-our $VERSION = 0.11;
+our $VERSION = 0.13;
 
 =head1 NAME
 
@@ -56,6 +56,24 @@ delete $AllEntities->{'gt'};
 delete $AllEntities->{'quot'};
 delete $AllEntities->{'apos'};
 delete $AllEntities->{'amp'};
+
+my %escapes = (
+  '&'   => '&amp;',
+  '<'  => '&lt;',
+  '>'  => '&gt;',
+  '"'  => '&quot;',
+  '\'' => '&apos;',
+);
+my $xmlesc_rgx = join('|', keys %escapes);
+
+sub xmlescape {
+
+  my $Esc = shift;
+  return unless defined $Esc;
+
+  $Esc =~ s/($xmlesc_rgx)/$escapes{$1}/gso;
+  return $Esc;
+}
 
 #Элементы, которые парсим в контенте и сохраняем в структуру 
 our $ElsMainList = {
@@ -1023,21 +1041,21 @@ sub BuildOuterMeta {
 
   my $Meta = $Args{'meta'};
 
-  my $ID = $Meta->{'id'};
-  my $LANGUAGE = $Meta->{'language'};
-  my $TITLE = $Meta->{'title'};
+  my $ID         = $Meta->{'id'};
+  my $LANGUAGE   = $Meta->{'language'};
+  my $TITLE      = $Meta->{'title'};
   my $ANNOTATION = $Meta->{'annotation'};
-  my $GENRES = $Meta->{'genres'};
-  my $AUTHORS = $Meta->{'authors'};
-  my $DATE = $Meta->{'date'};
+  my $GENRES     = $Meta->{'genres'};
+  my $AUTHORS    = $Meta->{'authors'};
+  my $DATE       = $Meta->{'date'};
 
   my $MetaFile = $X->{'metadata'} if -s $X->{'metadata'};
 	if (-s $MetaFile) {
     my $xpc = XML::LibXML::XPathContext->new($Parser->load_xml(
-      location =>  $MetaFile,
+      location        =>  $MetaFile,
       expand_entities => 0,
-      no_network => 1,
-      load_ext_dtd => 0
+      no_network      => 1,
+      load_ext_dtd    => 0
     ));
     $xpc->registerNs('fbd', &NS_FB3_DESCRIPTION);
 		$ID = ($xpc->findnodes('/fbd:fb3-description')->[0])->getAttribute('id');
@@ -1045,13 +1063,13 @@ sub BuildOuterMeta {
 
   my $DESCRIPTION = $X->{'STRUCTURE'}->{'DESCRIPTION'};
 
-  $DESCRIPTION->{'DOCUMENT-INFO'}->{'ID'} = $ID if defined $ID;
+  $DESCRIPTION->{'DOCUMENT-INFO'}->{'ID'}       = $ID       if defined $ID;
   $DESCRIPTION->{'DOCUMENT-INFO'}->{'LANGUAGE'} = $LANGUAGE if defined $LANGUAGE;
-  $DESCRIPTION->{'DOCUMENT-INFO'}->{'DATE'} = {'attributes'=>{'value'=>$DATE}} if defined $DATE;
-  $DESCRIPTION->{'TITLE-INFO'}->{'BOOK-TITLE'} = $TITLE if defined $TITLE;
-  $DESCRIPTION->{'TITLE-INFO'}->{'ANNOTATION'} = $ANNOTATION if defined $ANNOTATION;
+  $DESCRIPTION->{'DOCUMENT-INFO'}->{'DATE'}     = {'attributes'=>{'value'=>$DATE}} if defined $DATE;
+  $DESCRIPTION->{'TITLE-INFO'}->{'BOOK-TITLE'}  = $TITLE      if defined $TITLE;
+  $DESCRIPTION->{'TITLE-INFO'}->{'ANNOTATION'}  = $ANNOTATION if defined $ANNOTATION;
 
-  $DESCRIPTION->{'TITLE-INFO'}->{'GENRES'} = [ map { trim($X,$_) } split /,/,$GENRES ] if defined $GENRES;
+  $DESCRIPTION->{'TITLE-INFO'}->{'GENRES'}  = [ map { trim($X,$_)            } split /,/,$GENRES  ] if defined $GENRES;
   $DESCRIPTION->{'TITLE-INFO'}->{'AUTHORS'} = [ map { BuildAuthorName($X,$_) } split /,/,$AUTHORS ] if defined $AUTHORS;
 
 }
@@ -1065,10 +1083,10 @@ sub BuildAuthorName  {
   }
 
   return {
-    'id' => UUID(),
-    'first-name' => $FirstName,
+    'id'          => UUID(),
+    'first-name'  => $FirstName,
     'middle-name' => $MiddleName,
-    'last-name' => $LastName,
+    'last-name'   => $LastName,
   };
 }
 
@@ -1218,10 +1236,10 @@ sub ParseMetaFile {
  
     Msg($X,"Parse metafile ".$MetaFile."\n");
     my $xpc = XML::LibXML::XPathContext->new($Parser->load_xml(
-      location => $MetaFile,
+      location        => $MetaFile,
       expand_entities => 0,
-      no_network => 1,
-      load_ext_dtd => 0
+      no_network      => 1,
+      load_ext_dtd    => 0
     ));
     $xpc->registerNs('fbd', &NS_FB3_DESCRIPTION);
 
@@ -1237,15 +1255,15 @@ sub ParseMetaFile {
     my $LANGUAGE = $xpc->findnodes('/fbd:fb3-description/fbd:lang')->[0];
     $DESCRIPTION->{'DOCUMENT-INFO'}->{'LANGUAGE'} = $LANGUAGE->string_value if defined $LANGUAGE;
 
-    my @GENRES = map {EncodeUtf8($X,$_->string_value)} ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-classification/fbd:subject'));
+    my @GENRES = map { EncodeUtf8($X,$_->string_value) } ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-classification/fbd:subject'));
     $DESCRIPTION->{'TITLE-INFO'}->{'GENRES'} = [ @GENRES ];
 
     my @AUTHORS;
     foreach my $Subject ($xpc->findnodes('/fbd:fb3-description/fbd:fb3-relations/fbd:subject')) {
-      my $SubjID = $Subject->getAttribute("id");
-      my $SubjLink = $Subject->getAttribute("link");
-      my $SubjPercent = $Subject->getAttribute("percent");
-      my $SubjNAME = $Subject->getElementsByTagName("main");
+      my $SubjID      = $Subject->getAttribute("id")          ;
+      my $SubjLink    = $Subject->getAttribute("link")        ;
+      my $SubjPercent = $Subject->getAttribute("percent")     ;
+      my $SubjNAME    = $Subject->getElementsByTagName("main");
 
       my ($FirstName, $MiddleName, $LastName) = split /\s+/, $SubjNAME, 3;
 
@@ -1255,12 +1273,12 @@ sub ParseMetaFile {
       }
 
       push @AUTHORS, {
-        'id' => $SubjID,
-        'link' => $SubjLink,
+        'id'      => $SubjID,
+        'link'    => $SubjLink,
         'percent' => $SubjPercent,
-        'first-name' => EncodeUtf8($X,$FirstName),
+        'first-name'  => EncodeUtf8($X,$FirstName),
         'middle-name' => EncodeUtf8($X,$MiddleName),
-        'last-name' => EncodeUtf8($X,$LastName),
+        'last-name'   => EncodeUtf8($X,$LastName),
       };
     }
     $DESCRIPTION->{'TITLE-INFO'}->{'AUTHORS'} = [ @AUTHORS ];
