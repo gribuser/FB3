@@ -1247,7 +1247,7 @@ sub ParseMetaFile {
     $DESCRIPTION->{'DOCUMENT-INFO'}->{'ID'} = $ID if defined $ID;
 
     my $TITLE = $xpc->findnodes('/fbd:fb3-description/fbd:title/fbd:main')->[0];
-    $DESCRIPTION->{'TITLE-INFO'}->{'BOOK-TITLE'} = EncodeUtf8($X,html_trim($X,$TITLE->string_value)) if defined $TITLE;
+    $DESCRIPTION->{'TITLE-INFO'}->{'BOOK-TITLE'} = EncodeUtf8($X,$TITLE->string_value) if defined $TITLE;
 
     my $ANNOTATION = $xpc->findnodes('/fbd:fb3-description/fbd:annotation/fbd:p')->[0];
     $DESCRIPTION->{'TITLE-INFO'}->{'ANNOTATION'} = EncodeUtf8($X,$ANNOTATION->string_value) if defined $ANNOTATION;
