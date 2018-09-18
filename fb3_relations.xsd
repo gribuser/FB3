@@ -313,6 +313,36 @@
 					<documentation xml:lang="ru">Переиздание</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="another_translation">
+                                <annotation>
+                                        <documentation xml:lang="ru">Другой перевод</documentation>
+                                </annotation>
+                        </enumeration>
+                        <enumeration value="another_translation_alt_media">
+                                <annotation>
+                                        <documentation xml:lang="ru">Другой перевод на другом носителе</documentation>
+                                </annotation>
+                        </enumeration>
+                        <enumeration value="compilation_another_translation">
+                                <annotation>
+                                        <documentation xml:lang="ru">Сборник (другой перевод)</documentation>
+                                </annotation>
+                        </enumeration>
+                        <enumeration value="part_another_translation">
+                                <annotation>
+                                        <documentation xml:lang="ru">Часть (другой перевод)</documentation>
+                                </annotation>
+                        </enumeration>
+                        <enumeration value="compilation_alt_media">
+                                <annotation>
+                                        <documentation xml:lang="ru">Сборник (другой носитель)</documentation>
+                                </annotation>
+                        </enumeration>
+                        <enumeration value="part_alt_media">
+                                <annotation>
+                                        <documentation xml:lang="ru">Часть (другой носитель)</documentation>
+                                </annotation>
+                        </enumeration>
 			<enumeration value="translation_to_other_lang">
 				<annotation>
 					<documentation xml:lang="ru">Перевод на другой язык</documentation>
