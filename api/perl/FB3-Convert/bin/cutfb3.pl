@@ -132,8 +132,9 @@ sub ProceedNode {
 		my @SectionChildren = $Node->nonBlankChildNodes;
 		$Node->setAttribute('clipped', 'true') if $Finish;
 		if (scalar @SectionChildren == 0 || (scalar @SectionChildren == 1 && $SectionChildren[0]->nodeName eq 'title')
-				|| (scalar @SectionChildren == 2 && $SectionChildren[0]->nodeName eq 'title' && $SectionChildren[1]->nodeName eq 'epigraph')) { # проверка, что в секции нет ничего кроме заголовка
-			$SectionChildren[1]->unbindNode() if ($SectionChildren[1] && $SectionChildren[1]->nodeName eq 'epigraph');
+				|| (scalar @SectionChildren == 2 && $SectionChildren[0]->nodeName eq 'title' && ($SectionChildren[1]->nodeName eq 'epigraph' || $SectionChildren[1]->nodeName eq 'annotation'))
+		) { # проверка, что в секции нет ничего кроме заголовка
+			$SectionChildren[1]->unbindNode() if ($SectionChildren[1] && ($SectionChildren[1]->nodeName eq 'epigraph' || $SectionChildren[1]->nodeName eq 'annotation'));
 			my $ClippedNode = XML::LibXML::Element->new('clipped');
 			$Node->appendChild($ClippedNode);
 		}
