@@ -19,7 +19,7 @@ sub Reaper {
   my %Args = @_;
   my $Source = $Args{'source'} || $X->Error("Source path not defined");
 	my $TmpDir;
-	if (-d $Source) {
+	if (!$X->{'src_type'} && -d $Source) {
 		$TmpDir = $Source;
 		opendir(DH, $Source);
 		for (readdir(DH)){
@@ -31,7 +31,7 @@ sub Reaper {
 		closedir(DH);
 	}
 
-	$X->Error("File '.fb2' not defined") unless (lc($Source) =~ /\.fb2$/);
+	$X->Error("File '.fb2' not defined") if (!$X->{'src_type'} && lc($Source) !~ /\.fb2$/);
 
   my $XC = XML::LibXML::XPathContext->new();
 	

@@ -233,9 +233,16 @@ sub new {
   Error($X,"source file not defined") unless $SourcePath;
   Error($X,"source file '".$SourcePath."' not exists") unless -f $SourcePath;
 
-  $SourcePath =~ /\.([^\.]+)$/;
-  my $FileType = $1;
+  my $FileType;
+  if ($Args{'src_type'}) {
+    $FileType = $Args{'src_type'};
+  } else {
+    $SourcePath =~ /\.([^\.]+)$/;
+    $FileType = $1;
+  }
+
   Error($X, "File '".$SourcePath."' format '".$FileType."' not detected") unless $MODULES{$FileType};
+  
   my $Sub = $FileType;
 
   my $Module = $MODULES{$Sub}->{class};
@@ -268,6 +275,7 @@ sub new {
   $X->{'bench_list'} = {}; #бенчмарк режим
 	$X->{'simple'} = $Args{'simple'} ? 1 : 0; #Преобразование без создания структуры
 	$X->{'xsl_path'} = $Args{'xsl_path'};
+	$X->{'src_type'} = $Args{'src_type'} if exists $MODULES{$Args{'src_type'}};
 
 	unless ($Args{'simple'}) {
 		#Наша внутренняя структура данных конвертора. шаг влево  - расстрел
@@ -381,7 +389,7 @@ sub Reap {
   $X->_be('unpack');
 
   $X->_bs('reap','Потрошение исходного файла, cборка данных');
-  $Processor->{'class'}->Reaper($X, source => ($File || $X->{'Source'}));
+  $Processor->{'class'}->Reaper($X, source => ($File || $X->{'Source'}), src_type=>$X->{'src_type'});
   $X->_be('reap');
 
   return $X->{'STRUCTURE'};

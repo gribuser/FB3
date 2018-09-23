@@ -12,6 +12,7 @@ GetOptions(
   'verbose|v:1' => \$OPT{'verbose'},           
   'help|h' => \$OPT{'help'},
   'source|s=s' => \$OPT{'source'},
+  'src_type|st=s' => \$OPT{'src_type'},
   'destination_dir|dd=s' => \$OPT{'dd'},
   'destination_file|df=s' => \$OPT{'df'},
   'xsd=s'	=> \$OPT{xsd_dir},
@@ -23,7 +24,6 @@ GetOptions(
   'phantomjs|phjs=s' => \$OPT{'phjs'},
   'euristic|e' => \$OPT{'eur'},
   'euristic_debug|ed=s' => \$OPT{'eur_deb'},
-
 
   'meta_id=s' => \$OPT{'meta_id'},
   'meta_lang|meta_language=s' => \$OPT{'meta_lang'},
@@ -59,6 +59,7 @@ unless ($OPT{'source'}) {
 
 my $Obj = new FB3::Convert(
   'source' => $OPT{'source'},
+  'src_type' => $OPT{'src_type'},
   'destination_dir' => $OPT{'dd'},
   'destination_file' => $OPT{'df'},
   'verbose' => $OPT{'verbose'},
@@ -113,10 +114,11 @@ $Obj->_bf();
 sub help {
   print <<_END
   
-  USAGE: convert2fb3.pl --source|s= <input.file> [--verbose|v] [--help|h] [(--destination_dir|dd <dest.fb3>) | (--destination_file|df)]  [(--name|n)] [--validate|vl=] [--euristic|e] [--euristic_debug|ed] [--phantomjs|phjs]
+  USAGE: convert2fb3.pl --source|s= <input.file> [--verbose|v] [--help|h] [(--destination_dir|dd <dest.fb3>) | (--destination_file|df)] [--src_type|st] [(--name|n)] [--validate|vl=] [--euristic|e] [--euristic_debug|ed] [--phantomjs|phjs]
   
   --help : print this text
   --verbose : print processing status. Show parsing warnings if Verbose > 1
+  --src_type : source format (fb2|epub)
   --source : path to source file
   --destination_dir : path for non zipped fb3
   --destination_file :  path for zipped fb3
