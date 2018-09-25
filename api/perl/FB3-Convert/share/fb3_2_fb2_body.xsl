@@ -179,7 +179,7 @@
 	</xsl:template>
 
 	<xsl:template match="fb3b:a">
-		<a l:href="{ltr:RplId(@l:href)}"><xsl:apply-templates/></a>
+		<a l:href="{ltr:RplLocalHref(ltr:RplId(@l:href),'u')}"><xsl:apply-templates/></a>
 	</xsl:template>
 
 	<xsl:template match="fb3b:note">

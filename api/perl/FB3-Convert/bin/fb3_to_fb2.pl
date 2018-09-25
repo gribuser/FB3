@@ -274,7 +274,17 @@ sub TransformXML{
       return $Str;
     }
   );
-	
+
+  $Xslt->register_function('LTR', 'RplLocalHref', sub {
+      my $Str    = shift;
+      my $Prefix = shift;
+      if ($Str =~ /^#(.+)/) {
+        $Str = '#'.$Prefix.$1;
+      }
+      return $Str;
+    }
+  );
+
   my $Source = $Parser->parse_string($XML);
 	my $StyleDoc = $Parser->parse_file($XSL);
 	my $Stylesheet = $Xslt->parse_stylesheet($StyleDoc);
