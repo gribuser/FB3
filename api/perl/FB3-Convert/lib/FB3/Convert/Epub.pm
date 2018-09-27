@@ -230,7 +230,9 @@ sub Reaper {
   my $AllowElements = $X->{'allow_elements'};
 ### Обработчики нод для epub
   $AllowElements->{'img'} = {
-    'allow_attributes' => ['src','id','alt','width','min-width','max-width'],
+    'allow_attributes' => ['src','id','alt'
+      #,'width',#пока не подготовлен
+    ],
     'processor' => \&ProcessImg,
   };
   $AllowElements->{'a'} = {
