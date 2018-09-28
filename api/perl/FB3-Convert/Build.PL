@@ -32,6 +32,8 @@ my $builder = Module::Build->new(
         'XML::Diff' => 0,
         'Image::Info' => 0,
         'JSON::Path' => 0,
+        'Image::Size' => 0,
+        'Image::ExifTool' => 0,
     },
     script_files => [qw{
       bin/convert2fb3.pl
