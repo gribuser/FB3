@@ -123,7 +123,7 @@ sub Reaper {
 		next if scalar $XPC->findnodes('./fb:p|./fb:poem', $Cite);
 
 		# если не нашли ни заголовков ни текста -- удаляем цитату и идём дальше
-		my @Titles = $XPC->findnodes('./fb:title|./fb:subtitle', $Cite);
+		my @Titles = $XPC->findnodes('./fb:subtitle', $Cite);
 		unless ( scalar @Titles ) {
 
 			$Cite->unbindNode();
@@ -146,6 +146,11 @@ sub Reaper {
 			}
 
 			$Title->unbindNode();
+		}
+
+		for my $EmptyLine ( $XPC->findnodes('./fb:subtitle/following-sibling::empty-line', $Cite) ) {
+
+			$EmptyLine->unbindNode();
 		}
 	}
 
