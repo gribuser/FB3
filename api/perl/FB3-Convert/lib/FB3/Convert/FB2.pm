@@ -116,6 +116,39 @@ sub Reaper {
 		CreateEpigraph($FB2Doc, $Cite->parentNode, @SetInEpigraph); # сбросим хвост
 	}
 
+	# приведём в порядок цитаты без текста, только с заголовками
+	for my $Cite ( $XPC->findnodes('//fb:section/fb:cite', $FB2Doc )) {
+
+		# текст циаты найден, всё в порядке, идём дальше
+		next if scalar $XPC->findnodes('./fb:p|./fb:poem', $Cite);
+
+		# если не нашли ни заголовков ни текста -- удаляем цитату и идём дальше
+		my @Titles = $XPC->findnodes('./fb:title|./fb:subtitle', $Cite);
+		unless ( scalar @Titles ) {
+
+			$Cite->unbindNode();
+			next;
+		}
+
+		for my $Title ( @Titles ) {
+
+			for my $Node ( $XPC->findnodes('*', $Title) ) {
+
+				$Cite->appendChild($Node);
+			}
+
+			if ( my $Text = $Title->textContent ) {
+
+				my $PNode = $FB2Doc->createElement('p');
+				$PNode->appendTextNode($Text);
+
+				$Cite->appendChild($PNode);
+			}
+
+			$Title->unbindNode();
+		}
+	}
+
 	# Работаем с картинками, которые нужно выделить в div или section
 	for my $ImgNode ( $XPC->findnodes('//fb:section[ancestor::fb:body[not(@name="notes")]]/fb:image', $FB2Doc )) {
 		# Ищем подпись. Все <p> до <empty-line/>, но не более 300 символов.
