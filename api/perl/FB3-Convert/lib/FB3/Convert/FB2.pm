@@ -119,6 +119,12 @@ sub Reaper {
 	# приведём в порядок цитаты без текста, только с заголовками
 	for my $Cite ( $XPC->findnodes('//fb:section/fb:cite', $FB2Doc )) {
 
+		# <empty-line/> сразу после <subtitle/> недопустимы
+		for my $EmptyLine ( $XPC->findnodes('./fb:subtitle/following-sibling::fb:empty-line', $Cite) ) {
+
+			$EmptyLine->unbindNode();
+		}
+
 		# текст циаты найден, всё в порядке, идём дальше
 		next if scalar $XPC->findnodes('./fb:p|./fb:poem', $Cite);
 
@@ -146,11 +152,6 @@ sub Reaper {
 			}
 
 			$Title->unbindNode();
-		}
-
-		for my $EmptyLine ( $XPC->findnodes('./fb:subtitle/following-sibling::empty-line', $Cite) ) {
-
-			$EmptyLine->unbindNode();
 		}
 	}
 
