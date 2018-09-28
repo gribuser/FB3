@@ -193,7 +193,7 @@ if (@Preamble &&  (my $RootBody = $xc->findnodes("/fb3:fb3-body")->[0]) ){
 ## change span id
 #span нужно вынести в ближайший родительский block-level
 my $ChangedBySpan=0;
-foreach my $Span ($xc->findnodes("/fb3:fb3-body/fb3:section/fb3:p//fb3:span")) {
+foreach my $Span ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:p//fb3:span")) {
   my $SpanID = $Span->getAttribute('id') || next;
   my $Parent = $Span;
   while ($Parent = $Parent->parentNode()) {
