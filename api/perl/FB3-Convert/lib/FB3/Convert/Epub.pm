@@ -1071,8 +1071,18 @@ sub CleanTitle {
   my $Node = shift;
 
   return $Node unless ref $Node eq 'ARRAY';
+
   foreach my $Item (@$Node) {
-    $Item = undef if ref $Item eq 'HASH' && exists $Item->{'p'} && !scalar @{$Item->{'p'}->{'value'}};  
+    $Item = undef
+      if ref $Item eq 'HASH' && exists $Item->{'p'} &&
+      ( 
+        (
+        ref $Item->{'p'}->{'value'} eq 'ARRAY' && !scalar @{$Item->{'p'}->{'value'}}
+        || !grep {$_ =~ /[^\s\t]+/} @{$Item->{'p'}->{'value'}}
+        )
+        || $Item->{'p'}->{'value'} =~ /^[\s\t]*$/
+      );  
+
   }
 
   my @Ret;
