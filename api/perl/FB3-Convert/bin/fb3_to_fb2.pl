@@ -190,6 +190,27 @@ if (@Preamble &&  (my $RootBody = $xc->findnodes("/fb3:fb3-body")->[0]) ){
   $BodyXML = $RootBody->toString();
 }
 
+## change title id
+#title-id нужно вынести в ближайший дочерний p
+my $ChangedByTitle=0;
+foreach my $Title ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:title")) {
+  my $TitleID = $Title->getAttribute('id') || next;
+  foreach my $Child ($Title->childNodes()) {
+    if (lc($Child->nodeName()) eq 'p') { #в title мы железно ожидаем <p>
+      my $ChildID = $Child->getAttribute('id');
+      if ($ChildID) {
+        #уже есть id, придется менять линки в документе на него
+        $LinkRels{$TitleID} = $ChildID; 
+      } else {
+        $Child->setAttribute('id' => $TitleID);
+        $ChangedByTitle = 1;
+      }
+      last;
+    }
+  }
+}
+## /change title id
+
 ## change span id
 #span нужно вынести в ближайший родительский block-level
 #span затем будет выкушен в xsl
@@ -211,12 +232,11 @@ foreach my $Span ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:p//fb3:span")) 
     }
   }
 }
-
-if ($ChangedBySpan) {
-  my $RootForSpan = $xc->findnodes("/fb3:fb3-body")->[0];
-  $BodyXML = $RootForSpan->toString();
-}
 ## /change span id
+if ($ChangedByTitle || $ChangedBySpan) {
+  my $RootNode = $xc->findnodes("/fb3:fb3-body")->[0];
+  $BodyXML = $RootNode->toString();
+}
 
 my $FB2Body = TransformXML($BodyXML, XSL_FB3_TO_FB2_BODY);
 print "Transform Body ok\n" if $OPT{'verbose'};
