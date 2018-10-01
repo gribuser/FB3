@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body id="31c25f08-6d4e-4e6d-8eae-5a2387cc383d" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body">
+  <section id="5a32dfa4-add4-528c-8859-a6b5d7732de7">
+    <section id="acafad1f-bbb2-4e22-83fd-f7b4d17b1de3">
+      <title>
+        <p>  FAIL1  </p>
+      </title>
+      <p>TEXT1</p>
+    </section>
+    <section id="0ef549f4-cc8d-48b3-9910-3316abd38ff9">
+      <title>
+        <p>FAIL2</p>
+      </title>
+      <p>TEXT2</p>
+    </section>
+    <section id="24d2a94b-d14e-4ea2-811a-0e08cbf8e967">
+      <title>
+        <p>FAIL3</p>
+      </title>
+      <p>TEXT3</p>
+      <p>TEXT4</p>
+      <p>TEXT5</p>
+      <p>TEXT6</p>
+      <p>TEXT7</p>
+    </section>
+  </section>
+</fb3-body>
