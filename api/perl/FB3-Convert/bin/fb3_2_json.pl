@@ -671,7 +671,7 @@ sub EscString{
 	return unless defined $Esc;
 	$Esc = DecodeUtf8($Esc." ");
 	$Esc =~ s/(["\\])/\\$1/g;
-	$Esc =~ s/\r?\n\r?/ /g;
+	$Esc =~ s/(?:\r?\n\r?)|(?:\t)/ /g;
 	$Esc =~ s/ $//;
 	return $Esc;
 }
