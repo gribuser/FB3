@@ -82,16 +82,17 @@ ok(1,'Test ok');
 exit;
 
 sub PhantomIsSupport {
+
   my $Supp = FindFile('phantomjs', [split /:/,$ENV{'PATH'}]);
 
   if ($Supp) {
     diag('phantomjs founded ['.$Supp.']. Euristic enabled');
-  } else {
-    diag('phantomjs not found. Euristic skipped. see <http://phantomjs.org/>');
-		return;
+    $ENV{'QT_QPA_PLATFORM'} = 'offscreen'; # NOTE to avoid `QXcbConnection: Could not connect to display' error
+    return 1;
   }
 
-  return 1;
+  diag('phantomjs not found. Euristic skipped. see <http://phantomjs.org/>');
+  return 0;
 }
 
 sub FindFile {
