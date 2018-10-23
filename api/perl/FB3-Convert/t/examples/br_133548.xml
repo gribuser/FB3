@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="f96d7668-eab8-4822-984c-6493a0f032b9">
+  <section id="856772ec-7e65-519f-a14f-3c7185f1e16d">
+    <title>
+      <p>hello</p><p>world</p>
+    </title>
+    <p>text</p><p></p><p></p><p>end text</p>
+  </section>
+</fb3-body>

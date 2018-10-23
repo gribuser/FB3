@@ -250,6 +250,8 @@ sub Reaper {
     processor => \&TransformTo,
     processor_params => ['em']
   };
+  $AllowElements->{'br'} = { #мы его потом превратим в параграф
+  };
   $AllowElements->{'u'} = {
     'allow_attributes' => [],
     processor => \&TransformTo,
@@ -1396,7 +1398,9 @@ sub FB3Creator {
   }
 
   open FHbody, ">$FNbody" or $X->Error("$FNbody: $!");
-  print FHbody $Body->toString(1);
+  my $BodyString = $Body->toString(1);
+  $BodyString =~ s/<br\/>/<\/p><p>/g; #здесь уже правильный fb3, чистый и с параграфами, вот только <br/> нужно превратить в </p><p> 
+  print FHbody $BodyString;
   close FHbody;
 
   #Пишем мету
