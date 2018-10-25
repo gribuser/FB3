@@ -188,7 +188,11 @@
   <xsl:template match="fb:annotation">
     <annotation><xsl:apply-templates/></annotation>
   </xsl:template>
-  
+
+  <xsl:template match="fb:blockquote">
+    <blockquote><xsl:apply-templates/></blockquote>
+  </xsl:template>
+
   <!-- cite/text-author превращаем либо просто в subscription, либо просто в blockquote -->
   <xsl:template match="fb:cite[fb:text-author and count(fb:text-author) = count(*)]">
     <xsl:choose>

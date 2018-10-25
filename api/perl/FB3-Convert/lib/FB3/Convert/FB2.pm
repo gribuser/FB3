@@ -116,6 +116,23 @@ sub Reaper {
 		CreateEpigraph($FB2Doc, $Cite->parentNode, @SetInEpigraph); # сбросим хвост
 	}
 
+	#<poem> место в только в <section>. Другие заменяем на <blockquote>
+	for my $Poem ( $XPC->findnodes('//fb:poem', $FB2Doc )) {
+		if ($Poem->parentNode()->nodeName() ne 'section') {
+			my $BlockNode = $FB2Doc->createElement('blockquote');
+      foreach my $ChildInside ($Poem->getChildnodes) {
+        if ($ChildInside->nodeName() eq 'stanza') {
+					foreach my $StanzaInside ($ChildInside->getChildnodes) {
+						$BlockNode->addChild($StanzaInside->cloneNode(1));
+					}
+				} else {
+					$BlockNode->addChild($ChildInside->cloneNode(1));
+				}
+			}
+			$Poem->replaceNode($BlockNode);
+		}
+	}
+
 	# приведём в порядок цитаты без текста, только с заголовками
 	for my $Cite ( $XPC->findnodes('//fb:section/fb:cite', $FB2Doc )) {
 

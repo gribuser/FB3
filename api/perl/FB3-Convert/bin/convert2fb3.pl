@@ -114,20 +114,20 @@ $Obj->_bf();
 sub help {
   print <<_END
   
-  USAGE: convert2fb3.pl --source|s= <input.file> [--verbose|v] [--help|h] [(--destination_dir|dd <dest.fb3>) | (--destination_file|df)] [--src_type|st] [(--name|n)] [--validate|vl=] [--euristic|e] [--euristic_debug|ed] [--phantomjs|phjs]
+  USAGE: convert2fb3.pl --source|s= <input.file> [--verbose|v] [--help|h] [--destination_dir|dd <dest.fb3> | --destination_file|df] [--src_type|st] [--name|n] [--metadata|md] [--validate|vl=] [--euristic|e] [--euristic_debug|ed] [--phantomjs|phjs]
   
-  --help : print this text
-  --verbose : print processing status. Show parsing warnings if Verbose > 1
-  --src_type : source format (fb2|epub)
-  --source : path to source file
-  --destination_dir : path for non zipped fb3
-  --destination_file :  path for zipped fb3
-  --metadata : XML meta description file
-  --name : show name of reaped epub file
-  --validate : don't convert, only validate fb3 file from path
-  --euristic : try euristic analize for detect strange titles
-  --euristic_debug : path to dir for euristica debug
-  --phantomjs|phjs : path to binary 'phantomjs'. Must be installed for euristica analize titles <http://phantomjs.org/> (with --e opt)
+  --help|h              : print this text
+  --verbose|v           : print processing status. Show parsing warnings if Verbose > 1
+  --src_type|st         : source format (fb2|epub)
+  --source|s            : path to source file
+  --destination_dir|dd  : path for non zipped fb3
+  --destination_file|df :  path for zipped fb3
+  --metadata|md         : XML meta description file
+  --name|n              : show name of reaped epub file
+  --validate|vl         : don't convert, only validate fb3 file from path
+  --euristic|e          : try euristic analize for detect strange titles
+  --euristic_debug|ed   : path to dir for euristica debug
+  --phantomjs|phjs      : path to binary 'phantomjs'. Must be installed for euristica analize titles <http://phantomjs.org/> (with --e opt)
 
   META:
   --meta_id
@@ -135,7 +135,7 @@ sub help {
   --meta_title
   --meta_annotation
   --meta_date
-  --meta_genres : can be ',' separated
+  --meta_genres  : can be ',' separated
   --meta_authors : "first middle last". full names can be ',' separated
 
 _END
