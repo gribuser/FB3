@@ -133,6 +133,22 @@ sub Reaper {
 		}
 	}
 
+	#<body>some</body><body><title> все склеивает в невалидный вид
+	#если кол-во <body> < 2 или нет body/title, можно оставить как есть
+	if (scalar @{$XPC->findnodes('//fb:body[not(@name="notes")]', $FB2Doc)} > 1) {
+		#иначе в каждый <body> c <title> обернем <section>
+		for my $TitleNode ($XPC->findnodes('//fb:body[not(@name="notes")]/fb:title', $FB2Doc )) {
+			my $BodyNode = $TitleNode->parentNode();
+			my $SecNode = $FB2Doc->createElement('section');
+			$SecNode->setAttribute('id' => $FB2IdNode);
+			foreach my $ChildInside ($BodyNode->getChildnodes) {
+				$SecNode->addChild($ChildInside->cloneNode(1));
+				$BodyNode->removeChild($ChildInside);
+			}
+			$BodyNode->addChild($SecNode);
+		}
+	}
+
 	# приведём в порядок цитаты без текста, только с заголовками
 	for my $Cite ( $XPC->findnodes('//fb:section/fb:cite', $FB2Doc )) {
 
