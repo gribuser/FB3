@@ -20,7 +20,7 @@ diag( "Testing result of body.xml, Perl $], $^X" );
 
 my $Diff = XML::Diff->new();
 
-my $DIR = dirname(__FILE__).'/examples';
+my $DIR = dirname(__FILE__).'/examples/epub';
 opendir(my $DH, $DIR) || die "Can't opendir $DIR: $!";
 my @Epubs = grep { $_ =~ /.+\.epub$/ && -f $DIR."/".$_ } readdir($DH);
 closedir $DH;
@@ -87,7 +87,7 @@ sub PhantomIsSupport {
 
   if ($Supp) {
     diag('phantomjs founded ['.$Supp.']. Euristic enabled');
-    $ENV{'QT_QPA_PLATFORM'} = 'offscreen'; # NOTE to avoid `QXcbConnection: Could not connect to display' error
+    #$ENV{'QT_QPA_PLATFORM'} = 'offscreen'; # NOTE to avoid `QXcbConnection: Could not connect to display' error
     return 1;
   }
 
