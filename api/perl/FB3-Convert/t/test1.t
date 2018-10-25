@@ -25,7 +25,7 @@ my $DIR1 = dirname(__FILE__).'/examples/fb2';
 opendir(my $DH1, $DIR1) || die "Can't opendir $DIR1: $!";
 my @FB2s = grep { $_ =~ /.+\.fb2$/ && -f $DIR1."/".$_ } readdir($DH1);
 closedir $DH1;
-
+diag("Testing FB2 files");
 foreach my $FB2File (sort{Num($a)<=>Num($b)} @FB2s ) {
   $FB2File =~ m/^(.+)\.fb2$/;
   my $FName = $1;
@@ -66,7 +66,7 @@ my @Epubs = grep { $_ =~ /.+\.epub$/ && -f $DIR2."/".$_ } readdir($DH2);
 closedir $DH2;
 
 my $PHS = PhantomIsSupport();
-
+diag("Testing EPUB files");
 foreach my $EpubFile (sort{Num($a)<=>Num($b)} @Epubs ) {
 
   $EpubFile =~ m/^(.+)\.epub$/;
