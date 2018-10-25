@@ -87,7 +87,7 @@ sub PhantomIsSupport {
 
   if ($Supp) {
     diag('phantomjs founded ['.$Supp.']. Euristic enabled');
-    #$ENV{'QT_QPA_PLATFORM'} = 'offscreen'; # NOTE to avoid `QXcbConnection: Could not connect to display' error
+    $ENV{'QT_QPA_PLATFORM'} = 'offscreen'; # NOTE to avoid `QXcbConnection: Could not connect to display' error
     return 1;
   }
 
