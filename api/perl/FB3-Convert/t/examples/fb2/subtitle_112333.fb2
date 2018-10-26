@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">
+<description>
+<title-info>
+    <genre>love_contemporary</genre>
+    <author><first-name>Корней</first-name><middle-name>Иванович</middle-name><last-name>Чуковский</last-name><id>ac09204a-cdfc-11e8-a2db-0cc47a5f1565</id></author>
+    <book-title>Book name</book-title>
+    <annotation><p>Annotation</p></annotation>
+    <lang>ru</lang>
+</title-info>
+<document-info>
+    <author><first-name></first-name><last-name></last-name></author>
+    <program-used>ABBYY FineReader 14, FictionBook Editor Release 2.6.7</program-used>
+    <date value="2018-10-06">131832876321577594</date>
+    <src-url>http://www.litres.ru</src-url>
+    <src-url>https://www.litmir.me</src-url>
+    <id>ac6acfd2-cdfc-11e8-a2db-0cc47a5f1565</id>
+    <version>1</version>
+    <history/>
+</document-info>
+<publish-info>
+    <book-name>BOOK NAME</book-name>
+    <publisher>Amadeus</publisher>
+    <city>Москва</city>
+    <sequence name="seqname" number="9"></sequence>
+</publish-info>
+<custom-info info-type="">Custom info</custom-info>
+</description>
+
+<body>
+
+  <section id="n63">
+   <title>
+    <p>title</p>
+   </title>
+
+<p>Тролль махнул рукой в сторону висящего на стене большого и довольно грубо нарисованного плаката, который гласил:</p>
+<cite>
+  <subtitle>
+    <emphasis>
+      «“Грязь” – проста скажы:
+    </emphasis>
+  </subtitle>
+  <subtitle>
+    <emphasis>
+      “АарргхаарргхпажалустанетнетнетУФ”».
+    </emphasis>
+  </subtitle>
+</cite>
+<p>После чего Детрит толкнул некую дверь.</p>
+
+  </section>
+
+</body>
+
+</FictionBook>
