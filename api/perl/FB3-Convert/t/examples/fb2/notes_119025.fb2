@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">
+<description>
+<title-info>
+    <genre>love_contemporary</genre>
+    <author><first-name>Корней</first-name><middle-name>Иванович</middle-name><last-name>Чуковский</last-name><id>ac09204a-cdfc-11e8-a2db-0cc47a5f1565</id></author>
+    <book-title>Book name</book-title>
+    <annotation><p>Annotation</p></annotation>
+    <lang>ru</lang>
+</title-info>
+<document-info>
+    <author><first-name></first-name><last-name></last-name></author>
+    <program-used>ABBYY FineReader 14, FictionBook Editor Release 2.6.7</program-used>
+    <date value="2018-10-06">131832876321577594</date>
+    <src-url>http://www.litres.ru</src-url>
+    <src-url>https://www.litmir.me</src-url>
+    <id>ac6acfd2-cdfc-11e8-a2db-0cc47a5f1565</id>
+    <version>1</version>
+    <history/>
+</document-info>
+<publish-info>
+    <book-name>BOOK NAME</book-name>
+    <publisher>Amadeus</publisher>
+    <city>Москва</city>
+    <sequence name="seqname" number="9"></sequence>
+</publish-info>
+<custom-info info-type="">Custom info</custom-info>
+</description>
+
+<body>
+<section id="id_Toc290232150">
+<title><p>title1</p></title>
+<p>text1</p>
+</section>
+</body>
+
+<body name="notes">
+<title><p>Примечания</p></title>
+
+<section id="note_428">
+    <title><p>428</p></title>
+    <section>
+	<cite>
+	    <p>абыр</p>
+	    <subtitle>валг</subtitle>
+	    <text-author>чукча</text-author>
+	</cite>
+	<p><strong>Толстой</strong></p>
+    <p></p>
+    </section>
+</section>
+
+<section>
+    <title><p>430</p></title>
+    <section id="note_430"><p>Розанов В.В. Рим // Русские письма о Риме. – М., 2007. – С. 251.</p></section>
+</section>
+
+</body>
+
+</FictionBook>
