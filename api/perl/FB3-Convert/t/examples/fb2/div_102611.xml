@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="ac6acfd2-cdfc-11e8-a2db-0cc47a5f1565">
+
+
+<section id="ac6acfd2-1FFF-11e8-a2db-0cc47a5f1565"><title><p><em>Глава первая</em></p></title><p>some text</p></section>
+
+<notes show="0"><title><p>Примечания</p></title><notebody id="note2"><title><p>2</p></title>
+    
+	<poem><stanza><p>text</p></stanza></poem>
+	<p>text author</p>
+    
+</notebody></notes>
+
+</fb3-body>
