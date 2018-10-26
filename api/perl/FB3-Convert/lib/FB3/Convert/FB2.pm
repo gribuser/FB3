@@ -118,7 +118,7 @@ sub Reaper {
 
 	#<poem> место в только в <section>. Другие заменяем на <blockquote>
 	for my $Poem ( $XPC->findnodes('//fb:poem', $FB2Doc )) {
-		if ($Poem->parentNode()->nodeName() ne 'section') {
+		if ($Poem->parentNode()->nodeName() ne 'section' && $Poem->parentNode()->nodeName() ne 'cite' && $Poem->parentNode()->nodeName() ne 'notebody') {
 			my $BlockNode = $FB2Doc->createElement('blockquote');
       foreach my $ChildInside ($Poem->getChildnodes) {
         if ($ChildInside->nodeName() eq 'stanza') {
