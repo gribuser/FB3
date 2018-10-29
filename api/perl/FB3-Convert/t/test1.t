@@ -121,8 +121,13 @@ sub PhantomIsSupport {
   my $Supp = FindFile('phantomjs', [split /:/,$ENV{'PATH'}]);
 
   if ($Supp) {
-    diag('phantomjs founded ['.$Supp.']. Euristic enabled');
-    $ENV{'QT_QPA_PLATFORM'} = 'offscreen'; # NOTE to avoid `QXcbConnection: Could not connect to display' error
+
+    # NOTE to avoid `QXcbConnection: Could not connect to display' error
+    qx{ QT_QPA_PLATFORM=offscreen $Supp -v > /dev/null 2>&1 };
+    my $err = $? > 0 ? $? >> 8 : 0;
+    $ENV{'QT_QPA_PLATFORM'} = 'offscreen' unless $err;
+
+    diag('phantomjr founded ['.$Supp.']. Euristic enabled');
     return 1;
   }
 
