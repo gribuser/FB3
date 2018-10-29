@@ -14,8 +14,6 @@ use Test::More;
 use File::Temp qw/tempdir/;
 use File::ShareDir qw/dist_dir/;
 
-plan tests => 1;
-
 diag( "Testing result of body.xml, Perl $], $^X" );
 
 my $Diff = XML::Diff->new();
@@ -33,7 +31,10 @@ foreach my $FB2File (sort{Num($a,'fb2')<=>Num($b,'fb2')} @FB2s ) {
   my $OldXml = $DIR1.'/'.$FName.'.xml';
 
   diag("Testing ".$DIR1.'/'.$FB2File.' and compare with '.$OldXml);
-  die("file $OldXml not found") unless -f $OldXml;
+  unless ( -f $OldXml ) {
+    diag("file $OldXml not found");
+    next;
+  }
 
   my $Obj = new FB3::Convert(
     'source' => $DIR1.'/'.$FB2File,
@@ -43,20 +44,14 @@ foreach my $FB2File (sort{Num($a,'fb2')<=>Num($b,'fb2')} @FB2s ) {
   );
 
   $Obj->Reap();
-  my $FB3Path =  $Obj->FB3Create();
-  my $ValidErr = $Obj->Validate();
-  if ($ValidErr) {
+  my $FB3Path = $Obj->FB3Create();
+  if ( my $ValidErr = $Obj->Validate() ) {
     diag($ValidErr);
-    $Obj->Cleanup();
-    exit;
+  } else {
+    ok( _Diff($Obj, $OldXml, "$FB3Path/fb3/body.xml"), $FB2File );
   }
 
-  my $NewXml = $FB3Path.'/fb3/body.xml';
-
-  _Diff($Obj,$OldXml,$NewXml);
-
   $Obj->Cleanup();
-
 }
 
 #tests for epub
@@ -118,7 +113,7 @@ foreach my $EpubFile (sort{Num($a,'epub')<=>Num($b,'epub')} @Epubs ) {
 
 }
 
-ok(1,'Test ok');
+done_testing();
 exit;
 
 sub PhantomIsSupport {
@@ -237,7 +232,7 @@ sub _Diff {
   if ($Err) {
     diag($Err);
     $X->Cleanup();
-    exit;
+    return 0;
   }
 
   return 1;
