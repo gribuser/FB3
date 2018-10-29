@@ -76,7 +76,7 @@
 							<element name="p" type="fb3b:StyleType"/>
 							<element name="br" type="fb3b:BRType"/>
 						</choice>
-						<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>
+						<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>
 					</sequence>
 				</complexType>
 			</element>
@@ -95,7 +95,7 @@
 				<element name="p" type="fb3b:StyleType"/>
 				<element name="br" type="fb3b:BRType"/>
 			</choice>
-			<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0">
+			<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0">
 				<annotation>
 					<documentation>"Полу подвал" нашего текстового фрагмента.</documentation>
 				</annotation>
@@ -127,7 +127,7 @@
 								<element name="p" type="fb3b:StyleType"/>
 								<element name="subtitle" type="fb3b:StyleType">
 									<annotation>
-										<documentation>Обычно выделенн отсрупами сверху-снизу, отбит по центру и выведен жирным начертанием. Нечто среднее между заголовком и абзацем. В содержании не отображается</documentation>
+										<documentation>Обычно выделен отступами сверху-снизу, отбит по центру и выведен жирным начертанием. Нечто среднее между заголовком и абзацем. В содержании не отображается</documentation>
 									</annotation>
 								</element>
 								<element name="ol">
@@ -167,7 +167,7 @@
 									</annotation>
 								</element>
 							</choice>
-							<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0">
+							<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0">
 								<annotation>
 									<documentation>Подпись в конце секции - обычно тут че-нить типа "Москва, весна 2008" или "Конец" или "Продолжение следует"</documentation>
 								</annotation>
@@ -232,7 +232,7 @@
 				<element name="blockquote" type="fb3b:PHolderType"/>
 				<element name="br" type="fb3b:BRType"/>
 			</choice>
-			<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0">
+			<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0">
 				<annotation>
 					<documentation>Так же блок может иметь подпись. Сюда, к примеру, можно затолкать и подпись к картинке - шрифт будет соответствующий</documentation>
 				</annotation>
@@ -281,6 +281,32 @@
 		</sequence>
 		<attribute name="id" type="ID" use="optional"/>
 	</complexType>
+    <complexType name="SubscriptionType">
+        <annotation>
+            <documentation>Подпись под текстом. В fb2 было text-author, теперь использование "подписи" расширено - просто абстрактная подпись под блоком. Включает всё то же, что и аннотация, кроме, собственно, subscription</documentation>
+        </annotation>
+        <sequence>
+            <annotation>
+                <documentation>Кудрявая схема sequence+choice позволяет исключить br в качестве первого элемента. Сперва мы требуем текст.</documentation>
+            </annotation>
+            <choice>
+                <element name="p" type="fb3b:StyleType"/>
+                <element name="ol" type="fb3b:LiHolderType"/>
+                <element name="ul" type="fb3b:LiHolderType"/>
+                <element name="pre" type="fb3b:SubscriptionPHolderType"/>
+                <element name="blockquote" type="fb3b:SubscriptionPHolderType"/>
+            </choice>
+            <choice minOccurs="0" maxOccurs="unbounded">
+                <element name="p" type="fb3b:StyleType"/>
+                <element name="ol" type="fb3b:LiHolderType"/>
+                <element name="ul" type="fb3b:LiHolderType"/>
+                <element name="pre" type="fb3b:SubscriptionPHolderType"/>
+                <element name="blockquote" type="fb3b:SubscriptionPHolderType"/>
+                <element name="br" type="fb3b:BRType"/>
+            </choice>
+        </sequence>
+        <attribute name="id" type="ID" use="optional"/>
+    </complexType>
 	<complexType name="BRType">
 		<annotation>
 			<documentation>Разрыв в тексте - обычно представлен пустой строкой. Так же может влиять на течение текста по отношению к блокам (возобновлять после их окончания) или на размещение на листах - clear="page" означает разрыв страницы на экране</documentation>
@@ -473,11 +499,27 @@
 						<element name="p" type="fb3b:StyleType"/>
 						<element name="br" type="fb3b:BRType"/>
 					</choice>
-					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>
+					<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
+    <complexType name="SubscriptionPHolderType">
+        <annotation>
+            <documentation>Простой контейнер для нескольких абзацев текста внутри subscription. То же самое, что и PHolderType, но без subscription. Не допускает сложное структурирование</documentation>
+        </annotation>
+        <complexContent>
+            <extension base="fb3b:TitledType">
+                <sequence>
+                    <element name="p" type="fb3b:StyleType"/>
+                    <choice minOccurs="0" maxOccurs="unbounded">
+                        <element name="p" type="fb3b:StyleType"/>
+                        <element name="br" type="fb3b:BRType"/>
+                    </choice>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
 	<complexType name="LiHolderType">
 		<annotation>
 			<documentation>OL|UL в html - списки. Немного добавляем им определенности и наперед задаем формат вложенности - вложение идет на уровне ul|ol, в него можно помещать другой ul|ol</documentation>
@@ -507,7 +549,7 @@
 			<extension base="fb3b:TitledType">
 				<sequence>
 					<element name="stanza" type="fb3b:PHolderType" maxOccurs="unbounded"/>
-					<element name="subscription" type="fb3b:BasicAnnotationType" minOccurs="0"/>
+					<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>
 				</sequence>
 				<attribute name="id" type="ID" use="optional"/>
 			</extension>
