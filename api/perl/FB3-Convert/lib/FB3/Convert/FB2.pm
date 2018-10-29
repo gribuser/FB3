@@ -33,7 +33,7 @@ sub Reaper {
 
 	$X->Error("File '.fb2' not defined") if (!$X->{'src_type'} && lc($Source) !~ /\.fb2$/);
 
-  my $XC = XML::LibXML::XPathContext->new();
+	my $XC = XML::LibXML::XPathContext->new();
 	
 	my $FB2Doc = XML::LibXML->load_xml( location => $Source );
 	$FB2Doc->setEncoding('utf-8');
@@ -171,20 +171,41 @@ sub Reaper {
 
 		for my $Title ( @Titles ) {
 
+			my $PNode  = $FB2Doc->createElement('p');
+			my $Strong = $FB2Doc->createElement('strong');
+
+			my $strongAdd    = 0;
+			my $paragraphAdd = 0;
+
 			for my $Node ( $XPC->findnodes('*', $Title) ) {
 
-				$Cite->appendChild($Node);
+				if ( 'strong' eq $Node->nodeName() ) {
+
+					$PNode->appendChild($Node);
+					$paragraphAdd = 1;
+
+				} else {
+
+					$Strong->appendChild($Node);
+					$strongAdd = 1;
+				}
 			}
 
 			if ( my $Text = $Title->textContent ) {
 
-				my $PNode = $FB2Doc->createElement('p');
-				$PNode->appendTextNode($Text);
+				$Text =~ s/^\s+//s; $Text =~ s/\s+$//s;
 
-				$Cite->appendChild($PNode);
+				if ( $Text ) {
+
+					$Strong->appendTextNode($Text);
+					$strongAdd = 1;
+				}
 			}
 
 			$Title->unbindNode();
+
+			$PNode->appendChild($Strong) if ( $strongAdd );
+			$Cite->appendChild($PNode)   if ( $paragraphAdd or $strongAdd );
 		}
 	}
 
