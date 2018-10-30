@@ -284,7 +284,7 @@ sub new {
 
 			'DESCRIPTION' => {
 			  'TITLE-INFO' => {
-			    'COVER' => undef,
+ 			    'COVER_DESC' => undef,
 			      'AUTHORS' => undef, #[
 			                  #{
 			                  #  'first-name' => "Иван",

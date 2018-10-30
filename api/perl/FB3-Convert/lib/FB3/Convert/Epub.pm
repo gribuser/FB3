@@ -422,6 +422,59 @@ sub Reaper {
     $Description->{'TITLE-INFO'}->{'AUTHORS'} = \@Authors;
   }
 
+  #ИЩЕМ Cover
+  my $CoverImg;
+  #согласно epub.2 может быть в <meta name="cover"
+  if (my $CoverNode = $XC->findnodes('/root:package/root:metadata/root:meta[@name="cover"]',$RootDoc)->[0]) {
+    my $CoverID = $CoverNode->getAttribute('content');
+    if (my $CoverItem = $XC->findnodes('/root:package/root:manifest/root:item[@id="'.$CoverID.'"]',$RootDoc)->[0]) {
+      if ($CoverItem->getAttribute('media-type') =~ /^image\/(jpeg|png)$/) {
+        if ($CoverItem->getAttribute('href')) {
+          $CoverImg = $CoverItem->getAttribute('href');
+        }
+      }
+    }
+  }
+
+  if ($CoverImg) {
+
+    my $SkipExists = 1;
+    my $CoverSrcFile = $X->RealPath(
+      FB3::Convert::dirname(
+        $X->{'ContentDir'}.'/'.$CoverImg
+      ).'/'.$CoverImg,
+    undef, $SkipExists);
+
+    if (-f $CoverSrcFile) {
+      my $ImgList = $X->{'STRUCTURE'}->{'IMG_LIST'};
+      my $CoverDestPath = $X->{'DestinationDir'}."/fb3/img";
+
+      $CoverImg =~ /.([^\/\.]+)$/;
+      my $ImgType = $1;
+
+      my $ImgID = 'img_'.$X->UUID($CoverSrcFile);
+      my $NewFileName = $ImgID.'.'.$ImgType;
+      my $CoverDestFile = $CoverDestPath.'/'.$NewFileName;
+
+      my $CoverDesc = {
+        'src_path' => $CoverSrcFile,
+        'new_path' => "img/".$NewFileName, #заменим на новое имя
+        'id' => $ImgID,
+      };
+
+      push @$ImgList, $CoverDesc unless grep {$_->{id} eq $ImgID} @$ImgList;
+      $Structure->{'DESCRIPTION'}->{'TITLE-INFO'}->{'COVER_DESC'} = $CoverDesc;
+
+      #Копируем исходник на новое место с новым уникальным именем
+      unless (-f $CoverDestFile) {
+        $X->Msg("copy $CoverSrcFile -> $CoverDestFile\n");
+        FB3::Convert::copy($CoverSrcFile, $CoverDestFile) or $X->Error($!." [copy $CoverSrcFile -> $CoverDestFile]");        
+       }
+    }
+
+  }
+  #/cover
+
   ##print Data::Dumper::Dumper($AC);
 
   #КОНТЕНТ
@@ -1171,57 +1224,69 @@ sub ProcessImg {
     FB3::Convert::dirname($X->RealPath( $RelPath ? $X->{'ContentDir'}.'/'.$RelPath : $X->{'ContentDir'}, undef, $SkipExists)).'/'.$Src,
   undef,$SkipExists);
 
-  unless (-f $ImgSrcFile) { #не нашли картинку
-    $X->Msg("Can't find img".$ImgSrcFile." Replace to text [no image in epub file]\n","w");
-    my $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
-    my $Text = $Doc->createTextNode('[no image in epub file]');
-    return $Text;
-  }
+  my $CoverIxists = $X->{'STRUCTURE'}->{'DESCRIPTION'}->{'TITLE-INFO'}->{'COVER_DESC'};
 
-  unless (exists $ImgChecked{$ImgSrcFile}) {
-    $X->_bs('img_info','Тип IMG');
-    my $ImgInfo;
-    my $ImgType;
-    if ($ImgSrcFile =~ /.svg$/) {
-      $ImgInfo = Image::ExifTool::ImageInfo($ImgSrcFile);
-      $ImgType = ref $ImgInfo eq 'HASH' ? $ImgInfo->{'FileType'} : undef;
-    } else {
-      $ImgInfo = [Image::Size::imgsize($ImgSrcFile)];
-      $ImgType = $ImgInfo->[2];
-    }
-    $X->_be('img_info');
+  my $ImgID;
 
-    if ( !$ImgType || !$X->isAllowedImageType($ImgType) ) { #неизвестный формат
-      $X->Msg("Can't detect img".$ImgSrcFile." Replace to text [bad img format]\n","w");
+  if (exists $CoverIxists->{'src_path'} && $CoverIxists->{'src_path'} eq $ImgSrcFile ) {
+    $ImgID = $CoverIxists->{'id'}; #уже отрабатывали картинку как cover, просто заменим src на готовый
+  } else {
+
+    unless (-f $ImgSrcFile) { #не нашли картинку
+      $X->Msg("Can't find img".$ImgSrcFile." Replace to text [no image in epub file]\n","w");
       my $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
-      my $Text = $Doc->createTextNode('[bad img format]');
+      my $Text = $Doc->createTextNode('[no image in epub file]');
       return $Text;
+   }
+
+    unless (exists $ImgChecked{$ImgSrcFile}) {
+      $X->_bs('img_info','Тип IMG');
+      my $ImgInfo;
+      my $ImgType;
+      if ($ImgSrcFile =~ /.svg$/) {
+        $ImgInfo = Image::ExifTool::ImageInfo($ImgSrcFile);
+        $ImgType = ref $ImgInfo eq 'HASH' ? $ImgInfo->{'FileType'} : undef;
+      } else {
+        $ImgInfo = [Image::Size::imgsize($ImgSrcFile)];
+        $ImgType = $ImgInfo->[2];
+      }
+      $X->_be('img_info');
+
+      if ( !$ImgType || !$X->isAllowedImageType($ImgType) ) { #неизвестный формат
+        $X->Msg("Can't detect img".$ImgSrcFile." Replace to text [bad img format]\n","w");
+        my $Doc = XML::LibXML::Document->new('1.0', 'utf-8');
+        my $Text = $Doc->createTextNode('[bad img format]');
+        return $Text;
+      }
     }
-  }
-  $ImgChecked{$ImgSrcFile} = 1;
+    $ImgChecked{$ImgSrcFile} = 1;
 
-  $X->Msg("Find img, try transform: ".$Src."\n","w");
+    $X->Msg("Find img, try transform: ".$Src."\n","w");
 
-  my $ImgDestPath = $X->{'DestinationDir'}."/fb3/img";
+    my $ImgDestPath = $X->{'DestinationDir'}."/fb3/img";
 
-  $Src =~ /.([^\/\.]+)$/;
-  my $ImgType = $1;
+    $Src =~ /.([^\/\.]+)$/;
+    my $ImgType = $1;
 
-  my $ImgID = 'img_'.$X->UUID($ImgSrcFile);
-  my $NewFileName = $ImgID.'.'.$ImgType;
-  my $ImgDestFile = $ImgDestPath.'/'.$NewFileName;
+    $ImgID = 'img_'.$X->UUID($ImgSrcFile);
 
-  push @$ImgList, {
-    'new_path' => "img/".$NewFileName, #заменим на новое имя
-    'id' => $ImgID,
-  } unless grep {$_->{id} eq $ImgID} @$ImgList;
+    my $NewFileName = $ImgID.'.'.$ImgType;
+    my $ImgDestFile = $ImgDestPath.'/'.$NewFileName;
 
-  #Копируем исходник на новое место с новым уникальным именем
-  unless (-f $ImgDestFile) {
-    $X->Msg("copy $ImgSrcFile -> $ImgDestFile\n");
-    $X->_bs('img_copy','Копирование IMG');
-    FB3::Convert::copy($ImgSrcFile, $ImgDestFile) or $X->Error($!." [copy $ImgSrcFile -> $ImgDestFile]");        
-    $X->_be('img_copy');
+    push @$ImgList, {
+      'src_path' => $ImgSrcFile,
+      'new_path' => "img/".$NewFileName, #заменим на новое имя
+      'id' => $ImgID,
+    } unless grep {$_->{id} eq $ImgID} @$ImgList;
+
+    #Копируем исходник на новое место с новым уникальным именем
+    unless (-f $ImgDestFile) {
+      $X->Msg("copy $ImgSrcFile -> $ImgDestFile\n");
+      $X->_bs('img_copy','Копирование IMG');
+      FB3::Convert::copy($ImgSrcFile, $ImgDestFile) or $X->Error($!." [copy $ImgSrcFile -> $ImgDestFile]");        
+      $X->_be('img_copy');
+    }
+
   }
 
   $Node->setAttribute('src' => $ImgID);
@@ -1303,7 +1368,7 @@ sub FB3Creator {
   my $FB3Path = $X->{'DestinationDir'};
 
   #compile required files
-  my $CoverSrc = $Structure->{'DESCRIPTION'}->{'TITLE-INFO'}->{'COVER'};
+  my $CoverSrc = $Structure->{'DESCRIPTION'}->{'TITLE-INFO'}->{'COVER_DESC'}->{'new_path'};
 
   $X->Msg("FB3: Create /_rels/.rels\n","w");
   my $FNrels="$FB3Path/_rels/.rels";
@@ -1311,7 +1376,7 @@ sub FB3Creator {
   print FHrels qq{<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">}.
   ( $CoverSrc ? qq{
-  <Relationship Id="rId0" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail" Target="$CoverSrc"/>} : '' ).qq{
+  <Relationship Id="rId0" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail" Target="fb3/$CoverSrc"/>} : '' ).qq{
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="fb3/meta/core.xml"/>
   <Relationship Id="rId2" Type="http://www.fictionbook.org/FictionBook3/relationships/Book" Target="fb3/description.xml"/>
   </Relationships>};
