@@ -293,15 +293,15 @@
                 <element name="p" type="fb3b:StyleType"/>
                 <element name="ol" type="fb3b:LiHolderType"/>
                 <element name="ul" type="fb3b:LiHolderType"/>
-                <element name="pre" type="fb3b:SubscriptionPHolderType"/>
-                <element name="blockquote" type="fb3b:SubscriptionPHolderType"/>
+                <element name="pre" type="fb3b:ReducedPHolderType"/>
+                <element name="blockquote" type="fb3b:ReducedPHolderType"/>
             </choice>
             <choice minOccurs="0" maxOccurs="unbounded">
                 <element name="p" type="fb3b:StyleType"/>
                 <element name="ol" type="fb3b:LiHolderType"/>
                 <element name="ul" type="fb3b:LiHolderType"/>
-                <element name="pre" type="fb3b:SubscriptionPHolderType"/>
-                <element name="blockquote" type="fb3b:SubscriptionPHolderType"/>
+                <element name="pre" type="fb3b:ReducedPHolderType"/>
+                <element name="blockquote" type="fb3b:ReducedPHolderType"/>
                 <element name="br" type="fb3b:BRType"/>
             </choice>
         </sequence>
@@ -489,24 +489,19 @@
 	</complexType>
 	<complexType name="PHolderType">
 		<annotation>
-			<documentation>Простой контейнер для нескольких абзацев текста. Не допускает сложное структурирование</documentation>
+			<documentation>Простой контейнер для нескольких абзацев текста. Не допускает сложное структурирование. Может содержать subscription</documentation>
 		</annotation>
 		<complexContent>
-			<extension base="fb3b:TitledType">
+			<extension base="fb3b:ReducedPHolderType">
 				<sequence>
-					<element name="p" type="fb3b:StyleType"/>
-					<choice minOccurs="0" maxOccurs="unbounded">
-						<element name="p" type="fb3b:StyleType"/>
-						<element name="br" type="fb3b:BRType"/>
-					</choice>
 					<element name="subscription" type="fb3b:SubscriptionType" minOccurs="0"/>
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
-    <complexType name="SubscriptionPHolderType">
+    <complexType name="ReducedPHolderType">
         <annotation>
-            <documentation>Простой контейнер для нескольких абзацев текста внутри subscription. То же самое, что и PHolderType, но без subscription. Не допускает сложное структурирование</documentation>
+            <documentation>Простой контейнер для нескольких абзацев текста без subscription. Не допускает сложное структурирование</documentation>
         </annotation>
         <complexContent>
             <extension base="fb3b:TitledType">
