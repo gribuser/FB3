@@ -275,6 +275,8 @@ sub Reaper {
   $AllowElements->{'h5'} = $AllowElements->{'h1'};
   $AllowElements->{'h6'} = $AllowElements->{'h1'};
 
+  my $Structure = $X->{'STRUCTURE'};
+  my $Description = $Structure->{'DESCRIPTION'};
   
 ###### счетчики, настройки, аккмуляторы и пр.
   $X->{'MaxMoveCount'} = 100; # максимальное кол-во символов принятия решения пустых <a id="good_link" href=""> на перенос 
@@ -336,20 +338,100 @@ sub Reaper {
   ) || $X->Error("Can't parse file ".$RootFile);
   $RootDoc->setEncoding('utf-8');
 
+  #ИЩЕМ Cover
+  my $CoverImg;
+  my $CheckIsCover=0;
+
+  #согласно epub.3 может быть в <item properties="cover-image"
+  if (my $CoverNode = $XC->findnodes('/root:package/root:manifest/root:item[@properties="cover-image"]',$RootDoc)->[0]) {
+    if ($CoverNode->getAttribute('media-type') =~ /^image\/(jpeg|png)$/) {
+      if ($CoverNode->getAttribute('href')) {
+        $CoverImg = $CoverNode->getAttribute('href');
+      }
+    }
+  }
+
+  #согласно epub.2 может быть в <meta name="cover"
+  if ( !$CoverImg && (my $CoverNode = $XC->findnodes('/root:package/root:metadata/root:meta[@name="cover"]',$RootDoc)->[0]) ) {
+    my $CoverID = $CoverNode->getAttribute('content');
+    if (my $CoverItem = $XC->findnodes('/root:package/root:manifest/root:item[@id="'.$CoverID.'"]',$RootDoc)->[0]) {
+      if ($CoverItem->getAttribute('media-type') =~ /^image\/(jpeg|png)$/) {
+        if ($CoverItem->getAttribute('href')) {
+          $CoverImg = $CoverItem->getAttribute('href');
+        }
+      }
+    }
+  }
+
   # список файлов с контентом
   my @Manifest;
   for my $MItem ($XC->findnodes('/root:package/root:manifest/root:item',$RootDoc)) {
+    my $ItemHref = $MItem->getAttribute('href');
+    my $ItemType = $MItem->getAttribute('media-type');
     push @Manifest, {
       'id' => $MItem->getAttribute('id'),
-      'href' => $MItem->getAttribute('href'),
-      'type' => $MItem->getAttribute('media-type'),
+      'href' => $ItemHref,
+      'type' => $ItemType,
     };
+
+    if ( # обложка не найдена? попробуем сами поискать
+      !$CoverImg
+      && $ItemHref =~ /cover/i
+      && $ItemType =~ /^image\/(jpeg|png)$/
+    ) { 
+      $CheckIsCover = 1; #способ хулиганский, поэтому будем проверять картинку
+      $CoverImg = $ItemHref;
+    }
+
   }
   my @Spine;
   for my $MItem ($XC->findnodes('/root:package/root:spine/root:itemref',$RootDoc)) {
     my $IdRef = $MItem->getAttribute('idref');
     push @Spine, $IdRef;
   }
+
+  if ($CoverImg &&  1==1) {
+    $X->Msg("Try process cover image '$CoverImg'\n");
+   
+    my $SkipExists = 1;
+     my $CoverSrcFile = $X->RealPath(
+      FB3::Convert::dirname(
+        $X->{'ContentDir'}.'/'.$CoverImg
+      ).'/'.FB3::Convert::basename($CoverImg),
+    undef, $SkipExists);
+
+    $CoverSrcFile = CheckIsCover($X,$CoverSrcFile) if $CheckIsCover;
+
+    if (-f $CoverSrcFile && 1==3) {
+      my $ImgList = $X->{'STRUCTURE'}->{'IMG_LIST'};
+      my $CoverDestPath = $X->{'DestinationDir'}."/fb3/img";
+
+      $CoverImg =~ /.([^\/\.]+)$/;
+      my $ImgType = $1;
+
+      my $ImgID = 'img_'.$X->UUID($CoverSrcFile);
+      my $NewFileName = $ImgID.'.'.$ImgType;
+      my $CoverDestFile = $CoverDestPath.'/'.$NewFileName;
+
+      my $CoverDesc = {
+        'src_path' => $CoverSrcFile,
+        'new_path' => "img/".$NewFileName, #заменим на новое имя
+        'id' => $ImgID,
+      };
+
+      push @$ImgList, $CoverDesc unless grep {$_->{id} eq $ImgID} @$ImgList;
+      $Structure->{'DESCRIPTION'}->{'TITLE-INFO'}->{'COVER_DESC'} = $CoverDesc;
+
+      #Копируем исходник на новое место с новым уникальным именем
+      unless (-f $CoverDestFile) {
+        $X->Msg("copy $CoverSrcFile -> $CoverDestFile\n");
+        FB3::Convert::copy($CoverSrcFile, $CoverDestFile) or $X->Error($!." [copy $CoverSrcFile -> $CoverDestFile]");        
+       }
+      $X->Msg("Cover '$CoverImg' is OK\n");
+    }
+
+  }
+  #/cover
 
   $X->Msg("Assemble content\n");
   my $AC = AssembleContent($X, 'manifest' => \@Manifest, 'spine' => \@Spine);
@@ -359,9 +441,6 @@ sub Reaper {
   #Заполняем внутренний формат
 
   #МЕТА
-  my $Structure = $X->{'STRUCTURE'};
-  my $Description = $Structure->{'DESCRIPTION'};
-
   my $GlobalID;  
   unless (defined $Description->{'DOCUMENT-INFO'}->{'ID'}) { 
     $Description->{'DOCUMENT-INFO'}->{'ID'} = $GlobalID = $X->UUID();
@@ -421,59 +500,6 @@ sub Reaper {
     push @Authors, $self->BuildAuthorName('Unknown') unless scalar @Authors;
     $Description->{'TITLE-INFO'}->{'AUTHORS'} = \@Authors;
   }
-
-  #ИЩЕМ Cover
-  my $CoverImg;
-  #согласно epub.2 может быть в <meta name="cover"
-  if (my $CoverNode = $XC->findnodes('/root:package/root:metadata/root:meta[@name="cover"]',$RootDoc)->[0]) {
-    my $CoverID = $CoverNode->getAttribute('content');
-    if (my $CoverItem = $XC->findnodes('/root:package/root:manifest/root:item[@id="'.$CoverID.'"]',$RootDoc)->[0]) {
-      if ($CoverItem->getAttribute('media-type') =~ /^image\/(jpeg|png)$/) {
-        if ($CoverItem->getAttribute('href')) {
-          $CoverImg = $CoverItem->getAttribute('href');
-        }
-      }
-    }
-  }
-
-  if ($CoverImg) {
-
-    my $SkipExists = 1;
-    my $CoverSrcFile = $X->RealPath(
-      FB3::Convert::dirname(
-        $X->{'ContentDir'}.'/'.$CoverImg
-      ).'/'.$CoverImg,
-    undef, $SkipExists);
-
-    if (-f $CoverSrcFile) {
-      my $ImgList = $X->{'STRUCTURE'}->{'IMG_LIST'};
-      my $CoverDestPath = $X->{'DestinationDir'}."/fb3/img";
-
-      $CoverImg =~ /.([^\/\.]+)$/;
-      my $ImgType = $1;
-
-      my $ImgID = 'img_'.$X->UUID($CoverSrcFile);
-      my $NewFileName = $ImgID.'.'.$ImgType;
-      my $CoverDestFile = $CoverDestPath.'/'.$NewFileName;
-
-      my $CoverDesc = {
-        'src_path' => $CoverSrcFile,
-        'new_path' => "img/".$NewFileName, #заменим на новое имя
-        'id' => $ImgID,
-      };
-
-      push @$ImgList, $CoverDesc unless grep {$_->{id} eq $ImgID} @$ImgList;
-      $Structure->{'DESCRIPTION'}->{'TITLE-INFO'}->{'COVER_DESC'} = $CoverDesc;
-
-      #Копируем исходник на новое место с новым уникальным именем
-      unless (-f $CoverDestFile) {
-        $X->Msg("copy $CoverSrcFile -> $CoverDestFile\n");
-        FB3::Convert::copy($CoverSrcFile, $CoverDestFile) or $X->Error($!." [copy $CoverSrcFile -> $CoverDestFile]");        
-       }
-    }
-
-  }
-  #/cover
 
   ##print Data::Dumper::Dumper($AC);
 
@@ -1119,6 +1145,20 @@ sub AssembleContent {
     pages => \@Pages,            
   );
 
+}
+
+sub CheckIsCover {
+  my $X = shift;
+  my $ImgSrcFile = shift;
+
+  my $ImgInfo = [Image::Size::imgsize($ImgSrcFile)];
+  my $W = $ImgInfo->[0] || return;
+  my $H = $ImgInfo->[1] || return;
+
+  my $Prop = $H/$W;
+  #img должен быть 1:1 - 1:5 и ширина 200+
+  return unless ($W>=200 && $Prop >=1 && $Prop <=5);
+  return $ImgSrcFile;
 }
 
 sub CleanTitle {
