@@ -390,7 +390,7 @@ sub Reaper {
     push @Spine, $IdRef;
   }
 
-  if ($CoverImg &&  1==1) {
+  if ($CoverImg) {
     $X->Msg("Try process cover image '$CoverImg'\n");
    
     my $SkipExists = 1;
@@ -402,7 +402,7 @@ sub Reaper {
 
     $CoverSrcFile = CheckIsCover($X,$CoverSrcFile) if $CheckIsCover;
 
-    if (-f $CoverSrcFile && 1==3) {
+    if (-f $CoverSrcFile) {
       my $ImgList = $X->{'STRUCTURE'}->{'IMG_LIST'};
       my $CoverDestPath = $X->{'DestinationDir'}."/fb3/img";
 
