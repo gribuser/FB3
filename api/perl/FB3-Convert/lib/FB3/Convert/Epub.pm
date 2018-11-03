@@ -1504,8 +1504,8 @@ sub FB3Creator {
 
   open FHbody, ">$FNbody" or $X->Error("$FNbody: $!");
   my $BodyString = $Body->toString(1);
-  #$BodyString =~ s/<br\/>/<\/p><p>/g; #здесь уже правильный fb3, чистый и с параграфами, вот только <br/> нужно превратить в </p><p> 
-  $BodyString =~ s/<br\/>/ /g; 
+  $BodyString =~ s/(<p>[^<>]*)<br\/>/$1<\/p><p>/g; #здесь уже правильный fb3, чистый и с параграфами, вот только <br/> нужно превратить в </p><p> 
+  $BodyString =~ s/<br\/>/ /g;
   print FHbody $BodyString;
   close FHbody;
 
