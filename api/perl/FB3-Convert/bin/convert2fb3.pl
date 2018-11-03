@@ -104,7 +104,7 @@ if ($OPT{'df'} && !$ValidErr) {
 }
 
 $Obj->_bs('cleanup','Сборка мусора');
-$Obj->Cleanup($ValidErr?1:0);
+##$Obj->Cleanup($ValidErr?1:0);
 $Obj->_be('cleanup');
 
 $Obj->_be('ALL');
