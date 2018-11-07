@@ -137,12 +137,12 @@ foreach my $Img (@Img) {
   if ($ImgType =~ /\/(.+)$/) {
     $NewImgId .= '.'.$1 unless $NewImgId =~ /\.(png|gif|jpg|jpeg)$/;
   }
-  
-  next if exists $ImgReverse{$NewImgId}; #иногда описания картинок совпадают. например обложка залетает дважды из описаний
-  
+
   $Img->{NewId} = $ImgRels{$Img->{'Id'}} = $NewImgId;
+
+  next if exists $ImgReverse{$NewImgId}; #иногда описания картинок совпадают. например обложка залетает дважды из описаний
   $ImgReverse{$NewImgId} = 1;
-   
+
   push @FB2ImgXML, '<binary content-type="'.$ImgType.'" id="'.$NewImgId.'">'.MIME::Base64::encode($ImgContent).'</binary>';
 }
 
