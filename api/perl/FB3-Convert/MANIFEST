@@ -9,6 +9,14 @@ lib/FB3/Convert/FB2.pm
 lib/FB3/Euristica.pm
 MANIFEST			This list of files
 README
+share/body.xsl
+share/body_rels.xsl
+share/core.xsl
+share/description.xsl
+share/fb3_2_fb2_body.xsl
+share/fb3_2_fb2_descr.xsl
+share/fb3_to_fb2_genre.json
+share/general.xsl
 t/00-load.t
 t/examples/epub/br_133548.epub
 t/examples/epub/br_133548.xml
@@ -74,4 +82,9 @@ t/examples/fb2/subtitle_114533.fb2
 t/examples/fb2/subtitle_114533.xml
 t/examples/fb2/subtitle_cite_109783.fb2
 t/examples/fb2/subtitle_cite_109783.xml
+t/examples/fb3_to_fb2/same_img_cover_135705.fb3
+t/examples/fb3_to_fb2/same_img_cover_135705.xml
 t/test1.t
+t/test2.t
+META.yml
+META.json

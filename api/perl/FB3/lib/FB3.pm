@@ -7,7 +7,7 @@ use OPC;
 use Carp;
 use File::ShareDir qw/dist_dir/;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 =head1 NAME
 

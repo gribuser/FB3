@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FictionBook xmlns:fb3b="http://www.fictionbook.org/FictionBook3/body" xmlns:l="http://www.w3.org/1999/xlink" xmlns:ltr="LTR" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" xmlns="http://www.gribuser.ru/xml/fictionbook/2.0"><description><title-info><genre>unrecognised</genre><author><first-name>Jørn</first-name><middle-name>Lier</middle-name><last-name>Horst</last-name><id>796bd9a0-fce9-483d-8327-8fba9734d159</id></author><book-title>Talveks suletud</book-title><annotation>
+    <p>Kogenud politseiuurija Jørn Lier Horsti uus põnevust täis kriminaalromaan. Rannamaastikku katab tihe sügisudu, pimedate akendega suvemajad kükitavad pliihalli mere ääres. Ove Bakkerudil seisab ees viimane rahulik nädalavahetus suvituskohas, enne kui ta talveks maja suleb. Kohale jõudes leiab ta aga eest kaoses suvila, milles on vandaalitsenud murdvargad. Ja naabersuvilast surnuks pekstud mehe. Inspektor William Wisting on groteskseid mõrvu varemgi näinud. Kuid meeleheide, millele ta sel sügisel Stavernis tunnistajaks saab, on tema jaoks uus. Justkui poleks kurja tegijail enam midagi kaotada. Seepärast on talle vastumeelt tütar Line otsus kolida elama ühte neist rannaäärseist suvilaist. Kui siis sealt üksildaselt kaldapealselt järjest mitmeid raskete vigastustega laipu leitakse, kasvab mehe rahutus veelgi. Ja taevast langeb surnud linde. Jørn Lier Horstilt on varem eesti keeles ilmunud inspektor William Wistingu põnevikud “Jahipenid” ja “Koopamees”.</p>
+  </annotation><coverpage><image l:href="#fb3_img_img_eb176a02-5bcd-5e8b-b077-133c34599d8f.jpg"/></coverpage><lang>et-EE</lang><src-lang>et-EE</src-lang></title-info><document-info><author><nickname>Аноним</nickname></author><date value="2018-11-07">07.11.2018</date><id>b908ba22-0996-4b0c-8201-a4677bdec445</id><version>1.0</version></document-info></description><body><section id="u0d533676-f5c2-5d4f-a2c1-4116de7a0a6b">
+    
+      <image l:href="#fb3_img_img_eb176a02-5bcd-5e8b-b077-133c34599d8f.jpg" alt="cover"/>
+    <empty-line/>
+  </section><section id="u42b9c6d6-2509-53d0-a862-b523888a6865">
+    
+      <image l:href="#fb3_img_img_9eabbfbe-ccdc-5fa5-a1d9-bb45d9131f41.jpg" alt="title"/>
+    <empty-line/>
+  </section></body><binary content-type="image/jpeg" id="fb3_img_img_eb176a02-5bcd-5e8b-b077-133c34599d8f.jpg">/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja3kAAQAEAAAAZAAA/+4ADkFkb2JlAGTAAAAAAf/b
+AIQAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQICAgICAgICAgIC
+AwMDAwMDAwMDAwEBAQEBAQECAQECAgIBAgIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD
+AwMDAwMDAwMDAwMDAwMDAwMD/8AAEQgAMgAyAwERAAIRAQMRAf/EAFoAAQEBAQEAAAAAAAAAAAAA
+AAAIBwkKAQEAAAAAAAAAAAAAAAAAAAAAEAABBAMBAAMBAAAAAAAAAAAGAAQFBwIDCAETFBYJEQEA
+AAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD38ICAgICAgICAgICAgICAgIJg6lMOpRsaA4Xk
+irQA/sc9sRkKTJZbpI9gqmpUI1DRMSzlnHMYObsTw21+OB9tCxkLCY697uXmG2Th0yZ697jAM34M
+6ZsvpEKu1jcYsAQVn859IH/NBsQVDOTM9T9kToGOg5K7OK0cEbfSQxsPh6c+QslGPtjtzEEcNJMs
+3O/6/mzILnQEBAQEHPL+kVYd1XLTYzW/DRrWNfSpCdMcLxIje2DylDB9TGmOf+zobUdmV/SV5zIA
+YmEjsbNt0/ojNElExvm/ONcN3+xu7ahp3DlaWdTNAwlT2TR/M/PTcAlHsDXda8p2Of2hWrMA9ZRk
+lqmJMjsinaUJP3k6YSEw4lvkjX2TzZlg/wB8g5ePHXmoK/QEBAQEBAQEBAQEBAQEBAQEBAQEBAQE
+BB//2Q==
+</binary><binary content-type="image/jpeg" id="fb3_img_img_9eabbfbe-ccdc-5fa5-a1d9-bb45d9131f41.jpg">/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja3kAAQAEAAAAZAAA/+4ADkFkb2JlAGTAAAAAAf/b
+AIQAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQICAgICAgICAgIC
+AwMDAwMDAwMDAwEBAQEBAQECAQECAgIBAgIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD
+AwMDAwMDAwMDAwMDAwMDAwMD/8AAEQgAMgAyAwERAAIRAQMRAf/EAFkAAQEBAQAAAAAAAAAAAAAA
+AAAIBwoBAQAAAAAAAAAAAAAAAAAAAAAQAAEEAwEBAQEBAAAAAAAAAAADBAUGAQIHCBETIgkRAQAA
+AAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AO/gAAAAAAAAAAAAAAAAAAYz3rp9s5JziStVB4zf
+u/3pV0zhKdy3ni1ejJOxWSWyojF4nLXb5WEqdEprRxrhSVnJBx+Mc0xtvok5Xyi1WDLvBPoqf9de
+LfL/AKftVfh6pY+98UoPU5ms19Z64hIGQuME1mF4qMcSKir5dmy2c/npurtnffGv3Pz78wFbgAAA
+AAAjj/PPzzdPJfhnyf5l6NJ1eavnCeEc55fbpakvZaRqMjP1Cus4iSeVx/OwlbmXcOu5b7bIKOmD
+NbbTOM7paZ/nAWOAAAAAAAAAAAAAAAAAAAAAAAAAAAD/2Q==
+</binary></FictionBook>
