@@ -36,8 +36,9 @@ die "\nERROR: destination directory `$Out' not found\n" unless -d $Out;
 
 $Out = $Out.'/' unless $Out =~ /\/$/;
 
-$Version = '1.0' if ( not $Version or $Version =~ /[\D\.]/ );
-$Version = "1.$Version" unless $Version =~ /^\d+\.\d+$/;
+unless ($Version =~ /^\d+\.\d+$/) {
+	$Version = ($Version =~ /^\d+$/) ? "1.$Version" : "1.0"
+}
 
 my $PartLimit = 20000;
 my $IsTrial   = 0;
