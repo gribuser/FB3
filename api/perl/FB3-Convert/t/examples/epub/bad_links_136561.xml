@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body id="67d3a07b-4359-4129-843e-caf38f99588c" xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="113f9985-7b4f-5ce5-b42e-3be3de0fce3a">
+    <p>Get me a gin!</p>
+    <p><strong> EMPTY LINK what</strong> you want</p>
+    <p>
+      <a xlink:href="#113f9985-7b4f-5ce5-b42e-3be3de0fce3a">link2</a>
+    </p>
+    <p>Get me a gin!</p>
+    <p><strong> BAD LINK what</strong> you want</p>
+    <p>
+      <a xlink:href="#113f9985-7b4f-5ce5-b42e-3be3de0fce3a">link3</a>
+    </p>
+    <p id="link_bd86b9f8-410d-5b2b-a4d4-fd2a2f569d8f">Get me a gin!</p>
+    <p><strong> <a id="link_e00ad841-c7ca-501e-b1d1-7f837fb1bb75" xlink:href="#link_bd86b9f8-410d-5b2b-a4d4-fd2a2f569d8f">GOOD LINK</a> what</strong> you want</p>
+    <p>
+      <a xlink:href="#link_e00ad841-c7ca-501e-b1d1-7f837fb1bb75">link4</a>
+    </p>
+    <p id="link_d8962d55-cf2c-529b-8eb7-ddbc0f7af136">Get me a gin!</p>
+    <p><strong> <a xlink:href="#link_d8962d55-cf2c-529b-8eb7-ddbc0f7af136">BAD ID</a> what</strong> you want</p>
+    <p>link2</p>
+  </section>
+</fb3-body>
