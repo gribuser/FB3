@@ -279,7 +279,7 @@ sub Reaper {
   my $Description = $Structure->{'DESCRIPTION'};
   
 ###### счетчики, настройки, аккмуляторы и пр.
-  $X->{'MaxMoveCount'} = 100; # максимальное кол-во символов принятия решения пустых <a id="good_link" href=""> на перенос 
+  $X->{'MaxMoveCount'} = 100; # максимальное кол-во символов принятия решения пустых <a id="good_link" href="bad_link"> на перенос 
   $X->{'EmptyLinksList'} = {}; # список пустых <a id="good_link" href=""> на перенос или превращение
   
 ##### где хранится содержимое книги
@@ -435,7 +435,6 @@ sub Reaper {
 
   $X->Msg("Assemble content\n");
   my $AC = AssembleContent($X, 'manifest' => \@Manifest, 'spine' => \@Spine);
-
   # Отдаем контент на обработку
 
   #Заполняем внутренний формат
@@ -916,7 +915,12 @@ sub AnaliseIdEmptyHref {
           AnaliseIdEmptyHref($X,$Item->{$El}); #вложенную секцию обрабатывает как отдельную
         } else {
           if (ref $Item->{$El} eq 'HASH' && exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
-            if ($El eq 'a' && exists $Item->{$El}->{'attributes'}->{'xlink:href'} && $Item->{$El}->{'attributes'}->{'xlink:href'} eq '') {
+            if ($El eq 'a' && exists $Item->{$El}->{'attributes'}->{'xlink:href'}
+             && (
+               $Item->{$El}->{'attributes'}->{'xlink:href'} eq ''
+               || !exists $X->{'id_list'}->{ $X->CutLinkDiez($Item->{$El}->{'attributes'}->{'xlink:href'}) }
+              )
+             ) {
               #ссылка - кандидат на перенос
               $Hash4Move->{'candidates'}->{$Item->{$El}->{'attributes'}->{'id'}} = $Hash4Move->{'count_abs'};
             } else {
