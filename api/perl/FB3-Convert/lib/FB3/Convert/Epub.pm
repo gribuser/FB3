@@ -916,9 +916,9 @@ sub AnaliseIdEmptyHref {
         } else {
           if (ref $Item->{$El} eq 'HASH' && exists $Item->{$El}->{'attributes'}->{'id'} && $Item->{$El}->{'attributes'}->{'id'} ne '') {
             if ($El eq 'a' && exists $Item->{$El}->{'attributes'}->{'xlink:href'}
-             && (
+             && ( #пустая или кривая ссылка - кандидат на переезд
                $Item->{$El}->{'attributes'}->{'xlink:href'} eq ''
-               || !exists $X->{'id_list'}->{ $X->CutLinkDiez($Item->{$El}->{'attributes'}->{'xlink:href'}) }
+               || ( $Item->{$El}->{'attributes'}->{'xlink:href'} =~ /^#/ && !exists $X->{'id_list'}->{ $X->CutLinkDiez($Item->{$El}->{'attributes'}->{'xlink:href'}) } )
               )
              ) {
               #ссылка - кандидат на перенос
