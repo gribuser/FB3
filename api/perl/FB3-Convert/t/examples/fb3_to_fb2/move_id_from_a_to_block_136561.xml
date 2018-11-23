@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FictionBook xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" xmlns:l="http://www.w3.org/1999/xlink" xmlns:ltr="LTR" xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:fb3b="http://www.fictionbook.org/FictionBook3/body"><description><title-info><genre>unrecognised</genre><author><first-name>John</first-name><last-name>Popper-Snopper</last-name><id>87deca1f-c542-4d8a-8d46-a9efd556af34</id></author><book-title>Gidy-gidy carousel</book-title><annotation>
+<FictionBook xmlns:ltr="LTR" xmlns:fb3b="http://www.fictionbook.org/FictionBook3/body" xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description"><description><title-info><genre>unrecognised</genre><author><first-name>John</first-name><last-name>Popper-Snopper</last-name><id>2023bd21-f0d0-47ed-977d-3e19753ee40a</id></author><book-title>Gidy-gidy carousel</book-title><annotation>
     <p>The teacher has told: &amp;lt;p&amp;gt;&amp;lt;b&amp;gt;&amp;quot;that the lotus blossomed, it needs water&amp;quot;...&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt; and knocked him a stick on the head.</p>
-  </annotation><lang>en-US</lang><src-lang>en-US</src-lang></title-info><document-info><author><nickname>Аноним</nickname></author><date value="2018-11-23">23.11.2018</date><id>751730f5-9ded-47f7-8908-2cdb4762ba70</id><version>1.0</version></document-info></description><body><section id="uaafd01b5-fca9-5e68-bad3-0550c63c89e6">
-    <p id="ulink_5fb07443-3d94-5196-9204-37b6e21b3469">“Get me a gin!”</p>
-    <p id="ulink_00db4476-bcd0-5bdf-aa07-38f740f75299"><strong> <a l:href="#ulink_5fb07443-3d94-5196-9204-37b6e21b3469">you know</a> what</strong> you want to do when you get old?”</p>
-    <p>some some <a l:href="#ulink_00db4476-bcd0-5bdf-aa07-38f740f75299">linnn</a> text</p>
-  </section><section id="uaafd01b5-fca9-5e68-bad3-0550c63c89e7">
-    <p id="ulink_5fb07443-3d94-5196-9204-37b6e21b3467">“Get me a gin!”</p>
-    <p id="ulink_00db4476-bcd0-5bdf-aa07-38f740f75244"><strong> <a l:href="#ulink_5fb07443-3d94-5196-9204-37b6e21b3467">you know</a> what</strong> you want to do when you get old?”</p>
-    <p>some some <a l:href="#ulink_00db4476-bcd0-5bdf-aa07-38f740f75244">linnn</a> text</p>
+  </annotation><lang>en-US</lang><src-lang>en-US</src-lang></title-info><document-info><author><nickname>Аноним</nickname></author><date value="2018-11-23">23.11.2018</date><id>4e04c560-6be3-4c88-b748-2306bf73b0af</id><version>1.0</version></document-info></description><body><section id="u829b21d9-8d6f-5fc4-a677-94539493a9d6">
+    <p id="ulink_b8e15729-f638-5031-a641-e029a4005ac5">Get me a gin!</p>
+    <p id="ulink_0714d0ef-f7c6-56b0-92b1-c4f3b3a1274c"><strong> <a l:href="#ulink_b8e15729-f638-5031-a641-e029a4005ac5">LINK2</a> what</strong> you want</p>
+    <p>
+      <a l:href="#ulink_0714d0ef-f7c6-56b0-92b1-c4f3b3a1274c">link2</a>
+    </p>
   </section></body></FictionBook>
