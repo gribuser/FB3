@@ -86,3 +86,5 @@ t/examples/fb3_to_fb2/same_img_cover_135705.fb3
 t/examples/fb3_to_fb2/same_img_cover_135705.xml
 t/test1.t
 t/test2.t
+META.yml
+META.json
