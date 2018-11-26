@@ -349,8 +349,11 @@ sub HasPart {
 sub Relations {
 	my( $self, $RelsPartName, %RelationParams ) = @_;
 
+  my $Xml = $self->PartContents( $RelsPartName );
+
 	# Get list of relation nodes
-	my $RelsDoc = XML::LibXML->load_xml( string => $self->PartContents( $RelsPartName ));
+	my $RelsDoc = XML::LibXML->load_xml( string => $Xml );
+
 	my @RelationNodes = $self->RelationNodesFromDoc( $RelsDoc, %RelationParams );
 
 	my @Relations;
