@@ -160,11 +160,24 @@ sub ProceedNode {
 		}
 	}
 
-	if ($Finish && !$ImmortalBranch && !$Node->firstChild) {
+	if ($Finish && !$ImmortalBranch && (!$Node->firstChild || Trim(InNode($Node)) eq '') ) {
 		$Node->unbindNode(); # если нет потомков - рубим.
 	}
 
 	return $Node;
+}
+
+sub InNode {
+  my $Node = shift;
+  join "",map {$_->toString} $Node->childNodes;
+}
+
+sub Trim {
+	my $Str = shift;
+	$Str =~ s/[\n\r]//g;
+	$Str =~ s/^\s+//g;
+	$Str =~ s/\s+$//g;
+	return $Str;
 }
 
 sub CleanImages {
