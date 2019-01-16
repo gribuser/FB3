@@ -19,7 +19,7 @@ use Getopt::Long;
 my $FB3     = '';
 my $Out     = '';
 my $Version = '1.0';
-my $Lang    = 'ru';
+my $Lang    = 'en';
 my $ArtID   = undef;
 
 GetOptions ('in|from|src|fb3=s' => \$FB3,
