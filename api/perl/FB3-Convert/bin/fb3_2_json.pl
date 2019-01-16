@@ -19,7 +19,7 @@ use Getopt::Long;
 my $FB3     = '';
 my $Out     = '';
 my $Version = '1.0';
-my $Lang    = 'en';
+my $Lang    = 'ru';
 my $ArtID   = undef;
 
 GetOptions ('in|from|src|fb3=s' => \$FB3,
@@ -122,6 +122,8 @@ my %LangDependentStr = (
 	'ja' => ['断片の終わり'],
 	'nl' => ['Einde fragment'],
 	);
+
+$Lang = 'en' unless $LangDependentStr{$Lang}[0];
 
 my @AuthorsPriority = qw(author co_author dubious_author lecturer compiler screenwriter translator contributing_editor managing_editor editor editorial_board_member adapter conceptor rendering associated commentator consultant scientific_advisor recipient_of_letters corrector composer);
 
