@@ -8,6 +8,7 @@ use File::Temp qw(tempfile tempdir);
 use Encode qw(encode_utf8 decode_utf8);
 use MIME::Base64 qw(decode_base64);
 use Clone qw(clone);
+use List::Util qw(none);
 use utf8;
 
 my $XPC = XML::LibXML::XPathContext->new;
@@ -116,9 +117,9 @@ sub Reaper {
 		CreateEpigraph($FB2Doc, $Cite->parentNode, @SetInEpigraph); # сбросим хвост
 	}
 
-	#<poem> место в только в <section>. Другие заменяем на <blockquote>
+	# Заменяем <poem> на <blockquote> в тех местах, где poem не должно быть
 	for my $Poem ( $XPC->findnodes('//fb:poem', $FB2Doc )) {
-		if ($Poem->parentNode()->nodeName() ne 'section' && $Poem->parentNode()->nodeName() ne 'cite') {
+		if (none {$Poem->parentNode()->nodeName() eq $_} ('section', 'cite', 'epigraph')) {
 			my $BlockNode = $FB2Doc->createElement('blockquote');
       foreach my $ChildInside ($Poem->getChildnodes) {
         if ($ChildInside->nodeName() eq 'stanza') {
@@ -158,14 +159,24 @@ sub Reaper {
 			$EmptyLine->unbindNode();
 		}
 
-		# текст циаты найден, всё в порядке, идём дальше
+		# текст цитаты найден, всё в порядке, идём дальше
 		next if scalar $XPC->findnodes('./fb:p|./fb:poem', $Cite);
 
 		# если не нашли ни заголовков ни текста -- удаляем цитату и идём дальше
 		my @Titles = $XPC->findnodes('./fb:subtitle', $Cite);
 		unless ( scalar @Titles ) {
 
-			$Cite->unbindNode();
+			my $NodeToRemove = $Cite;
+			while (my $Parent = $NodeToRemove->parentNode) {
+				$NodeToRemove->unbindNode();
+				if ($Parent->getChildnodes) {
+					# в родительской секции что-то ещё есть - заканчиваем на этом
+					last;
+				} else {
+					# родительская секция оказалась пустой - придётся удалить и её
+					$NodeToRemove = $Parent;
+				}
+			}
 			next;
 		}
 
