@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">
+  <description>
+    <title-info>
+      <genre>russian_contemporary</genre>
+      <author>
+        <first-name>Автор</first-name>
+        <middle-name>Авторович</middle-name>
+        <last-name>Авторов</last-name>
+        <id>739351e1-699b-11e4-b813-16566c1c491a</id>
+      </author>
+      <book-title>Невозможная Девушка</book-title>
+      <annotation>
+        <p>История о девушке, чье мировоззрение отличается от всего человечества…История о потерянной душе…История о встречи двух сердец.</p>
+      </annotation>
+      <lang>ru</lang>
+    </title-info>
+    <document-info>
+      <author>
+        <first-name>Игорь</first-name>
+        <middle-name>Александрович</middle-name>
+        <last-name>Осадчий</last-name>
+      </author>
+      <program-used>Ridero</program-used>
+      <date value="2018-04-17">17.04.2018</date>
+      <src-url>http://www.litres.ru/pages/biblio_book/?art=21981855</src-url>
+      <id>b4f62062-2003-11e9-9498-681729bb5ec7</id>
+      <version>1.0</version>
+    </document-info>
+    <publish-info>
+      <isbn>9785449074362</isbn>
+    </publish-info>
+  </description>
+  <body>
+    <title>
+      <p>Невозможная Девушка</p>
+      <empty-line/>
+      <p>Игорь Александрович Осадчий</p>
+    </title>
+    <section>
+      <section>
+        <cite>
+          <text-author>
+            <emphasis>Посвящается невозможной девушке…</emphasis>
+          </text-author>
+        </cite>
+      </section>
+    </section>
+    <section>
+      <title>
+        <p>Глава 1</p>
+      </title>
+      <p>На берегу реки, который скрыт от посторонних человеческих взглядов и покрытый травой муравой, бросая небольшие куски хлеба, сидит девушка, необычайной красоты. За свои восемнадцать лет, Ева добилась многих успехов в: спорте, творчестве и учебе. Ева не придерживается той позиции, что оценки в школьном аттестате играют какую-нибудь роль в жизни тебя, меня или вон того проходящего человека. Это всего лишь цифры, – всегда говорит Ева. Но это не значит, что она троечница, наоборот она хорошистка.</p>
+    </section>
+  </body>
+</FictionBook>

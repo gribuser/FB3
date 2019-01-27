@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FictionBook xmlns:l="http://www.w3.org/1999/xlink" xmlns="http://www.gribuser.ru/xml/fictionbook/2.0">
+  <description>
+    <title-info>
+      <genre>nonfiction</genre>
+      <genre>nonf_biography</genre>
+      <author>
+        <first-name>Автор</first-name>
+        <middle-name>Авторович</middle-name>
+        <last-name>Авторов</last-name>
+        <id>739351e1-699b-11e4-b813-16566c1c491a</id>
+      </author>
+      <book-title>Гибель Пушкина. 1831–1836</book-title>
+      <annotation>
+        <p>Книга посвящена последним шести годам жизни Пушкина, когда великий поэт, проявивший себя как глубокий историк и политический мыслитель, провидевший катастрофическое будущее Российской империи, поверив в реформаторские намерения императора Николая Павловича, попытался гигантским духовным усилием воздействовать на судьбу своей страны.</p>
+        <p>Год за годом, месяц за месяцем автор прослеживает действия Пушкина, этапы его грандиозного замысла, рухнувшего при столкновении с неуклонным ходом русской истории.</p>
+        <p>Это книга о великой надежде и горьком разочаровании, книга о судьбе истинного патриота, чья трагедия предсказала трагедию страны.</p>
+        <p>Это книга о том, как русское общество отказалось понимать великого поэта и мыслителя, а критика подвергла его злобной травле, образцы которой читатель найдет в обширном приложении.</p>
+        <p>Это книга о гибели пророка.</p>
+      </annotation>
+      <keywords>исторические исследования,пушкинистика / пушкиноведение</keywords>
+      <date value="2016-01-01">2016</date>
+      <coverpage>
+        
+      </coverpage>
+      <lang>ru</lang>
+    </title-info>
+    <document-info>
+      <author>
+        <nickname>nys23</nickname>
+      </author>
+      <program-used>FictionBook Editor Release 2.6.7</program-used>
+      <date value="2017-09-23">2017-09-23</date>
+      <src-url>http://www.litres.ru/pages/biblio_book/?art=21981854</src-url>
+      <id>b1519ed1-2001-11e9-9498-681729bb5ec7</id>
+      <version>1.0</version>
+      <history>
+        <p>v 1.0 – создание fb2 – (nys23)</p>
+      </history>
+    </document-info>
+    <publish-info>
+      <book-name>Гибель Пушкина. 1831–1836</book-name>
+      <publisher>ИЦ Пушкинского фонда</publisher>
+      <city>Санкт-Петербург</city>
+      <year>2016</year>
+      <isbn>978-5-9907582-1-6</isbn>
+      <sequence name="Мир Пушкина"/>
+    </publish-info>
+  </description>
+  <body>
+    <section>
+      <epigraph>
+        <p>&lt;I&gt;</p>
+        <poem>
+          <stanza>
+            <v>Как этаких людей учтивее зовут?..</v>
+          </stanza>
+        </poem>
+      </epigraph>
+      <p>...Много текста...</p>
+    </section>
+  </body>
+</FictionBook>

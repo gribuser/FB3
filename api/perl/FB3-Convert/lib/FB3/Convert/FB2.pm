@@ -169,7 +169,7 @@ sub Reaper {
 			my $NodeToRemove = $Cite;
 			while (my $Parent = $NodeToRemove->parentNode) {
 				$NodeToRemove->unbindNode();
-				if ($Parent->getChildnodes) {
+				if ($Parent->nonBlankChildNodes) {
 					# в родительской секции что-то ещё есть - заканчиваем на этом
 					last;
 				} else {
