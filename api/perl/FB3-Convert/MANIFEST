@@ -62,6 +62,10 @@ t/examples/epub/validate_links_111103.epub
 t/examples/epub/validate_links_111103.xml
 t/examples/epub/xss_108909.epub
 t/examples/epub/xss_108909.xml
+t/examples/fb2/142286_gibelpush.fb2
+t/examples/fb2/142286_gibelpush.xml
+t/examples/fb2/142286_nevozmoj.fb2
+t/examples/fb2/142286_nevozmoj.xml
 t/examples/fb2/div_102611.fb2
 t/examples/fb2/div_102611.xml
 t/examples/fb2/hell_example_133321.fb2
