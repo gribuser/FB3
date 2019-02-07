@@ -148,11 +148,12 @@ sub FindFile {
 
 
 sub Num {
-  my $Fname=shift;
-  my $fmt=shift;
-  $Fname =~ /(\d+)\.$fmt/;
-  $Fname=$1;
-  return $Fname;
+
+  my ($Fname, $fmt) = @_;
+
+  if ( $Fname =~ /[^\d]*(\d+)[^\d]*\.$fmt/ ) { return $1; }
+
+  return 100_000_000;
 }
 
 sub _Diff {
