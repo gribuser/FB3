@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="48e1eb7c-2cb9-43d5-af61-0a1f33c8f1ee">
+
+<section id="48e1eb7c-1FFF-43d5-af61-0a1f33c8f1ee"><title><p>Book Author</p><p>Book title</p></title><section id="48e1eb7c-2FFF-43d5-af61-0a1f33c8f1ee"><title><p>Preface</p></title><annotation>
+
+                        <p><strong>This book covers the following topics:</strong></p>
+
+                        <p>• <em>Topic A</em></p>
+                        <p>• <em>Topic B</em></p>
+                        <p>• <em>Topic C</em></p>
+
+                </annotation><p>Some text…</p></section></section>
+</fb3-body>
