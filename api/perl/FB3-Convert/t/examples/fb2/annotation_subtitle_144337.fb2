@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FictionBook xmlns:l="http://www.w3.org/1999/xlink" xmlns="http://www.gribuser.ru/xml/fictionbook/2.0">
+<description>
+	<title-info>
+
+		<genre>nonfiction</genre>
+
+		<author>
+			<first-name>Book</first-name>
+			<last-name>Author</last-name>
+			<id>32ecc55c-91c7-4e20-afd8-fee2811b4f1a</id>
+		</author>
+		<book-title>Book title</book-title>
+		<annotation><p>Test book</p></annotation>
+		<keywords>test</keywords>
+		<date value="2019-02-07">2019</date>
+		<lang>en</lang>
+		<src-lang>en</src-lang> 
+	</title-info>
+	<document-info>
+		<author><nickname>LitRes</nickname></author>
+		<program-used>Vim</program-used>
+		<date value="2019-02-07">2019-02-07</date>
+		<src-url>https://github.com/gribuser/FB3</src-url>
+		<id>48e1eb7c-2cb9-43d5-af61-0a1f33c8f1ee</id>
+		<version>1.0</version>
+		<history><p>v 1.0</p></history> 
+		<publisher><first-name>Lit</first-name><last-name>Res</last-name><id>fab7a5f3-606e-41f6-9950-63fb4b33f92c</id></publisher>
+	</document-info>
+	<publish-info>
+		<book-name>Book title</book-name>
+		<publisher>LitRes</publisher>
+		<city>Moscow</city>
+		<year>2019</year>
+	</publish-info>
+</description>
+<body>
+<section>
+	<title>
+		<p>Book Author</p>
+		<p>Book title</p>
+	</title>
+
+	<section>
+
+		<title><p>Preface</p></title>
+
+		<annotation>
+
+			<subtitle><strong>This book covers the following topics:</strong></subtitle>
+
+			<p>• <emphasis>Topic A</emphasis></p>
+			<p>• <emphasis>Topic B</emphasis></p>
+			<p>• <emphasis>Topic C</emphasis></p>
+
+		</annotation>
+
+		<p>Some text…</p>
+	</section>
+</section>
+</body>
+</FictionBook>

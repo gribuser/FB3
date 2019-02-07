@@ -26,7 +26,7 @@ if ($@) {
 
 my $FB2XSD = $FB3M.'/FictionBook.xsd';
 unless (-f $FB2XSD) {
-  diag('FictionBook.xsd is requared, but not found. Please update FB3 module.');
+  diag('FictionBook.xsd is required, but not found. Please update FB3 module.');
   exit;
 }
 
