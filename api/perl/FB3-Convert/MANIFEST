@@ -88,6 +88,8 @@ t/examples/fb2/subtitle_cite_109783.fb2
 t/examples/fb2/subtitle_cite_109783.xml
 t/examples/fb3_to_fb2/same_img_cover_135705.fb3
 t/examples/fb3_to_fb2/same_img_cover_135705.xml
+t/examples/fb2/annotation_subtitle_144337.fb2
+t/examples/fb2/annotation_subtitle_144337.xml
 t/test1.t
 t/test2.t
 META.yml
