@@ -81,6 +81,11 @@ my $Builder = Module::Build->new(
 		script_files => 'bin/validate_fb3.pl',
 		share_dir => 'share',
     add_to_cleanup     => [ 'FB3-*' ],
+    meta_merge => {
+        resources => {
+            repository => 'https://github.com/gribuser/FB3',
+        },
+    },
 );
 
 $Builder->create_build_script();
