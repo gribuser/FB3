@@ -150,6 +150,12 @@ sub Reaper {
 		}
 	}
 
+	#notes всегда внизу
+	for my $Notes ( $XPC->findnodes('//fb:body[@name="notes"]', $FB2Doc)) {
+		$Notes->parentNode()->addChild($Notes->cloneNode(1));
+		$Notes->parentNode()->removeChild($Notes);
+	}
+
 	# приведём в порядок цитаты без текста, только с заголовками
 	for my $Cite ( $XPC->findnodes('//fb:section/fb:cite', $FB2Doc )) {
 
