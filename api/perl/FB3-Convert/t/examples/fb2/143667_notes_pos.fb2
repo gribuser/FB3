@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">
+  <description>
+    <title-info>
+      <genre>russian_contemporary</genre>
+      <author>
+        <first-name>Автор</first-name>
+        <middle-name>Авторович</middle-name>
+        <last-name>Авторов</last-name>
+        <id>739351e1-699b-11e4-b813-16566c1c491a</id>
+      </author>
+      <book-title>Невозможная Девушка</book-title>
+      <annotation>
+        <p>История о девушке, чье мировоззрение отличается от всего человечества…История о потерянной душе…История о встречи двух сердец.</p>
+      </annotation>
+      <lang>ru</lang>
+    </title-info>
+    <document-info>
+      <author>
+        <first-name>Игорь</first-name>
+        <middle-name>Александрович</middle-name>
+        <last-name>Осадчий</last-name>
+      </author>
+      <program-used>Ridero</program-used>
+      <date value="2018-04-17">17.04.2018</date>
+      <src-url>http://www.litres.ru/pages/biblio_book/?art=21981855</src-url>
+      <id>b4f62062-2003-11e9-9498-681729bb5ec7</id>
+      <version>1.0</version>
+    </document-info>
+    <publish-info>
+      <isbn>9785449074362</isbn>
+    </publish-info>
+  </description>
+
+    <body>
+	<title><p>Л. Троцкий</p>
+	    <p>Часть 1</p>
+	</title>
+	<section>
+	    <title><p>ОТ РЕДАКЦИИ</p></title>
+	    <p>Редакция.</p>
+	</section>
+    </body>
+
+    <body name="notes">
+	<title><p>Примечания 1</p></title>
+	<section id="n_1">
+	    <title><p>1</p></title>
+	    <p>text NOTES 1</p>
+	</section>
+	<section id="n_2">
+	    <title><p>2</p></title>
+	    <p>text NOTES 2</p>
+	</section>
+    </body>
+
+    <body name="comments">
+	<title><p>Комментарии</p></title>
+	<section id="c_1">
+	    <title><p>1</p></title>
+	    <p>Так в легальной печати обозначался тогда возглас «долой самодержавие!»</p>
+        </section>
+	<section id="c_2">
+	    <title><p>2</p></title>
+	    <p>См. «Право», N 41.</p>
+	</section>
+    </body>
+
+    <body name="notes">
+	<title><p>Примечания 2</p></title>
+	<section id="n_3">
+	    <title><p>1</p></title>
+	    <p>text NOTES 3</p>
+	</section>
+	<section id="n_4">
+	    <title><p>2</p></title>
+	    <p>text NOTES 4</p>
+	</section>
+    </body>
+
+
+</FictionBook>
