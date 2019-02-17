@@ -48,16 +48,29 @@ GetOptions(
   'fb2=s' => \$OPT{'fb2'},
 	'fb2xsd=s' => \$OPT{'fb2xsd'},
 	'genremap=s' => \$OPT{'genremap'},
+  'validate|vl=s' => \$OPT{'vl'},
 ) || help();
 
 #если вызван ключик --help или нет ни единого ключа
 help() if $OPT{'help'} || !grep {defined $OPT{$_}} keys %OPT;
 
+my $Parser = new XML::LibXML;
+my $Doc = new XML::LibXML::Document;
+
+die ("param -fb2xsd not defined") unless $OPT{'fb2xsd'};
+die ("param -fb2xsd: there is no such file '".$OPT{'fb2xsd'}."'") unless -f $OPT{'fb2xsd'};
+
+if ($OPT{'vl'}) {
+  my $Schema = XML::LibXML::Schema->new(location => $OPT{'fb2xsd'});
+  my $FB2 = $Parser->parse_file($OPT{'vl'});
+  eval { $Schema->validate($FB2) };
+  die "Schema validation error for file $OPT{'fb3'}: $@" if $@;
+  exit;
+}
+
 die ("param -fb3 not defined") unless defined $OPT{'fb3'};
 die ("param -fb3: file '".$OPT{'fb3'}."' not exists") unless -e $OPT{'fb3'};
 die ("param -fb2 not defined") unless defined $OPT{'fb2'};
-die ("param -fb2xsd not defined") unless $OPT{'fb2xsd'};
-die ("param -fb2xsd: there is no such file '".$OPT{'fb2xsd'}."'") unless -f $OPT{'fb2xsd'};
 $OPT{'genremap'} //= dist_file("FB3-Convert", "fb3_to_fb2_genre.json");
 
 #CHECK --fb2,--fb3 
@@ -75,9 +88,6 @@ $OPT{'fb2'} .= '.fb2' unless $OPT{'fb2'} =~ m/\.fb2$/;
 
 #все ок, поехали
 print "Start convert FB3 (".$OPT{'fb3'}.") to FB2 (".$OPT{'fb2'}.")\n" if $OPT{'verbose'};
-
-my $Parser = new XML::LibXML;
-my $Doc = new XML::LibXML::Document;
 
 my (@FB2XML, @FB2ImgXML, $NS, %NS);
 my $FB3Package = OPC->new( $OPT{'fb3'} );
@@ -466,17 +476,18 @@ sub TransLitGeneral {
 sub help {
   print <<_END
   
-  USAGE: fb3_to_fb2.pl --fb3= --fb2= --fb2xsd= [--genremap=] [--verbose] [--help]
+  USAGE: fb3_to_fb2.pl --fb3= --fb2= --fb2xsd= [--genremap=] [--verbose] [--help] [--force] [--validate|vl=]
   
-  --help : print this text
-  --verbose : print processing status
-  --fb3 : path to FB3 file
-  --fb2 : path to dir or filename for saving completed FB2 file
-  --fb2xsd : path to FB2 XSD schema (see https://github.com/gribuser/fb2/blob/master/FictionBook.xsd)
+  --help     : print this text
+  --verbose  : print processing status
+  --fb3      : path to FB3 file
+  --fb2      : path to dir or filename for saving completed FB2 file
+  --fb2xsd   : path to FB2 XSD schema (see https://github.com/gribuser/fb2/blob/master/FictionBook.xsd)
   --genremap : path to json file containing mapping from FB3 to FB2 genre names.
                If omitted static file fb3_to_fb2_genre.json file lying near the
                script is used
-  --force : ignore validation error
+  --force    : ignore validation error
+  --validate : don't convert, only validate fb3 file from path
   
 _END
 ;

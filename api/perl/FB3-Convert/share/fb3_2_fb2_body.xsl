@@ -72,7 +72,7 @@
 		<xsl:variable name="images_inside"><xsl:value-of select="count(fb3b:img)"/></xsl:variable>
 		<xsl:variable name="p_text"><xsl:value-of select="normalize-space(.)"/></xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$images_inside = 1 and $noimgtags_inside = 0 and string-length($p_text) = 0">
+			<xsl:when test="$images_inside = 1 and $noimgtags_inside = 0 and string-length($p_text) = 0 and not(parent::fb3b:title)">
 				<xsl:apply-templates/>
 				<xsl:if test="not(parent::fb3b:div)">
 					<empty-line/>
