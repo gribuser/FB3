@@ -60,12 +60,16 @@ my $Doc = new XML::LibXML::Document;
 die ("param -fb2xsd not defined") unless $OPT{'fb2xsd'};
 die ("param -fb2xsd: there is no such file '".$OPT{'fb2xsd'}."'") unless -f $OPT{'fb2xsd'};
 
-if ($OPT{'vl'}) {
+if ( $OPT{'vl'} ) {
   my $Schema = XML::LibXML::Schema->new(location => $OPT{'fb2xsd'});
   my $FB2 = $Parser->parse_file($OPT{'vl'});
   eval { $Schema->validate($FB2) };
-  die "Schema validation error for file $OPT{'fb3'}: $@" if $@;
-  exit;
+  unless ($@) {
+    printf("\n%s is valid FB2 document\n\n", $OPT{'vl'});
+    exit 0;
+  } 
+  printf("\n%s is NOT valid FB2 document\n\n%s\n", $OPT{'vl'}, $@);
+  exit 1;
 }
 
 die ("param -fb3 not defined") unless defined $OPT{'fb3'};

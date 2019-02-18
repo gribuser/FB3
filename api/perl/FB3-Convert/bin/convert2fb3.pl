@@ -38,11 +38,14 @@ GetOptions(
 my $XsdPath = $OPT{xsd_dir} || FB3::SchemasDirPath();
 my $XslPath = dist_dir('FB3-Convert');
 
-if ($OPT{'vl'}) {
-  my $Obj = new FB3::Convert(empty=>1);
-  my $Valid = $Obj->Validate('path'=>$OPT{'vl'},'xsd'=>$XsdPath);
-  print $Valid;
-  exit;
+if ( $OPT{'vl'} ) {
+  my $Error = FB3::Convert->new('empty' => 1)->Validate('path' => $OPT{'vl'}, 'xsd' => $XsdPath);
+  unless ( $Error ) {
+    printf("\n%s is valid FB3 document\n\n", $OPT{'vl'});
+    exit 0;
+  }
+  printf("\n%s is NOT valid FB3 document\n\n%s\n", $OPT{'vl'}, $Error);
+  exit 1;
 }
 
 $OPT{'source'} = $ARGV[0] unless $OPT{'source'};
