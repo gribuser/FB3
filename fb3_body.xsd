@@ -182,8 +182,16 @@
 					</choice>
 				</sequence>
 				<attribute name="id" type="fb3d:UUIDType" use="required"/>
-				<attribute name="article" type="boolean" use="optional"/>
-				<attribute name="doi" type="fb3d:DOIType" use="optional"/>
+				<attribute name="article" type="boolean" use="optional">
+					<annotation>
+						<documentation>Научная статья?</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="doi" type="fb3d:DOIType" use="optional">
+					<annotation>
+						<documentation>ID статьи в научном пространстве имен</documentation>
+					</annotation>
+				</attribute>
 				<attribute name="clipped" type="boolean">
 					<annotation>
 						<documentation>Признак секции, которую модифицировали (например, очистили от содержимого) при формирования фрагмента произведения</documentation>
@@ -192,6 +200,11 @@
 				<attribute name="first-char-pos" type="positiveInteger">
 					<annotation>
 						<documentation>Значение равно номеру позиции с которой она должна начинаться в полной версии произведения (см. fb3-fragment/@full_length в мета-файле). Полезно при навигации по фрагменту</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="output" type="fb3b:TrialShareType" default="default">
+					<annotation>
+						<documentation>Как работать с содержимым этой секции при генерации триального фрагмента?</documentation>
 					</annotation>
 				</attribute>
 			</extension>
@@ -461,7 +474,7 @@
 			<extension base="fb3b:StyleInLinkType">
 				<attribute name="href" type="IDREF" use="required"/>
 				<attribute ref="xlink:role" use="optional"/>
-				<attribute name="autotext" default="1" use="optional">
+				<attribute name="autotext" use="optional" default="1">
 					<annotation>
 						<documentation>Автонумерация для подстраничных сносок (1, 2, 3; I, II, III, IV; a, b, c; *, **, ***; без автонумерации)</documentation>
 					</annotation>
@@ -618,6 +631,33 @@
 			<enumeration value="right"/>
 			<enumeration value="both"/>
 			<enumeration value="page"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="TrialShareType">
+		<annotation>
+			<documentation>Возможные значения для типа "триальности" секций</documentation>
+		</annotation>
+		<restriction base="token">
+			<enumeration value="default">
+				<annotation>
+					<documentation>Эта секция может быть триальной или закрытой, на усмотрение конвертера</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="trial">
+				<annotation>
+					<documentation>Должно присутствовать как в триальном фрагменте, так и в полном тексте</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="trial-only">
+				<annotation>
+					<documentation>Должно присутствовать в триальном фрагменте, должно отсутствовать в полном тексте</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="payed">
+				<annotation>
+					<documentation>Данная секция не может присутствовать в триальном фрагменте</documentation>
+				</annotation>
+			</enumeration>
 		</restriction>
 	</simpleType>
 	<simpleType name="ScreenSizeType">
