@@ -14,7 +14,19 @@
 			<complexContent>
 				<extension base="fb3b:TitledType">
 					<sequence>
-						<element name="section" type="fb3b:SectionType" maxOccurs="unbounded"/>
+						<element name="section" maxOccurs="unbounded">
+							<complexType>
+								<complexContent>
+									<extension base="fb3b:SectionType">
+										<attribute name="output" type="fb3b:TrialShareType" default="default">
+											<annotation>
+												<documentation>Как работать с содержимым этой секции при генерации триального фрагмента?</documentation>
+											</annotation>
+										</attribute>
+									</extension>
+								</complexContent>
+							</complexType>
+						</element>
 						<element name="notes" minOccurs="0" maxOccurs="unbounded">
 							<complexType>
 								<complexContent>
@@ -200,11 +212,6 @@
 				<attribute name="first-char-pos" type="positiveInteger">
 					<annotation>
 						<documentation>Значение равно номеру позиции с которой она должна начинаться в полной версии произведения (см. fb3-fragment/@full_length в мета-файле). Полезно при навигации по фрагменту</documentation>
-					</annotation>
-				</attribute>
-				<attribute name="output" type="fb3b:TrialShareType" default="default">
-					<annotation>
-						<documentation>Как работать с содержимым этой секции при генерации триального фрагмента?</documentation>
 					</annotation>
 				</attribute>
 			</extension>
