@@ -652,12 +652,12 @@
 			</enumeration>
 			<enumeration value="trial">
 				<annotation>
-					<documentation>Должно присутствовать как в триальном фрагменте, так и в полном тексте</documentation>
+					<documentation>Эта секция должна присутствовать как в триальном фрагменте, так и в полном тексте</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="trial-only">
 				<annotation>
-					<documentation>Должно присутствовать в триальном фрагменте, должно отсутствовать в полном тексте</documentation>
+					<documentation>Эта секция должна присутствовать в триальном фрагменте, должна отсутствовать в полном тексте</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="payed">
