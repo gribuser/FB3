@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="7bc8b80f-87f6-4592-a477-6f2d62a12ee5" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="fe803fa7-f0f9-53dd-8939-612456124037">
+    <p>what you do</p>
+    <p><strong> <a xlink:href="#link_15a20113-d9f2-5e94-b398-7112b5a0e252">GOOD LINK</a> what</strong> you want</p>
+    <p><strong> <a xlink:href="#fe803fa7-f0f9-53dd-8939-612456124037">GOOD LINK too</a> what</strong> you want</p>
+    <p id="link_15a20113-d9f2-5e94-b398-7112b5a0e252">Get me a gin!</p>
+    <p><strong>BAD LINK what</strong> you want</p>
+  </section>
+</fb3-body>
