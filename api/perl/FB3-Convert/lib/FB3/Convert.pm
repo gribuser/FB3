@@ -22,7 +22,7 @@ use XML::Entities::Data;
 use Time::HiRes qw(gettimeofday sleep);
 binmode(STDOUT,':utf8');
 
-our $VERSION = 0.24;
+our $VERSION = 0.25;
 
 =head1 NAME
 
