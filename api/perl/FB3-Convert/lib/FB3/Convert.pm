@@ -591,7 +591,7 @@ sub Content2Tree {
   my $X = shift;
   my $Obj = shift;
   my $Content = $Obj->{'content'};
-  my $File = $Obj->{'file'};
+  my $File = uri_unescape($Obj->{'file'});
 
   $Content = $X->trim($Content);
 
@@ -613,7 +613,7 @@ sub Content2Tree {
 
   return {
     content => $X->NormalizeTree($Result),
-    ID => $X->Path2ID($File,undef,'main_section'), #main-sectioon
+    ID => $X->Path2ID(uri_unescape($File),undef,'main_section'), #main-sectioon
     ID_SUB => $X->UUID(), #sub-section
   };
 }
@@ -747,7 +747,7 @@ sub ConvertIds {
   if ($RelPath && exists $Attributes->{'id'}) {
    my $Href = $RelPath."#".$Attributes->{'id'};
     #так же должны быть преобразованы <a href !!!
-    my $Id = $X->Path2ID($Href,undef,'convert_id');
+    my $Id = $X->Path2ID(uri_unescape($Href),undef,'convert_id');
     $Attributes->{'id'} = 'link_'.$Id;
     $X->{'id_list'}->{$Attributes->{'id'}} = $Href;
   }
