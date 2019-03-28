@@ -1362,6 +1362,7 @@ sub ProcessHref {
                                                         'skip' #не падать, если внешняя ссыль кривая
                                                       )
         : '';
+  $NewHref = undef if $NewHref =~ /^\#$/ || $NewHref =~ /^\#link_$/; 
 
   if (defined($NewHref)) {
     $X->{'href_list'}->{$NewHref} = $Href if $X->trim($NewHref) ne '';

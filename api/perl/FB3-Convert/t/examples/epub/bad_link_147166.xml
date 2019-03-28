@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="7bc8b80f-87f6-4592-a477-6f2d62a12ee5" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <section id="fe803fa7-f0f9-53dd-8939-612456124037">
+<fb3-body id="34018b6e-924c-4278-b8ac-0d91077c08c4" xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="f792d3a6-dfd9-5082-889c-8a4a551559cb">
     <p>what you do</p>
-    <p><strong> <a xlink:href="#link_15a20113-d9f2-5e94-b398-7112b5a0e252">GOOD LINK</a> what</strong> you want</p>
-    <p><strong> <a xlink:href="#fe803fa7-f0f9-53dd-8939-612456124037">GOOD LINK too</a> what</strong> you want</p>
-    <p id="link_15a20113-d9f2-5e94-b398-7112b5a0e252">Get me a gin!</p>
+    <p><strong> <a xlink:href="#link_0edcacd4-acf0-5701-b56a-371f383a353e">GOOD LINK</a> what</strong> you want</p>
+    <p><strong> <a xlink:href="#f792d3a6-dfd9-5082-889c-8a4a551559cb">GOOD LINK too</a> what</strong> you want</p>
+    <p id="link_0edcacd4-acf0-5701-b56a-371f383a353e">Get me a gin!</p>
     <p><strong>BAD LINK what</strong> you want</p>
+    <p><strong>BAD LINK TOO what</strong> you want2</p>
   </section>
 </fb3-body>

@@ -22,7 +22,7 @@ use XML::Entities::Data;
 use Time::HiRes qw(gettimeofday sleep);
 binmode(STDOUT,':utf8');
 
-our $VERSION = 0.25;
+our $VERSION = 0.26;
 
 =head1 NAME
 
@@ -769,7 +769,8 @@ sub Path2ID {
   }
 
   my $Link = $X->RealPath($LocalPath.'/'.$DestPath, $Debug, $Skip);
-  my $Path = $X->UUID($Link);
+
+  my $Path = defined $Link && $Link ne '' ? $X->UUID($Link) : undef;
 
   return $Path;
 }
@@ -786,7 +787,7 @@ sub RealPath {
     $RealPath =~ s/%20/ /g;
     my $RealPath2 = $RealPath;
     $RealPath2 =~ s/#.*$//g;
-    $RealPath = undef if !$Skip && !-f $RealPath2 && !-d $RealPath2;
+    $RealPath = undef if !-f $RealPath2 && !-d $RealPath2;
   }
 
   $X->Error("Wrong path!\n$! $Path".($Debug?' ('.$Debug.')':'')) if !$RealPath && !$Skip;
