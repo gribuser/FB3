@@ -1600,7 +1600,7 @@ sub FB3Creator {
     my $First  = FB3::Convert::xmlescape($_->{'first-name'} );
     my $Middle = FB3::Convert::xmlescape($_->{'middle-name'});
     my $Last   = FB3::Convert::xmlescape($_->{'last-name'}  ) || "Unknown";
-    my $Link   = FB3::Convert::xmlescape($_->{'link'}) || "Unknown";
+    my $Link   = FB3::Convert::xmlescape($_->{'link'}) || "undef";
 
     print FHdesc qq{<subject link="$Link" id="}.($_->{'id'}||'00000000-0000-0000-0000-000000000000').qq{">
       <title>
