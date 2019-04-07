@@ -104,6 +104,21 @@ sub ProceedNode {
 	}
 
 	if ($NodeName eq 'section') {
+
+		if ( #обрабатываем логику атрибута 'output'
+			defined $Node->getAttribute('output')	
+			&& $Node->parentNode->nodeName ne 'section' #только внешние section
+		) {
+			my $SectionOutput = $Node->getAttribute('output');
+			if ($SectionOutput eq 'payed') { #пропускаем ноду и забываем
+				$Node->unbindNode();
+				return $Node;
+			}
+			if ($SectionOutput eq 'trial' || $SectionOutput eq 'trial-only') { #всегда бессмертны
+				$ImmortalBranch = 1;
+			}
+		}
+
 		$Node->setAttribute('first-char-pos', $CharsProcessed+1);
 	} elsif ($NodeName eq 'title' && ($Node->parentNode->nodeName eq 'section' || $Node->parentNode->nodeName eq 'notes')) { # заголовок секции, пригодится
 		$ImmortalBranch = 1;
