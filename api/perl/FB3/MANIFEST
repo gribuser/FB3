@@ -22,3 +22,5 @@ share/opc-coreProperties.xsd
 share/opc-relationships.xsd
 share/xml_namespace.xsd
 t/00-load.t
+META.yml
+META.json
