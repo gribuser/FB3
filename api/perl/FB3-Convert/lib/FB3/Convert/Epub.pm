@@ -1196,6 +1196,7 @@ sub CleanTitle {
 sub CleanNodeEmptyId {
   my $X = shift;
   my $Node = shift;
+  my $IdsCollect = shift || {};
 
   return $Node unless ref $Node eq 'ARRAY';
 
@@ -1206,16 +1207,20 @@ sub CleanNodeEmptyId {
     next unless ref $Item eq 'HASH';
     foreach my $El (keys %$Item) {
       next if ref $Item->{$El} ne 'HASH' || !exists $Item->{$El}->{'value'};
-      $Item->{$El}->{'value'} = CleanNodeEmptyId($X,$Item->{$El}->{'value'});
+      $Item->{$El}->{'value'} = CleanNodeEmptyId($X,$Item->{$El}->{'value'},$IdsCollect);
       if (exists $Item->{$El}->{'attributes'}->{'id'} || $El =~ /^(a|span)$/) {
         my $Id = exists $Item->{$El}->{'attributes'}->{'id'} ? $Item->{$El}->{'attributes'}->{'id'} : '';
-        if (!exists $X->{'href_list'}->{"#".$Id} || !$Id) { #элементы с несуществующими id
-          
+
+        if (!exists $X->{'href_list'}->{"#".$Id} || !$Id || exists $IdsCollect->{$Id}) { #элементы с несуществующими id
           my $Link;
-          $Link = $X->trim($Item->{$El}->{'attributes'}->{'xlink:href'})if exists $Item->{$El}->{'attributes'}->{'xlink:href'};
+          $Link = $X->trim($Item->{$El}->{'attributes'}->{'xlink:href'}) if exists $Item->{$El}->{'attributes'}->{'xlink:href'};
           
           if ($Id) {
-            $X->Msg("Find non exists ID and delete '$Id' in node '$El' [".$X->{'id_list'}->{$Id}."]\n","w");
+            if (exists $IdsCollect->{$Id}) {
+              $X->Msg("Find double ID and delete '$Id' in node '$El'\n","w");
+            } else {
+              $X->Msg("Find non exists ID and delete '$Id' in node '$El' [".$X->{'id_list'}->{$Id}."]\n","w");
+            }
             delete $Item->{$El}->{'attributes'}->{'id'}; #удалим id
           } elsif ($Link eq '') {
             $X->Msg("Find node '$El' without id\n","w");
@@ -1236,6 +1241,7 @@ sub CleanNodeEmptyId {
           push @$Ret, @{$Item->{$El}->{'value'}} if scalar @{$Item->{$El}->{'value'}}; #переносим на место ноды ее внутренности
           $X->Msg("Delete node '$El'\n");
         }
+        $IdsCollect->{$Id}++;
       }
     }
   }
