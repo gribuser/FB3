@@ -449,7 +449,12 @@ sub Reaper {
   unless (defined $Description->{'DOCUMENT-INFO'}->{'LANGUAGE'}) {
     my $Lang = $XC->findnodes('/root:package/root:metadata/dc:language',$RootDoc)->[0];
     $Description->{'DOCUMENT-INFO'}->{'LANGUAGE'} = $self->html_trim($Lang->to_literal) if $Lang;
-    $Description->{'DOCUMENT-INFO'}->{'LANGUAGE'} ||= 'Unknown';
+
+    unless ($Description->{'DOCUMENT-INFO'}->{'LANGUAGE'}) {
+      my $TextForIdent = FetchText4Ident($AC,500);
+      $Description->{'DOCUMENT-INFO'}->{'LANGUAGE'} = $X->GuessLang($TextForIdent);
+      $Description->{'DOCUMENT-INFO'}->{'LANGUAGE'} ||= 'en';
+    }
   }
 
   unless (defined $Description->{'TITLE-INFO'}->{'BOOK-TITLE'}) {
@@ -776,6 +781,30 @@ sub Reaper {
     value => \@Body
   };
 
+}
+
+sub FetchText4Ident {
+  my $Data = shift;
+  my $MinLen = shift || 200;
+  my $Text;
+
+  foreach (@$Data) {
+    my $Content = $_->{'content'};
+    $Content =~ s/<.*>//g;
+    $Content =~ s/[\n\r]/ /g;
+    $Content =~ s/^\s*//;
+    $Content =~ s/\s*$//;
+    $Content =~ s/\s+/ /g;
+    $Content =~ s/[\{\}\\\(\)\/0-9\[\]]+//g;
+    $Content =~ s/\s+\././g;
+    $Content =~ s/,\./,/g;
+    $Content =~ s/\.+/./g;
+
+    $Text .= (length($Text)?' ':'').$Content;
+    return $Text if length($Text) >= $MinLen;
+  }
+
+  return $Text;
 }
 
 sub CleanEmptyP {

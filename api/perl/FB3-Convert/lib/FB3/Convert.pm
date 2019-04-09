@@ -20,6 +20,7 @@ use Encode qw(encode_utf8 decode_utf8);
 use XML::Entities;
 use XML::Entities::Data;
 use Time::HiRes qw(gettimeofday sleep);
+use Lingua::Identify qw(langof);
 binmode(STDOUT,':utf8');
 
 our $VERSION = 0.27;
@@ -1385,6 +1386,18 @@ sub isAllowedImageType {
   my $X = shift;
   my $ImgType = shift || return;
   return grep {lc($ImgType) eq $_} @AccessImgFormat;
+}
+
+sub GuessLang {
+  my $X = shift;
+  my $Text = shift;
+  return if length($Text) < 150;
+  $Text = substr($Text,0,2000);
+  my %LangsHashLocal = Lingua::Identify::langof($Text);
+  my @SortedProbability = sort {$b <=> $a} values(%LangsHashLocal);
+  foreach my $Lang (keys %LangsHashLocal) {
+    return lc($Lang) if $LangsHashLocal{$Lang} == $SortedProbability[0];
+  }
 }
 
 =head1 LICENSE AND COPYRIGHT
