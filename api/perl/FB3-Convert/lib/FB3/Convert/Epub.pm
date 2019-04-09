@@ -1241,7 +1241,7 @@ sub CleanNodeEmptyId {
       if (exists $Item->{$El}->{'attributes'}->{'id'} || $El =~ /^(a|span)$/) {
         my $Id = exists $Item->{$El}->{'attributes'}->{'id'} ? $Item->{$El}->{'attributes'}->{'id'} : '';
 
-        if (!exists $X->{'href_list'}->{"#".$Id} || !$Id || exists $IdsCollect->{$Id}) { #элементы с несуществующими id
+        if (!$Id || !exists $X->{'href_list'}->{"#".$Id} || exists $IdsCollect->{$Id}) { #элементы с несуществующими id
           my $Link;
           $Link = $X->trim($Item->{$El}->{'attributes'}->{'xlink:href'}) if exists $Item->{$El}->{'attributes'}->{'xlink:href'};
           
