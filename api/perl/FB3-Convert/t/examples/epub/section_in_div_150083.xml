@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body" id="1ec368fa-9b85-4e2b-8b06-6f8ff827a362">
+  <section id="7404e88b-f6ca-5a89-83e4-1709de3c65d7">
+    <p id="link_efc59703-8a9f-5622-84f6-9375662171d7">
+      <a xlink:href="#link_fed9a4b5-17b2-51ef-81d6-ca749225a2eb">1.</a>
+    </p>
+    <p id="link_b29eb087-bd00-5a09-ad48-20ac2ed2d5f2">TEXT1</p>
+    <p>TEXT2</p>
+    <p>Middle Text</p>
+    <p>
+      <a xlink:href="#link_b29eb087-bd00-5a09-ad48-20ac2ed2d5f2">LINK1</a>
+    </p>
+    <p id="link_fed9a4b5-17b2-51ef-81d6-ca749225a2eb">
+      <a xlink:href="#link_efc59703-8a9f-5622-84f6-9375662171d7">TEXT3</a>
+    </p>
+    <p>TEXT4</p>
+  </section>
+</fb3-body>
