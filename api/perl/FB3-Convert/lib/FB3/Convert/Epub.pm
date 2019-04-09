@@ -448,7 +448,8 @@ sub Reaper {
 
   unless (defined $Description->{'DOCUMENT-INFO'}->{'LANGUAGE'}) {
     my $Lang = $XC->findnodes('/root:package/root:metadata/dc:language',$RootDoc)->[0];
-    $Description->{'DOCUMENT-INFO'}->{'LANGUAGE'} =  $self->html_trim($Lang->to_literal) if $Lang;
+    $Description->{'DOCUMENT-INFO'}->{'LANGUAGE'} = $self->html_trim($Lang->to_literal) if $Lang;
+    $Description->{'DOCUMENT-INFO'}->{'LANGUAGE'} ||= 'Unknown';
   }
 
   unless (defined $Description->{'TITLE-INFO'}->{'BOOK-TITLE'}) {
