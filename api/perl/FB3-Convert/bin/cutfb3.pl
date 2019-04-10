@@ -12,20 +12,39 @@ use Cwd qw(cwd abs_path);
 use Getopt::Long;
 use utf8;
 
-my ($Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath, $ImageFileName);
-GetOptions(
-	'force|f'	  =>	\$Force,
-	'in|i=s'		=>	\$In,
-	'out|o=s'		=>	\$Out,
-	'chars|c=i'	=>	\$CutChars,
-	'xsd|x=s'   =>  \$XsdPath, # optional
-  'imagespath|p=s'  =>  \$ImagesPath,
-) or usage ("CutPartFB3: makes trial fragment from fb3\n\nUsage:\n\nCutPartFB3.pl in=<inputfile.fb3> out=<outputfile.fb3> chars=<chars_in_result> imagespath=/path/to/fb3/images\n");
+my $DefaultChars = 2000;
+
+my ($Verbose, $Help, $Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath, $ImageFileName, $WorkType);
+my $r = GetOptions(
+  'verbose|v:1'    => \$Verbose,
+  'help|h'         => \$Help,
+	'force|f'	       =>	\$Force,
+	'in|i=s'		     =>	\$In,
+	'out|o=s'		     =>	\$Out,
+	'chars|c=i'	     =>	\$CutChars,
+	'xsd|x=s'        => \$XsdPath, # optional
+  'imagespath|p=s' => \$ImagesPath,
+	'type|t=s'       => \$WorkType,
+);
+help() if $Help;
+
+if (!$In || !$Out) {
+  print "\nrequired params 'in'/'out' not defined\n";
+  help();
+}
+
+$CutChars = $DefaultChars unless $CutChars;
 
 if($ImagesPath){
   die "Path $ImagesPath not found\n" unless -d $ImagesPath;
   $ImagesPath = $ImagesPath.'/' if $ImagesPath !~ /\/$/;
 }
+
+if ($WorkType && $WorkType !~ /^(trial|output)$/) {
+  print "\nparams 'type' must be trial|output\n";
+	help();
+}
+$WorkType = 'trial' unless $WorkType; 
 
 use constant {
 	NS_XLINK => 'http://www.w3.org/1999/xlink',
@@ -53,6 +72,8 @@ our $Validator = FB3::Validator->new( $XsdPath );
 my $Finish;
 my $CharsProcessed = 0;
 my %ImageHash;
+my %HrefHash;
+my %IdHash;
 my %NoteHash;
 
 my $TmpDir = File::Temp::tempdir( CLEANUP => 1 );
@@ -68,23 +89,37 @@ my $BodyDoc = $Parser->load_xml( string => $BodyXML, huge => 1 );
 my $RootNode = $BodyDoc->getDocumentElement();
 my $XPC = XML::LibXML::XPathContext->new($RootNode);
 $XPC->registerNs('fb', &NS_FB3_BODY);
-my $CharsFull = length($RootNode->textContent);
-$RootNode = ProceedNode($RootNode);
+
+if ($WorkType eq 'trial') {
+	$RootNode = ProceedNodeTrial($RootNode);
+} elsif ($WorkType eq 'output') {
+	$RootNode = ProceedNodeOut($RootNode);
+	CollectElementStat($RootNode);
+	CleanLinks($FB3Body);
+} else {die "type wrong!"; help();}
+
 CleanImages($FB3Package);
-my $CharsTrial = length($RootNode->textContent);
+
+print $RootNode->toString;
+
 $BodyDoc->toFile($FB3Body->PhysicalName, 0);
 
-my $FB3Descr = $FB3Package->Meta;
-my $DescrXML = $FB3Descr->Content;
-my $DescrDoc = $Parser->load_xml( string => $DescrXML, huge => 1 );
-my $DescrNode = $DescrDoc->getDocumentElement();
-my $FB3FragmentNode = $DescrDoc->createElement('fb3-fragment');
-$FB3FragmentNode->setAttribute('full_length', $CharsFull);
-$FB3FragmentNode->setAttribute('fragment_length', $CharsTrial);
-$DescrNode->appendChild($FB3FragmentNode);
-$DescrDoc->toFile($FB3Descr->PhysicalName, 0);
+if ($WorkType eq 'trial') {
+	my $CharsFull = length($RootNode->textContent);
+	my $CharsTrial = length($RootNode->textContent);
 
-ZipFolder ("$FB3TmpDir/", $Out);
+	my $FB3Descr = $FB3Package->Meta;
+	my $DescrXML = $FB3Descr->Content;
+	my $DescrDoc = $Parser->load_xml( string => $DescrXML, huge => 1 );
+	my $DescrNode = $DescrDoc->getDocumentElement();
+	my $FB3FragmentNode = $DescrDoc->createElement('fb3-fragment');
+	$FB3FragmentNode->setAttribute('full_length', $CharsFull);
+	$FB3FragmentNode->setAttribute('fragment_length', $CharsTrial);
+	$DescrNode->appendChild($FB3FragmentNode);
+	$DescrDoc->toFile($FB3Descr->PhysicalName, 0);
+}
+
+ZipFolder("$FB3TmpDir/", $Out);
 if( my $ValidationError = $Validator->Validate( $Out )) {
 	unless ($Force) {
 		unlink $Out;
@@ -92,7 +127,42 @@ if( my $ValidationError = $Validator->Validate( $Out )) {
 	}
 }
 
-sub ProceedNode {
+sub CollectElementStat {
+	my $Node = shift || return;
+	#быстрее, чем //xpath
+	for my $ChildNode ($Node->childNodes) {
+		next if $ChildNode->nodeName eq '#text';
+		CollectElementStat($ChildNode);
+		$ImageHash{$ChildNode->getAttribute('src')} = 1 if $ChildNode->nodeName eq 'img';
+		if (my $Id = $ChildNode->getAttribute('id')) {
+      $IdHash{$Id} = 1;
+		}
+		if ($ChildNode->nodeName eq 'a') {
+			if (my $Href = $ChildNode->getAttribute('xlink:href')) {
+      	if ($Href =~ s/^#//) {
+					$HrefHash{$Href} = 1;
+				} 
+			}
+		}
+	}
+}
+
+sub ProceedNodeOut {
+	my $Node = shift || return;
+
+	#актуален только первый уровень section
+	for my $ChildNode ($Node->childNodes) {
+		next unless $ChildNode->nodeName eq 'section';
+		my $Out = $ChildNode->getAttribute('output');
+		if ($Out eq 'trial-only') {
+			$ChildNode->unbindNode();
+		}
+	}	
+
+	return $Node;
+}
+
+sub ProceedNodeTrial {
 	my $Node = shift || return;
 	my $ImmortalBranch = shift || 0; # не убивать потомков
 
@@ -140,7 +210,7 @@ sub ProceedNode {
 				$Finish = 1;
 			}
 		}
-		$ChildNode = ProceedNode($ChildNode, $ImmortalBranch);
+		$ChildNode = ProceedNodeTrial($ChildNode, $ImmortalBranch);
 	}
 
 	if ($NodeName eq 'section') {
@@ -195,6 +265,58 @@ sub Trim {
 	return $Str;
 }
 
+sub NReplace {
+	my $Node = shift;
+	my $Parent = $Node->parentNode();
+	my $Clone = $BodyDoc->createElement($Parent->nodeName());
+	foreach ($Parent->getAttributes) {
+		$Clone->setAttribute($_->nodeName => $_->value);
+	}
+	foreach my $PNode ($Parent->childNodes()) {
+		if ($PNode == $Node) {
+			foreach ($PNode->childNodes) {
+				$Clone->appendChild($_);
+			}
+			next;
+		}
+		$Clone->appendChild($PNode);
+	}
+	$Parent->replaceNode($Clone);
+}
+
+sub CleanLinks {
+	my $FB3Body = shift;
+
+	foreach my $Id (keys %IdHash) {
+		next if exists $HrefHash{$Id};
+		my $Ids = $XPC->findnodes('//*[@id="'.$Id.'"]');
+		foreach my $NodeIds (@$Ids) {
+			next if $NodeIds->nodeName() eq 'section';
+			if ($NodeIds->nodeName eq 'span') {
+				NReplace($NodeIds);
+			} else {
+				$NodeIds->removeAttribute('id');
+			}
+		}
+		delete $IdHash{$Id};
+	}
+
+	foreach my $Href (keys %HrefHash) {
+		next if exists $IdHash{$Href};
+		print $Href."\n";
+		my $Hrefs = $XPC->findnodes('//fb:a[@xlink:href="#'.$Href.'"]');
+		foreach my $NodeHrefs (@$Hrefs) {
+			if ($NodeHrefs->getAttribute('id')) {
+				$NodeHrefs->removeAttribute('xlink:href');
+				next;
+			}
+			NReplace($NodeHrefs);
+		}
+		delete $HrefHash{$Href};
+	}
+
+}
+
 sub CleanImages {
 	my $FB3 = shift;
   my $FB3Body = $FB3->Body;
@@ -243,5 +365,20 @@ sub ZipFolder{
 	warn $CmdResult if $CmdResult;
   chdir $old_dir if $old_dir;
 }
+
+sub help {
+  print qq{
+  USAGE: cutfb3.pl --in=<input.file> --out=<output.file> [options] --chars=<chars_in_result>
+  
+  --chars|c     : chars of cut trial file. default $DefaultChars
+  --imagespath  : =/path/to/fb3/images
+  --help|h      : print this text
+  --verbose|v   : print processing status
+  --type|t      : type of work (trial|output) default 'trial'.
+
+};
+exit;
+}
+
 
 1;

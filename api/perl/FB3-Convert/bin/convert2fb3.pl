@@ -33,7 +33,8 @@ GetOptions(
   'meta_genres=s' => \$OPT{'meta_genres'},
   'meta_authors=s' => \$OPT{'meta_authors'},
   'meta_date=s' => \$OPT{'meta_date'},
-) || help();
+);
+help() if $OPT{'help'};
 
 my $XsdPath = $OPT{xsd_dir} || FB3::SchemasDirPath();
 my $XslPath = dist_dir('FB3-Convert');
