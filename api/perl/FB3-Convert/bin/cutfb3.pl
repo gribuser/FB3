@@ -14,9 +14,8 @@ use utf8;
 
 my $DefaultChars = 2000;
 
-my ($Verbose, $Help, $Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath, $ImageFileName, $WorkType);
+my ($Help, $Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath, $ImageFileName, $WorkType);
 my $r = GetOptions(
-  'verbose|v:1'    => \$Verbose,
   'help|h'         => \$Help,
 	'force|f'	       =>	\$Force,
 	'in|i=s'		     =>	\$In,
@@ -100,8 +99,6 @@ if ($WorkType eq 'trial') {
 
 CleanImages($FB3Package);
 
-print $RootNode->toString;
-
 $BodyDoc->toFile($FB3Body->PhysicalName, 0);
 
 if ($WorkType eq 'trial') {
@@ -118,6 +115,8 @@ if ($WorkType eq 'trial') {
 	$DescrNode->appendChild($FB3FragmentNode);
 	$DescrDoc->toFile($FB3Descr->PhysicalName, 0);
 }
+
+die "Empty body in result file" unless scalar @{$XPC->findnodes("/fb:fb3-body/fb:section",$RootNode)};
 
 ZipFolder("$FB3TmpDir/", $Out);
 if( my $ValidationError = $Validator->Validate( $Out )) {
@@ -153,8 +152,8 @@ sub ProceedNodeOut {
 	#актуален только первый уровень section
 	for my $ChildNode ($Node->childNodes) {
 		next unless $ChildNode->nodeName eq 'section';
-		my $Out = $ChildNode->getAttribute('output');
-		if ($Out eq 'trial-only') {
+		my $Output = $ChildNode->getAttribute('output');
+		if ($Output eq 'trial-only') {
 			$ChildNode->unbindNode();
 		}
 	}	
@@ -368,13 +367,12 @@ sub ZipFolder{
 
 sub help {
   print qq{
-  USAGE: cutfb3.pl --in=<input.file> --out=<output.file> [options] --chars=<chars_in_result>
+  USAGE: cutfb3.pl --in=<input.file> --out=<output.file> [options]
   
-  --chars|c     : chars of cut trial file. default $DefaultChars
+  --chars|c     : chars in result for trial file. default $DefaultChars
   --imagespath  : =/path/to/fb3/images
+  --type|t      : type of work (trial|output) default 'trial'
   --help|h      : print this text
-  --verbose|v   : print processing status
-  --type|t      : type of work (trial|output) default 'trial'.
 
 };
 exit;
