@@ -74,6 +74,7 @@ my %ImageHash;
 my %HrefHash;
 my %IdHash;
 my %NoteHash;
+my %NoteIdHash;
 
 my $TmpDir = File::Temp::tempdir( CLEANUP => 1 );
 my $FB3TmpDir = $TmpDir.'/unzipped_'.File::Basename::basename($In);
@@ -98,6 +99,7 @@ if ($WorkType eq 'trial') {
 } else {die "type wrong!"; help();}
 
 CleanImages($FB3Package);
+CleanNotes($FB3Package);
 
 $BodyDoc->toFile($FB3Body->PhysicalName, 0);
 
@@ -133,8 +135,13 @@ sub CollectElementStat {
 		next if $ChildNode->nodeName eq '#text';
 		CollectElementStat($ChildNode);
 		$ImageHash{$ChildNode->getAttribute('src')} = 1 if $ChildNode->nodeName eq 'img';
+		$NoteHash{$ChildNode->getAttribute('href')} = 1 if $ChildNode->nodeName eq 'note';
 		if (my $Id = $ChildNode->getAttribute('id')) {
-      $IdHash{$Id} = 1;
+      if ($ChildNode->nodeName eq 'notebody') {
+				$NoteIdHash{$Id} = 1;
+			} else {
+				$IdHash{$Id} = 1;
+			}
 		}
 		if ($ChildNode->nodeName eq 'a') {
 			if (my $Href = $ChildNode->getAttribute('xlink:href')) {
@@ -236,14 +243,6 @@ sub ProceedNodeTrial {
       }
   }
 
-	if ($NodeName eq 'notes') {
-		my @NotesChildren = $Node->nonBlankChildNodes;
-		if (scalar @NotesChildren == 0 || (scalar @NotesChildren == 1 && $NotesChildren[0]->nodeName eq 'title')
-				|| (scalar @NotesChildren == 2 && $NotesChildren[0]->nodeName eq 'title' && $NotesChildren[1]->nodeName eq 'epigraph')) {
-			$Node->unbindNode();
-		}
-	}
-
 	if ($Finish && !$ImmortalBranch && (!$Node->firstChild || Trim(InNode($Node)) eq '') ) {
 		$Node->unbindNode(); # если нет потомков - рубим.
 	}
@@ -286,11 +285,22 @@ sub NReplace {
 sub CleanLinks {
 	my $FB3Body = shift;
 
+	#notebody
+	foreach my $Id (keys %NoteIdHash) {
+		next if exists $NoteHash{$Id};
+		my $Ids = $XPC->findnodes('/fb:fb3-body/fb:notes/fb:notebody[@id="'.$Id.'"]');
+		foreach my $NodeIds (@$Ids) {
+			$NodeIds->unbindNode();
+		}
+	}
+
+	#остальные ноды
 	foreach my $Id (keys %IdHash) {
 		next if exists $HrefHash{$Id};
 		my $Ids = $XPC->findnodes('//*[@id="'.$Id.'"]');
 		foreach my $NodeIds (@$Ids) {
 			next if $NodeIds->nodeName() eq 'section';
+			next if $NodeIds->nodeName() eq 'notebody';
 			if ($NodeIds->nodeName eq 'span') {
 				NReplace($NodeIds);
 			} else {
@@ -300,6 +310,7 @@ sub CleanLinks {
 		delete $IdHash{$Id};
 	}
 
+	#ссылки
 	foreach my $Href (keys %HrefHash) {
 		next if exists $IdHash{$Href};
 		print $Href."\n";
@@ -314,6 +325,16 @@ sub CleanLinks {
 		delete $HrefHash{$Href};
 	}
 
+}
+
+sub CleanNotes {
+	my $Node = $XPC->findnodes("/fb:fb3-body/fb:notes",$RootNode)->[0];
+	return unless $Node;
+	my @NotesChildren = $Node->nonBlankChildNodes;
+	if (scalar @NotesChildren == 0 || (scalar @NotesChildren == 1 && $NotesChildren[0]->nodeName eq 'title')
+			|| (scalar @NotesChildren == 2 && $NotesChildren[0]->nodeName eq 'title' && $NotesChildren[1]->nodeName eq 'epigraph')) {
+		$Node->unbindNode();
+	}
 }
 
 sub CleanImages {
