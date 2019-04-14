@@ -12,8 +12,6 @@ use Cwd qw(cwd abs_path);
 use Getopt::Long;
 use utf8;
 
-my $DefaultChars = 2000;
-
 my ($Help, $Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath, $ImageFileName, $WorkType);
 my $r = GetOptions(
   'help|h'         => \$Help,
@@ -31,8 +29,6 @@ if (!$In || !$Out) {
   print "\nrequired params 'in'/'out' not defined\n";
   help();
 }
-
-$CutChars = $DefaultChars unless $CutChars;
 
 if($ImagesPath){
   die "Path $ImagesPath not found\n" unless -d $ImagesPath;
@@ -90,7 +86,10 @@ my $RootNode = $BodyDoc->getDocumentElement();
 my $XPC = XML::LibXML::XPathContext->new($RootNode);
 $XPC->registerNs('fb', &NS_FB3_BODY);
 
+my $DefaultChars = 24; #percents of document
+
 if ($WorkType eq 'trial') {
+	$CutChars = length($RootNode->textContent())*$DefaultChars*0.01 if !$CutChars;
 	$RootNode = ProceedNodeTrial($RootNode);
 } elsif ($WorkType eq 'output') {
 	$RootNode = ProceedNodeOut($RootNode);
@@ -181,9 +180,9 @@ sub ProceedNodeTrial {
 
 	if ($NodeName eq 'section') {
 
-		if ( #обрабатываем логику атрибута 'output'
-			defined $Node->getAttribute('output')	
-			&& $Node->parentNode->nodeName ne 'section' #только внешние section
+		if ( #обрабатываем логику атрибута 'output' #только внешние section
+			$Node->parentNode->nodeName eq 'fb3-body'
+			&& defined $Node->getAttribute('output')
 		) {
 			my $SectionOutput = $Node->getAttribute('output');
 			if ($SectionOutput eq 'payed') { #пропускаем ноду и забываем
@@ -331,8 +330,10 @@ sub CleanNotes {
 	my $Node = $XPC->findnodes("/fb:fb3-body/fb:notes",$RootNode)->[0];
 	return unless $Node;
 	my @NotesChildren = $Node->nonBlankChildNodes;
-	if (scalar @NotesChildren == 0 || (scalar @NotesChildren == 1 && $NotesChildren[0]->nodeName eq 'title')
-			|| (scalar @NotesChildren == 2 && $NotesChildren[0]->nodeName eq 'title' && $NotesChildren[1]->nodeName eq 'epigraph')) {
+	if ( scalar @NotesChildren == 0
+	     || (scalar @NotesChildren == 1 && $NotesChildren[0]->nodeName eq 'title')
+	     || (scalar @NotesChildren == 2 && $NotesChildren[0]->nodeName eq 'title' && $NotesChildren[1]->nodeName eq 'epigraph')
+	) {
 		$Node->unbindNode();
 	}
 }
@@ -390,7 +391,7 @@ sub help {
   print qq{
   USAGE: cutfb3.pl --in=<input.file> --out=<output.file> [options]
   
-  --chars|c     : chars in result for trial file. default $DefaultChars
+  --chars|c     : chars in result for trial file. default $DefaultChars%
   --imagespath  : =/path/to/fb3/images
   --type|t      : type of work (trial|output) default 'trial'
   --help|h      : print this text
