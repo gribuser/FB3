@@ -14,37 +14,43 @@ use utf8;
 
 my ($Help, $Force, $In, $Out, $CutChars, $XsdPath, $ImagesPath, $ImageFileName, $WorkType);
 my $r = GetOptions(
-  'help|h'         => \$Help,
-	'force|f'	       =>	\$Force,
-	'in|i=s'		     =>	\$In,
-	'out|o=s'		     =>	\$Out,
-	'chars|c=i'	     =>	\$CutChars,
+	'help|h'         => \$Help,
+	'force|f'        => \$Force,
+	'in|i=s'         => \$In,
+	'out|o=s'        => \$Out,
+	'chars|c=i'      => \$CutChars,
 	'xsd|x=s'        => \$XsdPath, # optional
-  'imagespath|p=s' => \$ImagesPath,
+	'imagespath|p=s' => \$ImagesPath,
 	'type|t=s'       => \$WorkType,
 );
+
 help() if $Help;
 
-if (!$In || !$Out) {
-  print "\nrequired params 'in'/'out' not defined\n";
-  help();
-}
-
-if($ImagesPath){
-  die "Path $ImagesPath not found\n" unless -d $ImagesPath;
-  $ImagesPath = $ImagesPath.'/' if $ImagesPath !~ /\/$/;
-}
-
-if ($WorkType && $WorkType !~ /^(trial|output)$/) {
-  print "\nparams 'type' must be trial|output\n";
+unless ($In and $Out) {
+	print "\nrequired params 'in'/'out' not defined\n";
 	help();
 }
-$WorkType = 'trial' unless $WorkType; 
+
+if ($ImagesPath) {
+	die "Path $ImagesPath not found\n" unless -d $ImagesPath;
+	$ImagesPath = $ImagesPath.'/' if $ImagesPath !~ /\/$/;
+}
+
+if ( not $WorkType ) {
+
+	$WorkType = 'trial';
+
+} elsif ( $WorkType !~ /^(trial|output)$/ ) {
+
+	print "\nparams 'type' must be trial|output\n";
+	help();
+}
 
 use constant {
-	NS_XLINK => 'http://www.w3.org/1999/xlink',
-	NS_FB3_DESCRIPTION => 'http://www.fictionbook.org/FictionBook3/description',
-	NS_FB3_BODY => 'http://www.fictionbook.org/FictionBook3/body'
+	NS_XLINK              => 'http://www.w3.org/1999/xlink',
+	NS_FB3_DESCRIPTION    => 'http://www.fictionbook.org/FictionBook3/description',
+	NS_FB3_BODY           => 'http://www.fictionbook.org/FictionBook3/body',
+	DEFAULT_TRIAL_PERCENT => 24,
 };
 
 my $Blocks = qr/^(p|subtitle|ol|ul|pre|table|poem|blockquote|div|subscription)$/;
@@ -86,16 +92,19 @@ my $RootNode = $BodyDoc->getDocumentElement();
 my $XPC = XML::LibXML::XPathContext->new($RootNode);
 $XPC->registerNs('fb', &NS_FB3_BODY);
 
-my $DefaultChars = 24; #percents of document
+my $CharsFull = length($RootNode->textContent);
 
 if ($WorkType eq 'trial') {
-	$CutChars = length($RootNode->textContent())*$DefaultChars*0.01 if !$CutChars;
-	$RootNode = ProceedNodeTrial($RootNode);
+
+	$CutChars ||= DEFAULT_TRIAL_PERCENT * 0.01 * length($RootNode->textContent());
+	ProceedNodeTrial($RootNode);
+
 } elsif ($WorkType eq 'output') {
-	$RootNode = ProceedNodeOut($RootNode);
+
+	ProceedNodeOut($RootNode);
 	CollectElementStat($RootNode);
 	CleanLinks($FB3Body);
-} else {die "type wrong!"; help();}
+}
 
 CleanImages($FB3Package);
 CleanNotes($FB3Package);
@@ -103,24 +112,25 @@ CleanNotes($FB3Package);
 $BodyDoc->toFile($FB3Body->PhysicalName, 0);
 
 if ($WorkType eq 'trial') {
-	my $CharsFull = length($RootNode->textContent);
-	my $CharsTrial = length($RootNode->textContent);
 
-	my $FB3Descr = $FB3Package->Meta;
-	my $DescrXML = $FB3Descr->Content;
-	my $DescrDoc = $Parser->load_xml( string => $DescrXML, huge => 1 );
-	my $DescrNode = $DescrDoc->getDocumentElement();
+	my $CharsTrial = length($RootNode->textContent);
+	my $FB3Descr   = $FB3Package->Meta;
+	my $DescrXML   = $FB3Descr->Content;
+	my $DescrDoc   = $Parser->load_xml( string => $DescrXML, huge => 1 );
+	my $DescrNode  = $DescrDoc->getDocumentElement();
 	my $FB3FragmentNode = $DescrDoc->createElement('fb3-fragment');
-	$FB3FragmentNode->setAttribute('full_length', $CharsFull);
+
+	$FB3FragmentNode->setAttribute('full_length',     $CharsFull);
 	$FB3FragmentNode->setAttribute('fragment_length', $CharsTrial);
+
 	$DescrNode->appendChild($FB3FragmentNode);
 	$DescrDoc->toFile($FB3Descr->PhysicalName, 0);
 }
 
-die "Empty body in result file" unless scalar @{$XPC->findnodes("/fb:fb3-body/fb:section",$RootNode)};
+die "Empty body in result file" unless scalar @{$XPC->findnodes("/fb:fb3-body/fb:section", $RootNode)};
 
 ZipFolder("$FB3TmpDir/", $Out);
-if( my $ValidationError = $Validator->Validate( $Out )) {
+if ( my $ValidationError = $Validator->Validate($Out) ) {
 	unless ($Force) {
 		unlink $Out;
 		die "Validation error:  $ValidationError";
@@ -131,23 +141,26 @@ sub CollectElementStat {
 	my $Node = shift || return;
 	#быстрее, чем //xpath
 	for my $ChildNode ($Node->childNodes) {
+
 		next if $ChildNode->nodeName eq '#text';
+
 		CollectElementStat($ChildNode);
+
 		$ImageHash{$ChildNode->getAttribute('src')} = 1 if $ChildNode->nodeName eq 'img';
 		$NoteHash{$ChildNode->getAttribute('href')} = 1 if $ChildNode->nodeName eq 'note';
+
 		if (my $Id = $ChildNode->getAttribute('id')) {
-      if ($ChildNode->nodeName eq 'notebody') {
+
+			if ($ChildNode->nodeName eq 'notebody') {
 				$NoteIdHash{$Id} = 1;
 			} else {
 				$IdHash{$Id} = 1;
 			}
 		}
+
 		if ($ChildNode->nodeName eq 'a') {
-			if (my $Href = $ChildNode->getAttribute('xlink:href')) {
-      	if ($Href =~ s/^#//) {
-					$HrefHash{$Href} = 1;
-				} 
-			}
+			my $Href = $ChildNode->getAttribute('xlink:href');
+			$HrefHash{$Href} = 1 if ($Href and $Href =~ s/^#//);
 		}
 	}
 }
@@ -159,12 +172,8 @@ sub ProceedNodeOut {
 	for my $ChildNode ($Node->childNodes) {
 		next unless $ChildNode->nodeName eq 'section';
 		my $Output = $ChildNode->getAttribute('output');
-		if ($Output eq 'trial-only') {
-			$ChildNode->unbindNode();
-		}
-	}	
-
-	return $Node;
+		$ChildNode->unbindNode() if ($Output and $Output eq 'trial-only');
+	}
 }
 
 sub ProceedNodeTrial {
@@ -195,27 +204,39 @@ sub ProceedNodeTrial {
 		}
 
 		$Node->setAttribute('first-char-pos', $CharsProcessed+1);
+
 	} elsif ($NodeName eq 'title' && ($Node->parentNode->nodeName eq 'section' || $Node->parentNode->nodeName eq 'notes')) { # заголовок секции, пригодится
 		$ImmortalBranch = 1;
-	} elsif ($NodeName eq 'img' && (!$Finish || $ImmortalBranch)) {
-		$ImageHash{$Node->getAttribute('src')} = 1;
-	} elsif ($NodeName eq 'note') {
+
+	} elsif ( $NodeName eq 'img'  && (!$Finish || $ImmortalBranch) ) {
+
+		my $ImgSrc   = $Node->getAttribute('src');
+		$ImageHash{$ImgSrc}  = 1 if $ImgSrc;
+
+	} elsif ( $NodeName eq 'note' && (!$Finish || $ImmortalBranch) ) {
+
 		my $NoteHref = $Node->getAttribute('href');
-		$NoteHash{$NoteHref} = 1 if (!$Finish || $ImmortalBranch);
+		$NoteHash{$NoteHref} = 1 if $NoteHref;
+
 	} elsif ($NodeName eq 'notebody') {
+
 		if (!$NoteHash{$Node->getAttribute('id')}) {
 			$Node->unbindNode();
 		} else {
 			$ImmortalBranch = 1;
 		}
+
 	}
+
 	for my $ChildNode ($Node->childNodes) {
+
 		if ($ChildNode->nodeName =~ /$Blocks/) {
-			unless (($CharsProcessed + length($ChildNode->textContent)) < $CutChars) {
+			if ( ($CharsProcessed + length($ChildNode->textContent)) >= $CutChars ) {
 				$Finish = 1;
 			}
 		}
-		$ChildNode = ProceedNodeTrial($ChildNode, $ImmortalBranch);
+
+		ProceedNodeTrial($ChildNode, $ImmortalBranch);
 	}
 
 	if ($NodeName eq 'section') {
@@ -230,19 +251,17 @@ sub ProceedNodeTrial {
 		}
 	}
 
-	if($NodeName eq 'image'){
-      $ImageFileName = $Node->getAttribute('href');
-      $ImageFileName =~ s/^#//;
-      # Если нет, то игнорируем, потому что мы уже получили триал и теперь уже работаем с ним
-      if(-f $ImagesPath.$ImageFileName){
-        my ($x, $y) = imgsize($ImagesPath.$ImageFileName);
-        if($x && $y && $x >= 100 && $y >= 100){
-          $CharsProcessed += 200;
-        }
-      }
-  }
+	if ($NodeName eq 'image') {
+		$ImageFileName = $Node->getAttribute('href');
+		$ImageFileName =~ s/^#//;
+		# Если нет, то игнорируем, потому что мы уже получили триал и теперь уже работаем с ним
+		if ( -f $ImagesPath.$ImageFileName ) {
+			my ($x, $y) = imgsize($ImagesPath.$ImageFileName);
+			$CharsProcessed += 200 if ($x && $y && $x >= 100 && $y >= 100);
+		}
+	}
 
-	if ($Finish && !$ImmortalBranch && (!$Node->firstChild || Trim(InNode($Node)) eq '') ) {
+	if ( $Finish && !$ImmortalBranch && (!$Node->firstChild || Trim(InNode($Node)) eq '') ) {
 		$Node->unbindNode(); # если нет потомков - рубим.
 	}
 
@@ -369,32 +388,32 @@ sub CleanImages {
 	return 1;
 }
 
-sub ZipFolder{
-  my $SourceFileName=shift;
-	my $TargetFileName=shift;
-  my @first = @_;
+sub ZipFolder {
 
-  open FH,">$TargetFileName";
-  close FH;
-  my $fn_abs = abs_path ("$TargetFileName");
+	my ($SourceFileName, $TargetFileName, @first) = @_;
+
+	open FH,">$TargetFileName";
+	close FH;
+	my $fn_abs = abs_path ("$TargetFileName");
 	unlink "$TargetFileName";
 
-  my $old_dir = cwd();
-  chdir "$SourceFileName";
-	my $cmd="zip -Xr9Dq $fn_abs ".join(' ',@first)." *";
-	my $CmdResult=`$cmd`;
+	my $old_dir = cwd();
+	chdir "$SourceFileName";
+	my $cmd = "zip -Xr9Dq $fn_abs " . join(' ', @first) . " *";
+	my $CmdResult = `$cmd`;
 	warn $CmdResult if $CmdResult;
-  chdir $old_dir if $old_dir;
+	chdir $old_dir if $old_dir;
 }
 
 sub help {
+
   print qq{
-  USAGE: cutfb3.pl --in=<input.file> --out=<output.file> [options]
-  
-  --chars|c     : chars in result for trial file. default $DefaultChars%
-  --imagespath  : =/path/to/fb3/images
-  --type|t      : type of work (trial|output) default 'trial'
-  --help|h      : print this text
+  USAGE: cutfb3.pl --in <input.file> --out <output.file> [options]
+
+    --chars|c     : maximum caracters in trial fragment. default is @{[DEFAULT_TRIAL_PERCENT]}% of text.
+    --imagespath  : /path/to/fb3/images
+    --type|t      : type of work `trial' or `output'. default is `trial'
+    --help|h      : print this text
 
 };
 exit;
