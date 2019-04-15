@@ -96,7 +96,7 @@ my $CharsFull = length($RootNode->textContent);
 
 if ($WorkType eq 'trial') {
 
-	$CutChars ||= DEFAULT_TRIAL_PERCENT * 0.01 * length($RootNode->textContent());
+	$CutChars ||= DEFAULT_TRIAL_PERCENT * 0.01 * $CharsFull;
 	ProceedNodeTrial($RootNode);
 
 } elsif ($WorkType eq 'output') {
