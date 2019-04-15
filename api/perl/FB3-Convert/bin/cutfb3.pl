@@ -392,9 +392,9 @@ sub ZipFolder {
 
 	my ($SourceFileName, $TargetFileName, @first) = @_;
 
-	open FH,">$TargetFileName";
-	close FH;
-	my $fn_abs = abs_path ("$TargetFileName");
+	open my $FH, '>', "$TargetFileName";
+	close $FH;
+	my $fn_abs = abs_path("$TargetFileName");
 	unlink "$TargetFileName";
 
 	my $old_dir = cwd();
