@@ -92,9 +92,11 @@ my $RootNode = $BodyDoc->getDocumentElement();
 my $XPC = XML::LibXML::XPathContext->new($RootNode);
 $XPC->registerNs('fb', &NS_FB3_BODY);
 
-my $CharsFull = length($RootNode->textContent);
+my $CharsFull;
 
 if ($WorkType eq 'trial') {
+
+	$CharsFull = length($RootNode->textContent);
 
 	$CutChars ||= DEFAULT_TRIAL_PERCENT * 0.01 * $CharsFull;
 	ProceedNodeTrial($RootNode);
