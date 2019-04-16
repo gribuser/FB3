@@ -189,6 +189,7 @@ sub ProceedNodeTrial {
 		return;
 	}
 
+	my $OuterImmortal;
 	if ($NodeName eq 'section') {
 
 		if ( #обрабатываем логику атрибута 'output' #только внешние section
@@ -201,6 +202,7 @@ sub ProceedNodeTrial {
 				return $Node;
 			}
 			if ($SectionOutput eq 'trial' || $SectionOutput eq 'trial-only') { #всегда бессмертны
+				$OuterImmortal = 1;
 				$ImmortalBranch = 1;
 			}
 		}
@@ -243,7 +245,7 @@ sub ProceedNodeTrial {
 
 	if ($NodeName eq 'section') {
 		my @SectionChildren = $Node->nonBlankChildNodes;
-		$Node->setAttribute('clipped', 'true') if $Finish;
+		$Node->setAttribute('clipped', 'true') if $Finish && !$OuterImmortal;
 		if (scalar @SectionChildren == 0 || (scalar @SectionChildren == 1 && $SectionChildren[0]->nodeName eq 'title')
 				|| (scalar @SectionChildren == 2 && $SectionChildren[0]->nodeName eq 'title' && ($SectionChildren[1]->nodeName eq 'epigraph' || $SectionChildren[1]->nodeName eq 'annotation'))
 		) { # проверка, что в секции нет ничего кроме заголовка
