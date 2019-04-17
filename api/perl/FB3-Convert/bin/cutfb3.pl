@@ -345,7 +345,6 @@ sub CleanLinks {
 	#ссылки
 	foreach my $Href (keys %HrefHash) {
 		next if exists $IdHash{$Href};
-		print $Href."\n";
 		my $Hrefs = $XPC->findnodes('//fb:a[@xlink:href="#'.$Href.'"]');
 		foreach my $NodeHrefs (@$Hrefs) {
 			if ($NodeHrefs->getAttribute('id')) {
