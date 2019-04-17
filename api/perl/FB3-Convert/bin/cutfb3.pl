@@ -91,6 +91,7 @@ my $BodyDoc = $Parser->load_xml( string => $BodyXML, huge => 1 );
 my $RootNode = $BodyDoc->getDocumentElement();
 my $XPC = XML::LibXML::XPathContext->new($RootNode);
 $XPC->registerNs('fb', &NS_FB3_BODY);
+$XPC->registerNs('fbd', &NS_FB3_DESCRIPTION);
 
 my $CharsFull;
 
@@ -120,6 +121,11 @@ if ($WorkType eq 'trial') {
 	my $DescrXML   = $FB3Descr->Content;
 	my $DescrDoc   = $Parser->load_xml( string => $DescrXML, huge => 1 );
 	my $DescrNode  = $DescrDoc->getDocumentElement();
+
+	if ( my $FragNode = $XPC->findnodes("/fbd:fb3-description/fbd:fb3-fragment", $DescrDoc)->[0] ) {
+		$FragNode->unbindNode();
+	}
+
 	my $FB3FragmentNode = $DescrDoc->createElement('fb3-fragment');
 
 	$FB3FragmentNode->setAttribute('full_length',     $CharsFull);
