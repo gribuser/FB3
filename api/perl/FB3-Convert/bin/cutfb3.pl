@@ -98,11 +98,9 @@ my $CharsFull;
 if ($WorkType eq 'trial') {
 
 	$CharsFull = length($RootNode->textContent);
-	my $CharsTrialOnly=0;
 	foreach my $TrialOnlyNode ($XPC->findnodes('/fb:fb3-body/fb:section[@output="trial-only"]',$RootNode)) {
-		$CharsTrialOnly += length($TrialOnlyNode->textContent);
+		$CharsFull -= (length($TrialOnlyNode->textContent) || 0);
 	}
-	$CharsFull -= $CharsTrialOnly;
 
 	$CutChars ||= DEFAULT_TRIAL_PERCENT * 0.01 * $CharsFull;
 	ProceedNodeTrial($RootNode);
