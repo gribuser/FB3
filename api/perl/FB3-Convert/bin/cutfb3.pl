@@ -94,6 +94,7 @@ $XPC->registerNs('fb', &NS_FB3_BODY);
 $XPC->registerNs('fbd', &NS_FB3_DESCRIPTION);
 
 my $CharsFull;
+my $CharsTrialOnly;
 
 if ($WorkType eq 'trial') {
 
@@ -128,7 +129,7 @@ if ($WorkType eq 'trial') {
 
 	my $FB3FragmentNode = $DescrDoc->createElement('fb3-fragment');
 
-	$FB3FragmentNode->setAttribute('full_length',     $CharsFull);
+	$FB3FragmentNode->setAttribute('full_length',     $CharsFull-$CharsTrialOnly);
 	$FB3FragmentNode->setAttribute('fragment_length', $CharsTrial);
 
 	$DescrNode->appendChild($FB3FragmentNode);
@@ -208,6 +209,9 @@ sub ProceedNodeTrial {
 				return $Node;
 			}
 			if ($SectionOutput eq 'trial' || $SectionOutput eq 'trial-only') { #всегда бессмертны
+				$CharsTrialOnly += length($Node->textContent)
+					if $SectionOutput eq 'trial-only';
+				
 				$OuterImmortal = 1;
 				$ImmortalBranch = 1;
 			}
