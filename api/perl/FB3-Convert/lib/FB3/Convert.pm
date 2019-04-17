@@ -414,15 +414,25 @@ sub _Unpacker {
   my $Zip = Archive::Zip->new();
 
   unless ($Zip->read($Source) == Archive::Zip::AZ_OK ) {
-    Error("Error reading file '".$Source."' as zip");
+    Error($X,"Error reading file '".$Source."' as zip");
 	}
 	
   my @FilesInZip = $Zip->members(); 
 
   Msg($X,"Unzip source file to directory: ".$TMPPath."\n");
   foreach (@FilesInZip) {
-    my $ExtFile = $TMPPath.'/'.$_->fileName;
-    Error($X,"can't unpuck ".$_->fileName." from ".$Source." archive") unless $Zip->extractMember($_, $ExtFile) == AZ_OK;
+    my $Fname = $_->fileName;
+    Error($X,"Error reading file '".$Source."' as zip. So file '".substr($Fname,-100,100)."' have strange structure. [may be exploit?]") if $Fname =~ m#\.\./# || $Fname =~ m#^\W*/#; 
+    my $ExtFile = $TMPPath.'/'.$Fname;
+
+    my $Code;
+    eval{$Code = $Zip->extractMember($_, $ExtFile);};
+    if ($@) {
+      my $Ext;
+      $Ext = "[dublicate names of dir and file?] " if $@ =~ /mkdir\s(.+?):/;
+      Error($X,"can't unpuck ".$Fname." from ".$Source." archive: $Ext".EncodeUtf8($X,$@));
+    }
+    $X->Error($X,"can't unpuck ".$Fname." from ".$Source." archive. Code #".$Code) unless $Code == AZ_OK;
   }
 
   return $TMPPath;
