@@ -23,7 +23,7 @@ use Time::HiRes qw(gettimeofday sleep);
 use Lingua::Identify qw(langof);
 binmode(STDOUT,':utf8');
 
-our $VERSION = 0.27;
+our $VERSION = 0.28;
 
 =head1 NAME
 
