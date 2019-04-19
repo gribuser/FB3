@@ -928,16 +928,16 @@ sub Msg {
 
   return if !$X->{'verbose'} && $Type ne 'e' && !$Force;
 
-  my $Color;
-  if ($Type eq 'w') {
-    $Color = "bold green";
-  } elsif ($Type eq 'e') {
-    $Color = "bold red";
-  }
+  #my $Color;
+  #if ($Type eq 'w') {
+  #  $Color = "bold green";
+  #} elsif ($Type eq 'e') {
+  #  $Color = "bold red";
+  #}
 
-  print color($Color) if $Color;
+  #print color($Color) if $Color;
   print $Str;
-  print color('reset') if $Color;
+  #print color('reset') if $Color;
 }
 
 sub Error {
