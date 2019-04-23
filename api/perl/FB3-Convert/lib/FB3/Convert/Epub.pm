@@ -345,7 +345,7 @@ sub Reaper {
 
   #согласно epub.3 может быть в <item properties="cover-image"
   if (my $CoverNode = $XC->findnodes('/root:package/root:manifest/root:item[@properties="cover-image"]',$RootDoc)->[0]) {
-    if ($CoverNode->getAttribute('media-type') =~ /^image\/(jpeg|png)$/) {
+    if ($CoverNode->getAttribute('media-type') =~ /^image\/(jpeg|png|gif)$/) {
       if ($CoverNode->getAttribute('href')) {
         $CoverImg = $CoverNode->getAttribute('href');
       }
@@ -356,7 +356,7 @@ sub Reaper {
   if ( !$CoverImg && (my $CoverNode = $XC->findnodes('/root:package/root:metadata/root:meta[@name="cover"]',$RootDoc)->[0]) ) {
     my $CoverID = $CoverNode->getAttribute('content');
     if (my $CoverItem = $XC->findnodes('/root:package/root:manifest/root:item[@id="'.$CoverID.'"]',$RootDoc)->[0]) {
-      if ($CoverItem->getAttribute('media-type') =~ /^image\/(jpeg|png)$/) {
+      if ($CoverItem->getAttribute('media-type') =~ /^image\/(jpeg|png|gif)$/) {
         if ($CoverItem->getAttribute('href')) {
           $CoverImg = $CoverItem->getAttribute('href');
         }
@@ -378,7 +378,7 @@ sub Reaper {
     if ( # обложка не найдена? попробуем сами поискать
       !$CoverImg
       && $ItemHref =~ /cover/i
-      && $ItemType =~ /^image\/(jpeg|png)$/
+      && $ItemType =~ /^image\/(jpeg|png|gif)$/
     ) { 
       $CheckIsCover = 1; #способ хулиганский, поэтому будем проверять картинку
       $CoverImg = $ItemHref;
