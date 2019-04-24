@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" id="6e68f215-cc09-4d70-8b0c-960fe565d1a6" xmlns="http://www.fictionbook.org/FictionBook3/body">
-  <section id="2b41c86f-13c3-529a-9032-4d0927a692c4">
-    <p>text <img id="link_962d3deb-3487-511a-8916-4b16188d7763" src="img_9972291b-962b-54e8-bd44-88ece066ac3e"/> [no image in epub file] <img src="img_9972291b-962b-54e8-bd44-88ece066ac3e"/> [no image in epub file] [bad img format] <img src="img_9972291b-962b-54e8-bd44-88ece066ac3e"/> [bad img format] <img src="img_d3476458-0499-5414-a41d-ec148fd2153d"/> <img src="img_1aee3a88-b5e6-5ba1-824b-6b4eb8f3a149"/> [bad img format] <img src="img_c22731be-b458-58fb-a2bb-57a525b63513"/> [bad img format] emptystart  emptyend <a xlink:href="#link_962d3deb-3487-511a-8916-4b16188d7763">href1_true</a> href2_false href3_false href4_false <a xlink:href="#link_962d3deb-3487-511a-8916-4b16188d7763"/> <a xlink:href="#2b41c86f-13c3-529a-9032-4d0927a692c4"/>LINK_PAGE_TRUE</p>
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body" id="2419b01b-8ad4-43cb-b9b5-c9ed96114455">
+  <section id="0605675b-d603-5332-ae81-2f1778d30362">
+    <p>text <img id="link_6ec92337-5bf4-531f-98a6-08deb08ea4f0" src="img_25770573-2d0f-5a80-989c-b07dea9dc5bd"/> [no image in epub file] <img src="img_25770573-2d0f-5a80-989c-b07dea9dc5bd"/> [no image in epub file] [bad img format] <img src="img_25770573-2d0f-5a80-989c-b07dea9dc5bd"/> [bad img format] <img src="img_d71e6efd-52b7-51c1-a9af-a3d880d856f7"/> <img src="img_afd35b9b-6122-5976-ad74-9fabd1083429"/> <img src="img_0f624faa-e020-5aef-a71b-91be5efb3189"/> <img src="img_971c34d1-a262-52c3-bcb8-22eaadcbea9a"/> [bad img format] emptystart  emptyend <a xlink:href="#link_6ec92337-5bf4-531f-98a6-08deb08ea4f0">href1_true</a> href2_false href3_false href4_false <a xlink:href="#link_6ec92337-5bf4-531f-98a6-08deb08ea4f0"/> <a xlink:href="#0605675b-d603-5332-ae81-2f1778d30362"/>LINK_PAGE_TRUE</p>
   </section>
-  <section id="0da74eb2-2251-5f83-b459-6bec3992e6cb">
-    <p><a xlink:href="#2b41c86f-13c3-529a-9032-4d0927a692c4">LINK_OTHER_PAGE_TRUE1</a> <a xlink:href="#link_962d3deb-3487-511a-8916-4b16188d7763">LINK_OTHER_PAGE_TRUE2</a> LINK_OTHER_PAGE_FALSE2</p>
+  <section id="f52c7340-b02e-5282-8741-4ec019cb4ef7">
+    <p><a xlink:href="#0605675b-d603-5332-ae81-2f1778d30362">LINK_OTHER_PAGE_TRUE1</a> <a xlink:href="#link_6ec92337-5bf4-531f-98a6-08deb08ea4f0">LINK_OTHER_PAGE_TRUE2</a> LINK_OTHER_PAGE_FALSE2</p>
   </section>
 </fb3-body>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="2d4bb9ea-9383-4f6a-90e9-bcc7be5b2656" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="1417e62b-d0b3-5726-8978-79a07dc361b7">
+    <p>broken_3.jpg [bad img format]</p>
+    <p>true_1.jpg <img src="img_18a0b62b-40eb-531b-8606-bfaf021b83f9"/></p>
+    <p>broken_3.jpg [bad img format]</p>
+    <p>true_1.gif <img src="img_b880fae2-3932-5af3-b367-de689c5146b1"/></p>
+    <p>true_1.png <img src="img_a9cab1ab-9dcc-59e9-a6e5-169e8c7a77dd"/></p>
+    <p>true_1.bmp <img src="img_282d8817-932e-572b-a650-242cdc404c46"/></p>
+    <p>true_1.tiff <img src="img_132d94e4-e426-5d86-97ee-4ade8d3ae72a"/></p>
+    <p>true_1.tga <img src="img_facf8c12-a8ee-5a18-a171-4bb66a510189"/></p>
+    <p>true_1.svg <img src="img_70e05828-060c-5b51-9097-ab6d0c15d0b9"/></p>
+    <p>broken_3.svg [bad img format]</p>
+  </section>
+</fb3-body>

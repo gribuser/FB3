@@ -21,6 +21,7 @@ use XML::Entities;
 use XML::Entities::Data;
 use Time::HiRes qw(gettimeofday sleep);
 use Lingua::Identify qw(langof);
+use Image::Magick;
 binmode(STDOUT,':utf8');
 
 our $VERSION = 0.28;
@@ -98,7 +99,12 @@ our $ElsMainList2={};
 map {$ElsMainList2->{$_}=undef;} keys %$ElsMainList;
 $ElsMainList2->{p}=undef;
 
-my @AccessImgFormat = ('png','gif','jpg','jpeg','svg');
+my @AccessImgFormat = ('png','gif','jpg','jpeg','svg','bmp','tiff','tif',
+'cur','tga','vda','icb','vst'#<-targa
+);
+my @ConvertImgFormat = ('bmp','tiff','tif',
+'cur','tga','vda','icb','vst'
+);
 
 my %AllowElementsMain = (
   'table' => {
@@ -1392,6 +1398,12 @@ sub _bf {
 
 }
 
+sub isConvertImageType {
+  my $X = shift;
+  my $ImgType = shift || return;
+  return grep {lc($ImgType) eq $_} @ConvertImgFormat;
+}
+
 sub isAllowedImageType {
   my $X = shift;
   my $ImgType = shift || return;
@@ -1407,6 +1419,22 @@ sub GuessLang {
   my @SortedProbability = sort {$b <=> $a} values(%LangsHashLocal);
   foreach my $Lang (keys %LangsHashLocal) {
     return lc($Lang) if $LangsHashLocal{$Lang} == $SortedProbability[0];
+  }
+}
+
+sub Img2JPG {
+  my $X = shift;
+  my $ImgFile = shift;
+  my $To = $ImgFile.".jpg";
+  my $Image = new Image::Magick;
+  $Image->Read($ImgFile); #почему-то у IM "or die" всегда срабатывает...;
+  $Image->Quantize(colorspace=>'RGB');
+  $Image->Write($To);
+  unless (-s $To) {
+    $X->Error("Cant't convert $ImgFile to JPG");
+  } else {
+    unlink($ImgFile);
+    return $To;
   }
 }
 
