@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by user222 (user222) -->
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by Dmitry Gribov (LitRes) -->
 <!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by GribUser (Shukovsky) -->
 <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" targetNamespace="http://www.fictionbook.org/FictionBook3/description" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- See license.txt for licensing information -->
@@ -128,6 +128,33 @@
 						<attribute name="ocr" type="normalizedString" use="optional"/>
 						<attribute name="editor" type="token" use="optional"/>
 						<attribute name="doi" type="fb3d:DOIType" use="optional"/>
+					</complexType>
+				</element>
+				<element name="draft-status" minOccurs="0">
+					<annotation>
+						<documentation xml:lang="ru">Информация о том, является ли этот документ черновиком и, если является, то какой ожидается полный объём. Наличие узла указывает, что это черновик.</documentation>
+					</annotation>
+					<complexType mixed="false">
+						<attribute name="expected-chars" use="required">
+							<annotation>
+								<documentation xml:lang="ru">Ожидаемый объём знаков в полном произведении</documentation>
+							</annotation>
+							<simpleType>
+								<restriction base="positiveInteger">
+									<minInclusive value="1000"/>
+								</restriction>
+							</simpleType>
+						</attribute>
+						<attribute name="expectef-frequency" type="positiveInteger">
+							<annotation>
+								<documentation xml:lang="ru">Ожидаемая частота обновлений/пополнений (в днях)</documentation>
+							</annotation>
+						</attribute>
+						<attribute name="expected-release" type="dateTime">
+							<annotation>
+								<documentation xml:lang="ru">Прогнозируемая дата окончательного релиза</documentation>
+							</annotation>
+						</attribute>
 					</complexType>
 				</element>
 				<element name="history" type="fb3d:AnnotationType" minOccurs="0"/>
