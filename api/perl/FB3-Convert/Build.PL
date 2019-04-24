@@ -18,7 +18,7 @@ my $builder = Module::Build->new(
     },
     requires => {
         'perl' => 5.014, 
-        'FB3' => 0.07,
+        'FB3' => 0.13,
         'XML::LibXML' => 0,
         'XML::LibXSLT' => 0,
         'Archive::Zip' => 0,
@@ -36,6 +36,7 @@ my $builder = Module::Build->new(
         'Image::ExifTool' => 0,
         'URI::Escape' => 0,
         'Lingua::Identify' => 0,
+        'Image::Magick' => 0,
     },
     script_files => [qw{
       bin/convert2fb3.pl
