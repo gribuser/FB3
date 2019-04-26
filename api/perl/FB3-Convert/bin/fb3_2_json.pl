@@ -420,6 +420,7 @@ sub DumpRootLevelTOC {
 		my $Title;
 		my $TotalClipped = 0;
 		if ($NodeHash->{c}[0]->{name} eq 'title') {
+			$NodeHash->{c}[0]->{'intitle'} = 1;
 			$Title = 't:"'.ExtractText($NodeHash->{c}[0]).'"';
 		}
 		for my $ChildHash (@{$NodeHash->{c}}) {
@@ -452,6 +453,11 @@ sub ExtractText {
 	my @TextArr;
 
 	for my $ChildHash (@{$NodeHash->{c}}) {
+
+		$ChildHash->{'intitle'} = 1 if exists $NodeHash->{'intitle'} && $NodeHash->{'intitle'};
+		#note внутри title нам не нужны в оглавлении
+		#next if $ChildHash->{'name'} eq 'note' && exists $ChildHash->{'intitle'} && $ChildHash->{'intitle'};
+
 		push @TextArr, $ChildHash->{text} if $ChildHash->{text};
 		my $Text = ExtractText($ChildHash);
 		$Text = EscString($Text);
