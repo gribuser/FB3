@@ -96,22 +96,18 @@ $XPC->registerNs('fbd', &NS_FB3_DESCRIPTION);
 my $CharsFull;
 
 if ($WorkType eq 'trial') {
-
 	$CharsFull = length($RootNode->textContent);
 	foreach my $TrialOnlyNode ($XPC->findnodes('/fb:fb3-body/fb:section[@output="trial-only"]',$RootNode)) {
 		$CharsFull -= (length($TrialOnlyNode->textContent) || 0);
 	}
-
 	$CutChars ||= DEFAULT_TRIAL_PERCENT * 0.01 * $CharsFull;
 	ProceedNodeTrial($RootNode);
-
 } elsif ($WorkType eq 'output') {
-
 	ProceedNodeOut($RootNode);
-	CollectElementStat($RootNode);
-	CleanLinks($FB3Body);
 }
 
+CollectElementStat($RootNode);
+CleanLinks($FB3Body);
 CleanImages($FB3Package);
 CleanNotes($FB3Package);
 

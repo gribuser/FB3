@@ -22,10 +22,12 @@ my $DIR = dirname(__FILE__).'/examples/cutfb3';
 opendir(my $DH, $DIR) || die "Can't opendir $DIR: $!";
 my @FB3s = grep { $_ =~ /.+\.fb3$/ && -f $DIR."/".$_ } readdir($DH);
 closedir $DH;
-foreach my $FB3File (sort{Num($a,'fb3')<=>Num($b,'fb3')} @FB3s ) {
-  $FB3File =~ m/^((\d+)_(.+))\.fb3$/;
-  my $CutChars = $2;
+foreach my $FB3File (sort{Num($a,'fb3') cmp Num($b,'fb3')} @FB3s ) {
+  $FB3File =~ m/^((o)?(\d+)(_[a-z_0-9]+)?_(.+))\.fb3$/;
+  my $CutChars = $3;
   my $FName = $1;
+  my $Type = "trial";
+  $Type = 'output 'if ($2 && $2 eq 'o');
 
   my $OldXml = $DIR.'/'.$FName.'.xml';
 
@@ -38,7 +40,7 @@ foreach my $FB3File (sort{Num($a,'fb3')<=>Num($b,'fb3')} @FB3s ) {
 
   my $TmpFb3 = File::Temp->new(UNLINK=>1, SUFFIX=>'.fb3');
 
-  my $Cmd = 'perl '.dirname(__FILE__).'/../bin/cutfb3.pl --in='.$DIR.'/'.$FB3File.' --out='.$TmpFb3.' --chars='.$CutChars.' 2>&1 1>/dev/null';
+  my $Cmd = 'perl '.dirname(__FILE__).'/../bin/cutfb3.pl --in='.$DIR.'/'.$FB3File.' --out='.$TmpFb3.' --type='.$Type.' --chars='.$CutChars.' 2>&1 1>/dev/null';
   `$Cmd`;
 
   unless (-s "$TmpFb3") {
@@ -64,8 +66,8 @@ exit;
 sub Num {
   my $Fname=shift;
   my $fmt=shift;
-  $Fname =~ /(\d+)_(\d+)\.$fmt/;
-  $Fname=$2;
+  $Fname =~ /_(\d+)\.$fmt/;
+  $Fname=$1;
   return $Fname;
 }
 

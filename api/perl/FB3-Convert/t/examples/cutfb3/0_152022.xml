@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="067195c1-0310-11e9-9e03-0cc47a520474">
+  <title>
+    <p>Тони Роббинс</p>
+  </title>
+
+
+
+<section id="067195c1-49FF-11e9-9e03-0cc47a520474" output="default" first-char-pos="28" clipped="true">
+ <title><p>Default</p></title>
+ <clipped/></section><section id="067195c1-49FF-11e9-9e03-0cc47a520474" output="trial-only" first-char-pos="2060">
+ <title><p>Trial only</p></title>
+ <p>Trial only text</p>
+</section><section id="067195c1-49FF-11e9-9e03-0cc47a520474" first-char-pos="2092" clipped="true"><title><p>Следующая секция тоже выживет</p></title><clipped/></section><section id="067195c1-49FF-11e9-9e03-0cc47a520474" output="trial" first-char-pos="2132">
+ <title><p>Trial text</p></title>
+ <p>Trial text</p>
+</section></fb3-body>

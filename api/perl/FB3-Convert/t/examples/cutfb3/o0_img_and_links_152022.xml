@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="067195c1-0310-11e9-9e03-0cc47a520474">
+  <title>
+    <p>Тони Роббинс</p>
+  </title>
+
+<section id="067195c1-49FF-11e9-9e03-0cc47a520474" output="payed">
+ <title><p>Payed</p></title>
+ <p>Payed text</p>
+</section>
+
+<section id="067195c1-49FF-11e9-9e03-0cc47a520474" output="default">
+ <title><p>Default</p></title>
+ <p><img src="img_9df75ae6-0028-5326-828a-304fec43654a"/></p>
+ <p><a xlink:href="#link1">id not remove</a>hello</p>
+</section>
+
+
+
+<section id="067195c1-49FF-11e9-9e03-0cc47a520474">
+ <title><p>TEXT before trial. Секция выживет</p></title>
+ <p id="link1">text</p>
+ <p>ID REMOVE</p>
+ <p><note href="n_1">note not remove</note></p>
+</section>
+
+<section id="067195c1-49FF-11e9-9e03-0cc47a520474" output="trial">
+ <title><p>Trial text секция выживет</p></title>
+ <p>Trial text</p>
+</section>
+
+<notes>
+<title><p>Notes list</p></title>
+<notebody id="n_1"><p>Note 1</p></notebody>
+
+</notes>
+</fb3-body>
