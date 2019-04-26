@@ -456,7 +456,7 @@ sub ExtractText {
 
 		$ChildHash->{'intitle'} = 1 if exists $NodeHash->{'intitle'} && $NodeHash->{'intitle'};
 		#note внутри title нам не нужны в оглавлении
-		#next if $ChildHash->{'name'} eq 'note' && exists $ChildHash->{'intitle'} && $ChildHash->{'intitle'};
+		next if $ChildHash->{'name'} eq 'note' && exists $ChildHash->{'intitle'} && $ChildHash->{'intitle'};
 
 		push @TextArr, $ChildHash->{text} if $ChildHash->{text};
 		my $Text = ExtractText($ChildHash);
