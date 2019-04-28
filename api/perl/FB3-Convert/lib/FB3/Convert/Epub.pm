@@ -1342,7 +1342,7 @@ sub ProcessImg {
 
       $X->_bs('img2jpg','IMG -> JPG');
       if ($X->isConvertImageType($ImgType)) { #некоторые попытаемся сконвертировать в jpg
-        $ImgSrcFile = $X->Img2JPG($ImgSrcFile);
+        $ImgSrcFile = $X->Img2JPG($ImgSrcFile,$X->isUseImageProfile($ImgType));
         $Src .= ".jpg";
       }
       $X->_be('img2jpg');

@@ -22,6 +22,7 @@ use XML::Entities::Data;
 use Time::HiRes qw(gettimeofday sleep);
 use Lingua::Identify qw(langof);
 use Image::Magick;
+use File::ShareDir qw/dist_dir/;
 binmode(STDOUT,':utf8');
 
 our $VERSION = 0.28;
@@ -31,6 +32,11 @@ our $VERSION = 0.28;
 FB3::Convert - scripts and API for converting FB3 from and to different formats
 
 =cut
+
+my $Dist = dist_dir('FB3-Convert');
+my $ProfilesDir = $Dist."/profiles";
+my $CMYKProfile = $ProfilesDir.'/CoatedFOGRA27.icc';
+my $sRGBProfile = $ProfilesDir.'/sRGB_Color_Space.icc';
 
 my %MODULES;
 # каким плагином работать - определяется тупо по расширению файла (см. ключ в хэше)
@@ -105,6 +111,7 @@ my @AccessImgFormat = ('png','gif','jpg','jpeg','svg','bmp','tiff','tif',
 my @ConvertImgFormat = ('bmp','tiff','tif',
 'cur','tga','vda','icb','vst'
 );
+my %UseImgProfile = ('tiff'=>1,'tif'=>1);
 
 my %AllowElementsMain = (
   'table' => {
@@ -1398,6 +1405,12 @@ sub _bf {
 
 }
 
+sub isUseImageProfile {
+  my $X = shift;
+  my $ImgType = lc(shift) || return;
+  return 1 if exists $UseImgProfile{$ImgType} && $UseImgProfile{$ImgType};
+}
+
 sub isConvertImageType {
   my $X = shift;
   my $ImgType = shift || return;
@@ -1425,11 +1438,43 @@ sub GuessLang {
 sub Img2JPG {
   my $X = shift;
   my $ImgFile = shift;
+  my $UseProfile = shift || undef;
   my $To = $ImgFile.".jpg";
   my $Image = new Image::Magick;
+
   $Image->Read($ImgFile); #почему-то у IM "or die" всегда срабатывает...;
-  $Image->Quantize(colorspace=>'RGB');
+  
+  if ($UseProfile) {  
+    if (!-s $sRGBProfile) {
+      $X->Msg("Can't find sRGB ICC profile $sRGBProfile. Try convert to RGB colorspace without profile. May wrong colors for CMYK->RGB\n");
+      $Image->Quantize(colorspace=>'sRGB');
+    } elsif (!-s $CMYKProfile) {
+      $X->Msg("Can't find CMYK ICC profile $CMYKProfile. Try convert to RGB colorspace without profile. May wrong colors for CMYK->RGB\n");
+      $Image->Quantize(colorspace=>'sRGB');
+    } else {
+      
+      #вытираем профили 
+      $Image->Profile(name => 'ICC', profile => '');
+      $Image->Profile(name => 'IPTC', profile => '');
+
+      open my $PHRGB,"<".$sRGBProfile or die $!;
+      binmode($PHRGB);
+      my $ProfRGBBLOB = join("", <$PHRGB>); 
+      close $PHRGB;
+
+      open my $PHCMYK,"<".$CMYKProfile or die $!;
+      binmode($PHCMYK);
+      my $ProfCMYKBLOB = join("", <$PHCMYK>); 
+      close $PHCMYK;
+
+      $Image->Profile(name => 'ICC', profile => $ProfCMYKBLOB);
+      $Image->Profile(name => 'ICC', profile => $ProfRGBBLOB);
+ 
+     }
+  }
+
   $Image->Write($To);
+
   unless (-s $To) {
     $X->Error("Cant't convert $ImgFile to JPG");
   } else {
