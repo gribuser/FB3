@@ -658,6 +658,19 @@ sub ProceedDescr {
 
 	$description .= ',ArtID:"' . EscString($ArtID) . '"' if $ArtID;
 
+	my $DraftStr = '';
+	if ( my $FragmentNode = $xpc->findnodes('/fbd:fb3-description/fbd:draft-status')->[0]) {
+		$DraftStr = ',DraftStatus:{expected_chars:"'.$FragmentNode->getAttribute('expected-chars').'"'; #required
+		if (my $ExpFreq = $FragmentNode->getAttribute('expected-frequency')) {
+			$DraftStr .= ',expected_frequency:"'.$ExpFreq.'"';
+		}
+		if (my $ExpRelease = $FragmentNode->getAttribute('expected-release')) {
+			$DraftStr .= ',expected_release:"'.$ExpRelease.'"';
+		}
+		$DraftStr .= '}';
+		$description .= $DraftStr;
+	}
+
 	my $FragmentStr = '';
 	if ( my $FragmentNode = $xpc->findnodes('/fbd:fb3-description/fbd:fb3-fragment')->[0] ) {
 		$IsTrial = 1;
