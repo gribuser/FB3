@@ -140,12 +140,10 @@
 								<documentation xml:lang="ru">Ожидаемый объём знаков в полном произведении</documentation>
 							</annotation>
 							<simpleType>
-								<restriction base="positiveInteger">
-									<minInclusive value="1000"/>
-								</restriction>
+								<restriction base="nonNegativeInteger"/>
 							</simpleType>
 						</attribute>
-						<attribute name="expectef-frequency" type="positiveInteger">
+						<attribute name="expected-frequency" type="positiveInteger">
 							<annotation>
 								<documentation xml:lang="ru">Ожидаемая частота обновлений/пополнений (в днях)</documentation>
 							</annotation>
