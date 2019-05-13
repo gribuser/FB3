@@ -1473,7 +1473,7 @@ sub Img2JPG {
      }
   }
 
-  $Image->Write($To);
+  $Image->[0]->Write($To);
 
   unless (-s $To) {
     $X->Error("Cant't convert $ImgFile to JPG");
