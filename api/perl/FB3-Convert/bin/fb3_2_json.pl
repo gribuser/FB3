@@ -624,6 +624,11 @@ sub ProceedDescr {
 		return $getParts->($node, $NameParts);
 	};
 
+	my $Created = $xpc->findnodes('/fbd:fb3-description/fbd:document-info/@created');
+	$description .= ',Created:"'.$Created.'"' if $Created;
+	my $Updated = $xpc->findnodes('/fbd:fb3-description/fbd:document-info/@updated');
+	$description .= ',Updated:"'.$Updated.'"' if $Updated;
+
 	if ( my $WrittenNode = $xpc->findnodes('/fbd:fb3-description/fbd:written')->[0] ) {
 
 		my $WrittenParts = {'Date' => 'date', 'DatePublic' => 'date-public', 'Lang' => 'lang'};
