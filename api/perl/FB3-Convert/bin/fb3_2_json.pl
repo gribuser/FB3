@@ -801,6 +801,7 @@ sub HyphString {
 sub HyphParticularWord {
 	use utf8;
 	my $word = shift;
+	return $word if $Lang = 'pl';
 	my $softHyphMinPart = 2;
 
 	return $word if ( length($word) < 2 * $softHyphMinPart + 1 || $word eq uc($word));
