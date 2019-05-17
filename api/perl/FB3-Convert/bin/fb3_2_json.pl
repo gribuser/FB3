@@ -788,7 +788,7 @@ sub trim {
 sub HyphString {
 	use utf8;
 	my $word = shift;
-
+	return $word if $Lang = 'pl';
 	my @wordArrayWithUnknownSymbols = split $RgxNonChar , $word; #собрали все слова и неизвестные символы. Для слова "пример!№?;слова" будет содержать "пример", "!№?;", "слова".
 
 	for my $word (@wordArrayWithUnknownSymbols) {
@@ -801,7 +801,7 @@ sub HyphString {
 sub HyphParticularWord {
 	use utf8;
 	my $word = shift;
-	return $word if $Lang = 'pl';
+
 	my $softHyphMinPart = 2;
 
 	return $word if ( length($word) < 2 * $softHyphMinPart + 1 || $word eq uc($word));
