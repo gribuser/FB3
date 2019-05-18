@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink"><description><title-info><genre>poetry</genre><author><first-name>Иван</first-name><middle-name>Петрович</middle-name><last-name>МАЛОВ</last-name><id>996a710c-e427-4127-87cf-74406b0232aa</id></author><book-title>Бегущей строкой</book-title><annotation><p>Творчество Ивана Малова – выпускника Литературного института имени А.М. Горького, лауреата национальной литературной премии &quot;Поэт года&quot; в номинации &quot;Лирика&quot; – многогранно. Это и замечательные поэтическиеэтюды о любви, и полная живых красок пейзажная лирика, и глубокие,эмоциональные стихи о Великой Отечественной войне. О чем бы ни писал, онвсегда делает это ярко и волнующе. В современном неустойчивом мире авторнаходит утешение в фундаментальных ценностях, что и отражается в его стихах.</p>
+</annotation><keywords>Самиздат,поэзия XXI века</keywords><date value="2019-01-16">2019</date><lang>ru</lang><src-lang>ru</src-lang></title-info><document-info><author><first-name>Иван</first-name><middle-name>Петрович</middle-name><last-name>МАЛОВ</last-name></author><program-used>Ridero</program-used> <date>2019</date><src-url>http://www.litres.ru/pages/biblio_book/?art=42601011</src-url><id>2b6ae1eb-ff2a-4f9a-885b-f1d6945ea3d4</id><version>1.0</version><publisher><first-name>Литагент</first-name><last-name>Selfpub.ru (неискл)</last-name><id>d319f93f-9ce5-11e6-8a91-0cc47a545a1e</id></publisher></document-info><publish-info><publisher>SelfPub</publisher><year>2019</year></publish-info><custom-info info-type="fb3d:fb3-description/fb3d:fb3-classification/fb3d:bbk">84</custom-info><custom-info info-type="fb3d:fb3-description/fb3d:fb3-classification/fb3d:udc">82-1</custom-info><custom-info info-type="fb3d:fb3-description/fb3d:fb3-classification/fb3d:author-sign">М19</custom-info></description><body><title><p>Бегущей строкой</p>
+<empty-line></empty-line><p>ffff</p>
+</title><section><p><emphasis>em</emphasis></p>
+<empty-line></empty-line><p>2019</p>
+<p>@ 2019</p>
+<empty-line></empty-line><p>ISBN 978-5-4474-1331-6</p>
+<p>hello</p>
+</section>
+
+<section>
+<title><p>Title</p></title>
+
+<p>Text1</p>
+
+<cite>
+    <text-author>A1</text-author>
+    <text-author>A2</text-author>
+    <text-author>A3</text-author>
+</cite>
+
+<cite>
+<p>TEXT2</p>
+    <text-author>B1</text-author>
+    <text-author>B2</text-author>
+    <text-author>B3</text-author>
+<p>TEXT3</p>
+<p>TEXT4</p>
+</cite>
+
+</section>
+
+</body>
+</FictionBook>

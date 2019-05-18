@@ -166,7 +166,7 @@ sub Reaper {
 		}
 
 		# текст цитаты найден, всё в порядке, идём дальше
-		next if scalar $XPC->findnodes('./fb:p|./fb:poem', $Cite);
+		next if scalar $XPC->findnodes('./fb:p|./fb:poem|./fb:text-author', $Cite);
 
 		# если не нашли ни заголовков ни текста -- удаляем цитату и идём дальше
 		my @Titles = $XPC->findnodes('./fb:subtitle', $Cite);
