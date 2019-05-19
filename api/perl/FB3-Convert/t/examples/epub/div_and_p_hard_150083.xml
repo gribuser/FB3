@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body id="69e43316-7ddb-47e3-942f-313af9bcabbf" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body">
+  <section id="bb45a3b4-3bc1-5357-ad5a-3a33225beef3">
+    <p id="link_42094f12-5b2c-5cab-bec8-6094a04d57aa">
+      <a xlink:href="#link_0d90925c-bcfd-598f-8665-f0695b23ee0b">1.</a>
+    </p>
+    <p id="link_3d7bd8ca-2a4e-5265-a872-5a34099cf6d5">TEXT1</p>
+    <p>TEXT2</p>
+    <p>DELIMETER OF EVENTS1</p>
+    <p>
+      <a xlink:href="#link_3d7bd8ca-2a4e-5265-a872-5a34099cf6d5">LINK1</a>
+    </p>
+    <p id="link_0d90925c-bcfd-598f-8665-f0695b23ee0b">
+      <a xlink:href="#link_42094f12-5b2c-5cab-bec8-6094a04d57aa">TEXT3</a>
+    </p>
+    <p>TEXT4</p>
+    <p>DELIMETER OF EVENTS2</p>
+    <p>TEXT5</p>
+    <p>TEXT6</p>
+  </section>
+</fb3-body>
