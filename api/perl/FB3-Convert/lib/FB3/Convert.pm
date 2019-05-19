@@ -635,11 +635,74 @@ sub Content2Tree {
   my $RootEl = $NodeDoc->getDocumentElement;
   my $Result = &ProcNode($X,$RootEl,$File,'root_fb3_container');
 
+  $X->_bs('TRPost','Постпроцессинг трансфомированных');
+  $Result = $X->TransformedPostprocess($Result);
+  $X->_be('TRPost');
+
+
   return {
     content => $X->NormalizeTree($Result),
     ID => $X->Path2ID(uri_unescape($File),undef,'main_section'), #main-sectioon
     ID_SUB => $X->UUID(), #sub-section
   };
+}
+
+#после трансформации нод (Epub::TransformTo и т.д), общая картина может стать невалидной
+#еще раз обработаем дерево с учетом текущих реалий
+sub TransformedPostprocess {
+  my $X = shift;
+  my $Data = shift;
+
+  my %AllowElements = %{$X->{'allow_elements'}};
+
+  return unless ref $Data eq 'ARRAY';
+
+  foreach my $Item (@$Data) {
+    if (ref $Item eq 'HASH') {
+      foreach my $NodeName (sort keys %$Item) {
+        my $NodeValue = $Item->{$NodeName};
+        if (ref $NodeValue eq 'HASH' && exists $NodeValue->{'was'} && $NodeValue->{'was'} ne $NodeName) { #была трансформация. кандидат на рассмотрение
+          my $Exclude = 0;
+          if ($AllowElements{$NodeValue->{'was'}}->{'exclude_if_inside'}) { #проверка на вшивость
+            $Exclude = 1 if $X->StructHaveInside($NodeValue->{'value'}, $AllowElements{$NodeValue->{'was'}}->{'exclude_if_inside'});
+          }
+          if ($Exclude) {
+            $Item = $NodeValue->{'value'};
+          }
+        }
+        if (ref $NodeValue eq 'HASH') {
+          delete $NodeValue->{'was'} if exists $NodeValue->{'was'};
+          TransformedPostprocess($X,$NodeValue->{'value'}) if exists $NodeValue->{'value'};
+        }
+      }
+    } elsif (ref $Item eq 'ARRAY') {
+      TransformedPostprocess($X,$Item);
+    }
+  }
+
+  return $Data;
+}
+
+sub StructHaveInside {
+  my $X = shift;
+  my $Node = shift;
+  my $ExcludeList = shift;
+  return unless ref $Node eq 'ARRAY';
+
+  my $Finded = 0;
+  foreach my $Item (@$Node) {
+    if (ref $Item eq 'ARRAY') {
+      $Finded = $X->StructHaveInside($Item,$ExcludeList);
+    } elsif (ref $Item eq 'HASH') { #рассматриваем только первый уровень, глубже - не наше поле ответственности
+      foreach my $NodeNameInside (sort keys %$Item) {
+        if (grep {$NodeNameInside eq $_} @$ExcludeList) {
+          $Finded = 1;
+          last;
+        }
+      }
+    }
+  }
+  return $Finded;
 }
 
 sub NormalizeTree {
@@ -713,7 +776,9 @@ sub ProcNode {
 
     #если ноду прибиваем, нужно чтобы дочерние работали по правилам пэрент-ноды (она ведь теперь и есть пэрент для последующих вложенных)      
     my $GoodParent = $Allow ? $ChildNodeName : $LastGoodParent; #если нода прошла разрешение, то теперь она становится последней parent в ветке и далее равняемся на ее правила 
-      
+
+    my $OldNodeName = $Child->nodeName;
+
     #разрешенные атрибуты текущей ноды
     my $AllowAttributes =
       $Allow
@@ -725,16 +790,16 @@ sub ProcNode {
     if ($Allow && $AllowElements{$ChildNodeName}->{'processor'}) {
       $Child =  $AllowElements{$ChildNodeName}->{'processor'}->($X,'node'=>$Child, 'relpath'=>$RelPath, params=>$AllowElements{$ChildNodeName}->{'processor_params'});
     }
-    
+
     my $NodeName = $Child->nodeName; #имя могло измениться процессором
-        
+
     push @Dist, $NodeName =~ /#text/i
       ? unquot($X,$Child->toString) #текстовая нода
       :
         $Allow
         ? { #тэг в ноде выводим
           $NodeName => $AllowAttributes
-            ? {attributes => ConvertIds($X,$X->NodeGetAllowAttributes($Child),$RelPath), 'value' => &ProcNode($X,$Child,$RelPath,$GoodParent)} # надо с атрибутами выводить
+            ? {attributes => ConvertIds($X,$X->NodeGetAllowAttributes($Child),$RelPath), 'value' => &ProcNode($X,$Child,$RelPath,$GoodParent), 'was'=>$OldNodeName} # надо с атрибутами выводить
             : &ProcNode($X,$Child,$RelPath,$GoodParent), # дочку строим по упрощенной схеме ('value' не обязателен)  
           }
         :   &ProcNode($X,$Child,$RelPath,$GoodParent) # не выводим тэг, шагаем дальше строить дерево

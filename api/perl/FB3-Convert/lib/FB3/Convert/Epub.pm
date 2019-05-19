@@ -263,7 +263,7 @@ sub Reaper {
     'allow_attributes' => [],
     processor => \&TransformTo,
     processor_params => ['p'],
-    'allow_elements_inside' => $FB3::Convert::ElsMainList,
+    'allow_elements_inside' => $FB3::Convert::ElsMainList2,
   };
   $AllowElements->{'h1'} = {
     'allow_attributes' => ['id'],
