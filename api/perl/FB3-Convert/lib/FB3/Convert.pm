@@ -691,6 +691,7 @@ sub StructHaveInside {
 
   my $Finded = 0;
   foreach my $Item (@$Node) {
+    last if $Finded;
     if (ref $Item eq 'ARRAY') {
       $Finded = $X->StructHaveInside($Item,$ExcludeList);
     } elsif (ref $Item eq 'HASH') { #рассматриваем только первый уровень, глубже - не наше поле ответственности
