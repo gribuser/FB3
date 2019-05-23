@@ -693,13 +693,10 @@ sub StructHaveInside {
   foreach my $Item (@$Node) {
     last if $Finded;
     if (ref $Item eq 'ARRAY') {
-      $Finded = $X->StructHaveInside($Item,$ExcludeList);
+      return 1 if $X->StructHaveInside($Item,$ExcludeList);
     } elsif (ref $Item eq 'HASH') { #рассматриваем только первый уровень, глубже - не наше поле ответственности
       foreach my $NodeNameInside (sort keys %$Item) {
-        if (grep {$NodeNameInside eq $_} @$ExcludeList) {
-          $Finded = 1;
-          last;
-        }
+        return 1 if grep {$NodeNameInside eq $_} @$ExcludeList;
       }
     }
   }
