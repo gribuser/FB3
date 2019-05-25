@@ -355,8 +355,8 @@ sub DumpTree {
 	}
 	my $ChildsCount = scalar @{$NodeHash->{c}} if $NodeHash->{c};
 
-	$FirstBlockN = $NodeHash->{b_id} unless defined $FirstBlockN;
-	$LastBlockN = $NodeHash->{b_id} if $NodeHash->{b_id};
+	$FirstBlockN = ($NodeHash->{b_id}||0) unless defined $FirstBlockN;
+	$LastBlockN = defined $NodeHash->{b_id} ? $NodeHash->{b_id} : 0;
 
 	for my $ChildHash (@{$NodeHash->{c}}) {
 		$ChildsCount--;

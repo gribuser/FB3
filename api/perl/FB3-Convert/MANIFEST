@@ -36,6 +36,8 @@ t/examples/epub/br_133548.epub
 t/examples/epub/br_133548.xml
 t/examples/epub/div_and_p_111501.epub
 t/examples/epub/div_and_p_111501.xml
+t/examples/epub/div_and_p_hard_150083.epub
+t/examples/epub/div_and_p_hard_150083.xml
 t/examples/epub/double_id_150047.epub
 t/examples/epub/double_id_150047.xml
 t/examples/epub/empty_a_near_h_109373.epub
@@ -64,8 +66,6 @@ t/examples/epub/move_empty_a_109373.epub
 t/examples/epub/move_empty_a_109373.xml
 t/examples/epub/rm_unlink_id_a_span_109373.epub
 t/examples/epub/rm_unlink_id_a_span_109373.xml
-t/examples/epub/section_in_div_150083.epub
-t/examples/epub/section_in_div_150083.xml
 t/examples/epub/simple_108909.epub
 t/examples/epub/simple_108909.xml
 t/examples/epub/table_114309.epub
@@ -90,6 +90,8 @@ t/examples/fb2/143667_notes_pos.fb2
 t/examples/fb2/143667_notes_pos.xml
 t/examples/fb2/annotation_subtitle_144337.fb2
 t/examples/fb2/annotation_subtitle_144337.xml
+t/examples/fb2/cite_textauthor_153278.fb2
+t/examples/fb2/cite_textauthor_153278.xml
 t/examples/fb2/div_102611.fb2
 t/examples/fb2/div_102611.xml
 t/examples/fb2/hell_example_133321.fb2
