@@ -187,6 +187,7 @@ my %AllowElementsMain = (
   },
   'root_fb3_container' => {
     'allow_elements_inside' => {
+      'br' => undef,
       'underline'=>undef,
       'b'=>undef,
       'strong'=>undef,

@@ -1,78 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="67435ce8-bc62-482f-ae36-c7b48aaa8841">
-  <section id="051334d5-3bcd-50d0-ae29-54b74b4d38cc">
-    <section id="b4ab97d5-87a0-4931-aab2-87d825ec3984">
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="830e5b89-6c0d-4922-a07a-79ca00ef4223">
+  <section id="896bf764-8ab4-59bf-9566-9aa28bd3ca4a">
+    <section id="1b0bd877-1f6e-48b1-a65b-f127ffd9eff8">
       <p>фэйл за начало (&gt;N знаков)</p>
     </section>
-    <section id="05aae24d-c6ff-44f7-8eb7-1a907b502281">
-      <title id="link_5b0579ae-ba06-5254-8b8b-f9c2de416a83">
+    <section id="2b1c9775-8561-4986-bb42-6b562b6effc3">
+      <title id="link_f437e7f4-c4e9-5357-ad61-746c822dfe66">
         <p>ГлавА (+7) Внутренняя ссылка СТАЗНАКОВ_фйэл_баллов_1234567890уцнейурцйаваивораруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</p>
         <p>ChapTer (+7) ссылка из другого документа (+3) СТОЗНАКОВ_фйэл_баллов_1234567890уцнейурцйаваивораруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</p>
       </title>
-      <p id="link_e04085a1-ee8f-55ac-affc-f982ad09cce4">ChapTer (+7) третий абзац</p>
-      <p><a xlink:href="#link_5b0579ae-ba06-5254-8b8b-f9c2de416a83">Внутренняя ссылка +3</a> <a xlink:href="#link_e04085a1-ee8f-55ac-affc-f982ad09cce4">Внутренняя ссылка +3</a></p>
+      <p id="link_39a15bfb-b481-5234-a782-2c5de67e0f43">ChapTer (+7) третий абзац</p>
+      <p><a xlink:href="#link_f437e7f4-c4e9-5357-ad61-746c822dfe66">Внутренняя ссылка +3</a> <a xlink:href="#link_39a15bfb-b481-5234-a782-2c5de67e0f43">Внутренняя ссылка +3</a></p>
     </section>
   </section>
-  <section id="ed607d4f-5953-56a1-9fac-b04d35204181">
-    <section id="c00f079d-3aab-4882-933f-b3e08ba240e8">
+  <section id="1d9fdc4a-8006-55b6-8cf4-119be07d968d">
+    <section id="fda277ad-11f4-4bdb-9628-9a4bcc4d4f0e">
       <p>123 </p>
     </section>
-    <section id="9cac8fb9-e909-406a-9111-80f707ff00a9">
+    <section id="b1cc6082-c77d-4073-a8fc-e23b89ea5d48">
       <title>
         <p>ChaPteR (+7) +3 за начало в секции / СТОЗНАКОВ_фйэл_баллов_1234567890уцнейурцйаваивораруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</p>
       </title>
-      <p><a xlink:href="#link_75f64bde-5ca5-5d50-b283-62ed7c7406a0">Ссылка на блок в другом документе</a> <a xlink:href="#link_e04085a1-ee8f-55ac-affc-f982ad09cce4">Внутренняя ссылка +3</a></p>
+      <p><a xlink:href="#link_a7eca549-4824-5d49-8a1a-d38633ab4a47">Ссылка на блок в другом документе</a> <a xlink:href="#link_39a15bfb-b481-5234-a782-2c5de67e0f43">Внутренняя ссылка +3</a></p>
     </section>
   </section>
-  <section id="cebb4910-7afd-57ad-bb39-ba9cbe032c3d">
-    <section id="9e9ec510-a0c6-4684-afcb-e77a2aec78d6">
+  <section id="825ef129-457b-5ee8-abe1-978cd403ea55">
+    <section id="02900d18-c68f-41cc-9e1f-7dc5fa2d2c9c">
       <p>фэйл за начало (&gt;N знаков)</p>
     </section>
-    <section id="35790848-b0b4-482b-ab80-a14994b445db">
+    <section id="2e749fe7-ccb7-45c9-add2-dddb98006386">
       <title>
         <p>+7 чАсТь +3 отбивка снизу BR внешний / СТОЗНАКОВ_фйэл_баллов_1234567890уцнейурцйаваивораруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</p>
       </title>
+      
       <p>text</p>
     </section>
   </section>
-  <section id="3ebe811b-88fe-5aa7-b75b-aa36d6d1eda4">
-    <section id="3a26fb97-26b5-4f1a-a054-9df552ccba29">
+  <section id="bb4f23fc-4d5a-53f5-b807-7f4219447ae0">
+    <section id="d1f8d577-27b1-4ebd-825b-f069c2f4cf01">
       <p>фэйл за начало (&gt;N знаков)</p>
     </section>
-    <section id="76d4400e-f08f-47d3-b0de-d07476cf915b">
+    <section id="d29c6971-370e-4aac-8f21-a0d9e40bb433">
       <title>
-        <p>+7 chapTer +3 отбивка снизу BR внутренний СТОЗНАКОВ_фйэл_баллов_1234567890уцнейурцйаваивораруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre </p><p></p>
+        <p>+7 chapTer +3 отбивка снизу BR внутренний СТОЗНАКОВ_фйэл_баллов_1234567890уцнейурцйаваивораруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre </p>
       </title>
       <p>text</p>
     </section>
   </section>
-  <section id="2acec662-1c9f-5d6e-af0f-6e602308a445">
-    <section id="36264514-2e04-4026-9fb6-592cc9fb003f">
+  <section id="9350d980-2a00-5b22-bb1d-f1dc6bb1c32c">
+    <section id="359ab377-07a5-47cd-8e8c-85ddbe12538f">
       <p>фэйл за начало (&gt;N знаков)</p>
     </section>
-    <section id="959bf1b3-5569-45bd-910e-f015a59dd427">
+    <section id="ceebcec4-731d-40ad-a209-28008ac6ed54">
       <title>
         <p>+7 PaRt +3 отбивка снизу BR сверху у соседа СТОЗНАКОВ_фйэл_баллов_123456 78 90уц ней урцй ава иво раруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</p>
       </title>
-      <p></p><p> text</p>
+      <p> text</p>
     </section>
   </section>
-  <section id="7ec45e11-8168-59f2-a150-7d25f13ad53d">
-    <section id="9688025e-c4a3-47c6-aa4b-2b041f82632c">
+  <section id="246c5c78-08b6-555f-8812-51d1d1c8c3fc">
+    <section id="ce1978eb-d256-44c8-82d7-87f34652a36e">
       <p>фэйл за начало (&gt;N знаков)</p>
     </section>
-    <section id="07d82cd7-a42e-4487-8ea0-1e8c9fa017f2">
+    <section id="010f65c5-f36b-4119-ba89-df7720977929">
       <title>
         <p>+7 PaRt меньше ста знаков (+3)</p>
       </title>
       <p>text</p>
     </section>
   </section>
-  <section id="b49603c5-df50-5469-98fb-2bb1b1144c93">
-    <section id="50b88191-9fba-4516-858b-791170846712">
+  <section id="59c037c8-08dc-5063-a7d0-c11c53900b4b">
+    <section id="9b76189f-890e-4c42-956d-caf52c30c166">
       <p>фэйл за начало (&gt;N знаков)</p>
     </section>
-    <section id="6b9770eb-74de-4ebe-ba8f-eea0018af019">
+    <section id="e52e5e36-ed84-403c-aa7e-d650485700d7">
       <title>
         <p>+7 PaRt +3 отбивка снизу margin style СТОЗНАКОВ_фйэл_баллов_123456 78 90уц ней урцй ава иво раруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</p>
         <p>+7 PaRt +3 отбивка снизу padding style СТОЗНАКОВ_фйэл_баллов_123456 78 90уц ней урцй ава иво раруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</p>
@@ -80,11 +81,11 @@
       <p>text</p>
     </section>
   </section>
-  <section id="4ed01baa-f65a-5edc-8a3c-e6f9b2321ad1">
-    <section id="9b4fd016-c771-4ce0-bdc0-bb6e3fa44ed3">
+  <section id="d96bab96-2f6e-5d80-81a3-aed9a0b9d638">
+    <section id="51d177a0-76e6-4b55-b6fe-61dd9a8420c5">
       <p>фэйл за начало (&gt;N знаков)</p>
     </section>
-    <section id="65d8c4b7-8917-4442-851a-afe248ac1b5d">
+    <section id="6735a8ba-b571-4613-9669-087f754efc8b">
       <title>
         <p>ss +7 PaRt СТОЗНАКОВ_фйэл_баллов_123456 78 90уц ней урцй ава иво раруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</p>
       </title>
@@ -93,22 +94,22 @@
       <p>+3 соседу сверху отбивка padding style сверху</p>
     </section>
   </section>
-  <section id="ea5be9c9-7985-5abe-abae-b7c07b88975a">
-    <section id="33242f63-8179-4aa2-8d31-03f55d7393e7">
+  <section id="9499a5de-5d00-583c-a7f9-739632e33929">
+    <section id="9152d802-0bba-477c-b256-2cadf7001c24">
       <p>фэйл за начало (&gt;N знаков)</p>
     </section>
-    <section id="3cb1ae14-1f65-4aba-a66c-3bdf72cd0f8a">
+    <section id="8a0edad4-02b0-40d4-97dd-2c778e4e5564">
       <title>
         <p>+7 PaRt +3 ЦЕНТР style СТОЗНАКОВ_фйэл_баллов_123456 78 90уц ней урцй ава иво раруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</p>
       </title>
       <p>text</p>
     </section>
   </section>
-  <section id="b80c80f4-44f7-5a2b-9580-09a434a59b5a">
-    <section id="e0db5ac0-4aa7-4ea7-9153-72e813c4d7e9">
+  <section id="bec56af9-e008-597b-b57d-c2f0b878da36">
+    <section id="83592c68-e4ed-493e-aad0-4800124ae7a8">
       <p>фэйл за начало (&gt;N знаков)</p>
     </section>
-    <section id="7581de3f-b28c-4f3c-9e33-3e377e93a28a">
+    <section id="fcb3ec3c-c1e9-4669-818b-fa63672a0266">
       <subtitle>+7 PaRt +3 BIG FONT SIZE style СТОЗНАКОВ_фйэл_баллов_123456 78 90уц ней урцй ава иво раруцкрукуцкуокаxnvcnxvcnvmnxvmcxnvcndwrjekjrkejrkjewkjrkejkrffmndsmfndsmnfmdsnfmndmfndnmfmdnmdnsmnfd cvdjfjekrje wqrerewr ewr rewrq erere r erewqre</subtitle>
     </section>
   </section>

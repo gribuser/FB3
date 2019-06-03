@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="17d36440-beba-4f16-9ecf-14e6f86e376c">
-  <section id="4dbf0041-fc32-5524-8ac3-00a9d1da7b75">
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" id="f0681efc-b630-47a8-b92a-91c12e6c42a8" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="8b9f2470-06d4-5f0a-8874-9d3dbd2552f8">
     <title>
       <p>hello</p><p>world</p>
     </title>
-    <p>text</p><p>  end text</p>
-    <p></p><p>END1 <strong>HELLO END</strong>END2</p>
+    <p>text</p><p></p><p></p><p>end text</p>
+    <p>END1 <strong>HELLO END</strong>END2</p>
   </section>
 </fb3-body>
