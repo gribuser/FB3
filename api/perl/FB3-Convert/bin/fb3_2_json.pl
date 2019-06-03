@@ -13,6 +13,7 @@ use JSON::PP;
 use File::Copy;
 use File::Basename;
 use MIME::Base64;
+use TeX::Hyphen;
 
 use Getopt::Long;
 
@@ -21,11 +22,14 @@ my $Out     = '';
 my $Version = '1.0';
 my $Lang    = 'ru';
 my $ArtID   = undef;
+my $Dictionary = undef;
+my $Hyp = undef;
 
 GetOptions ('in|from|src|fb3=s' => \$FB3,
             'out|to|dst|json=s' => \$Out,
             'lang=s'            => \$Lang,
             'art|art-id=s'      => \$ArtID,
+						'dict=s'            => \$Dictionary,
             'version=s'         => \$Version) or print join('', <DATA>) and die("Error in command line arguments\n");
 
 print join('', <DATA>) and die "ERROR: source directory not specified, use --fb3 parameter\n"       unless $FB3;
@@ -148,8 +152,8 @@ $hyphenPatterns = {
 $hyphenRegexPattern = join "|",keys %{$hyphenPatterns};
 $hyphenRegexPattern = qr/(.*)($hyphenRegexPattern){1}(.*)/o;
 
-$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщ";
-$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїў";
+$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщłćżźśńż";
+$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїўóąę";
 $znaki = "ъь";
 
 $RgxSoglasnie = qr/[$soglasnie]/oi;
@@ -681,7 +685,7 @@ sub ProceedDescr {
 		$IsTrial = 1;
 		$FragmentStr = ",\n".'"fb3-fragment":{"full_length":'.$FragmentNode->getAttribute('full_length').',"fragment_length":'.$FragmentNode->getAttribute('fragment_length').'}';
 	}
-	
+
 	return 'Meta:{' . $description . ',UUID:"' . $UUID . '",version:"' . $Version . '"}' . $FragmentStr . ",\n";
 }
 
@@ -788,12 +792,19 @@ sub trim {
 sub HyphString {
 	use utf8;
 	my $word = shift;
-	return $word if $Lang eq 'pl';
+#	return $word if $Lang eq 'pl';
 	my @wordArrayWithUnknownSymbols = split $RgxNonChar , $word; #собрали все слова и неизвестные символы. Для слова "пример!№?;слова" будет содержать "пример", "!№?;", "слова".
 
 	for my $word (@wordArrayWithUnknownSymbols) {
 		next if $word =~ $RgxNonChar;
-		$word = HyphParticularWord($word);
+		if (-e $Dictionary) {
+			$Hyp = new TeX::Hyphen 'file' => $Dictionary,
+    		'style' => 'utf8', leftmin => 2, rightmin => 2 unless $Hyp;
+			$word = $Hyp->visualize($word);
+			$word =~ s/-/ /g;
+		} else {
+			$word = HyphParticularWord($word);
+		}
 	}
 	return join "", @wordArrayWithUnknownSymbols;
 }
@@ -841,5 +852,3 @@ e.g.
     fb3_2_json.pl --fb3 /tmp/fb3 --json /tmp/json --lang ru --art-id 1234567
 
     fb3_2_json.pl --fb3 /tmp/fb3 --json /tmp/json --version 2.1 --lang es --art-id 1234567
-
-
