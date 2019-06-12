@@ -1567,7 +1567,7 @@ sub FB3Creator {
   $BodyString =~ s/<p>\s*<\/p_br>//g;
   $BodyString =~ s/<p_br>\s*<\/p>//g;
   $BodyString =~ s/p_br>/p>/g;
-  $BodyString =~ s/<br\/>/ /g;
+  $BodyString =~ s/<p>\s+<\/p>/<br\/>/g; #мы уже все причесали, но пробельные <p> </p> пусть будут <br/> в корне
 
   print FHbody $BodyString;
   close FHbody;
