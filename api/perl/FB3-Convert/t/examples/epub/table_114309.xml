@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.fictionbook.org/FictionBook3/body" id="267e3300-7561-477f-a60a-5496e92c7c2c">
-  <section id="b14c683a-2b5d-57e2-891e-5c6a5982b295">
+<fb3-body id="dd8408c3-dc19-4643-8f11-2d707dd9466b" xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <section id="6362b779-d468-5037-878f-d861c9bbda3d">
     <p> Table 2-1  SharePoint 2010 Column Types</p>
     <table>
       <tr>
@@ -116,7 +116,7 @@
         </td>
       </tr>
     </table>
-    <p> </p>
+    <br/>
     <p>When creating a new column, it’s important to look at the Additional Column Settings section below the column type selector. This section varies according to the type of column that’s chosen, allowing various settings to be applied to further refine the type of data being collected. In addition, each column type can be configured to require that users enter something into the column, ensuring that the type of information that needs to be collected by an organization is being collected. Once the column is created, it can be populated with the corresponding type of data. Tagging list items with all this metadata can come in handy when working with filtering and creating views of the data, which is covered in more depth later in the chapter. Additionally, metadata can be searched, making it easy to find information in lists and libraries in this way.</p>
   </section>
 </fb3-body>
