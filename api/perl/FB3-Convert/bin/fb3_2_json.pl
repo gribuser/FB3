@@ -44,6 +44,11 @@ unless ($Version =~ /^\d+\.\d+$/) {
 	$Version = ($Version =~ /^\d+$/) ? "1.$Version" : "1.0"
 }
 
+if (-e $Dictionary) {
+	$Hyp = new TeX::Hyphen 'file' => $Dictionary,
+		'style' => 'utf8', leftmin => 2, rightmin => 2;
+}
+
 my $PartLimit = 20000;
 my $IsTrial   = 0;
 
@@ -798,8 +803,6 @@ sub HyphString {
 	for my $word (@wordArrayWithUnknownSymbols) {
 		next if $word =~ $RgxNonChar;
 		if (-e $Dictionary) {
-			$Hyp = new TeX::Hyphen 'file' => $Dictionary,
-    		'style' => 'utf8', leftmin => 2, rightmin => 2 unless $Hyp;
 			$word = $Hyp->visualize($word);
 			$word =~ s/-/\x{AD}/g;
 		} else {
