@@ -843,7 +843,7 @@ __DATA__
 
 Usage:
 
-    fb3_2_json.pl --fb3 /path/to/fb3/dir --json /path/to/json/dir [ --version <file version> ] [ --lang <file language> ] [ --art-id <id> ]
+    fb3_2_json.pl --fb3 /path/to/fb3/dir --json /path/to/json/dir [ --version <file version> ] [ --lang <file language> ] [ --art-id <id> ] [ --dict <path> ]
 
 e.g.
 
