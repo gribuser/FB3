@@ -37,6 +37,7 @@ my $builder = Module::Build->new(
         'URI::Escape' => 0,
         'Lingua::Identify' => 0,
         'Image::Magick' => 0,
+        'TeX::Hyphen' => 0,
     },
     script_files => [qw{
       bin/convert2fb3.pl
