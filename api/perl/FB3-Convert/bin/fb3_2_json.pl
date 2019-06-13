@@ -801,7 +801,7 @@ sub HyphString {
 			$Hyp = new TeX::Hyphen 'file' => $Dictionary,
     		'style' => 'utf8', leftmin => 2, rightmin => 2 unless $Hyp;
 			$word = $Hyp->visualize($word);
-			$word =~ s/-/ /g;
+			$word =~ s/-/\x{AD}/g;
 		} else {
 			$word = HyphParticularWord($word);
 		}
