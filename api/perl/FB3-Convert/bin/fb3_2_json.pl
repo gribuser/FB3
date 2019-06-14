@@ -676,13 +676,15 @@ sub ProceedDescr {
 		$description .= $DraftStr;
 	}
 
-	my $FragmentStr = '';
+	my $LengthStr = '';
 	if ( my $FragmentNode = $xpc->findnodes('/fbd:fb3-description/fbd:fb3-fragment')->[0] ) {
 		$IsTrial = 1;
-		$FragmentStr = ",\n".'"fb3-fragment":{"full_length":'.$FragmentNode->getAttribute('full_length').',"fragment_length":'.$FragmentNode->getAttribute('fragment_length').'}';
+		$LengthStr = ",\n".'"fb3-fragment":{"full_length":'.$FragmentNode->getAttribute('full_length').',"fragment_length":'.$FragmentNode->getAttribute('fragment_length').'}';
+	} else {
+		$LengthStr = ",\n".'"full_length":'.$FragmentNode->getAttribute('full_length');
 	}
 	
-	return 'Meta:{' . $description . ',UUID:"' . $UUID . '",version:"' . $Version . '"}' . $FragmentStr . ",\n";
+	return 'Meta:{' . $description . ',UUID:"' . $UUID . '",version:"' . $Version . '"}' . $LengthStr . ",\n";
 }
 
 sub DecodeUtf8 {
