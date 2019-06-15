@@ -225,9 +225,16 @@ foreach my $Title ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:title")) {
 }
 ## /change title id
 
+my $ChangedByNode=0;
+
+#marker, содержащий внутри только <img>, заменяем на <p>
+foreach my $Marker ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:marker")) {
+  $Marker->setNodeName('p');
+  $ChangedByNode = 1;
+}
+
 ## change node id
 #node  id нужно вынести в ближайший родительский block-level
-my $ChangedByNode=0;
 foreach my $NodeWithId ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:p//fb3:*")) {
   my $NodeID = $NodeWithId->getAttribute('id') || next;
   my $Parent = $NodeWithId;
@@ -491,7 +498,7 @@ sub help {
                If omitted static file fb3_to_fb2_genre.json file lying near the
                script is used
   --force    : ignore validation error
-  --validate : don't convert, only validate fb3 file from path
+  --validate : don't convert, only validate FB2 file from path
   
 _END
 ;
