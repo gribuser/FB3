@@ -161,8 +161,12 @@ $RgxNonChar = qr/([^$soglasnie$glasnie$znaki]+)/oi; #в скобках, чтоб
 my $jsonC = JSON::PP->new->pretty->allow_barekey;
 
 my $FB3Package = FB3->new( from_dir => $FB3 );
-my $TOCHeader = ProceedDescr($FB3Package->Meta->Content);
 my $FB3Body = $FB3Package->Body;
+
+my $Parser = XML::LibXML->new();
+my $BodyDoc = $Parser->load_xml( string => $FB3Body->Content, huge => 1 );
+
+my $TOCHeader = ProceedDescr($FB3Package->Meta->Content);
 my @Img = $FB3Body->Relations( type => RELATION_TYPE_FB3_IMAGES );
 my @ImgFiles;
 for (@Img) {
@@ -196,8 +200,6 @@ sub ProceedBody {
 	$BodyXML = DecodeUtf8($BodyXML);
 	$BodyXML =~ s/\r?\n\r?/ /g;
 	$BodyXML =~ s/([\s>])([^\s<>]+)(<note\s+[^>]*?role="(foot|end)note"[^>]*?>[^<]{1,10}<\/note>[,\.\?"'“”«»‘’;:\)…\/]?)/$1.HypheNOBR($2,$3)/ges;
-	my $Parser = XML::LibXML->new();
-	my $BodyDoc = $Parser->load_xml( string => $BodyXML, huge => 1 );
 	my $JsonStr;
 	my $TOCStr;
 	my $TotalBlocks;
@@ -681,7 +683,13 @@ sub ProceedDescr {
 		$IsTrial = 1;
 		$LengthStr = ",\n".'"fb3-fragment":{"full_length":'.$FragmentNode->getAttribute('full_length').',"fragment_length":'.$FragmentNode->getAttribute('fragment_length').'}';
 	} else {
-		$LengthStr = ",\n".'"full_length":'.$FragmentNode->getAttribute('full_length');
+		my $RootNode = $BodyDoc->getDocumentElement();
+		my $CharsFull = length($RootNode->textContent);
+		$xpc->registerNs('fbb', &NS_FB3_BODY);
+		foreach my $TrialOnlyNode ($xpc->findnodes('/fbb:fb3-body/fbb:section[@output="trial-only"]',$RootNode)) {
+			$CharsFull -= (length($TrialOnlyNode->textContent) || 0);
+		}
+		$LengthStr = ",\n".'"full_length":'.$CharsFull;
 	}
 	
 	return 'Meta:{' . $description . ',UUID:"' . $UUID . '",version:"' . $Version . '"}' . $LengthStr . ",\n";
