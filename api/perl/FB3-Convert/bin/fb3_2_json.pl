@@ -13,6 +13,7 @@ use JSON::PP;
 use File::Copy;
 use File::Basename;
 use MIME::Base64;
+use TeX::Hyphen;
 
 use Getopt::Long;
 
@@ -21,11 +22,14 @@ my $Out     = '';
 my $Version = '1.0';
 my $Lang    = 'ru';
 my $ArtID   = undef;
+my $Dictionary = undef;
+my $Hyp = undef;
 
 GetOptions ('in|from|src|fb3=s' => \$FB3,
             'out|to|dst|json=s' => \$Out,
             'lang=s'            => \$Lang,
             'art|art-id=s'      => \$ArtID,
+						'dict=s'            => \$Dictionary,
             'version=s'         => \$Version) or print join('', <DATA>) and die("Error in command line arguments\n");
 
 print join('', <DATA>) and die "ERROR: source directory not specified, use --fb3 parameter\n"       unless $FB3;
@@ -38,6 +42,15 @@ $Out = $Out.'/' unless $Out =~ /\/$/;
 
 unless ($Version =~ /^\d+\.\d+$/) {
 	$Version = ($Version =~ /^\d+$/) ? "1.$Version" : "1.0"
+}
+
+if ($Dictionary) {
+	if (-e $Dictionary) {
+		$Hyp = new TeX::Hyphen 'file' => $Dictionary,
+			'style' => 'utf8', leftmin => 2, rightmin => 2;
+	} else {
+		die "\nERROR: dictionary file `$Dictionary' not found\n"
+	}
 }
 
 my $PartLimit = 20000;
@@ -148,8 +161,8 @@ $hyphenPatterns = {
 $hyphenRegexPattern = join "|",keys %{$hyphenPatterns};
 $hyphenRegexPattern = qr/(.*)($hyphenRegexPattern){1}(.*)/o;
 
-$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщ";
-$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїў";
+$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщłćżźśńż";
+$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїўóąę";
 $znaki = "ъь";
 
 $RgxSoglasnie = qr/[$soglasnie]/oi;
@@ -691,7 +704,7 @@ sub ProceedDescr {
 		}
 		$LengthStr = ",\n".'"full_length":'.$CharsFull;
 	}
-	
+
 	return 'Meta:{' . $description . ',UUID:"' . $UUID . '",version:"' . $Version . '"}' . $LengthStr . ",\n";
 }
 
@@ -798,12 +811,17 @@ sub trim {
 sub HyphString {
 	use utf8;
 	my $word = shift;
-	return $word if $Lang eq 'pl';
+#	return $word if $Lang eq 'pl';
 	my @wordArrayWithUnknownSymbols = split $RgxNonChar , $word; #собрали все слова и неизвестные символы. Для слова "пример!№?;слова" будет содержать "пример", "!№?;", "слова".
 
 	for my $word (@wordArrayWithUnknownSymbols) {
 		next if $word =~ $RgxNonChar;
-		$word = HyphParticularWord($word);
+		if (-e $Dictionary) {
+			$word = $Hyp->visualize($word);
+			$word =~ s/-/\x{AD}/g;
+		} else {
+			$word = HyphParticularWord($word);
+		}
 	}
 	return join "", @wordArrayWithUnknownSymbols;
 }
@@ -842,7 +860,7 @@ __DATA__
 
 Usage:
 
-    fb3_2_json.pl --fb3 /path/to/fb3/dir --json /path/to/json/dir [ --version <file version> ] [ --lang <file language> ] [ --art-id <id> ]
+    fb3_2_json.pl --fb3 /path/to/fb3/dir --json /path/to/json/dir [ --version <file version> ] [ --lang <file language> ] [ --art-id <id> ] [ --dict <path> ]
 
 e.g.
 
@@ -851,5 +869,3 @@ e.g.
     fb3_2_json.pl --fb3 /tmp/fb3 --json /tmp/json --lang ru --art-id 1234567
 
     fb3_2_json.pl --fb3 /tmp/fb3 --json /tmp/json --version 2.1 --lang es --art-id 1234567
-
-
