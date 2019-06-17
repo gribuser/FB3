@@ -44,9 +44,13 @@ unless ($Version =~ /^\d+\.\d+$/) {
 	$Version = ($Version =~ /^\d+$/) ? "1.$Version" : "1.0"
 }
 
-if (-e $Dictionary) {
-	$Hyp = new TeX::Hyphen 'file' => $Dictionary,
-		'style' => 'utf8', leftmin => 2, rightmin => 2;
+if ($Dictionary) {
+	if (-e $Dictionary) {
+		$Hyp = new TeX::Hyphen 'file' => $Dictionary,
+			'style' => 'utf8', leftmin => 2, rightmin => 2;
+	} else {
+		die "\nERROR: dictionary file `$Dictionary' not found\n"
+	}
 }
 
 my $PartLimit = 20000;
