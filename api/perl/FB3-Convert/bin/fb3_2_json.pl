@@ -29,7 +29,7 @@ GetOptions ('in|from|src|fb3=s' => \$FB3,
             'out|to|dst|json=s' => \$Out,
             'lang=s'            => \$Lang,
             'art|art-id=s'      => \$ArtID,
-						'dict=s'            => \$Dictionary,
+            'dict=s'            => \$Dictionary,
             'version=s'         => \$Version) or print join('', <DATA>) and die("Error in command line arguments\n");
 
 print join('', <DATA>) and die "ERROR: source directory not specified, use --fb3 parameter\n"       unless $FB3;
@@ -44,6 +44,7 @@ unless ($Version =~ /^\d+\.\d+$/) {
 	$Version = ($Version =~ /^\d+$/) ? "1.$Version" : "1.0"
 }
 
+my $CannotHyph;
 if ($Dictionary) {
 	if (-e $Dictionary) {
 		$Hyp = new TeX::Hyphen 'file' => $Dictionary,
@@ -51,6 +52,8 @@ if ($Dictionary) {
 	} else {
 		die "\nERROR: dictionary file `$Dictionary' not found\n"
 	}
+} elsif ($Lang eq 'pl') {
+	$CannotHyph = 1; 
 }
 
 my $PartLimit = 20000;
@@ -811,6 +814,7 @@ sub trim {
 sub HyphString {
 	use utf8;
 	my $word = shift;
+	return $word if $CannotHyph;
 	my @wordArrayWithUnknownSymbols = split $RgxNonChar , $word; #собрали все слова и неизвестные символы. Для слова "пример!№?;слова" будет содержать "пример", "!№?;", "слова".
 
 	for my $word (@wordArrayWithUnknownSymbols) {
