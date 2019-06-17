@@ -819,7 +819,7 @@ sub HyphString {
 			$word = $Hyp->visualize($word);
 			$word =~ s/-/\x{AD}/g;
 		} else {
-			return $word if $Lang eq 'pl';
+			next if $Lang eq 'pl';
 			$word = HyphParticularWord($word);
 		}
 	}
