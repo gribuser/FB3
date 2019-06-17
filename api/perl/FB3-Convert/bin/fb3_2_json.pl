@@ -811,7 +811,6 @@ sub trim {
 sub HyphString {
 	use utf8;
 	my $word = shift;
-#	return $word if $Lang eq 'pl';
 	my @wordArrayWithUnknownSymbols = split $RgxNonChar , $word; #собрали все слова и неизвестные символы. Для слова "пример!№?;слова" будет содержать "пример", "!№?;", "слова".
 
 	for my $word (@wordArrayWithUnknownSymbols) {
@@ -820,6 +819,7 @@ sub HyphString {
 			$word = $Hyp->visualize($word);
 			$word =~ s/-/\x{AD}/g;
 		} else {
+			return $word if $Lang eq 'pl';
 			$word = HyphParticularWord($word);
 		}
 	}
