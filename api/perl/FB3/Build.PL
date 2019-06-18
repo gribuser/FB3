@@ -7,7 +7,7 @@ use File::Path;
 use File::Copy;
 
 my $XSDFound = 0;
-my @XSDFiles = (qw(fb3_descr_classes.xsd fb3_general.xsd fb3_relations.xsd opc-contentTypes.xsd opc-relationships.xsd dcterms.xsd dcmitype.xsd dc.xsd fb3_body.xsd fb3_descr.xsd fb3_links.xsd opc-coreProperties.xsd xml_namespace.xsd FictionBook.xsd FictionBookGenres.xsd FictionBookLang.xsd FictionBookLinks.xsd));
+my @XSDFiles = (qw(fb3_descr_classes.xsd fb3_general.xsd fb3_relations.xsd opc-contentTypes.xsd opc-relationships.xsd dcterms.xsd dcmitype.xsd dc.xsd fb3_body.xsd fb3_descr.xsd fb3_links.xsd opc-coreProperties.xsd xml_namespace.xsd FictionBook.xsd FictionBookGenres.xsd FictionBookLang.xsd FictionBookLinks.xsd fb3_body_litres_quotes.xsd));
 if (-d 'share') {
 	foreach (@XSDFiles) {
 		unless (-e 'share/'.$_) {
