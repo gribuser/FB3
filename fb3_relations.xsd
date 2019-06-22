@@ -226,6 +226,26 @@
 					<documentation xml:lang="ru">Лектор</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="literary_proc">
+				<annotation>
+					<documentation xml:lang="ru">Литературная обработка</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="comments">
+				<annotation>
+					<documentation xml:lang="ru">Комментарии</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="notes">
+				<annotation>
+					<documentation xml:lang="ru">Примечания</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="text_prep">
+				<annotation>
+					<documentation xml:lang="ru">Подготовка текста</documentation>
+				</annotation>
+			</enumeration>
 			<enumeration value="other">
 				<annotation>
 					<documentation xml:lang="ru">Прочее</documentation>
