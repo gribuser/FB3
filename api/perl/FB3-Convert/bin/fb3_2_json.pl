@@ -53,7 +53,7 @@ if ($Dictionary) {
 		die "\nERROR: dictionary file `$Dictionary' not found\n"
 	}
 } elsif ($Lang eq 'pl') {
-	$CannotHyph = 1; 
+	$CannotHyph = 1;
 }
 
 my $PartLimit = 20000;
@@ -164,8 +164,8 @@ $hyphenPatterns = {
 $hyphenRegexPattern = join "|",keys %{$hyphenPatterns};
 $hyphenRegexPattern = qr/(.*)($hyphenRegexPattern){1}(.*)/o;
 
-$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщłćżźśńż";
-$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїўóąę";
+$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщłćżźśńżç";
+$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїўóąęéàèùâêîôûëïüÿæœ";
 $znaki = "ъь";
 
 $RgxSoglasnie = qr/[$soglasnie]/oi;
