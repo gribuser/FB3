@@ -44,6 +44,14 @@ unless ($Version =~ /^\d+\.\d+$/) {
 	$Version = ($Version =~ /^\d+$/) ? "1.$Version" : "1.0"
 }
 
+my $HyphenMin = (
+	'ru' => [2,2],
+	'uk' => [2,2],
+	'pl' => [2,2],
+	'en' => [2,3],
+	''
+);
+
 my $CannotHyph;
 if ($Dictionary) {
 	if (-e $Dictionary) {
@@ -164,8 +172,8 @@ $hyphenPatterns = {
 $hyphenRegexPattern = join "|",keys %{$hyphenPatterns};
 $hyphenRegexPattern = qr/(.*)($hyphenRegexPattern){1}(.*)/o;
 
-$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщłćżźśńżç";
-$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїўóąęéàèùâêîôûëïüÿæœ";
+$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщłćżźśńżçßґñšž";
+$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїўóąęéàèùâêîôûëïüÿæœäöõ";
 $znaki = "ъь";
 
 $RgxSoglasnie = qr/[$soglasnie]/oi;
