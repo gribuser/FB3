@@ -44,19 +44,23 @@ unless ($Version =~ /^\d+\.\d+$/) {
 	$Version = ($Version =~ /^\d+$/) ? "1.$Version" : "1.0"
 }
 
-my $HyphenMin = (
+my %HyphenMin = (
 	'ru' => [2,2],
 	'uk' => [2,2],
 	'pl' => [2,2],
 	'en' => [2,3],
-	''
+	'de' => [2,2],
+	'fr' => [2,3],
+	'es' => [2,2],
+	'et' => [2,3],
 );
 
 my $CannotHyph;
 if ($Dictionary) {
 	if (-e $Dictionary) {
 		$Hyp = new TeX::Hyphen 'file' => $Dictionary,
-			'style' => 'utf8', leftmin => 2, rightmin => 2;
+			'style' => 'utf8', leftmin => ($HyphenMin{$Lang}[0] ? $HyphenMin{$Lang}[0] : 2),
+			rightmin => ($HyphenMin{$Lang}[1] ? $HyphenMin{$Lang}[1] : 2);
 	} else {
 		die "\nERROR: dictionary file `$Dictionary' not found\n"
 	}
