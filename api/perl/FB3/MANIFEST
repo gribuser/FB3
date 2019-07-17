@@ -8,6 +8,7 @@ share/dc.xsd
 share/dcmitype.xsd
 share/dcterms.xsd
 share/fb3_body.xsd
+share/fb3_body_litres_quotes.xsd
 share/fb3_descr.xsd
 share/fb3_descr_classes.xsd
 share/fb3_general.xsd
