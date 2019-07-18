@@ -176,9 +176,9 @@ $hyphenPatterns = {
 $hyphenRegexPattern = join "|",keys %{$hyphenPatterns};
 $hyphenRegexPattern = qr/(.*)($hyphenRegexPattern){1}(.*)/o;
 
-$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщłćżźśńżçßґñšž";
-$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїўóąęéàèùâêîôûëïüÿæœäöõ";
-$znaki = "ъь";
+$soglasnie = "bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщłćżźśńżçßґñšžčģķļņბგდვზთკლმნპჟრსტჳფქღყშჩცძწჭხჴჯჰჶ";
+$glasnie = "aeiouyАОУЮИЫЕЭЯЁєіїўóąęéàèùâêîôûëïüÿæœäöõāēīūėįųაეჱიჲოუჷჵ";
+$znaki = "ъьყ";
 
 $RgxSoglasnie = qr/[$soglasnie]/oi;
 $RgxGlasnie = qr/[$glasnie]/oi;
