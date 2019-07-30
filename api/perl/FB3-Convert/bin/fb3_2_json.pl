@@ -301,6 +301,8 @@ sub ProceedNode {
 		$NoCut = 1;
 		$BlockN++;
 	}
+	$NodeHash->{b_id} = $BlockN-1 if $BlockN && !exists $NodeHash->{b_id}; 
+
 	$NodeHash->{pr} = $Printable;
 	$NodeHash->{rb} = $IsRootBlock;
 
