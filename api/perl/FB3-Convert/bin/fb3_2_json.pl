@@ -301,7 +301,6 @@ sub ProceedNode {
 		$NoCut = 1;
 		$BlockN++;
 	}
-	$NodeHash->{b_id} = $BlockN-1 if $BlockN && !exists $NodeHash->{b_id}; 
 
 	$NodeHash->{pr} = $Printable;
 	$NodeHash->{rb} = $IsRootBlock;
@@ -391,7 +390,7 @@ sub DumpTree {
 	my $ChildsCount = scalar @{$NodeHash->{c}} if $NodeHash->{c};
 
 	$FirstBlockN = ($NodeHash->{b_id}||0) unless defined $FirstBlockN;
-	$LastBlockN = defined $NodeHash->{b_id} ? $NodeHash->{b_id} : 0;
+	$LastBlockN = defined $NodeHash->{b_id} ? $NodeHash->{b_id} : $LastBlockN ? $LastBlockN : 0;
 
 	for my $ChildHash (@{$NodeHash->{c}}) {
 		$ChildsCount--;
