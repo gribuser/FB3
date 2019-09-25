@@ -450,7 +450,7 @@
   <xsl:template match="fb:body[@name='notes']">
     <xsl:variable name="root_sections_count" select="count(fb:section[fb:section])"/>
     <xsl:choose>
-      <xsl:when test="root_sections_count >= 2 and not(fb:section[@id])">
+      <xsl:when test="$root_sections_count >= 2 and not(fb:section[@id])">
         <!-- two (or more) root sections structure. First root section is for
           footnotes and others - for endnotes -->
 
