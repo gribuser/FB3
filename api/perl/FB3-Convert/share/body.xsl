@@ -458,7 +458,7 @@
         <xsl:variable name="footnotes" select="fb:section[1]/fb:section[@id]"/>
         <xsl:if test="$footnotes">
           <notes show="0">
-            <xsl:apply-templates select="$footnotes/../fb:title"/>
+            <xsl:apply-templates select="$footnotes[1]/../fb:title[1]"/>
             <xsl:apply-templates select="$footnotes"/>
           </notes>
         </xsl:if>
@@ -468,7 +468,7 @@
           select="fb:section[preceding-sibling::fb:section]/fb:section"/>
         <xsl:if test="$endnotes">
           <notes show="1">
-            <xsl:apply-templates select="$endnotes/../fb:title"/>
+            <xsl:apply-templates select="$endnotes[1]/../fb:title[1]"/>
             <xsl:apply-templates select="$endnotes"/>
           </notes>
         </xsl:if>

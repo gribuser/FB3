@@ -1,18 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?><FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink"><description> <title-info> <genre>nonf_publicism</genre><genre>sci_history</genre><genre>sci_politics</genre><genre>sci_politics</genre><genre>sci_politics</genre><genre>sci_politics</genre><genre>nonfiction</genre><genre>nonf_biography</genre> <author><first-name>Владимир</first-name><middle-name>Ильич</middle-name><last-name>Ленин (Ульянов)</last-name><id>2ae8b51f-2a82-102a-9ae1-2dfe723fe7c7</id></author><book-title>Полное собрание сочинений. Том 8. Сентябрь 1903 ~ сентябрь 1904</book-title><annotation><p>В восьмой том Полного собрания сочинений В. И. Ленина входят произведения, написанные в сентябре 1903 – июле 1904 года, в период ожесточенной борьбы большевиков с меньшевиками, развернувшейся после II съезда РСДРП.</p>
-</annotation><keywords>исторические личности,коммунизм,революция в России</keywords><lang>ru</lang> <sequence name="Полное собрание сочинений в 55-ти томах" number="8"></sequence></title-info> <document-info> <author> <first-name>Светлана</first-name> <last-name>Тимакова</last-name> <nickname>cveta</nickname> </author> <program-used>OOoFBTools-2.32 (ExportToFB21), FictionBook Editor Release 2.6.6</program-used> <date value="2016-02-28">28.02.2016</date> <src-url>http://www.litres.ru/pages/biblio_book/?art=17083535</src-url><src-ocr>Текст предоставлен правообладателем</src-ocr> <id>8157d43c-c684-11e5-82bb-0cc47a5203ba</id> <version>1.0</version> <history><p>v1.0 – создание FB2 – (cveta)</p>
-</history> <publisher><first-name></first-name><last-name>Паблик на ЛитРесе</last-name><id>d7995d76-b9e8-11e1-94f4-ec5b03fadd67</id></publisher></document-info> <publish-info> <book-name>Полное собрание сочинений</book-name> <publisher>Издательство политической литературы</publisher> <city>Москва</city> <year>1967</year> <sequence number="8" name="Полное собрание сочинений"></sequence> </publish-info> </description><body><title><p>В. И. Ленин</p>
+<?xml version="1.0" encoding="utf-8"?><FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">
+<description>
+<title-info><genre>nonf_publicism</genre><author><first-name>Владимир</first-name><middle-name>Ильич</middle-name><last-name>Ленин (Ульянов)</last-name><id>2ae8b51f-2a82-102a-9ae1-2dfe723fe7c7</id></author><book-title>Полное собрание сочинений. Том 8. Сентябрь 1903 ~ сентябрь 1904</book-title><annotation><p>В восьмой том Полного собрания сочинений В. И. Ленина входят произведения, написанные в сентябре 1903 – июле 1904 года, в период ожесточенной борьбы большевиков с меньшевиками, развернувшейся после II съезда РСДРП.</p></annotation><keywords>исторические личности,коммунизм,революция в России</keywords><lang>ru</lang><sequence name="Полное собрание сочинений в 55-ти томах" number="8"></sequence></title-info>
+<document-info><date value="2019-09-25">25.09.2019</date><src-url>http://www.litres.ru/pages/biblio_book/?art=17083535</src-url><src-ocr>Текст предоставлен правообладателем</src-ocr><id>8157d43c-c684-11e5-82bb-0cc47a5203ba</id><version>1.0</version><publisher><first-name></first-name><last-name>Паблик на ЛитРесе</last-name><id>d7995d76-b9e8-11e1-94f4-ec5b03fadd67</id></publisher></document-info>
+<publish-info><book-name>Полное собрание сочинений</book-name><publisher>Издательство политической литературы</publisher><city>Москва</city><year>1967</year><sequence number="8" name="Полное собрание сочинений"></sequence></publish-info>
+</description>
+<body><title><p>В. И. Ленин</p>
 <p>Полное собрание сочинений</p>
 <p>Том 8</p>
 <p>Сентябрь 1903 ~ сентябрь 1904</p>
 </title><section><epigraph><p>Пролетарии всех стран, соединяйтесь</p>
 </epigraph><p><emphasis>Издание пятое</emphasis></p>
 <p>Печатается по постановлению Центрального Комитета Коммунистической Партии Советского Союза</p>
-</section></body><body name="notes"><section><title><p>Примечания</p>
-</title><section id="n_1"><title><p>1</p>
-</title><p>Так! <emphasis>Ред.</emphasis></p>
-</section><section id="n_2"><title><p>2</p>
-</title><p>См. Сочинения, 5 изд., том 7, стр. 264. <emphasis>Ред.</emphasis></p>
-</section></section><section><title><p>Комментарии</p>
-</title><section id="c_1"><title><p>1</p>
-</title><p><emphasis>«Рассказ о II съезде РСДРП»</emphasis> написан В. И. Лениным в период обостренной борьбы большевиков против раскольнической, дезорганизаторской деятельности меньшевиков после II съезда партии. Этот документ сыграл большую роль в разоблачении оппортунистической тактики меньшевиков и сплочении сторонников большинства. До опубликования протоколов съезда (в январе 1904 года) «Рассказ» был единственным партийным документом, освещавшим итоги II съезда и причины раскола РСДРП. Идеи, содержащиеся в «Рассказе», получили дальнейшее развитие в последующих статьях, письмах, выступлениях В. И. Ленина и особенно в его книге «Шаг вперед, два шага назад» (см. настоящий том, стр. 185–414).</p>
-</section></section></body></FictionBook>
+</section></body>
+<body name="notes">
+<section><title><p>Примечания</p></title>
+<section id="n_1"><title><p>1</p></title><p>Так! <emphasis>Ред.</emphasis></p></section>
+<section id="n_2"><title><p>2</p></title><p>См. Сочинения, 5 изд., том 7, стр. 264. <emphasis>Ред.</emphasis></p></section>
+</section>
+<section><title><p>Комментарии</p></title>
+<section id="c_1"><title><p>1</p></title><p><emphasis>«Рассказ о II съезде РСДРП»</emphasis> написан В. И. Лениным в период обостренной борьбы большевиков против раскольнической, дезорганизаторской деятельности меньшевиков после II съезда партии. Этот документ сыграл большую роль в разоблачении оппортунистической тактики меньшевиков и сплочении сторонников большинства. До опубликования протоколов съезда (в январе 1904 года) «Рассказ» был единственным партийным документом, освещавшим итоги II съезда и причины раскола РСДРП. Идеи, содержащиеся в «Рассказе», получили дальнейшее развитие в последующих статьях, письмах, выступлениях В. И. Ленина и особенно в его книге «Шаг вперед, два шага назад» (см. настоящий том, стр. 185–414).</p></section>
+<section id="c_2"><title><p>2</p></title><p>commentary #2</p></section>
+<section id="c_3"><title><p>3</p></title><p>commentary #3</p></section>
+</section>
+<section><title><p>Yet another endnotes block</p></title>
+<section id="e_1"><title><p>1</p></title><p>foo bar</p></section>
+<section id="e_2"><title><p>2</p></title><p>hello world</p></section>
+<section id="e_3"><title><p>3</p></title><p>lorem ipsum</p></section>
+</section>
+</body></FictionBook>
