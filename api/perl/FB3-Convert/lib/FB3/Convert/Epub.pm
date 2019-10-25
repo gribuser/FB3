@@ -1569,6 +1569,8 @@ sub FB3Creator {
   $BodyString =~ s/p_br>/p>/g;
   $BodyString =~ s/<br\/>/ /g;
   $BodyString =~ s/<p>\s+<\/p>/<br\/>/g; #мы уже все причесали, но пробельные <p> </p> пусть будут <br/> в корне
+  $BodyString =~ s/(<td[^>]+?>)\s*<br\/>/$1/g; #вложенные таблицы, съедаясь изнутри, порождают нам порой ненужные пробелы
+  $BodyString =~ s/<title>\s+<\/title>/<title><p\/><\/title>/g; #иногда редакторы расставляют <br/> в <h>, получаем черти что на выходе
 
   print FHbody $BodyString;
   close FHbody;
