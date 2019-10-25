@@ -1085,6 +1085,7 @@ sub AssembleContent {
 
       my $ContentFile = $X->{'ContentDir'}.'/'.$Item->{'href'};
       $ContentFile = uri_unescape($ContentFile);
+      $ContentFile = Encode::decode_utf8($ContentFile);
 
       $X->Msg("Fix strange text\n");
       $X->_bs('Strange', 'Зачистка странностей');
