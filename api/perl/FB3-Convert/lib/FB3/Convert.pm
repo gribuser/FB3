@@ -25,7 +25,7 @@ use Image::Magick;
 use File::ShareDir qw/dist_dir/;
 binmode(STDOUT,':utf8');
 
-our $VERSION = 0.37;
+our $VERSION = 0.38;
 
 =head1 NAME
 
@@ -429,13 +429,14 @@ sub _Unpacker {
 
   unless ($Zip->read($Source) == Archive::Zip::AZ_OK ) {
     Error($X,"Error reading file '".$Source."' as zip");
-	}
-	
+  }
+
   my @FilesInZip = $Zip->members(); 
 
   Msg($X,"Unzip source file to directory: ".$TMPPath."\n");
   foreach (@FilesInZip) {
     my $Fname = $_->fileName;
+    next if $Fname =~ /\.(ttf|otf|ttc)$/i; #излишество на данный момент
     Error($X,"Error reading file '".$Source."' as zip. So file '".substr($Fname,-100,100)."' have strange structure. [may be exploit?]") if $Fname =~ m#\.\./# || $Fname =~ m#^\W*/#; 
     my $ExtFile = $TMPPath.'/'.$Fname;
 
@@ -616,7 +617,7 @@ sub Content2Tree {
   my $X = shift;
   my $Obj = shift;
   my $Content = $Obj->{'content'};
-  my $File = uri_unescape($Obj->{'file'});
+  my $File = Encode::decode_utf8(uri_unescape($Obj->{'file'}));
 
   $Content = $X->trim($Content);
 
