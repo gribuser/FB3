@@ -48,6 +48,7 @@ GetOptions(
   'fb2=s' => \$OPT{'fb2'},
 	'fb2xsd=s' => \$OPT{'fb2xsd'},
 	'genremap=s' => \$OPT{'genremap'},
+  'skip_halfempty_section' => \$OPT{'skip_halfempty_section'},
   'validate|vl=s' => \$OPT{'vl'},
 ) || help();
 
@@ -231,6 +232,18 @@ my $ChangedByNode=0;
 foreach my $Marker ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:marker")) {
   $Marker->setNodeName('p');
   $ChangedByNode = 1;
+}
+
+if ($OPT{'skip_halfempty_section'}) {
+  foreach my $Sec ($xc->findnodes("/fb3:fb3-body/fb3:section")) {
+    my @N = $Sec->findnodes("./*");
+    if (
+      ( grep {lc($_->nodeName()) eq 'title'} @N) && !(grep {lc($_->nodeName()) eq 'p'} @N)
+    ) {
+      $Sec->parentNode->removeChild($Sec);
+      $ChangedByNode=1;
+    }
+  }
 }
 
 ## change node id
@@ -499,6 +512,7 @@ sub help {
                script is used
   --force    : ignore validation error
   --validate : don't convert, only validate FB2 file from path
+  --skip_halfempty_section: skip sectipons, who have only title, but no text
   
 _END
 ;
