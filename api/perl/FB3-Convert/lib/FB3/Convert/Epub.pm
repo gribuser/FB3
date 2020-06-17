@@ -241,6 +241,11 @@ sub Reaper {
     'processor' => \&ProcessHref,
     'allow_elements_inside' => $FB3::Convert::ElsMainList,
   };
+  $AllowElements->{'caption'} = {
+    'processor' => \&ProcessTableCaption,
+    processor => \&TransformTo,
+    processor_params => ['title']
+  };
   $AllowElements->{'b'} = {
     'allow_attributes' => ['id'],
     processor => \&TransformTo,

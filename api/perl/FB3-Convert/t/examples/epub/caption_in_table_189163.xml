@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fb3-body xmlns:xlink="http://www.w3.org/1999/xlink" id="4b3eb9d2-e1f1-4e6c-ac16-425a170111cd" xmlns="http://www.fictionbook.org/FictionBook3/body">
+  <section id="821a9527-848c-5390-b895-044e9c08ab82">
+    <table>
+      <title>
+        <p>TITLE one ok</p>
+      </title>
+      <tr>
+        <td>
+          <p>one yes da</p>
+        </td>
+        <td>
+          <p>two</p>
+        </td>
+      </tr>
+    </table>
+  </section>
+</fb3-body>

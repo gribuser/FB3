@@ -25,7 +25,7 @@ use Image::Magick;
 use File::ShareDir qw/dist_dir/;
 binmode(STDOUT,':utf8');
 
-our $VERSION = 0.39;
+our $VERSION = 0.40;
 
 =head1 NAME
 
@@ -56,7 +56,7 @@ my @BlockLevel =
 'h1','h2','h3','h4','h5','h6',
 'header','hr','li','main','nav','noscript','ol','output','p','pre','section','table','tfoot','ul','video',
 #формально не блок-левел, но нам их тоже приводить к нормальному виду
-'th','tr','td'
+'th','tr','td','caption'
 );
 
 my $AllEntities = XML::Entities::Data::all;
@@ -116,7 +116,7 @@ my %UseImgProfile = ('tiff'=>1,'tif'=>1);
 my %AllowElementsMain = (
   'table' => {
     'allow_attributes' => ['id'],
-    'allow_elements_inside' => {'tr'=>undef},
+    'allow_elements_inside' => {'tr'=>undef, 'caption'=>undef, title=>undef},
   },
   'tr' => {
     'allow_attributes' => ['id','align'],
@@ -128,6 +128,9 @@ my %AllowElementsMain = (
   },
   'td' => {
     'allow_attributes' => ['colspan','rowspan','align','valign'],
+    'allow_elements_inside' => $ElsMainList2,
+  },
+  'caption' => {
     'allow_elements_inside' => $ElsMainList2,
   },
   'i' => {
@@ -654,7 +657,6 @@ sub Content2Tree {
 sub TransformedPostprocess {
   my $X = shift;
   my $Data = shift;
-
   my %AllowElements = %{$X->{'allow_elements'}};
 
   return unless ref $Data eq 'ARRAY';
@@ -1095,6 +1097,10 @@ sub TransformTable2Valid {
   foreach my $TD ($Node->findnodes('./tr/td')) {
     $TD->addChild(XML::LibXML::Text->new('')) unless $TD->getChildnodes;
     $X->Transform2Valid(node=>$TD);
+  }
+  foreach my $TL ($Node->findnodes('./title')) {
+    $TL->addChild(XML::LibXML::Text->new('')) unless $TL->getChildnodes;
+    $X->Transform2Valid(node=>$TL);
   }
 
   return $Node;
