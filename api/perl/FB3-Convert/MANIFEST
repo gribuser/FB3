@@ -36,6 +36,8 @@ t/examples/epub/br_133548.epub
 t/examples/epub/br_133548.xml
 t/examples/epub/br_in_h_167811.epub
 t/examples/epub/br_in_h_167811.xml
+t/examples/epub/caption_in_table_189163.epub
+t/examples/epub/caption_in_table_189163.xml
 t/examples/epub/crazy_table_space_167811.epub
 t/examples/epub/crazy_table_space_167811.xml
 t/examples/epub/div_and_p_111501.epub
@@ -138,6 +140,8 @@ t/examples/fb3_to_fb2/p_in_title_147166.fb3
 t/examples/fb3_to_fb2/p_in_title_147166.xml
 t/examples/fb3_to_fb2/same_img_cover_135705.fb3
 t/examples/fb3_to_fb2/same_img_cover_135705.xml
+t/examples/fb3_to_fb2/table_title_189446.fb3
+t/examples/fb3_to_fb2/table_title_189446.xml
 t/test1.t
 t/test2.t
 t/test3.t

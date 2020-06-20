@@ -25,7 +25,7 @@ use Image::Magick;
 use File::ShareDir qw/dist_dir/;
 binmode(STDOUT,':utf8');
 
-our $VERSION = 0.40;
+our $VERSION = 0.41;
 
 =head1 NAME
 
