@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FictionBook xmlns:fb3b="http://www.fictionbook.org/FictionBook3/body" xmlns:l="http://www.w3.org/1999/xlink" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" xmlns:ltr="LTR" xmlns="http://www.gribuser.ru/xml/fictionbook/2.0"><description><title-info><genre>unrecognised</genre><author><first-name>John</first-name><last-name>Popper-Snopper</last-name><id>45f314ac-9966-4a7d-be8a-e42320d5d31a</id></author><book-title>Gidy-gidy carousel</book-title><annotation>
+    <p>The teacher has told: &amp;lt;p&amp;gt;&amp;lt;b&amp;gt;&amp;quot;that the lotus blossomed, it needs water&amp;quot;...&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt; and knocked him a stick on the head.</p>
+  </annotation><lang>en-US</lang><src-lang>en-US</src-lang></title-info><document-info><author><nickname>Аноним</nickname></author><date value="2020-06-19">19.06.2020</date><id>617bf539-2af5-4aed-b9e8-3c4ee166b7b7</id><version>1.0</version></document-info></description><body><section id="uf5e81f4f-28ce-57f9-aee9-d0299c24537d">
+    <table>
+      <tr><td colspan="3">TITLE one ok</td></tr>
+      <tr>
+        <td>
+          one yes da
+        </td>
+        <td colspan="2">
+          two
+        </td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+    </table>
+  </section></body></FictionBook>

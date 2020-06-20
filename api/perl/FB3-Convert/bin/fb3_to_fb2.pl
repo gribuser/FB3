@@ -228,6 +228,36 @@ foreach my $Title ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:title")) {
 
 my $ChangedByNode=0;
 
+#<table><title> -> table <tr><td>
+foreach my $TabTitle ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:table/fb3:title")) {
+  my $NCols=0;
+  my @Tr = $xc->findnodes("./fb3:tr", $TabTitle->parentNode());
+  foreach my $Tr (@Tr) {
+    if (my @Td = $xc->findnodes("./fb3:td", $Tr)) {
+      foreach my $Td (@Td) {
+        if ($Td->getAttribute('colspan')) {
+          $NCols += $Td->getAttribute('colspan');
+          next;
+        }
+        $NCols++;
+      }
+      last;
+    }
+  }
+
+  my $TrEl= $Doc->createElement('tr');
+  my $TdEl = $Doc->createElement('td');
+  $TdEl->setAttribute('colspan', $NCols) if $NCols;
+  my @InsideTitle = $xc->findnodes("./fb3:p",$TabTitle)->[0]->getChildnodes;
+  foreach (@InsideTitle) {
+    $TdEl->addChild($_->cloneNode(1));
+  }
+  $TrEl->appendChild(CopyNode($TdEl));
+  $TabTitle->replaceNode($TrEl); 
+  $ChangedByNode = 1;
+}
+
+
 #marker, содержащий внутри только <img>, заменяем на <p>
 foreach my $Marker ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:marker")) {
   $Marker->setNodeName('p');

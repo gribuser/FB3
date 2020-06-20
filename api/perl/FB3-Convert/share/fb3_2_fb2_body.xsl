@@ -236,7 +236,11 @@
 		<th><xsl:apply-templates/></th>
 	</xsl:template>
 	<xsl:template match="fb3b:td">
-		<td><xsl:apply-templates/></td>
+		<td>
+			<xsl:if test="@colspan"><xsl:attribute name="colspan"><xsl:value-of select="@colspan"/></xsl:attribute></xsl:if>
+			<xsl:if test="@rowspan"><xsl:attribute name="rowspan"><xsl:value-of select="@rowspan"/></xsl:attribute></xsl:if>
+			<xsl:apply-templates/>
+		</td>
 	</xsl:template>
 	<xsl:template match="fb3b:td/fb3b:p">
 		<xsl:apply-templates/>
