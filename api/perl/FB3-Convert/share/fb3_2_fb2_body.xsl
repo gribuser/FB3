@@ -227,7 +227,10 @@
 	<xsl:template match="fb3b:br" mode="stanza"/>
 
 	<xsl:template match="fb3b:table">
-		<table><xsl:apply-templates/></table>
+		<table>
+			<xsl:if test="@id"><xsl:attribute name="id">u<xsl:value-of select="@id"/></xsl:attribute></xsl:if>
+			<xsl:apply-templates/>
+		</table>
 	</xsl:template>
 	<xsl:template match="fb3b:tr">
 		<tr><xsl:apply-templates/></tr>
