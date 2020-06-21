@@ -248,6 +248,7 @@ foreach my $TabTitle ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:table/fb3:t
   my $TrEl= $Doc->createElement('tr');
   my $TdEl = $Doc->createElement('td');
   $TdEl->setAttribute('colspan', $NCols) if $NCols;
+  $TdEl->setAttribute('align', 'center');
   my @InsideTitle = $xc->findnodes("./fb3:p",$TabTitle)->[0]->getChildnodes;
   foreach (@InsideTitle) {
     $TdEl->addChild($_->cloneNode(1));
