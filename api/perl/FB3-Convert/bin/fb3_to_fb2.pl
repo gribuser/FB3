@@ -292,11 +292,26 @@ foreach my $NodeWithId ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:p//fb3:*"
         $Parent->setAttribute('id' => $NodeID);
         $ChangedByNode = 1;
       }
+
+      if (lc($Parent->parentNode()->nodeName()) eq 'td') {
+        my $ParentTD = $Parent->parentNode();
+        my $ParentIDTD = $ParentTD->getAttribute('id');
+        if ($ParentIDTD) {
+          #уже есть id, придется менять линки в документе на него
+          $LinkRels{$NodeID} = $ParentIDTD; 
+        } else {
+          $ParentIDTD = $NodeID;
+          $ParentTD->setAttribute('id' => $ParentIDTD);
+          $ChangedByNode = 1;
+        }
+      }
+
       last;
     }
   }
 }
 ## /change node id
+
 if ($ChangedByTitle || $ChangedByNode) {
   my $RootNode = $xc->findnodes("/fb3:fb3-body")->[0];
   $BodyXML = $RootNode->toString();
@@ -454,8 +469,6 @@ sub RootNode {
   }
  
 }
-
-
 
 #следим чтобы имя не повторилось
 sub SvgUnique {
