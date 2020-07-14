@@ -266,11 +266,20 @@ foreach my $Marker ($xc->findnodes("/fb3:fb3-body/fb3:section//fb3:marker")) {
 }
 
 if ($OPT{'skip_halfempty_section'}) {
+  # remove clipped
   foreach my $Sec ($xc->findnodes("/fb3:fb3-body/fb3:section")) {
-    my @N = $Sec->findnodes("./*");
-    if (
-      ( grep {lc($_->nodeName()) eq 'title'} @N) && !(grep {lc($_->nodeName()) eq 'p'} @N)
-    ) {
+    my $Remove=0;
+    if ($Sec->getAttribute('clipped') && $Sec->getAttribute('clipped') eq 'true') {
+      $Remove = 1;
+    } else {
+      my @N = $Sec->findnodes("./*");
+      if (
+        ( grep {lc($_->nodeName()) eq 'title'} @N) && !(grep {lc($_->nodeName()) eq 'p'} @N)
+      ) {
+        $Remove = 1;
+      }
+    }
+    if ($Remove) {
       $Sec->parentNode->removeChild($Sec);
       $ChangedByNode=1;
     }
