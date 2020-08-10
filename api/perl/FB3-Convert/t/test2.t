@@ -13,7 +13,7 @@ use Test::More;
 use File::Temp qw/tempfile/;
 use File::ShareDir qw/dist_dir/;
 
-diag( "Testing result of fb3->fb, Perl $], $^X" );
+diag( "Testing result of fb3->fb2, Perl $], $^X" );
 
 my $FB3M;
 eval {
@@ -51,7 +51,10 @@ foreach my $FB3File (sort{Num($a,'fb3')<=>Num($b,'fb3')} @FB3s ) {
 
   my $TmpFile = File::Temp->new(UNLINK=>1, SUFFIX=>'.fb2');
 
-  my $Cmd = 'perl '.dirname(__FILE__).'/../bin/fb3_to_fb2.pl --fb3='.$DIR.'/'.$FB3File.' --fb2='.$TmpFile.' --fb2xsd='.$FB2XSD.' 2>&1 1>/dev/null';
+  my $EmptySection='';
+  $EmptySection = '--skip_halfempty_section ' if $FName =~ /_190994$/;
+
+  my $Cmd = 'perl '.dirname(__FILE__).'/../bin/fb3_to_fb2.pl '.$EmptySection.'--fb3='.$DIR.'/'.$FB3File.' --fb2='.$TmpFile.' --fb2xsd='.$FB2XSD.' 2>&1 1>/dev/null';
   `$Cmd`;
 
   unless (-s $TmpFile) {

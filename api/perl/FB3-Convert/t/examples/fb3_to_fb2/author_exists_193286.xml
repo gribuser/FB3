@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FictionBook xmlns:ltr="LTR" xmlns:fb3d="http://www.fictionbook.org/FictionBook3/description" xmlns:l="http://www.w3.org/1999/xlink" xmlns:fb3b="http://www.fictionbook.org/FictionBook3/body" xmlns="http://www.gribuser.ru/xml/fictionbook/2.0"><description><title-info><genre>unrecognised</genre><author><first-name>Vendela</first-name><last-name>Vida</last-name><id>9e2edfc3-ea94-11e0-9959-47117d41cf4b</id></author><book-title>The Believer, Issue 111</book-title><annotation><p>Annotation</p></annotation><coverpage><image l:href="#cover.jpg"/></coverpage><lang>en</lang></title-info><document-info><author><nickname>Аноним</nickname></author><program-used>XPortal::Pages::EditorWorkplace</program-used><date value="2020-03-27">27.03.2020</date><id>a319aa09-7049-11ea-8bb0-0cc47a545a1e</id><version>1.0</version></document-info></description><body><section id="u9477210f-fa6d-5684-bd36-e19624834002">
+    
+      <image l:href="#img_9b6c0870-4d8d-5aa3-992a-72509e62d9c9" alt=""/>
+    <empty-line/>
+    <p>January/February 2015</p>
+    <p>Vol. 13, No. 1</p>
+  </section></body><binary content-type="image/jpeg" id="cover.jpg"></binary></FictionBook>

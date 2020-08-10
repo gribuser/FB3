@@ -12,6 +12,11 @@
 		<title-info>
 			<xsl:apply-templates select="fb3d:fb3-classification/fb3d:subject" mode="genre"/>
 			<xsl:apply-templates select="fb3d:fb3-relations/fb3d:subject[@link = 'author']"/>
+			<xsl:if test="not(fb3d:fb3-relations/fb3d:subject[@link = 'author'])">
+				<author>
+					<nickname>Аноним</nickname>
+				</author>
+			</xsl:if>
 			<xsl:apply-templates select="fb3d:title"/>
 			<xsl:apply-templates select="fb3d:annotation"/>
 			<xsl:apply-templates select="fb3d:keywords"/>

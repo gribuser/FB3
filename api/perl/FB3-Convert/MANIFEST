@@ -149,3 +149,5 @@ t/examples/fb3_to_fb2/table_title_189446.xml
 t/test1.t
 t/test2.t
 t/test3.t
+META.yml
+META.json
