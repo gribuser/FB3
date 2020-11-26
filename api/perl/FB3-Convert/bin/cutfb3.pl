@@ -344,6 +344,7 @@ sub CleanLinks {
 		foreach my $NodeHrefs (@$Hrefs) {
 			if ($NodeHrefs->getAttribute('id')) {
 				$NodeHrefs->removeAttribute('xlink:href');
+				$NodeHrefs->setNodeName('span');
 				next;
 			}
 			NReplace($NodeHrefs);
