@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fb3-body xmlns="http://www.fictionbook.org/FictionBook3/body" xmlns:xlink="http://www.w3.org/1999/xlink" id="067195c1-0310-11e9-9e03-0cc47a520474">
+  <title>
+    <p>Тони Роббинс</p>
+  </title>
+
+<section id="067195c1-49FF-11e9-9e03-0cc47a520474" first-char-pos="26">
+ <title><p>Default</p></title>
+ <p>Много текста, orldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world
+hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello
+worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello
+worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello
+<span id="link_067195c1-49FF-11e9-9e03-0cc47a520455">worldhello</span> worldhello worldhello worldhello world
+hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world
+hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world
+hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world
+hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world
+hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world
+hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world
+hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world
+KUS-KUS</p>
+</section>
+
+<section id="067195c1-49FF-11e9-9e03-0cc47a520474" first-char-pos="1999">
+ <title><p>LINK</p></title>
+ <p><a xlink:href="#link_067195c1-49FF-11e9-9e03-0cc47a520455">text</a></p>
+</section>
+
+
+<section id="067195c1-49FF-11e9-9e03-0cc47a520476" first-char-pos="2015" clipped="true">
+ <title><p>Default</p></title>
+ <clipped/></section></fb3-body>
