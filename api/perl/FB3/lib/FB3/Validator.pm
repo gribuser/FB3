@@ -282,7 +282,7 @@ sub Validate {
       "$XSD_DIR/fb3_body.xsd" );
     my $BodyDoc;
     eval {
-      $BodyDoc = XML::LibXML->new()->parse_string( $BodyXML );
+      $BodyDoc = XML::LibXML->load_xml(string=>$BodyXML, huge => 1);
       $BodySchema->validate( $BodyDoc );
     };
     if( $@ ) {
