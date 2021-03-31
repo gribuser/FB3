@@ -55,7 +55,7 @@ GetOptions(
 #если вызван ключик --help или нет ни единого ключа
 help() if $OPT{'help'} || !grep {defined $OPT{$_}} keys %OPT;
 
-my $Parser = new XML::LibXML;
+my $Parser = new XML::LibXML(huge=>1);
 my $Doc = new XML::LibXML::Document;
 
 die ("param -fb2xsd not defined") unless $OPT{'fb2xsd'};
