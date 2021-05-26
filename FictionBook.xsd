@@ -463,6 +463,9 @@ SUCH DAMAGE.
       <xs:element name="sub" type="styleType"/>
       <xs:element name="sup" type="styleType"/>
       <xs:element name="code" type="styleType"/>
+      <xs:element name="ul" type="styleType"/>
+      <xs:element name="ol" type="styleType"/>
+      <xs:element name="li" type="styleType"/>
       <xs:element name="image" type="inlineImageType"/>
     </xs:choice>
     <xs:attribute ref="xml:lang"/>
@@ -480,6 +483,9 @@ SUCH DAMAGE.
       <xs:element name="sub" type="styleType"/>
       <xs:element name="sup" type="styleType"/>
       <xs:element name="code" type="styleType"/>
+      <xs:element name="ul" type="styleType"/>
+      <xs:element name="ol" type="styleType"/>
+      <xs:element name="li" type="styleType"/>
       <xs:element name="image" type="inlineImageType"/>
     </xs:choice>
     <xs:attribute ref="xml:lang" use="optional"/>
@@ -497,6 +503,9 @@ SUCH DAMAGE.
       <xs:element name="sub" type="styleLinkType"/>
       <xs:element name="sup" type="styleLinkType"/>
       <xs:element name="code" type="styleLinkType"/>
+      <xs:element name="ul" type="styleLinkType"/>
+      <xs:element name="ol" type="styleLinkType"/>
+      <xs:element name="li" type="styleLinkType"/>
       <xs:element name="image" type="inlineImageType"/>
     </xs:choice>
     <xs:attribute ref="xlink:type" use="optional"/>
@@ -515,6 +524,9 @@ SUCH DAMAGE.
       <xs:element name="sub" type="styleLinkType"/>
       <xs:element name="sup" type="styleLinkType"/>
       <xs:element name="code" type="styleLinkType"/>
+      <xs:element name="ul" type="styleLinkType"/>
+      <xs:element name="ol" type="styleLinkType"/>
+      <xs:element name="li" type="styleLinkType"/>
       <xs:element name="image" type="inlineImageType"/>
     </xs:choice>
   </xs:complexType>
