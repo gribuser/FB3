@@ -36,6 +36,8 @@ if ($ImagesPath) {
 	$ImagesPath = $ImagesPath.'/' if $ImagesPath !~ /\/$/;
 }
 
+my $InTrial; #мы внутри триалки
+
 if ( not $WorkType ) {
 
 	$WorkType = 'trial';
@@ -209,6 +211,10 @@ sub ProceedNodeTrial {
 			if ($SectionOutput eq 'trial' || $SectionOutput eq 'trial-only') { #всегда бессмертны
 				$OuterImmortal = 1;
 				$ImmortalBranch = 1;
+				$InTrial = 1 if $WorkType eq 'trial'; #работаем триалку и зашли внутрь нее
+			} elsif ($InTrial) { #триалка закончилась, ну и хорош
+				$InTrial = 0;
+				$Finish = 1;
 			}
 		}
 
