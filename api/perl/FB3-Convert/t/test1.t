@@ -40,7 +40,7 @@ foreach my $FB2File (sort{Num($a,'fb2')<=>Num($b,'fb2')} @FB2s ) {
     'source' => $DIR1.'/'.$FB2File,
     'destination_dir' => tempdir(CLEANUP=>1),
     'verbose' => 0,
-    'xsl_path' => dist_dir('FB3-Convert'),
+    'xsl_path' => $ENV{FB3_CONVERT_XSL_PATH} || dist_dir('FB3-Convert'),
   );
 
   $Obj->Reap();
@@ -48,7 +48,7 @@ foreach my $FB2File (sort{Num($a,'fb2')<=>Num($b,'fb2')} @FB2s ) {
   if ( my $ValidErr = $Obj->Validate() ) {
     diag($ValidErr);
   } else {
-    ok( _Diff($Obj, $OldXml, "$FB3Path/fb3/body.xml"), $FB2File );
+    ok( _Diff($Obj, $OldXml, "$FB3Path/fb3/body.xml", 'need_check_id'), $FB2File );
   }
 
   $Obj->Cleanup();
@@ -160,6 +160,7 @@ sub _Diff {
   my $X = shift;
   my $OldFile = shift;
   my $NewFile = shift;
+  my $NeedCheckAttributeID = shift || '';
 
   open my $fho, '<', $OldFile or die $!;
   my $OldXml;
@@ -201,7 +202,7 @@ sub _Diff {
 
         if ($DiffName eq 'xvcs:attr-update') {
 
-          next if ($NodeDiff->getAttribute('name') =~ /^(src|id|xlink:href)$/i); #it's OK event
+          next if (!$NeedCheckAttributeID && $NodeDiff->getAttribute('name') =~ /^(src|id|xlink:href)$/i); #it's OK event
 
           $DiffError .= $DiffName."\n";
           $DiffError .= "  name: ".$NodeDiff->getAttribute('name')."\n";
