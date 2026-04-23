@@ -575,11 +575,19 @@
   </xsl:template>
   
   <xsl:template match="fb:section" mode="subsectionID">
-    <xsl:variable name="num">
-      <xsl:number level='any' count='fb:section' />
-    </xsl:variable>
-    <xsl:variable name="base" select="'FFFF'"/>
-    <xsl:value-of select="concat($preID, '-', $num, substring($base, string-length($num)+1), '-', $posID)"/>
+    <xsl:variable name="uuid_upper" select="translate(@id, 'abcdefui', 'ABCDEFUI')"/>
+    <xsl:choose>
+      <xsl:when test="starts-with($uuid_upper, 'UUID-') and translate($uuid_upper, '123456789ABCDEF', '000000000000000') = 'UUI0-00000000-0000-0000-0000-000000000000'">
+        <xsl:value-of select="substring-after($uuid_upper, 'UUID-')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="num">
+          <xsl:number level='any' count='fb:section' />
+        </xsl:variable>
+        <xsl:variable name="base" select="'FFFF'"/>
+        <xsl:value-of select="concat($preID, '-', $num, substring($base, string-length($num)+1), '-', $posID)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template name="tokenize">
